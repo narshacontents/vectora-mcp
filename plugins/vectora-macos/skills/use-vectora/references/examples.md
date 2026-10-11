@@ -2,6 +2,24 @@
 
 ID/버전은 실제 도구 응답으로 바꾼다. 도구 이름 앞의 MCP 서버 접두사는 클라이언트에 따라 붙는다.
 
+## Graph production schema 예제
+
+앱 1.4.2 이상에서 compact와 legacy graph branches가 노출되는지 live schema로 확인한다. compact는 `chartStyle`과 `categories`를 사용하고 legacy는 `chartStyle`을 생략한다. 두 입력을 섞지 않는다.
+
+Compact line:
+
+```json
+{"kind":"graph","type":"line","chartStyle":"line","styleProfile":"kice","widthMm":65,"dataFidelity":"exact","categories":["A","B","C"],"series":[{"id":"a","label":"자료","values":[10,30,20]}],"valueLabels":true,"legend":"beneath","chartOptions":{"compact":true,"gridStyle":"dash"}}
+```
+
+Legacy line:
+
+```json
+{"kind":"graph","type":"line","dataFidelity":"exact","x":["A","B"],"series":[{"label":"자료","values":[10,20]}],"domain":[0,30],"legend":"none"}
+```
+
+이 예제는 앱 graph discovery schema에 정의된 실행 예를 따른다. 실제 실행 시 값 배열 길이, 수치 도메인, 스타일별 옵션과 물리적 크기 적합성을 추가 검사한다. spec 저장은 렌더 결과의 겹침 검수 완료를 뜻하지 않으므로 delivery audit와 실제 JPEG를 확인한다.
+
 `vectora_new_document({"name":"관계도","width":108,"height":60})`로 생성 후 일반 편집:
 
 ```json

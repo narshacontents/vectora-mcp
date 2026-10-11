@@ -7,9 +7,11 @@ description: "Vectora MCP로 벡터 그림을 만들고 SVG·AI/PDF·이미지�
 
 Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DOM 조작, 실행 중인 앱에 스크립트 주입으로 작업하지 않는다. MCP는 설치된 Vectora 1.0.0+의 실제 편집 엔진을 별도 세션에서 실행한다. Codex와 Claude는 GitHub 마켓플레이스에서 MCP와 세 스킬을 함께 설치하는 경로를 사용한다. 수동 설치 ZIP·MCPB·개별 스킬 ZIP은 기본 배포하지 않는다. 플러그인 안의 실행기가 OS에 맞게 설치 앱을 연결하며, GitHub Release 게시만으로 설치본이 자동 갱신되지는 않는다. 일반 앱 창의 미저장 문서는 MCP에 자동으로 연결되지 않는다. 파일을 저장한 뒤 `vectora_open_document`로 열고 작업한다.
 
+새 그래프 검색·충돌 배치, 지도 지물 catalog·위치·파선·재열기 binding, 표 세로 정렬·108mm 맞춤, 혼합 문자 획 측정, 명시 굵기·예약 외곽, 두루마리 variant와 장시간 지도 작업의 자원 관리는 **앱 1.4.2 이상**에서 실제 capability와 schema가 제공될 때 사용한다. 기존 1.4.0·1.3.0·1.2.0 기능의 최소 버전은 유지한다. 앱·플러그인 버전 숫자만으로 필드를 추정하지 않는다.
+
 ## 연결과 단위
 
-- `vectora_status`로 연결·기능을 확인한다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 플러그인 루트 `README.md`와 앱 프로젝트의 `docs/MCP_INSTALLATION.md`를 참고한다.
+- `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 플러그인 루트 `README.md`와 앱 프로젝트의 `docs/MCP_INSTALLATION.md`를 참고한다.
 - Windows에서 MCP 실행기는 Windows PowerShell 기본 `powershell.exe`와 설치된 `Vectora.exe`를 사용한다. Node.js/Python 런타임은 필요하지 않다. 앱 경로 우선순위는 `VECTORA_APP_PATH`, `%APPDATA%\Vectora\mcp-app-path`, `%LOCALAPPDATA%\Programs\Vectora\Vectora.exe`, `%ProgramFiles%\Vectora\Vectora.exe`, `%ProgramFiles(x86)%\Vectora\Vectora.exe`다. 사용자 지정 경로는 `scripts/configure-app.ps1 -AppPath <Vectora.exe 절대 경로>`로 저장한다. macOS는 `scripts/configure-app.sh <Vectora.app 절대 경로>` 또는 Applications 기본 위치를 사용한다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.
 - `vectora_apply`의 기본 `units: "mm-pt"`: 도형 위치·크기·경로 `d`·대지·가이드·오프셋은 **mm**, 문자 크기·선 굵기·기준선 이동·행간·점선 길이는 **pt**. 자간 `charSpacing`은 **1/1000em**이다. `units: "px"`는 모든 길이를 px로 받는다.
@@ -18,7 +20,8 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 
 ## 점 편집과 프리셋
 
-- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
+- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
+- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
 - `vectora_inspect(includeObjects:true)`의 `pathNodes`는 각 개체의 **문서 좌표 mm**와 0부터 시작하는 점 번호를 제공한다. `objects`의 원시 경로 px와 혼동하지 않는다.
 - 개별 점은 `vectora_apply`의 `{type:"pathPoint",id,index,point:{x,y}}`로 이동한다. `incoming`/`outgoing`은 곡률 핸들의 절대 좌표이며 `null`이면 그 핸들을 접는다. 점만 옮기면 연결된 핸들도 함께 움직인다. 사각형·타원 등의 한 꼭짓점을 수정하면 같은 ID를 유지한 편집 경로가 된다. 잠긴 대상은 먼저 해당 잠금을 해제한다.
 - 사용자가 프리셋을 요청하면 `vectora_list_presets`로 실제 ID를 조회하고 `vectora_create_preset`으로 새 문서를 만든다. 자료 틀과 말풍선은 빈 틀이며 그래프·모식도의 글·수치는 편집용 예시다. 사용자의 자료로 교체한다. 원 그래프 프리셋은 `pieChart` 명령으로 수치를 다시 수정할 수 있다. 통합사회 평가원 그림은 최신 create-kice-illustration 원칙으로 새로 설계하되, 지도 양식이 필요하면 해당 스킬의 지도 원칙에 따라 적합한 프리셋을 조회해 새 문서로 시작한다.

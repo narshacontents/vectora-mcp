@@ -15,7 +15,7 @@
 
 ## 선택 배경 도구—지원 매체만
 
-신문·브라우저·두루마리 배경을 자동 구성할 때만 사용한다. 미지원 매체와 paper는 직접 구성하며 도구 사용을 강제하지 않는다. variant와 고유 슬롯/설정은 선택한 하위 문서를 따른다.
+라이브 스키마가 제공하면 `vectora_production`의 native text variant를 우선한다. 신문·브라우저·두루마리 배경을 자동 구성할 때 fallback 스크립트를 사용할 수 있으며, 이는 외피와 빈 슬롯만 만든다. 미지원 매체와 paper는 직접 구성한다. variant와 고유 슬롯/설정은 선택한 하위 문서 및 현재 실행 경로를 따른다.
 
 스킬 루트에서 `node scripts/build_text_frame.mjs --spec <입력.json> --output <배경.svg>` 또는 `buildTextFrame(spec)`을 사용한다. 기존 출력 교체는 명시적 `--force`만 허용한다.
 

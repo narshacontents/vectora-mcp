@@ -19,6 +19,8 @@
 
 ## 실행·검수
 
-라이브 계약이 kind:"table"을 제공하면 전용 표를 우선 사용한다. spec은 widthMm(기본108, 최대108),paddingMm(기본1.5),rows:[{id,minHeightMm?}],columns:[{id,widthMm?,align?}],cells:[{id,rowId,columnId,text,rowSpan?,colSpan?,role?,state?,align?,fill?}]이다. align은 left/center/right, role은 header/body, state는 value/blank/zero/notApplicable/unknown이다. 행 최대100·열 최대50·셀 최대5000, 셀 문구 최대20000·전체250000자, paddingMm은 (0,20] 범위다. 모든 격자 칸을 정확히 한 번 덮으며 누락·중복·범위 밖 병합은 거부된다. blank의 text는 빈 문자열이고 zero는 원문의 0을 명시한다. state만으로 표시 문구를 생성하지 않는다. 명시 열 폭 합은 표 전체 외곽 폭이며 선폭 때문에 임의로 값을 줄이지 않는다. 허용 면은 #FFFFFF/#EEEEEE/#CCCCCC/#AAAAAA이고 검정 면 반전·대각선 헤더·rich text runs는 현재 계약의 지원으로 주장하지 않는다.
+라이브 계약이 kind:"table"을 제공하면 전용 표를 우선 사용한다. spec은 widthMm(기본108, 최대108),paddingMm(기본1.5),rows:[{id,minHeightMm?}],columns:[{id,widthMm?,align?,verticalAlign?}],cells:[{id,rowId,columnId,text,rowSpan?,colSpan?,role?,state?,align?,verticalAlign?,fill?}]이다. align은 left/center/right, verticalAlign은 top/middle/bottom, role은 header/body, state는 value/blank/zero/notApplicable/unknown이다. 세로 정렬은 셀 또는 열에 지정할 수 있다. 기본 행 제목은 짧은 한 줄을 세로 중앙에 두고 긴 본문은 위쪽 정렬한다. 행 최대100·열 최대50·셀 최대5000, 셀 문구 최대20000·전체250000자, paddingMm은 (0,20] 범위다. 모든 격자 칸을 정확히 한 번 덮으며 누락·중복·범위 밖 병합은 거부된다. blank의 text는 빈 문자열이고 zero는 원문의 0을 명시한다. state만으로 표시 문구를 생성하지 않는다. 명시 열 폭 합은 표 전체 외곽 폭이며 선폭 때문에 임의로 값을 줄이지 않는다. 108mm 경계에 맞출 때 열 폭을 재조정하더라도 값·행·8pt 글자 크기는 유지한다. 한글·Latin 혼합 문구는 native −60 charSpacing 측정을 보존하고 수동 자간 보정으로 폭을 속이지 않는다. 허용 면은 #FFFFFF/#EEEEEE/#CCCCCC/#AAAAAA이고 검정 면 반전·대각선 헤더·rich text runs는 현재 계약의 지원으로 주장하지 않는다.
 
 읽기 전용 vectora_production_plan의 표 계획으로 실측 셀·텍스트·공유 경계 boundsMm와 폭/높이·글꼴·warnings를 확인한다. requiresVisualReview는 직접 검수 필요를 뜻한다. 제작 후 셀별 값·헤더 소속·빈칸·공유 경계와 실제 글 획 여백을 대조한다. 무지원 연결본은 편집 가능한 rect/line/text를 vectora_apply로 구성하고 셀 좌표·크기·병합 대응을 유지한다. 일반 편집 geometry는 기본 mm, 획은 pt이며 inspect raw objects는 px다. 새 편집마다 최신 revision과 고유 requestId를 사용한다.
+
+저장 성공과 시각 검수는 별개다. 재열기 후 셀 값·세로 정렬·실제 획 여백을 다시 확인하고 실제 JPEG를 원본 해상도와 최종 인쇄 크기에서 검수한다.

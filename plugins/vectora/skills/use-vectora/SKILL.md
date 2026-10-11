@@ -12,7 +12,7 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 현재 세션에 Vectora MCP가 보이지 않으면 연결된 것으로 간주하지 않는다. Claude 웹 채팅/클라우드 세션에는 이 로컬 실행기가 연결되지 않으므로 최종 Vectora 저장·재열기를 주장하지 말고, 사용자가 로컬 MCP를 쓸 수 있는 Claude Desktop 또는 Claude Code에서 이어가도록 안내한다.
 ## 연결과 단위
 
-- `vectora_status`로 연결·기능을 확인한다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 배포 패키지의 `CLAUDE_INSTALLATION.md`를 참고한다.
+- `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 배포 패키지의 `CLAUDE_INSTALLATION.md`를 참고한다.
 - Claude Desktop Cowork 로컬 세션과 Claude Code의 Vectora MCP는 이 컴퓨터에 설치된 앱을 실행한다. 기본 설치 위치에서 앱을 찾지 못하면 플러그인 안의 `configure-app.sh` 또는 `configure-app.ps1`을 사용한다. 마켓플레이스에 플러그인을 추가해도 Claude 일반 웹 채팅에는 로컬 MCP 실행기가 연결되지 않는다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.
 - `vectora_apply`의 기본 `units: "mm-pt"`: 도형 위치·크기·경로 `d`·대지·가이드·오프셋은 **mm**, 문자 크기·선 굵기·기준선 이동·행간·점선 길이는 **pt**. 자간 `charSpacing`은 **1/1000em**이다. `units: "px"`는 모든 길이를 px로 받는다.
@@ -21,7 +21,8 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 
 ## 점 편집과 프리셋
 
-- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
+- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
+- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
 - `vectora_inspect(includeObjects:true)`의 `pathNodes`는 각 개체의 **문서 좌표 mm**와 0부터 시작하는 점 번호를 제공한다. `objects`의 원시 경로 px와 혼동하지 않는다.
 - 개별 점은 `vectora_apply`의 `{type:"pathPoint",id,index,point:{x,y}}`로 이동한다. `incoming`/`outgoing`은 곡률 핸들의 절대 좌표이며 `null`이면 그 핸들을 접는다. 점만 옮기면 연결된 핸들도 함께 움직인다. 사각형·타원 등의 한 꼭짓점을 수정하면 같은 ID를 유지한 편집 경로가 된다. 잠긴 대상은 먼저 해당 잠금을 해제한다.
 - 사용자가 프리셋을 요청하면 `vectora_list_presets`로 실제 ID를 조회하고 `vectora_create_preset`으로 새 문서를 만든다. 자료 틀과 말풍선은 빈 틀이며 그래프·모식도의 글·수치는 편집용 예시다. 사용자의 자료로 교체한다. 원 그래프 프리셋은 `pieChart` 명령으로 수치를 다시 수정할 수 있다. 통합사회 평가원 그림은 최신 create-kice-illustration 원칙으로 새로 설계하되, 지도 양식이 필요하면 해당 스킬의 지도 원칙에 따라 적합한 프리셋을 조회해 새 문서로 시작한다.

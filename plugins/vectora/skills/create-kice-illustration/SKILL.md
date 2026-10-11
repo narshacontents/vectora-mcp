@@ -13,7 +13,7 @@ description: "통합사회 평가원 스타일 일러스트 만들기. 사용자
 
 - 입력: 문항/그림/의뢰 버전·신규/수정 범위·그림의 역할, **표시할 원문/이름/기호/빈칸/강조**와 대상별 대응, **표시 금지 출제 맥락/정답/해설**을 분리한다. 제작 의도·검수 메모·파일명은 자동 표시하지 않는다.
 - 자료/제약: 실제 제공/실제 조사/가상/정성 자료를 구별하고 값·단위·분모·시점·결측·관계·직접 출처/조사 범위·참조 파일·유지/금지 조건을 받는다. 그림 전체 외곽 목표 폭(mm), 높이 제한과 내부 내용 상자 치수를 구별하고 저장 폴더·파일명·형식·덮어쓰기 범위를 확인한다. 의미를 바꾸는 누락/모순은 확인하며 선택적 조판은 제작자가 결정한다.
-- 완료 응답은 **본문**으로 `문항/그림/의뢰 버전; 상태: 완료 / 일부 미완료 / 입력 또는 도구 필요; 유형/하위유형; 실제 원본·JPEG 경로; 실측 외곽 폭×높이(mm); 저장·재열기; 실제 JPEG 직접 열람·검수; 원문·값·대응 관계 검사; 순수 벡터/포함 원화 혼합; 실제 출처·변환(해당 시); 미충족 조건·남은 문제`를 전달한다. 검사는 실행·미실행·실패를 구별하고 미확인을 합격으로 쓰지 않는다. 별도 의뢰/검수/응답 파일은 기본 납품에 추가하지 않는다.
+- 완료 응답은 **본문**으로 `문항/그림/의뢰 버전; 상태: 완료 / 일부 미완료 / 입력 또는 도구 필요; 유형/하위유형; 실제 원본·JPEG 경로; 실측 외곽 폭×높이(mm); 기술 저장·재열기·출력 결과; 자동 audit/review 상태; 실제 JPEG 직접 열람·시각 검수; 원문·값·대응 관계 검사; 순수 벡터/포함 원화 혼합; 실제 출처·변환(해당 시); 미충족 조건·남은 문제`를 전달한다. 기술 검증과 시각 품질은 별도 결과다. 검사는 실행·미실행·실패를 구별하고 미확인을 합격으로 쓰지 않는다. 별도 의뢰/검수/응답 파일은 기본 납품에 추가하지 않는다.
 
 ## 세 단계와 분류
 
@@ -39,7 +39,9 @@ description: "통합사회 평가원 스타일 일러스트 만들기. 사용자
 ## 물리 규격·내용·편집
 
 - 최종 전체 폭 **108mm 이하**. 사용자 지정 폭은 대지가 아니라 **그림 전체의 실제 외곽 폭**이다. 8pt·선폭을 유지하며 줄바꿈·영역·간격 조판으로 먼저 지정 폭에 가깝게 맞춘다. 대지만 지정 폭으로 늘이거나 가짜 배경으로 폭을 채우지 않는다. 높이 상한으로 해석하지 않는다.
+- 최종 fit/audit는 실제 표시되는 glyph ink·획·clip 결과와 사용자가 명시한 유효 예약 bounds를 기준으로 한다. composition child `reserve`, text root `reserve`, 지원되는 text-frame `blocks` 예약만 빈 공간으로 보존한다. 빈 프레임, 숨긴 임시 문자, 가짜 placeholder를 예약으로 만들지 않는다. 내용·자료 좌표·8pt와 명시 치수는 유지하고, clip 밖 편집 기하는 최종 보이는 폭에 산입하지 않는다.
 - 새 글은 기본 글꼴 계열 **UND v3.0**, 8pt, 자간 **-6% = tracking/charSpacing:-60**(1/1000em)이다. 기본 Regular의 PostScript face는 **UNDv30-Regular**이며, 굵게·기울임은 실제 **UNDv30-Bold**·**UNDv30-Italic** 면을 쓴다. 가짜 굵게/기울임은 만들지 않는다. 모든 한글·CJK·전각 문자와 공백은 SocRegular를, Dopyo에 보이는 라틴 문자·그리스 문자 이름의 수학 기호와 CJK/한글/전각 밖의 숫자·문장부호·기호는 Dopyo를 기본으로 쓴다(ASCII 숫자 포함). Dopyo에 글리프가 없으면 SocRegular 및 확인된 원본 글리프 합집합의 지원 범위만 사용한다.
+- 요청된 전체·부분 굵은 글씨는 native 문자 서식과 실제 UNDv30-Bold 면으로 유지하고, 자동 Regular 기본값으로 덮어쓰지 않는다. 저장된 style provenance가 `explicit`인지 확인하고 결과의 실제 face를 검수한다. KICE audit의 자동 결과와 명시 서식은 별도로 대조한다.
 - 텍스트 일러스트·문서·활동·대화의 긴 산문에서는 영어 라틴 문자 범위를 UND v3.0 Body로 기본 지정한다. 한글 문장 안에 섞인 영어 단어도 해당 범위에 포함한다. 한국어와 기호는 UND v3.0에 둔다. 실제 문자 범위별 fontFamily(textRange) 지원을 사용하고, 문단 전체를 Body로 바꾸거나 스키마에 없는 필드를 보내지 않는다. Body의 PostScript 면은 UNDv30Body-Regular/Bold/Italic이다.
 - 폰트 바이너리는 그림·스킬에 임베드하지 않는다. 폰트·면을 자동 대체하지 않는다. 기존 문서의 서체·자간은 요청 없이 바꾸지 않는다.
 - 기존 0→⓪ 입력 변환은 유지한다. 현재 UND v3.0 면은 ⓪ 글리프를 제공하지 않으므로 UND 지원 문자라고 주장하지 말고 실제 누락 글리프로 보고한다.
@@ -167,7 +169,8 @@ Claude 코드 실행 첨부 경로는 로컬 앱·글꼴 경로와 별개일 수
 
 ### 현재 연결의 제작·검사 계약 — 지원 확인 후 사용
 
-- 기존 1.3.0 MCP 연결본도 앱 기능을 보장하지 않는다. MCP·앱 버전 숫자만으로 새 기능을 가정하지 않는다. 라이브 `tools/list`, `resources/list`와 `vectora://capabilities`가 실제 제공되면 이를 확인한다. capabilities의 `productionKinds`, `planningKinds`, `inspection`, `mutationResponseViews`, `deliveryProfiles`와 `vectora://production`의 종류별 인덱스를 사용한다. 필요한 종류만 `vectora://production/<kind>`와 `/schema`에서 확인한다. 그래프 `styleProfile`/`chartOptions`, 지도 `styleProfile`/DEM/지물 요청, `textRange.values.doubleUnderline`, `artboard.fitContentWidth`, inspect의 `delivery` view는 해당 live input schema에 있을 때만 사용한다. 이들은 실행 계약이며 네 번째 제작 지침이 아니다. 필드나 view가 없으면 추측 호출하지 않고 기존 편집·검수 경로를 쓴다.
+- 새 compact/legacy 그래프 계약과 충돌 자동 배치, 지도 지물 catalog·명시 위치·물리 파선·재열기 binding, 표 세로 정렬·108mm 맞춤, 혼합 문자 잉크·명시 굵기·예약 외곽, 두루마리 기본형과 장시간 자원 회수 개선은 **앱 1.4.2 이상**에서 사용한다. 네이티브 표·복합 조판·검사·평가원 납품 등 기존 1.4.0 기능과 기존 1.3.0 MCP 연결의 진행/체크포인트 기능, 1.2.0 회색조 내보내기의 최소 버전은 그대로다. 1.3.0 MCP 연결도 앱 기능을 보장하지 않는다. MCP·앱 버전 문자열만으로 새 기능을 가정하지 말고 라이브 `tools/list`, `resources/list`, `vectora://capabilities`의 `productionKinds`, `planningKinds`, `inspection`, `mutationResponseViews`, `deliveryProfiles` 및 필요한 `vectora://production/<kind>`·`/schema`를 확인한다. 이들은 실행 계약이며 네 번째 제작 지침이 아니다. 필드나 view가 없으면 추측 호출하지 않고 기존 편집·검수 경로를 쓴다.
+- 그래프 생성 전 `vectora://production/graph/schema`의 compact 또는 legacy branch와 examples를 읽는다. 지도는 `vectora_map_plan`의 `featureCatalog`와 `report.featureResolutions`를 사용해 canonical ID·별칭/현지명·source object ID와 해석 상태를 구분한다. native auto label 배치가 실제 잉크와 stroke 경계를 검사하면 먼저 사용하고, unresolved 진단은 수동 이동으로 숨기지 않는다. map root `xMm/yMm` 변경은 preserve update로 명시하며 실제 binding을 재열기 뒤 확인한다. 서식·자료 좌표·사용자 설정을 반복 수동 보정으로 대체하지 않는다.
 - `vectora_production_plan({spec,documentId?})`가 있으면 text/table/composition/dialogue를 읽기 전용으로 측정한다. 실제로 문서 자산을 사용하는 계획만 documentId를 명시한다. dialogue plan이 documentId를 받는다고 자산을 측정·승인했다고 주장하지 않는다. 계획은 제작·저장·눈으로 본 검수 완료가 아니다. 편집은 현재 revision과 고유 requestId를 사용하며, production의 `responseView:"compact"`는 실제 지원 때만 지정한다.
 - 평소 `vectora_inspect({documentId,view:"summary"})`로 문서·치수·개수와 자산 요약을 확인하고, 편집 대상은 `view:"component",componentIds:[실제 ID]` 또는 objectIds로 좁힌다. summary는 원시 개체·전체 spec·포함 원화 데이터가 아니다. 전체 비교·재열기는 `view:"full"`을 사용하고 래스터 무결성 검사가 필요하면 실제 지원 `rasterIntegrity:true`를 명시한다. full 자체가 래스터 검증을 보증하지 않는다. 추가 옵션을 생략한 inspect는 기존 응답을 유지한다.
 - `sinceRevision`은 같은 문서의 실제 검사 기준과 `sinceDocumentId`를 함께 사용한다. `delta.status:"delta"`의 changedIds/removedIds와 stateChanged를 읽는다. `fullRequired:true` 또는 `reset-required`면 전체 검사를 다시 수행하고 기준을 갱신한다. 다른 문서/연결의 캐시를 재사용하거나 변경 없음으로 해석하지 않는다. 변경 기록은 scoped/view 검사 이후 32 revision·4MiB 범위로 제한된다.
