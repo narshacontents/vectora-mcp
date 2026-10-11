@@ -6,7 +6,7 @@ Claude용 MCP와 세 스킬은 **GitHub 마켓플레이스의 Vectora 플러그�
 
 1. Vectora 앱을 별도로 설치합니다. 새 글꼴 기능에는 앱 1.1.11 이상, JPEG/PNG 회색조 래스터 내보내기에는 앱 1.2.0 이상이 필요합니다. 진행 상태·단계 통지·체크포인트 자동 갱신/새 문서 복구·진단 미리보기에는 앱 1.3.0 이상이 필요하며 실제 도구/스키마 지원을 확인합니다. 네이티브 표·복합 조판(`composition`의 네이티브 블록·정확한 예약 영역), 승인 PNG/JPEG의 로컬 `rasterPath` 등록과 원화 제작 전 대화 조판 계획, 점진적 MCP 리소스·간결/변경 검사, 검사를 거친 평가원 `.vectora`·JPEG 납품에는 앱 1.4.0 이상이 필요합니다. 새 compact/legacy 그래프 계약과 지도 지물 catalog·물리 파선·보존 동작, 표 세로 정렬·108mm 경계 검수, 두루마리 기본/화면 variant, 최신 graph/map/table 저장·재열기 검수에는 앱 **1.4.2 이상**과 해당 live capability/schema가 필요합니다. 구형 앱은 기존 편집·저장 경로를 사용합니다. 새 기능을 쓰기 전에 앱을 업데이트하고 MCP를 다시 연결하세요. 기본 MCP 기능에는 1.0.0 이상, 등록된 지도 프리셋의 지리 편집·투영 기능에는 1.1.10 이상이 필요하며, 평가원 제작에는 UND폰트v3.0도 필요합니다.
 2. 데스크톱 앱의 Cowork 탭에서 **Customize → Plugins → Add → Add marketplace**를 엽니다.
-3. **Add from a repository**에 `eric030428-hash/vectora-mcp`를 입력합니다.
+3. **Add from a repository**에 `narshacontents/vectora-mcp`를 입력합니다.
 4. 추가된 Vectora 마켓플레이스에서 **Vectora**를 설치합니다.
 5. 새 로컬 Cowork 세션에서 Vectora 연결 상태를 확인합니다. 실제 Vectora MCP 도구와 세 스킬이 로드되어야 합니다.
 
@@ -17,14 +17,14 @@ Claude용 MCP와 세 스킬은 **GitHub 마켓플레이스의 Vectora 플러그�
 Node.js 18 이상이 PATH에 있는 로컬 macOS/Windows에서 실행합니다.
 
 ```sh
-claude plugin marketplace add eric030428-hash/vectora-mcp
+claude plugin marketplace add narshacontents/vectora-mcp
 claude plugin install vectora@vectora --scope user
 claude plugin list
 ```
 
 `vectora@vectora`가 enabled인지 확인한 뒤 새 세션을 엽니다. `use-vectora`, `create-kice-illustration`(통합사회 평가원 스타일 일러스트 만들기), `create-kice-science-illustration`(통합과학 평가원 스타일 일러스트 만들기) 세 스킬 및 Vectora MCP가 함께 설치됩니다. 기존 통합사회 스킬의 호출 이름은 유지합니다. 통합과학 스킬은 등록 정보만 있고 본문은 비어 있으며 자동 호출하지 않습니다.
 
-대화 안에서는 `/plugin marketplace add eric030428-hash/vectora-mcp`로 등록하고 `/plugin install vectora@vectora`에서 **Install for you**를 선택할 수 있습니다. 스킬은 `/vectora:use-vectora`, `/vectora:create-kice-illustration`, `/vectora:create-kice-science-illustration`으로 확인합니다. CLI 설치는 로컬 컴퓨터의 Claude Code에 적용되며 claude.ai 계정에 자동 등록되는 것은 아닙니다.
+대화 안에서는 `/plugin marketplace add narshacontents/vectora-mcp`로 등록하고 `/plugin install vectora@vectora`에서 **Install for you**를 선택할 수 있습니다. 스킬은 `/vectora:use-vectora`, `/vectora:create-kice-illustration`, `/vectora:create-kice-science-illustration`으로 확인합니다. CLI 설치는 로컬 컴퓨터의 Claude Code에 적용되며 claude.ai 계정에 자동 등록되는 것은 아닙니다.
 
 ## 기존 설치에서 전환
 

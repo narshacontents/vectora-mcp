@@ -309,7 +309,7 @@ JPEG는 문항의 표시용 그림으로, `.vectora`는 수정 가능한 원본�
 
 확인일: 2026-10-08. 아래의 정식 저장소 문서를 기준으로 작성했다. 호출명·규격·도구 지원이 바뀌면 설치된 최신 스킬과 실제 MCP 스키마를 다시 확인한다.
 
-- [통합사회 일러스트 스킬 본문](https://github.com/eric030428-hash/vectora-mcp/blob/main/skills/create-kice-illustration/SKILL.md)
-- [표시 이름과 Codex 기본 호출문](https://github.com/eric030428-hash/vectora-mcp/blob/main/skills/create-kice-illustration/agents/openai.yaml)
-- [Vectora 마켓플레이스 설치 안내](https://github.com/eric030428-hash/vectora-mcp/blob/main/README.md)
-- [Claude 로컬 세션·원화 생성 도구 안내](https://github.com/eric030428-hash/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)
+- [통합사회 일러스트 스킬 본문](https://github.com/narshacontents/vectora-mcp/blob/main/skills/create-kice-illustration/SKILL.md)
+- [표시 이름과 Codex 기본 호출문](https://github.com/narshacontents/vectora-mcp/blob/main/skills/create-kice-illustration/agents/openai.yaml)
+- [Vectora 마켓플레이스 설치 안내](https://github.com/narshacontents/vectora-mcp/blob/main/README.md)
+- [Claude 로컬 세션·원화 생성 도구 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)
