@@ -56,7 +56,7 @@
 
 - GitHub 마켓플레이스의 Vectora 플러그인이 설치되어 있고, 이 스킬이 현재 세션에 로드되어 있어야 한다. 표시 이름이 한국어로 바뀌었어도 식별자는 `create-kice-illustration`이다.
 - 설치된 Vectora 앱에 연결되는 MCP가 필요하다. `vectora_status`로 연결과 버전을 확인한다. 기본 회색조 JPEG 내보내기는 앱 1.2.0 이상과 이를 지원하는 실제 도구 스키마가 필요하다.
-- 새 기능은 앱 버전으로 추정하지 않는다. 현재 tools/list·resources/list가 제공하는 vectora://capabilities의 productionKinds/planningKinds/inspection/deliveryProfiles와 종류별 vectora://production/<kind> 계약을 확인한다. table·composition·reserve·PNG 승인 원화·대화 plan·scoped inspect·kice 최종 출력이 없는 기존 1.3.0 연결본이면 기존 편집·저장·재열기·JPEG export로 실행하고 지원을 꾸며 쓰지 않는다.
+- 기존 1.3.0 연결본도 앱 기능을 보장하지 않으므로 새 기능은 앱이나 MCP 버전으로 추정하지 않는다. 현재 tools/list·resources/list와 `vectora://capabilities`를 확인하고, 필요한 production 종류의 `vectora://production/<kind>` 계약 및 명령별 live input schema를 읽는다. 그래프/지도 프로필과 옵션, DEM, 지물 요청, 이중 밑줄, 표시 잉크 기준 폭 맞춤, delivery inspect view가 노출된 경우에만 그 입력을 사용한다. 빠진 기능은 기존 편집·저장·재열기·JPEG export로 처리하고 지원을 꾸며 쓰지 않는다.
 - KICE 최종 출력 지원 연결본은 사용자 지정 파일명·형식을 정확히 지원할 때 profile:"kice"로 동일 본체 .vectora/.jpeg 한 쌍을 만든다. .jpg 명시나 프로필이 지원하지 않는 형식은 지정 이름을 보존하여 검증된 save→재열기→export 수동 경로를 사용한다. 사용자 지정 확장자를 .jpeg로 바꾸지 않는다. technical success와 visualReview.pending은 눈으로 본 최종 검수 완료가 아니다. 실제 JPEG 직접 열람 전에는 완료로 응답하지 않는다. legacy 패키지의 추가 파일을 기본 납품에 섞지 않는다.
 - 원화 생성 전 가능한 dialogue plan을 통해 측정 발언과 화자별 허용 영역을 확인한다. 지원되는 asset.rasterPath로 앱 머신의 실제 승인 PNG/JPEG를 등록한다. base64·크기·visibleBounds는 직접 왕복하지 않으며 실제 headBounds/crop/facing을 직접 검수한다. KICE 출력은 별도 준비 복사본에서 반응형 바인딩을 현재 폭에 고정하고 원본 작업 문서를 유지한다. 승인 원화를 재사용하고 전체 조판을 래스터로 평탄화하지 않는다. 표·자료·글·말풍선은 독립 편집 구조를 유지한다.
 - 새 인물·사물·장면 원화를 만들려면 현재 세션에서 사용할 수 있는 이미지 생성 도구가 필요하다. **Vectora MCP 자체에는 원화 생성 모델이 포함되어 있지 않다.** 표·차트 등 새 원화가 필요 없는 작업에는 이 조건을 일괄 요구하지 않는다.

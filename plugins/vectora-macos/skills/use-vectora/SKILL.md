@@ -41,17 +41,17 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 ## 편집과 검수
 
 1. 지정한 파일은 `vectora_open_document`, 새 그림은 `vectora_new_document`로 연다. 모든 경로는 이 Mac의 절대 경로다. 반환된 `documentId`만 사용한다.
-2. `vectora_inspect(includeObjects:true)`로 개체 ID와 현재 `revision`을 읽는다. 새 문서/직전 편집의 반환값도 최신 revision으로 사용할 수 있다.
+2. `vectora_inspect(includeObjects:true)`로 개체 ID와 현재 `revision`을 읽는다. 새 문서/직전 편집의 반환값도 최신 revision으로 사용할 수 있다. live schema에 `view:"delivery"`가 있으면 저장·재열기 비교에서 이를 사용할 수 있지만, path/points fingerprint는 편집 핸들이 아니므로 점 편집에는 실제 개체를 확인한다.
 3. `vectora_apply`에 `documentId`, `expectedRevision`, 고유 `requestId`, `commands`를 보낸다. 한 배치는 한 실행 취소 단위이며 실패하면 문서가 되돌아간다. 대상에 `select`한 뒤 `style/transform` 등을 적용한다. `add`는 생성한 개체를 선택한다. 개체 ID를 추측하지 않는다.
 4. 같은 요청의 재전송에는 동일한 전체 인자와 requestId를 사용한다. 응답 유실이나 `REQUEST_RESULT_EXPIRED`는 편집 미실행을 뜻하지 않는다. 먼저 inspect로 실제 객체·revision·저장 상태를 대조하고 새 ID로 무작정 중복 실행하지 않는다. 다른 편집에는 새 ID를 사용한다. 버전 충돌이면 다시 inspect하고 내용을 확인한다. 실행 중인 작업의 취소는 이미 적용된 편집을 되돌린다는 뜻이 아니므로 취소·응답 유실 후에도 inspect로 상태를 확인한다. `vectora_history`로 실행 취소/다시 실행한다.
-5. **1차 완성본의 `vectora_preview` 이미지를 직접 보고** 최종 사용 크기와 확대에서 글리프·겹침·잘림·과도한 틈/여백·원화 화풍·꼬리/인출선 대상을 확인한다. 수치 audit/렌더 성공은 시각 검수를 대신하지 않는다. 명백한 결함은 수정/필요한 재생성 후 같은 완성본 전체를 재검수한다. 기본 최대 3회 수정하며 개선 정체·도구 한계는 미완료로 보고하고 축소·흐림·클리핑으로 숨기지 않는다.
-6. 저장·내보내기 직전 아래 **실제 외곽 맞춤**을 수행한다. `vectora_save`로 요청 편집 원본을 저장하고 반환 경로·바이트 수·SHA256을 확인한다. 기본 래스터 내보내기는 `vectora_export(scale:4)`이며 사용자 배율/픽셀 지정이 우선한다. `vectora_export_package`는 요청 파일 구성과 맞을 때만 쓰고 pngScale 지원 시 4를 명시한다. 덮어쓰기는 승인된 대상에만 `overwrite:true`로 한다.
+5. **1차 완성본의 `vectora_preview` 이미지를 직접 보고** 최종 사용 크기와 확대에서 글리프·겹침·잘림·과도한 틈/여백·원화 화풍·꼬리/인출선 대상을 확인한다. 지원되는 KICE 출력의 `success`/`technicalChecks`는 기술 결과다. `deliveryReady:false`, `visualReview.status:"pending"` 또는 `audit.status:"review-required"`이면 사람이 저장된 JPEG와 지적된 항목을 확인한다. 수치 audit/렌더 성공은 시각 검수를 대신하지 않는다. 명백한 결함은 수정/필요한 재생성 후 같은 완성본 전체를 재검수한다. 기본 최대 3회 수정하며 개선 정체·도구 한계는 미완료로 보고하고 축소·흐림·클리핑으로 숨기지 않는다.
+6. 저장·내보내기 직전 아래 **실제 외곽 맞춤**을 수행한다. 라이브 `artboard` schema에 `fitContentWidth`가 있으면 `values.width`를 지정하여 보이는 내용 폭을 맞춘다(단위가 `mm-pt`이면 mm). 이 동작은 물리 글자·획을 유지하고 최종 표시 외곽에 대지를 맞춘다. 지원하지 않으면 `fitSelection`으로 대지를 렌더된 잉크 외곽에 맞추되 내용물 폭은 바뀌지 않는다는 점을 반영한다. `vectora_save`로 요청 편집 원본을 저장하고 반환 경로·바이트 수·SHA256을 확인한다. 기본 래스터 내보내기는 `vectora_export(scale:4)`이며 사용자 배율/픽셀 지정이 우선한다. `vectora_export_package`는 요청 파일 구성과 맞을 때만 쓰고 pngScale 지원 시 4를 명시한다. 덮어쓰기는 승인된 대상에만 `overwrite:true`로 한다.
 7. 저장 파일을 다시 열어 개체·문자·글꼴·그룹·실제 치수·이미지 보존을 확인하고 그 문서에서 내보낸 **실제 결과 이미지도 직접 본다**. 결함 수정 시 외곽 맞춤→저장→재열기→내보내기→이미지 검수를 반복해 동일 최종 상태를 확인한다. JPEG 납품은 JPEG 자체를 본다. 실제 파일 링크와 미확인/실패 상태를 전달한다. 완료 문서는 닫아 16개 한도를 관리하며 연결 종료 시 미저장 문서는 남지 않는다.
 
 
 ### 진행 상태·체크포인트·진단 미리보기 — 지원 연결본만
 
-- 앱 버전 숫자만으로 지원을 가정하지 않는다. `vectora_status`와 현재 `tools/list`의 실제 도구·입력/응답 계약을 확인한다. 아래 도구/필드가 없으면 보내지 않으며 기존 inspect/preview/save 경로를 사용한다. 새 기능이 없는 설치본에서도 기존 검수·미완료 보고 조건은 유지한다.
+- 앱·MCP 버전 숫자만으로 지원을 가정하지 않는다. `vectora_status`, 현재 `tools/list`, `resources/list` 및 `vectora://capabilities`의 실제 도구·입력/응답 계약을 확인한다. 아래 도구/필드가 없으면 보내지 않으며 기존 inspect/preview/save 경로를 사용한다. 새 기능이 없는 설치본에서도 기존 검수·미완료 보고 조건은 유지한다.
 - `vectora_operation_status({operationId?})`가 있으면 장기 호출의 실제 operationId와 `queued/running/completed/failed/cancelled`, elapsedMs, errorCode 및 connectionId/sessionId를 확인한다. 상태 조회는 편집 재실행이나 실행 취소가 아니다. `completed`는 작업 메타데이터이며 최종 그림 검수 합격이나 응답 본문 복구를 보증하지 않는다. 기록이 없거나 세션이 다르면 원래 문서/결과가 남았다고 가정하지 않는다.
 - 클라이언트가 MCP progressToken을 지원하면 프로토콜의 `_meta.progressToken`으로 진행 통지를 받을 수 있다. 실제 단계 전환만 보고하며 카운터를 완료율/예상 시간으로 해석하지 않는다. 통지가 없다고 실패 또는 미실행으로 단정하지 않는다. 취소·응답 유실 뒤에는 inspect/체크포인트 상태를 확인한다.
 - `vectora_checkpoint({documentId,path,overwrite?})`가 있으면 접근 가능한 절대 `.vectora` 경로의 **내부 임시 영역**에 중간 문서를 보존한다. 기존 사용자 파일은 임의로 덮어쓰지 않는다. 최초 성공은 이 연결의 해당 문서에 `autoRefresh:true`를 설정하여 이후 적용/production/history/가져오기/추적 편집 성공마다 같은 지정 경로를 갱신한다. 자동 갱신 대상은 내부 체크포인트로 한정한다. 응답의 `checkpoint.saved/path/revision`을 확인하며 `saved:false/error/warnings`이면 편집 성공과 보존 실패를 구별한다. 편집은 이미 반영되므로 저장 실패를 이유로 재실행하지 않는다. 실패한 최초 저장은 자동 갱신을 설정하지 않는다. 성공 응답의 경로·revision·세션 정보를 확인하고 체크포인트를 최종 납품/검수 완료로 취급하지 않는다. 도구가 없으면 vectora_save의 기존 계약으로 중간 원본을 저장한다.
@@ -62,7 +62,7 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 
 사용자 지정 폭은 실제 그림 전체 외곽이다. 글·선의 물리 크기를 유지하며 조판으로 먼저 가깝게 맞추고, 대지만 늘이거나 가짜 배경을 추가하지 않는다. 의도된 본문 빈칸·원화 내부 장면 여백과 외부 대지 여백은 구별한다. 후자는 추가 **0**으로 한다.
 
-실제 스키마를 확인한 `vectora_apply.commands`의 `{type:"select",ids:[실제 납품 ID들]}`→`{type:"artboard",action:"fitSelection",id:실제 대지 ID}`를 사용한다. 임시·숨김·측정용·가짜 사각형을 제외하고 납품 전체를 선택한다. `selectAll`은 보이는 잠금 해제 개체만 대상이므로 누락·타 대지 혼입을 확인한다. 스트로크·화살촉·꼬리·이름·그림자까지 포함하며 투명 패딩/텍스트 프레임과 보이는 외곽은 구별한다. fitSelection은 텍스트 프레임 사각형까지 포함하므로 실행 성공만으로 실외곽·외부 여백 0을 보증하지 않는다. 실제 text ink/스트로크·화살촉 외곽을 프레임/그림자와 대조하고, 과잉 여백 또는 외곽 누락이 있으면 확인한 외곽으로 `artboard/action:"update",values:{x,y,width,height}` 후 이미지 검증한다. fit 후 연결 컴포넌트 재조판·외곽 변화를 재확인한다. 실제 내용과 대지의 mm 치수·지정 폭과 차이·반올림/부동소수 허용차를 기록하며 맞춤 실패는 미완료로 남긴다.
+실제 스키마를 확인하고 납품 전체를 선택한다. `artboard/action:"fitContentWidth",values:{width}`가 있으면 요청 폭으로 보이는 내용을 맞추며, `mm-pt`의 width는 mm다. 글자·획의 물리 크기는 유지하고, 표시 잉크·클립·그림자 외곽으로 대지를 다시 맞춘다. 실행 결과, 대지 치수와 미리보기를 확인한다. 이 입력이 없으면 `{type:"artboard",action:"fitSelection",id:실제 대지 ID}`로 보이는 렌더 외곽을 대지에 맞춘다. `selectAll`은 보이는 잠금 해제 개체만 대상이므로 누락·타 대지 혼입을 확인한다. fitSelection은 내용 폭을 바꾸지 않는다. 과잉 여백·외곽 누락이 있으면 실제 외곽을 확인한 뒤 지원되는 `artboard/action:"update",values:{x,y,width,height}`로 수정하고 이미지 검증한다. fit 후 연결 컴포넌트 재조판·외곽 변화를 재확인한다. KICE package 결과의 `fit.status`와 실제 치수를 확인한다. 일반 inspect의 `includeGeometry:true`로 세계 좌표 기하·paint·inkBounds를 확인할 수 있다. 내용과 대지의 mm 치수·지정 폭 차이·반올림 허용차를 기록하며 맞춤 실패는 미완료로 남긴다.
 
 ## 래스터 내보내기 색상
 
@@ -73,7 +73,8 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 ## 글꼴과 가져오기
 
 - 하나의 텍스트 덩어리는 줄 수와 관계없이 하나의 편집 가능한 글상자로 만든다. 자동 줄바꿈·명시 개행과 부분 서식을 같은 개체 안에 유지한다. 한 줄씩 글상자를 만들거나 그룹으로 묶어 대신하지 않는다. SVG/production에서 분리되면 전체 원문을 한 네이티브 글상자로 재구성하고 저장·재열기 뒤 실제 개체 수와 범위 서식을 확인한다.
-- 밑줄은 글상자의 `underline:true` 서식을 사용하며 부분 적용은 같은 글상자 ID의 `textRange`로 한다. 현재 스키마의 범위 단위·입력을 확인하고 별도 line/path/사각형으로 밑줄을 그리지 않는다. 글 수정·줄바꿈 후에도 밑줄이 해당 문자열에 따라가는지 확인한다.
+- 글상자의 부분 단일/이중 밑줄은 같은 ID의 native `textRange`에 적용한다. live schema가 지원하면 `textRange.values.doubleUnderline:true`를 쓴다. 범위는 grapheme 기준이며 명시 개행을 걸쳐 지정할 수 있다. 개행을 가로질러도 하나의 텍스트 객체와 범위 서식을 유지하고 글상자를 나누지 않는다. 별도 line/path/사각형으로 밑줄을 만들지 않는다.
+- Rich production text의 `underlines:[{start,end,double:true}]`는 해당 kind의 live schema가 노출될 때만 쓴다. 이 별도 payload는 grapheme 범위여도 명시 개행을 넘을 수 없으므로 개행마다 범위 메타데이터만 나누고 텍스트 객체는 하나로 둔다. 글 수정·줄바꿈 후 서식이 해당 문자열에 따라가는지 확인한다.
 - 실제 글꼴 목록 도구 vectora_fonts로 UND v3.0 및 UND v3.0 Body의 설치 face를 찾고, vectora_check_font가 현재 도구 목록에 있으면 실제 출력 문자열과 사용할 family/style/weight를 확인한다. supportsText와 missingGlyphs를 읽는다. 이름 검색만으로 글리프 존재를 보증하지 않는다.
 - 기존 0→⓪ 입력 변환은 유지한다. 현재 UND v3.0 면은 ⓪ 글리프를 제공하지 않으므로 UND 지원 문자라고 주장하지 말고 실제 누락 글리프로 보고한다.
 - vectora_open_document/vectora_import_svg의 현재 입력 스키마에 fontReplacements가 있을 때만 {"원본 글꼴명":"설치 글꼴명"} 형태의 매핑을 보낸다. MISSING_FONTS가 반환되면 목록과 vectora_fonts에서 실제 설치 글꼴을 확인하고 사용자가 선택한 경우만 재시도한다. 미지원 필드는 보내지 않고 UND v3.0을 임의 대체하지 않는다. 기존 문서의 글꼴은 요청 없이 변환하지 않는다.

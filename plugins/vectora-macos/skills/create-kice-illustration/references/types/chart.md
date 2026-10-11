@@ -25,12 +25,22 @@
 
 ## graph 생성기의 compact spec
 
-`kind:"graph",chartStyle,type,dataFidelity:"exact"|"approximate",categories,series`. 새 chartStyle에는 relative가 없다. categories는 비어 있지 않은 1–200개 문자열, series는 1–8개이며 각 `{id,label,values}`는 안정적 고유 ID(영문·숫자·`._:-`, 1–100자)와 같은 범주 수의 유한수/null 배열을 가진다. points 계열도 values가 필요하며 미지 값은 null이다. points 전체 최대 5,000개.
+`kind:"graph",chartStyle,type,dataFidelity:"exact"|"approximate"|"concept",categories,series`. 새 chartStyle에는 relative가 없다. categories는 비어 있지 않은 1–200개 문자열, series는 1–8개이며 각 `{id,label,values}`는 안정적 고유 ID(영문·숫자·`._:-`, 1–100자)와 같은 범주 수의 유한수/null 배열을 가진다. points 계열도 values가 필요하며 미지 값은 null이다. `concept`는 line에서만 `chartOptions.mode:"concept"`와 함께 쓸 수 있고 관측값이 아니다. points 전체 최대 5,000개.
 
-- 폭 `widthMm:18–108`, `plotHeightMm:15–200`, `strokePt:0.6|0.7|0.8`. `domain,ticks`는 값 축, `xDomain,xTicks`는 독립축. 막대 값 축은 0을 포함하고 수동 축은 모든 표시값을 포함한다. 기본 선 수치 X에는 `chartOptions:{xNumeric:true},xValues`를 범주 수와 같은 엄격 증가 배열로 준다.
+### KICE profile과 새 chartOptions
+
+새 native production graph는 `styleProfile:"kice"`를 기본 사용하며 `"general"`을 명시하면 일반 스타일을 쓴다. 요청·저장 명시값은 자동 기본값보다 우선하고 정규화된 spec의 `styleProvenance:{schema:"vectora.style-provenance/v1",explicit,automatic}`가 출처를 나눈다. 기존 spec에 profile을 추가해 소급 스타일링하지 않는다.
+
+- 공통 조판: `yTitleOrientation:"horizontal"|"vertical"|"rotated"`, `xTitlePosition:"end"|"center"`, `labelPolicy:"all"|"major"`, `labelRotation:-90..90`(degree), `zeroLineStyle:"solid"|"dash"|"dot"`.
+- 막대: `barWidthMm`와 `groupGapMm`는 각각 0–20mm의 물리 폭·간격이다. 요청/저장 explicit 값이 자동 폭보다 우선한다. histogram interval이나 값에 비례하는 길이·면적의 의미를 바꾸지 않는다.
+- 데이터 점: `projectionLines:[{seriesId,indices,axes?:"x"|"y"|"both"}]`에서 `indices`는 0 기반 범주 인덱스이고 `axes`는 투영할 축이다. `specialPoints`도 0 기반 범주 인덱스다. 축 투영은 선택한 점 좌표에만 붙고 자료값은 이동하지 않는다.
+- 연속 개념 개형: line 계열은 `chartOptions:{mode:"concept",semanticLabels:"end"|"legend"|"none",specialPoints:[...]}`를 지원한다. spec의 `series.values`는 경로 모양을 놓기 위한 내부 좌표로만 입력하며 관측값으로 설명하거나 숫자 축·눈금으로 표시하지 않는다. `domain`, `ticks`, `xDomain`, `xTicks`는 실제 정량 축이 필요할 때만 준다. 곡선 이름을 유지할 때 `semanticLabels:"none"`으로 지우지 말고 end label 또는 legend를 고른다.
+- 덤벨 방향: `orientation:"horizontal"|"vertical"`은 dumbbell에서만 사용한다. 세로형도 전체 그림을 회전하지 않고 범주를 가로축, 값을 세로축에 둔다.
+
+- 폭 `widthMm:18–108`, `plotHeightMm:15–200`, `strokePt:0.1–4`(pt). `domain,ticks`는 값 축, `xDomain,xTicks`는 독립축. 막대 값 축은 0을 포함하고 수동 축은 모든 표시값을 포함한다. 기본 선 수치 X에는 `chartOptions:{xNumeric:true},xValues`를 범주 수와 같은 엄격 증가 배열로 준다.
 - series의 `fill`, `pattern:none|dots|hatch`, `line:solid|dash|dash-dot`, `marker:none|circle|triangle|square|open-square|open-circle|open-triangle`를 대응시킨다. 표식 없는 선에 표식 무늬를 넣지 않는다. `grid:true,chartOptions:{gridStyle:"dash"}`; dot 옵션은 규격 1.5/1pt와 다르다. 실제 `valueLabels,xTitle,yTitle,unit`, `chartOptions.labelDecimals`(0–10)을 지정한다.
 - `legend:above|beneath|right|inside|none`; 아래는 beneath이고 bottom/below 별칭은 쓰지 않는다. inside의 `legendAnchor:top-left|top-right|bottom-left|bottom-right`, `legendReverse`, `legendStyle:swatch|label-fill` 중 견본 상자는 swatch 우선이다.
-- `axisBreaks:{x?:{from,to,gapMm},y?:{from,to,gapMm}}`; 가로 막대 값 축 생략도 y이고 x 생략은 미지원이다. 범주 X 생략은 인접 범주 사이만. 생략 안 자료 숨김·누적 결측 warnings를 읽는다. `chartOptions.annotations:[{from,to,label,position:above|below}]` 최대 20개, 범주는 0 기반 인덱스·수치 X는 실제 좌표; 기본 가로 막대에는 적용하지 않는다.
+- `axisBreaks:{x?:{from,to,gapMm,mode?:"axis"|"through",lowerLayout?:"proportional"|"compact"},y?:...,secondaryY?:...}`. `through`는 자료 막대를 관통하는 생략 표현, `axis`는 축의 생략 표시다. `compact`는 0부터 시작하고 생략 하단 구간에 자료·유효 눈금이 없을 때만 쓸 수 있다. KICE가 조건을 만족하는 빈 하단을 압축해도 `from`/`to`와 자료값은 변경하지 않는다. 생략 뒤 값은 실제 축 mapping으로 재검수한다. 범주 X 생략은 인접 범주 사이만. 생략으로 숨겨진 자료와 누적 결측 warnings를 확인한다. `chartOptions.annotations:[{from,to,label,position:above|below}]` 최대 20개, 범주는 0 기반 인덱스·수치 X는 실제 좌표; 기본 가로 막대에는 적용하지 않는다.
 - 혼합 `chartStyle:"bar-scatter",type:"bar"`는 계열 `renderRole:bar|line|scatter|area,axis:primary|secondary`로 만들 수 있다. 실제 secondary 계열에만 `chartOptions.secondaryDomain,secondaryTicks,secondaryTitle`을 준다. 전용 옵션을 다른 스타일에 섞지 않는다.
 - chartStyle을 생략하는 legacy는 별도 계약이다. `layout,panels,x,yDomain,labelOffsets`를 새 spec에 섞지 않는다. legacy는 새 그래프 UI 편집 지원을 약속하지 않는다. live 도구 spec이 open record여도 허용 옵션을 추측하지 않는다.
 
