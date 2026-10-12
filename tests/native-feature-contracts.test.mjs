@@ -12,7 +12,7 @@ test('common contract detects actual scoped resources and preserves legacy fallb
  assert.match(s,/사용자 지정 파일명·형식을 정확히 지원하지 않으면[\s\S]*사용자가 \.jpg를 명시하면[\s\S]*\.jpg 경로로 실행한다/);
 });
 test('table and dialogue contracts retain source values and approved embedded artwork',()=>{
- const table=read('references/types/table.md'),dialogue=read('references/types/dialogue.md');
+ const table=read('references/types/D1_Table.md'),dialogue=read('SKILL.md');
  for(const token of ['rowId','columnId','rowSpan','colSpan','notApplicable','unknown','모든 격자 칸','대각선 헤더','requiresVisualReview'])assert.ok(table.includes(token),token);
  for(const token of ['awaiting-approved-artwork','reviewed:true','headBounds','visibleBounds','dataUrl','rasterPath','base64·width/height·visibleBounds를 직접 보내지 않는다','8MiB','재추적하지 않고'])assert.ok(dialogue.includes(token),token);
 });

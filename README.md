@@ -1,4 +1,4 @@
-# Vectora MCP + 평가원 스타일 스킬 1.3.1
+# Vectora MCP + 평가원 스타일 스킬 1.3.2
 
 Codex와 Claude에서 **GitHub 마켓플레이스로 설치**합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
 
@@ -10,7 +10,9 @@ Codex와 Claude에서 **GitHub 마켓플레이스로 설치**합니다. Vectora 
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-[출제 에이전트 연동 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)가 세 플러그인에 함께 설치됩니다. 표시 원문과 표시 금지 출제 맥락·정답을 분리해 의뢰하고, 제작자는 상태·실제 파일 경로·실측 mm·실행한 검사·미충족 조건을 응답 본문으로 전달합니다. 이 가이드는 제작자의 공통→유형→하위유형 세 지침에 추가되는 필수 문서가 아닙니다.
+[출제 에이전트 연동 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)가 세 플러그인에 함께 설치됩니다. 표시 원문과 표시 금지 출제 맥락·정답을 분리해 의뢰하고, 제작자는 상태·실제 파일 경로·실측 mm·실행한 검사·미충족 조건을 응답 본문으로 전달합니다. 이 가이드는 제작자의 공통→유형→하위유형 지침에 추가되는 필수 문서가 아닙니다.
+
+평가원 스킬은 D1_Table·D2_Chart·D3_Graph·D4_Diagram·I1_Photo·I2_Illustration·I3_Map·ITA_TypeSwap·ITB_ImageSwap·ITC_Fixed의 10유형과 50개 세부유형을 사용합니다. 공통→유형→세부유형을 읽고, 세부 폴더가 없는 사진·삽화는 공통→유형에서 끝냅니다. 원문자 뒤 밑줄 앞에는 Vectora Alt+Space의 고정 반칸(U+2002)을 사용합니다.
 
 실제 자료로 그래프·지도를 요청하면 공신력 있는 원자료를 확인하고, 출처와 가공 방법을 밝히면서 시험지에 적합한 단위·숫자 표기·시각화 형식을 선택합니다.
 

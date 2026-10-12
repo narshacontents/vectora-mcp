@@ -1,16 +1,18 @@
-# Vectora MCP + 평가원 스타일 스킬 1.3.1
+# Vectora MCP v1.3.2
 
-별도로 설치하는 **Vectora 앱 1.4.2 이상**의 개선 사항을 반영해 MCP 리소스·스키마 안내와 제작 스킬을 갱신했습니다. 앱 버전만으로 지원을 가정하지 말고 현재 연결의 capability·도구·입력/응답 스키마를 확인합니다.
+평가원 일러스트 스킬의 분류와 문서 위치를 현재 자료 폴더에 맞췄습니다. 기존 제작 원칙을 옮기고 중복을 통합했으며, 앱과 MCP 실행 기능은 변경하지 않았습니다.
 
-- 그래프 리소스는 compact와 legacy 입력을 실제 타입·범위·예제로 설명합니다. 값 라벨·축·자료선과 레이더 글자·방사선은 실제 잉크와 획을 기준으로 자동 배치되며 unresolved 진단은 출력 검토로 이어집니다.
-- `vectora_map_plan`은 canonical ID, 별칭, 현지명, source object ID와 연결 구간을 제공합니다. 별칭 미등록·자료 미가용·미색인·일부 선택·숨김 상태를 나눠 확인하고, 지도 위치·행정 경계 점선·저장 후 binding 보존을 설명합니다.
-- 네이티브 표는 셀·열 `verticalAlign`을 지원합니다. 108mm 맞춤, 혼합 라틴·한글 획 측정, 명시 굵기 보존과 승인된 빈 공간만 포함하는 실제 표시 외곽을 안내합니다.
-- KICE 두루마리 기본 variant는 2mm 종이 말이이며 금속 광택 스크린 variant는 명시 선택입니다. 저장된 대용량 작업은 확인 후 닫고, 응답 중단을 성공으로 보고하지 않는 연결 복구 절차를 갱신했습니다.
+- **원문자와 밑줄 사이:** `㉠`·`㉡` 뒤에는 Vectora의 **Alt+Space 고정 반칸(U+2002)** 한 개를 사용합니다. 일반 공백으로 대체하지 않으며 원문자·반칸을 제외한 본문에만 밑줄을 적용합니다.
+- **10개 유형·50개 세부유형:** `D1_Table`, `D2_Chart`, `D3_Graph`, `D4_Diagram`, `I1_Photo`, `I2_Illustration`, `I3_Map`, `ITA_TypeSwap`, `ITB_ImageSwap`, `ITC_Fixed`에 맞춰 문서와 참조를 재배치했습니다. 표는 6종, 지도는 12종이며 대화·문서·활동은 활자 교체형·그림 교체형·고정형으로 대응됩니다.
+- **필요한 지침만 읽기:** 공통→유형→세부유형을 적용합니다. 세부 폴더가 없는 사진·삽화는 공통→유형 두 문서에서 끝납니다. 여러 유형에 적용되는 인물·말풍선·매체 외피·원본 보존 규칙은 조건부 공통 항목으로 통합했습니다.
+- 기존 화풍·수치·배치·편집성·지도 프리셋·저장 및 JPEG 검수 규칙은 유지합니다. 사용자 원본 이미지와 글꼴 파일은 배포에 포함하지 않습니다.
 
-기존 앱 기능의 최소 버전은 유지합니다. 네이티브 표·복합 조판·승인 원화·점진적 MCP 검사·평가원 납품은 앱 1.4.0 이상, 진행 상태·체크포인트·진단 미리보기는 1.3.0 이상, JPEG/PNG 회색조 내보내기는 1.2.0 이상입니다. 이 릴리스에서 설명하는 새 1.4.2 개선도 live schema에 실제 노출될 때만 사용합니다.
+## 설치·업데이트
 
-10개 유형·44개 하위유형 및 공통→유형→하위유형의 세 지침을 유지합니다. 출제 에이전트 가이드는 참고 자료이며 네 번째 필수 제작 지침이 아닙니다. 통합과학 스킬은 본문이 비어 있는 준비 중 항목입니다.
+Codex와 Claude 모두 **`narshacontents/vectora-mcp` GitHub 마켓플레이스**로 배포합니다. 설치된 플러그인은 각 클라이언트에서 업데이트한 뒤 새 세션에서 사용하세요. 이 릴리스만으로 현재 세션의 설치본이 자동 갱신되지는 않습니다.
 
-Codex macOS·Windows 및 Claude는 GitHub 마켓플레이스에서 설치합니다. 별도 설치 ZIP, MCPB, 개별 스킬 ZIP, 글꼴 파일이나 수동 설치 자산은 릴리스 첨부로 제공하지 않습니다. Claude의 로컬 MCP는 Claude Code와 데스크톱 Cowork 로컬 세션에서 사용합니다. GitHub Release 게시만으로 기존 설치가 즉시 갱신되지는 않습니다.
+- Codex: 운영체제에 맞는 `vectora-macos@vectora` 또는 `vectora-windows@vectora`
+- Claude Code·데스크톱 Cowork 로컬 세션: `vectora@vectora`
+- [설치 안내](https://github.com/narshacontents/vectora-mcp#readme) · [Claude 설치 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)
 
-[설치·업데이트 안내](https://github.com/eric030428-hash/vectora-mcp#readme) · [Claude 상세 안내](https://github.com/eric030428-hash/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)
+수동 설치 ZIP·MCPB·개별 스킬 압축파일은 제공하지 않습니다. GitHub의 자동 Source code 압축파일은 설치 패키지가 아닙니다.

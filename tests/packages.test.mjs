@@ -54,7 +54,7 @@ test('Claude adaptations preserve the assessment artwork rules', () => {
   const references = listFiles(path.join(PLUGIN_ROOT, 'skills/create-kice-illustration/references'))
     .filter(file => file.endsWith('.md'));
   assert.equal(references.filter(file=>file.startsWith('types/')).length, 10);
-  assert.equal(references.filter(file=>file.startsWith('subtypes/')).length, 44);
+  assert.equal(references.filter(file=>file.startsWith('subtypes/')).length, 50);
   for (const name of references) {
     const relative = `references/${name}`;
     const expected = readFileSync(path.join(PLUGIN_ROOT, 'skills/create-kice-illustration', relative), 'utf8')

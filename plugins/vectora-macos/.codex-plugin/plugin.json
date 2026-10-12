@@ -1,6 +1,6 @@
 {
   "name": "vectora-macos",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "macOS와 Windows에서 Vectora 편집 엔진을 MCP로 사용합니다. 새 그래프·지도·표·보존·출력 개선은 Vectora 앱 1.4.2 이상과 라이브 스키마를 확인해 사용합니다.",
   "author": {
     "name": "Vectora"

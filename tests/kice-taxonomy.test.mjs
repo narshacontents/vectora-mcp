@@ -10,17 +10,77 @@ import { buildClaudePlugin } from '../scripts/build-claude-packages.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skill = path.join(repo, 'skills/create-kice-illustration');
-const counts = { table:5, chart:8, graph:4, diagram:7, photo:1, illustration:3, map:7, dialogue:3, document:4, activity:2 };
-// Exact approved leaf set: no custom names can replace a taxonomy leaf while keeping counts.
 const approvedLeaves = {
-  table:['flat','cross','nested','checklist','others'],
-  chart:['bar','stacked-bar','pie','line','scatter','dot','radar','others'],
-  graph:['curve','frontier','distribution','others'],
-  diagram:['tree','network','flowchart','venn','timeline','schematic','others'],
-  map:['location','area','statistics','flow','physical','projection','historical'],
-  dialogue:['vertical','horizontal','presentation'],
-  photo:['default'], illustration:['portrait','object','scene'], document:['newspaper','screen','paper','scroll'], activity:['board','worksheet'],
+  "D1_Table": [
+    "D1-01_Flat",
+    "D1-02_MultiFlat",
+    "D1-03_Cross",
+    "D1-04_Nested",
+    "D1-05_Checklist",
+    "D1-06_Others"
+  ],
+  "D2_Chart": [
+    "D2-01_Bar",
+    "D2-02_StackedBar",
+    "D2-03_Pie",
+    "D2-04_Line",
+    "D2-05_Scatter",
+    "D2-06_Dot",
+    "D2-07_Radar",
+    "D2-08_Others"
+  ],
+  "D3_Graph": [
+    "D3-01_Curve",
+    "D3-02_Frontier",
+    "D3-03_Distribution",
+    "D3-04_Others"
+  ],
+  "D4_Diagram": [
+    "D4-01_Tree",
+    "D4-02_Network",
+    "D4-03_Flowchart",
+    "D4-04_Venn",
+    "D4-05_Timeline",
+    "D4-06_Schematic",
+    "D4-07_Others"
+  ],
+  "I1_Photo": [],
+  "I2_Illustration": [],
+  "I3_Map": [
+    "I3-11_Locator",
+    "I3-12_Topographic",
+    "I3-13_OldMap",
+    "I3-14_Others",
+    "I3-21_Area",
+    "I3-22_Route",
+    "I3-23_Symbol",
+    "I3-31_Choropleth",
+    "I3-32_Dot",
+    "I3-33_Proportional",
+    "I3-34_Isoline",
+    "I3-35_Flow"
+  ],
+  "ITA_TypeSwap": [
+    "ITA-1_TypeBoard",
+    "ITA-2_Solo",
+    "ITA-3_DialogueH",
+    "ITA-4_DialogueV",
+    "ITA-5_SoloBoard",
+    "ITA-6_GroupBoard"
+  ],
+  "ITB_ImageSwap": [
+    "ITB-1_ImageBoard",
+    "ITB-2_SoloImageBoard",
+    "ITB-3_GroupImageBoard"
+  ],
+  "ITC_Fixed": [
+    "ITC-1_Figure",
+    "ITC-2_RealPhoto",
+    "ITC-3_Place",
+    "ITC-4_Costume"
+  ]
 };
+const counts = Object.fromEntries(Object.entries(approvedLeaves).map(([key,leaves])=>[key,leaves.length]));
 const types = Object.keys(counts).sort();
 const read = rel => readFileSync(path.join(skill, rel), 'utf8');
 const mdFiles = directory => readdirSync(directory).filter(x => x.endsWith('.md')).sort();
@@ -43,31 +103,30 @@ function instructionLinks(rel) {
   return links;
 }
 
-test('canonical taxonomy has exactly ten parents and 44 existing approved leaves', t => {
+test('canonical taxonomy has exactly ten parents and 50 folder-matched leaves', t => {
   assert.deepEqual(mdFiles(path.join(skill, 'references')), [], 'superseded flat references must not be shipped');
   const parents = mdFiles(path.join(skill, 'references/types'));
   assert.deepEqual(parents, types.map(x => `${x}.md`));
-  assert.deepEqual(readdirSync(path.join(skill, 'references/subtypes')).sort(), types);
+  assert.deepEqual(readdirSync(path.join(skill, 'references/subtypes')).sort(), types.filter(x=>counts[x]));
   const leaves = [];
   for (const type of types) {
+    if (!counts[type]) continue;
     const dir = path.join(skill, 'references/subtypes', type);
     const children = mdFiles(dir);
     assert.equal(children.length, counts[type], type);
     assert.deepEqual(children, approvedLeaves[type].map(x=>`${x}.md`).sort(), `${type}: unapproved taxonomy leaf`);
     assert.deepEqual(readdirSync(dir).sort(), children, `${type}: extra taxonomy file/directory`);
-    if (counts[type] === 1) assert.deepEqual(children, ['default.md'], type);
-    if (type === 'dialogue') assert.deepEqual(children, ['horizontal.md', 'presentation.md', 'vertical.md']);
     leaves.push(...children.map(x => `references/subtypes/${type}/${x}`));
   }
-  assert.equal(leaves.length, 44);
-  assert.equal(new Set(leaves).size, 44);
-  const photo = read('references/subtypes/photo/default.md');
-  assert.ok(photo.trim().length > 0, 'photo/default must not be empty');
-  assert.match(photo, /부모 유형 문서 전체를 적용/);
-  const photoParent = read('references/types/photo.md');
-  assert.match(photoParent, /실제 원본을 이미지 개체로 유지/);
-  assert.match(photoParent, /대체물로 생성하지 않는다/);
-  assert.doesNotMatch(photo, /TODO|TBD|placeholder/i);
+  assert.equal(leaves.length, 50);
+  assert.equal(new Set(leaves).size, 50);
+  for (const type of ['I1_Photo','I2_Illustration']) {
+    assert.equal(existsSync(path.join(skill,'references/subtypes',type)),false);
+    assert.match(read(`references/types/${type}.md`), /두 개만 읽/);
+  }
+  const photoRules=read('SKILL.md');
+  assert.match(photoRules, /실제 원본을 이미지 개체로 유지/);
+  assert.match(photoRules, /대체물로 생성하지 않는다/);
   const files = ['SKILL.md', ...parents.map(x=>`references/types/${x}`), ...leaves];
   const hash = createHash('sha256');
   for (const rel of files) hash.update(rel).update('\0').update(read(rel)).update('\0');
@@ -79,7 +138,7 @@ test('instruction links form only root -> selected type -> selected subtype', ()
   assert.deepEqual([...new Set(rootLinks)].sort(), types.map(x=>`references/types/${x}.md`));
   for (const type of types) {
     const parent = `references/types/${type}.md`;
-    const expected = mdFiles(path.join(skill, 'references/subtypes', type)).map(x=>`references/subtypes/${type}/${x}`);
+    const expected = counts[type] ? mdFiles(path.join(skill, 'references/subtypes', type)).map(x=>`references/subtypes/${type}/${x}`) : [];
     assert.deepEqual([...new Set(instructionLinks(parent))].sort(), expected, parent);
     for (const leaf of expected) assert.deepEqual(instructionLinks(leaf), [], `${leaf}: fourth instruction edge`);
   }
@@ -88,7 +147,7 @@ test('instruction links form only root -> selected type -> selected subtype', ()
 test('global boundary, physical rules and both conditional style templates stay in first file', () => {
   const root = read('SKILL.md');
   assert.equal(root.split('<!-- VECTORA_CLIENT_BOUNDARY -->').length, 2);
-  assert.equal(root.split('\n').filter(x=>x.trim()).length <= 230, true);
+  assert.equal(root.split('\n').length <= 500, true);
   for (const fragment of ['108mm', 'UNDv30-Regular', 'charSpacing:-60', 'frameBounds.heightMm', '1.5–2.5mm', '1.5–3mm', '2–3.5mm', '1–2mm', '0.8–1.5mm', 'STYLE CONTRACT: Draw a living human character', 'STYLE CONTRACT: Draw a clean grayscale', 'exact', 'approximate', 'scale:4', 'transparent:false']) assert.ok(root.includes(fragment), fragment);
   assert.match(root, /Photo[^\n]*原|Photo[^\n]*원본|원본 photo/i);
 });
@@ -115,4 +174,10 @@ test('Claude adapter inserts local MCP and missing-imagegen restrictions only in
       assert.equal(readFileSync(path.join(staged,rel),'utf8'), read(rel).replaceAll('node skills/create-kice-illustration/scripts/', 'node scripts/').replaceAll('python3 skills/create-kice-illustration/scripts/', 'python3 scripts/'));
     }
   } finally { rmSync(temporary, {recursive:true, force:true}); }
+});
+
+test('circled marker spacing uses Vectora Alt+Space, with underline on body only', () => {
+  const root = read('SKILL.md');
+  for(const token of ['Alt+Space','U+2002','㉠\u2002본문','일반 공백 폭의 절반','원문자와 반칸은 밑줄 범위에서 제외','textRange/underlines 위치를 다시 계산']) assert.ok(root.includes(token), token);
+  assert.doesNotMatch(root,/U\+2002`는 전각 폭이므로 반칸용으로 사용하지/);
 });
