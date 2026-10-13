@@ -1,0 +1,1 @@
+- 승인 PNG/JPEG를 등록할 때 실제 지원되는 asset.rasterPath 절대 경로를 우선 사용한다. 앱 머신에서 읽고 포함하므로 base64를 검사 응답/대화에 왕복시키지 않는다. reviewed:true와 실제 headBounds/crop/facing 승인은 직접 시각 검수이며 파일 읽기 성공으로 대체하지 않는다. 없는 계약은 추측하지 않고 기존 포함 이미지 경로를 쓴다.

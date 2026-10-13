@@ -4,8 +4,13 @@
 
 | 세부유형 | 선택 기준 |
 |---|---|
-| [ITB-1_ImageBoard · 그림 보드](../subtypes/ITB_ImageSwap/ITB-1_ImageBoard.md) | 그림 교체형. 사람 없이 사진·지도·그래프·삽화 칸이 든 판(신문 사진, 웹 사진, 답사 계획서 지도) |
-| [ITB-2_SoloImageBoard · 1인 + 그림 보드](../subtypes/ITB_ImageSwap/ITB-2_SoloImageBoard.md) | 그림 교체형. 한 사람 + 그림이 든 보드·화면, 또는 해설자 + 유물 사진 |
-| [ITB-3_GroupImageBoard · 여러 명 + 그림 보드](../subtypes/ITB_ImageSwap/ITB-3_GroupImageBoard.md) | 그림 교체형. 여러 사람 + 지도·그래프·그림 보드·자료 |
+| `ITB-1_ImageBoard · 그림 보드` | 그림 교체형. 사람 없이 사진·지도·그래프·삽화 칸이 든 판(신문 사진, 웹 사진, 답사 계획서 지도) |
+| `ITB-2_SoloImageBoard · 1인 + 그림 보드` | 그림 교체형. 한 사람 + 그림이 든 보드·화면, 또는 해설자 + 유물 사진 |
+| `ITB-3_GroupImageBoard · 여러 명 + 그림 보드` | 그림 교체형. 여러 사람 + 지도·그래프·그림 보드·자료 |
 
-SKILL.md의 조건부 제작 규칙에서 실제 발언·인물·외피·내부 자료에 해당하는 절만 적용한다. 독립적으로 완결된 내부 표·차트·지도는 공통 복합형 경계에 따라 분리한다.
+
+
+## 선택 세부 문서 준비
+
+- 보드 세부유형은 newspaper / screen / paper / scroll / board / worksheet, 해설자+틀 없는 자료는 plain을 `--variant`로 고른다.
+- 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 자료 칸이 실제 사진인지 새 작화인지에 따라 공통 조건을 선택한다.

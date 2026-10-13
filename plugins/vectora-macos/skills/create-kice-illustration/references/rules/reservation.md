@@ -1,0 +1,1 @@
+- 내용 예약은 `{widthMm?,heightMm}` 또는 `{widthMm?,lines,text?,lineHeight?}` 중 하나다. heightMm와 lines를 함께 보내지 않는다. 줄 수는 실제 UND v3.0 8pt/-60 측정 결과와 일치해야 한다. 임시 측정 문구는 그림에 표시하지 않는다. 현재 newspaper/scroll/browser text 프레임의 blocks에서만 `{type:"reserve",id,reserve}` 또는 `{type:"component",id,spec}`를 지원 확인 후 쓴다. noticeboard blocks의 지원으로 확대하지 않는다. 예약은 조판 공간이며 실제 원문/빈칸 의미를 대체하지 않는다.

@@ -1,0 +1,1 @@
+지원 composition 안 지도는 할당 영역에 맞춘 frameMm의 비례 크기로 조판하되 기존 crop/projection/anchors와 8pt 지도 표기를 유지한다. 지리 관계를 임의로 이동하여 조판을 맞추지 않는다. scoped component 검사와 실제 최종 렌더에서 위치·범례·표기 대응을 재확인한다. 무지원이면 기존 지도 컴포넌트와 편집 조판을 사용한다.

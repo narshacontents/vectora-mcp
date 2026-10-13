@@ -1,0 +1,1 @@
+- 그래프 생성 전 `vectora://production/graph/schema`의 compact 또는 legacy branch와 examples를 읽는다.

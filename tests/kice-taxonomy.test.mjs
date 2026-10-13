@@ -1,15 +1,16 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { buildClaudePlugin } from '../scripts/build-claude-packages.mjs';
-
-const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const skill = path.join(repo, 'skills/create-kice-illustration');
+import { prepareRules, readIndex, writePreparedRules } from '../skills/create-kice-illustration/scripts/prepare_rules.mjs';
+const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const skill=path.join(repo,'skills/create-kice-illustration');
+const read=rel=>readFileSync(path.join(skill,rel),'utf8');
+const index=readIndex();
 const approvedLeaves = {
   "D1_Table": [
     "D1-01_Flat",
@@ -80,104 +81,138 @@ const approvedLeaves = {
     "ITC-4_Costume"
   ]
 };
-const counts = Object.fromEntries(Object.entries(approvedLeaves).map(([key,leaves])=>[key,leaves.length]));
-const types = Object.keys(counts).sort();
-const read = rel => readFileSync(path.join(skill, rel), 'utf8');
-const mdFiles = directory => readdirSync(directory).filter(x => x.endsWith('.md')).sort();
-const oldRefs = /(?:common|people|real-data|vectora-contract|artwork-production|artwork-vectorization|freeform-illustrations|text-illustrations|text-builder|graph-builder|graph-illustrations|graph-venn-production|schematic-illustrations|dialogue-illustrations|map-(?:illustrations|template|production|layouts|location|area|statistics|flow|physical|projection|historical))\.md/;
-function instructionLinks(rel) {
-  const body = read(rel).replace(/```[\s\S]*?```/g, '');
-  const links = [];
-  for (const match of body.replace(/`[^`]*`/g, '').matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-    const target = match[1].replace(/^<|>$/g, '').split('#')[0];
-    if (!target || /^[a-z]+:\/\//i.test(target)) continue;
-    const resolved = path.resolve(skill, path.dirname(rel), target);
-    assert.ok(resolved.startsWith(`${skill}${path.sep}`), `${rel}: outside-skill reference ${target}`);
-    assert.ok(existsSync(resolved), `${rel}: missing link ${target}`);
-    // The caller guide is an installed input reference, not a creator instruction edge.
-    if (target === 'references/caller/exam-agent-guide.md') continue;
-    if (resolved.endsWith('.md')) links.push(path.relative(skill, resolved).split(path.sep).join('/'));
+
+const corpusKeys=Object.values(approvedLeaves).flat().sort();
+const executionKeys=['photo-original','illustration-portrait','illustration-object','illustration-scene'];
+const make=(subtype,extra={})=>prepareRules({subtype,...extra});
+
+test('v3 taxonomy keeps ten types and all 50 corpus leaves, plus four explicitly execution-only paths',()=>{
+ assert.deepEqual(Object.keys(index.types).sort(),Object.keys(approvedLeaves).sort());
+ assert.deepEqual(Object.keys(index.subtypes).filter(x=>!executionKeys.includes(x)).sort(),corpusKeys);
+ for(const [type,leaves] of Object.entries(approvedLeaves)) for(const leaf of leaves)assert.equal(index.subtypes[leaf].type,type);
+ for(const [key,row] of Object.entries(index.subtypes)) {
+  assert.ok(existsSync(path.join(skill,row.file)),key);
+  assert.ok(read(row.file).length>30,key);
+ }
+ for(const rel of Object.values(index.modules))assert.ok(existsSync(path.join(skill,rel)),rel);
+ assert.equal(new Set(Object.values(index.modules)).size,Object.keys(index.modules).length,'one canonical file per block');
+ assert.match(read('references/types/I1_Photo.md'),/자료 분류에는 하위 코드가 없다/);
+ assert.match(read('references/types/I2_Illustration.md'),/자료 분류에는 하위 코드가 없/);
+});
+
+test('every subtype and supported variant prepares a complete third-level document',t=>{
+ const temporary=mkdtempSync(path.join(os.tmpdir(),'kice-rule-paths-'));let count=0;
+ try {
+  for(const [subtype,row] of Object.entries(index.subtypes)) for(const variant of row.variants?Object.keys(row.variants):[undefined]) {
+   const result=writePreparedRules({subtype,variant},temporary);
+   assert.equal(result.read.length,row.peopleRequired?4:3,subtype);
+   assert.equal(result.read[0],path.join(skill,'SKILL.md'));
+   assert.equal(result.read[1],path.join(skill,index.types[row.type]));
+   const leaf=readFileSync(result.subtypeFile,'utf8');
+   assert.match(leaf,/세 번째 지침/);assert.ok(leaf.length>200,subtype);
+   assert.equal(new Set(result.modules).size,result.modules.length);
+   if(row.peopleRequired)assert.equal(result.read[3],path.join(skill,'references/people.md'));
+   count++;
   }
-  // A bare legacy filename must not silently reintroduce a fourth instruction read.
-  assert.doesNotMatch(body, oldRefs, rel);
-  return links;
-}
-
-test('canonical taxonomy has exactly ten parents and 50 folder-matched leaves', t => {
-  assert.deepEqual(mdFiles(path.join(skill, 'references')), [], 'superseded flat references must not be shipped');
-  const parents = mdFiles(path.join(skill, 'references/types'));
-  assert.deepEqual(parents, types.map(x => `${x}.md`));
-  assert.deepEqual(readdirSync(path.join(skill, 'references/subtypes')).sort(), types.filter(x=>counts[x]));
-  const leaves = [];
-  for (const type of types) {
-    if (!counts[type]) continue;
-    const dir = path.join(skill, 'references/subtypes', type);
-    const children = mdFiles(dir);
-    assert.equal(children.length, counts[type], type);
-    assert.deepEqual(children, approvedLeaves[type].map(x=>`${x}.md`).sort(), `${type}: unapproved taxonomy leaf`);
-    assert.deepEqual(readdirSync(dir).sort(), children, `${type}: extra taxonomy file/directory`);
-    leaves.push(...children.map(x => `references/subtypes/${type}/${x}`));
-  }
-  assert.equal(leaves.length, 50);
-  assert.equal(new Set(leaves).size, 50);
-  for (const type of ['I1_Photo','I2_Illustration']) {
-    assert.equal(existsSync(path.join(skill,'references/subtypes',type)),false);
-    assert.match(read(`references/types/${type}.md`), /두 개만 읽/);
-  }
-  const photoRules=read('SKILL.md');
-  assert.match(photoRules, /실제 원본을 이미지 개체로 유지/);
-  assert.match(photoRules, /대체물로 생성하지 않는다/);
-  const files = ['SKILL.md', ...parents.map(x=>`references/types/${x}`), ...leaves];
-  const hash = createHash('sha256');
-  for (const rel of files) hash.update(rel).update('\0').update(read(rel)).update('\0');
-  t.diagnostic(`instruction source sha256=${hash.digest('hex')}; Node ${process.version}; ${process.platform}/${process.arch}`);
+  t.diagnostic(`${count} complete selection routes verified`);
+ }finally{rmSync(temporary,{recursive:true,force:true});}
 });
 
-test('instruction links form only root -> selected type -> selected subtype', () => {
-  const rootLinks = instructionLinks('SKILL.md');
-  assert.deepEqual([...new Set(rootLinks)].sort(), types.map(x=>`references/types/${x}.md`));
-  for (const type of types) {
-    const parent = `references/types/${type}.md`;
-    const expected = counts[type] ? mdFiles(path.join(skill, 'references/subtypes', type)).map(x=>`references/subtypes/${type}/${x}`) : [];
-    assert.deepEqual([...new Set(instructionLinks(parent))].sort(), expected, parent);
-    for (const leaf of expected) assert.deepEqual(instructionLinks(leaf), [], `${leaf}: fourth instruction edge`);
-  }
+test('common file excludes subtype-only style, media and map contracts',()=>{
+ const root=read('SKILL.md');
+ assert.ok(root.length<18000);assert.equal(root.split('<!-- VECTORA_CLIENT_BOUNDARY -->').length,2);
+ for(const token of ['STYLE CONTRACT:', 'map-korea-sido-2025','bodyHeight','boundaryDashPt','barWidthMm','신문 외피','두루마리 외피','승인 원화와 읽기 전용 계획'])assert.ok(!root.includes(token),token);
+ for(const token of ['108mm','UNDv30-Regular','charSpacing:-60','scale:4','transparent:false','실제 JPEG','prepare_rules.mjs'])assert.ok(root.includes(token),token);
 });
 
-test('global boundary, physical rules and both conditional style templates stay in first file', () => {
-  const root = read('SKILL.md');
-  assert.equal(root.split('<!-- VECTORA_CLIENT_BOUNDARY -->').length, 2);
-  assert.equal(root.split('\n').length <= 500, true);
-  for (const fragment of ['108mm', 'UNDv30-Regular', 'charSpacing:-60', 'frameBounds.heightMm', '1.5–2.5mm', '1.5–3mm', '2–3.5mm', '1–2mm', '0.8–1.5mm', 'STYLE CONTRACT: Draw a living human character', 'STYLE CONTRACT: Draw a clean grayscale', 'exact', 'approximate', 'scale:4', 'transparent:false']) assert.ok(root.includes(fragment), fragment);
-  assert.match(root, /Photo[^\n]*原|Photo[^\n]*원본|원본 photo/i);
+test('representative selections contain required rules and exclude unrelated sibling rules',()=>{
+ const pie=make('D2-03_Pie').content;
+ assert.match(pie,/각도=비율×360/);assert.match(pie,/#EEEEEE/);
+ assert.doesNotMatch(pie,/Y지표명|yTitleOrientation|barWidthMm|보조 파선 선/);
+ assert.doesNotMatch(read('references/types/D2_Chart.md'),/보조 파선을 기본|이중 축은|축 눈금·부호/);
+ assert.doesNotMatch(read('SKILL.md'),/oceanFill|highlightFill|Native graph\/map production/);
+ const line=make('D2-04_Line').content;
+ for(const token of ['0.4pt','1.5/1pt','가로 보조 파선','chartStyle:"line"','xNumeric'])assert.ok(line.includes(token),token);
+ assert.doesNotMatch(line,/barWidthMm|dumbbell에서만|radarStartAngle/);
+ const oldMap=make('I3-13_OldMap').content;
+ assert.match(oldMap,/실제 원본을 이미지 개체로 유지/);assert.doesNotMatch(oldMap,/vectora_list_presets|mapSchemaVersion|등고선은 검증 가능한/);
+ const locator=make('I3-11_Locator').content;
+ assert.match(locator,/vectora_list_presets/);assert.doesNotMatch(locator,/map-korea-sido-2025|PaleoMIST|등고선은 검증 가능한/);
+ const korea=make('I3-31_Choropleth',{features:['korea','real-data']}).content;
+ for(const token of ['229','252','map-korea-sido-2025','구간','exact','approximate'])assert.ok(korea.includes(token),token);
+ const newspaper=make('ITA-1_TypeBoard',{variant:'newspaper',features:['reserve']});
+ assert.equal(newspaper.hasPeople,false);
+ for(const token of ['신문','frameBounds.heightMm','heightMm와 lines를 함께 보내지 않는다'])assert.ok(newspaper.content.includes(token),token);
+ assert.doesNotMatch(newspaper.content,/STYLE CONTRACT|mapSchemaVersion|머리 크기|윗말이|dumbbell/);
+ const messenger=make('ITA-4_DialogueV',{features:['messenger']});
+ assert.equal(messenger.hasPeople,false);assert.doesNotMatch(messenger.content,/STYLE CONTRACT|headBounds|흉상 칸을|자기 얼굴\/입|꼬리 끝↔자기 화자 머리/);
+ const person=make('ITA-3_DialogueH');
+ assert.equal(person.hasPeople,true);for(const token of ['2.5–5mm','0.8–1.5mm','reviewed:true','headBounds'])assert.ok(person.content.includes(token),token);
+ const photo=make('ITC-2_RealPhoto',{variant:'horizontal'});
+ assert.equal(photo.hasPeople,true);assert.match(photo.content,/실제 원본을 이미지 개체로 유지/);assert.doesNotMatch(photo.content,/새 인물·사물·장면은/);
+ const photoPresenter=make('ITC-2_RealPhoto',{variant:'presentation'}).content;
+ assert.match(photoPresenter,/사진을 재생성해 해결하지 않는다/);
+ assert.doesNotMatch(photoPresenter,/그 배치에 맞는 인물을 새로 생성|다시 생성한다/);
+ const fixedScene=make('ITC-4_Costume',{variant:'scene'}).content;assert.match(fixedScene,/STYLE CONTRACT: Draw a clean grayscale/);
+ const scene=make('illustration-scene',{people:true});assert.equal(scene.hasPeople,true);
+ assert.match(scene.content,/STYLE CONTRACT: Draw a clean grayscale/);assert.doesNotMatch(scene.content,/전체 그림의 좌우 끝에 붙이며|registerAsset/);
 });
 
-test('graph helper help is self-contained and no longer points at a removed reference', () => {
-  const help = execFileSync(process.execPath, [path.join(skill, 'scripts/build_graph.mjs'), '--help'], {encoding:'utf8'});
-  assert.doesNotMatch(help, oldRefs);
-  for (const fragment of ['--spec', '--output', 'dataFidelity', 'series', 'domain', 'xValues', 'null gaps', '.layout.json', 'UNDv30-Regular']) assert.ok(help.includes(fragment), fragment);
+test('people style is single-source and only the explicit people exception adds a file',()=>{
+ assert.match(read('references/people.md'),/STYLE CONTRACT: Draw a living human character/);
+ assert.match(read('references/people.md'),/statues, sculptural busts/);
+ assert.match(read('references/people.md'),/원본 인물 사진·기존 작품/);
+ assert.match(read('references/people.md'),/이 절의 화풍·생성·수정 생성 검사는 새로 그린 인물/);
+ assert.match(read('references/rules/person-speech.md'),/실제 사진·기존 작품의 인물은 원본 충실도로 승인/);
+ assert.doesNotMatch(read('SKILL.md'),/STYLE CONTRACT:/);
+ const portrait=make('illustration-portrait');assert.equal(portrait.hasPeople,true);
+ assert.equal(make('illustration-object').hasPeople,false);
+ assert.equal(make('photo-original',{people:true}).hasPeople,true);
 });
 
-test('Claude adapter inserts local MCP and missing-imagegen restrictions only in root', () => {
-  const temporary = mkdtempSync(path.join(os.tmpdir(), 'vectora-kice-taxonomy-'));
-  try {
-    buildClaudePlugin(path.join(temporary, 'plugin'));
-    const staged = path.join(temporary, 'plugin/skills/create-kice-illustration');
-    const root = readFileSync(path.join(staged, 'SKILL.md'), 'utf8');
-    assert.match(root, /Claude 로컬 실행 경계/);
-    assert.match(root, /이미지 생성 모델을 포함하지 않는다/);
-    assert.match(root, /일반 웹\/클라우드/);
-    assert.match(root, /비최종 설계안/);
-    assert.doesNotMatch(root, oldRefs);
-    for (const type of types) {
-      const rel = `references/types/${type}.md`;
-      assert.equal(readFileSync(path.join(staged,rel),'utf8'), read(rel).replaceAll('node skills/create-kice-illustration/scripts/', 'node scripts/').replaceAll('python3 skills/create-kice-illustration/scripts/', 'python3 scripts/'));
-    }
-  } finally { rmSync(temporary, {recursive:true, force:true}); }
+test('preparer rejects missing choices and invalid scopes without dumping every rule',()=>{
+ assert.throws(()=>make('ITA-1_TypeBoard'),/requires --variant/);
+ assert.throws(()=>make('D2-03_Pie',{variant:'newspaper'}),/no --variant/);
+ assert.throws(()=>make('D1-01_Flat',{features:['korea']}),/does not apply/);
+ assert.throws(()=>make('I3-13_OldMap',{features:['dem']}),/original old-map/);
+ assert.throws(()=>make('ITA-4_DialogueV',{people:true,features:['messenger']}),/people-free/);
+ assert.throws(()=>make('ITC-2_RealPhoto',{variant:'horizontal',features:['artwork']}),/actual portrait/);
+ assert.throws(()=>make('ITA-3_DialogueH',{features:['speech-vertical']}),/Conflicting layouts/);
+ assert.throws(()=>make('ITA-4_DialogueV',{features:['messenger','speech-horizontal']}),/Conflicting layouts/);
+ assert.throws(()=>make('bad'),/Unknown subtype/);
+ assert.throws(()=>make('D1-01_Flat',{features:['typo']}),/Unknown feature/);
 });
 
-test('circled marker spacing uses Vectora Alt+Space, with underline on body only', () => {
-  const root = read('SKILL.md');
-  for(const token of ['Alt+Space','U+2002','㉠\u2002본문','일반 공백 폭의 절반','원문자와 반칸은 밑줄 범위에서 제외','textRange/underlines 위치를 다시 계산']) assert.ok(root.includes(token), token);
-  assert.doesNotMatch(root,/U\+2002`는 전각 폭이므로 반칸용으로 사용하지/);
+test('prepared files are deterministic, cannot overwrite user files or alter installed rules',()=>{
+ const temporary=mkdtempSync(path.join(os.tmpdir(),'kice-rule-write-'));
+ try {
+  const selection={subtype:'D2-04_Line'};
+  const first=writePreparedRules(selection,temporary),second=writePreparedRules(selection,temporary);
+  assert.equal(first.subtypeFile,second.subtypeFile);assert.equal(first.read.length,3);
+  writeFileSync(first.subtypeFile,'user content');
+  assert.throws(()=>writePreparedRules(selection,temporary));assert.equal(readFileSync(first.subtypeFile,'utf8'),'user content');
+  const invalid=path.join(skill,'should-not-be-created');
+  assert.throws(()=>writePreparedRules(selection,invalid),/outside/);assert.equal(existsSync(invalid),false);
+ }finally{rmSync(temporary,{recursive:true,force:true});}
+});
+
+test('circled marker spacing retains native Alt+Space and body-only underline',()=>{
+ const root=read('SKILL.md');
+ for(const token of ['Alt+Space','U+2002','㉠\u2002본문'.replace('\\u2002','\u2002'),'일반 공백 폭의 절반','원문자와 반칸은 밑줄 범위에서 제외','textRange/underlines 위치를 다시 계산'])assert.ok(root.includes(token),token);
+});
+
+test('portable helper and Claude packaging keep the same three-file routing',()=>{
+ const help=execFileSync(process.execPath,[path.join(skill,'scripts/prepare_rules.mjs'),'--help'],{encoding:'utf8'});
+ for(const token of ['--out','--variant','--features','--people','I3-13_OldMap','photo-original'])assert.ok(help.includes(token));
+ const temporary=mkdtempSync(path.join(os.tmpdir(),'kice-claude-routing-'));
+ try{
+  buildClaudePlugin(path.join(temporary,'plugin'));
+  const staged=path.join(temporary,'plugin/skills/create-kice-illustration');
+  const root=readFileSync(path.join(staged,'SKILL.md'),'utf8');
+  assert.match(root,/Claude 로컬 실행 경계/);assert.match(root,/이미지 생성 모델을 포함하지 않는다/);
+  const result=writePreparedRules({subtype:'D2-03_Pie'},path.join(temporary,'prepared'),staged);
+  assert.equal(result.read.length,3);
+  assert.ok(result.read.every(p=>realpathSync(p).startsWith(realpathSync(temporary))));
+  assert.match(readFileSync(result.subtypeFile,'utf8'),/각도=비율×360/);
+ }finally{rmSync(temporary,{recursive:true,force:true});}
 });

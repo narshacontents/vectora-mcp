@@ -4,11 +4,16 @@
 
 | 세부유형 | 선택 기준 |
 |---|---|
-| [ITA-1_TypeBoard · 활자 보드](../subtypes/ITA_TypeSwap/ITA-1_TypeBoard.md) | 활자 교체형. 사람 없이 글·숫자·표만 담긴 판(신문·편지·사료·조문·웹·앱 화면·학습지·평가지·채점표) |
-| [ITA-2_Solo · 1인 발화](../subtypes/ITA_TypeSwap/ITA-2_Solo.md) | 활자 교체형. 일반 인물 한 사람 + 말풍선(연단·앵커·일상). 보드·화면 없음 |
-| [ITA-3_DialogueH · 가로 대화](../subtypes/ITA_TypeSwap/ITA-3_DialogueH.md) | 활자 교체형. 일반 인물 여러 명이 좌우로 나란히, 말풍선도 옆으로(갑·을 대화, 토론, 칸 만화) |
-| [ITA-4_DialogueV · 세로 대화](../subtypes/ITA_TypeSwap/ITA-4_DialogueV.md) | 활자 교체형. 화자별 줄이 위아래로 쌓임(인물·아이콘·이름표 + 글상자) |
-| [ITA-5_SoloBoard · 1인 + 활자 보드](../subtypes/ITA_TypeSwap/ITA-5_SoloBoard.md) | 활자 교체형. 한 사람 + 활자만 있는 칠판·스크린·모니터·TV(말풍선 없어도 됨) |
-| [ITA-6_GroupBoard · 여러 명 + 활자 보드](../subtypes/ITA_TypeSwap/ITA-6_GroupBoard.md) | 활자 교체형. 여러 사람 + 활자만 있는 보드·화면 |
+| `ITA-1_TypeBoard · 활자 보드` | 활자 교체형. 사람 없이 글·숫자·표만 담긴 판(신문·편지·사료·조문·웹·앱 화면·학습지·평가지·채점표) |
+| `ITA-2_Solo · 1인 발화` | 활자 교체형. 일반 인물 한 사람 + 말풍선(연단·앵커·일상). 보드·화면 없음 |
+| `ITA-3_DialogueH · 가로 대화` | 활자 교체형. 일반 인물 여러 명이 좌우로 나란히, 말풍선도 옆으로(갑·을 대화, 토론, 칸 만화) |
+| `ITA-4_DialogueV · 세로 대화` | 활자 교체형. 화자별 줄이 위아래로 쌓임(인물·아이콘·이름표 + 글상자) |
+| `ITA-5_SoloBoard · 1인 + 활자 보드` | 활자 교체형. 한 사람 + 활자만 있는 칠판·스크린·모니터·TV(말풍선 없어도 됨) |
+| `ITA-6_GroupBoard · 여러 명 + 활자 보드` | 활자 교체형. 여러 사람 + 활자만 있는 보드·화면 |
 
-SKILL.md의 조건부 제작 규칙에서 실제 발언·인물·외피·내부 자료에 해당하는 절만 적용한다. 독립적으로 완결된 내부 표·차트·지도는 공통 복합형 경계에 따라 분리한다.
+
+
+## 선택 세부 문서 준비
+
+- 보드 세부유형은 `--variant`로 newspaper / screen / paper / scroll / board / worksheet 중 실제 매체를 고른다.
+- 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 인물 없는 메신저는 ITA-4 + `messenger`이며 `--people`을 쓰지 않는다.

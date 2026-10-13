@@ -1,4 +1,4 @@
 interface:
   display_name: "통합사회 평가원 스타일 일러스트 만들기"
   short_description: "현재 분류의 10유형·50세부유형으로 편집 가능한 통합사회 그림 제작"
-  default_prompt: "$create-kice-illustration 스킬로 출제 의뢰의 표시 원문·자료·관계·치수·금지 조건을 확인하고 출제 맥락/정답/해설을 그림에 표시하지 말아줘. 호출자 참고는 references/caller/exam-agent-guide.md이며 제작자의 네 번째 필수 문서가 아니야. 통합사회 자료의 정보 역할을 분류하고 SKILL.md → 해당 유형 → 해당 세부유형으로 새로 제작·검수해줘. 세부 폴더가 없는 I1_Photo·I2_Illustration은 공통과 유형 두 문서만 읽어줘. 복합형은 각 독립 자료 단위에 이 경로를 적용하고, 원본 사진은 보존하며 새 원화와 편집 가능한 문자·도형을 분리해 같은 이름의 .vectora와 .jpeg로 저장·재열기·확인해줘. 상태·실제 경로·실측 mm·실행한 검사·미충족 조건은 응답 본문으로 보고하고 별도 검수 파일은 추가하지 마."
+  default_prompt: "$create-kice-illustration 스킬로 공통→유형→선택 세부 원칙 세 문서를 읽고 요청한 그림을 제작·직접 검수해줘. 인물이 있으면 인물 원칙도 읽고, 같은 이름의 .vectora와 .jpeg로 저장해줘."

@@ -63,7 +63,7 @@
 - 의뢰받는 에이전트가 첨부 자료와 저장 위치에 접근할 수 있어야 한다. 다른 머신의 로컬 경로 문자열만 전달하면 파일이 공유되는 것은 아니다. 필요한 파일을 실제로 전달하거나 접근 가능한 위치로 연결한다.
 - Claude의 로컬 Vectora MCP 사용은 Claude Code·Cowork 로컬 세션을 기준으로 한다. 일반 웹 채팅에서 동일한 실행이 가능하다고 가정하지 않는다.
 
-실행 에이전트는 비복합 그림마다 설치된 스킬의 `SKILL.md` → `references/types/<type>.md` 하나 → `references/subtypes/<type>/<subtype>.md` 하나를 읽는다. 생성 작업에 `use-vectora` 등 다른 제작 지침을 무조건 추가하지 않는다. 복합 그림은 독립 자료 단위마다 이 경로를 적용한다. 세부 폴더가 없는 I1_Photo·I2_Illustration은 SKILL.md와 유형 문서 두 개에서 끝낸다. 이 문서는 출제 측 의뢰서 작성용이며, 제작 규격은 해당 지침 문서에서 확인한다.
+실행 에이전트는 비복합 그림마다 설치된 스킬의 `SKILL.md` → 해당 `references/types/<type>.md` → `scripts/prepare_rules.mjs`가 선택 조건으로 준비한 세부 문서 하나, 총 세 지침을 읽는다. I1_Photo·I2_Illustration도 제작용 세부 문서를 선택한다. 인물이 실제 포함될 때만 `references/people.md`를 추가한다. 다른 형식의 공유 원칙이나 예시 문서를 연쇄로 읽지 않는다. 복합형은 독립 자료 단위마다 이 경로를 적용한다. 이 문서는 출제 측 의뢰서 작성용이다.
 
 ## 3. 잘 만드는 데 필요한 입력
 

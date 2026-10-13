@@ -1,0 +1,1 @@
+지도는 `vectora_map_plan`의 `featureCatalog`와 `report.featureResolutions`를 사용해 canonical ID·별칭/현지명·source object ID와 해석 상태를 구분한다. native auto label 배치가 실제 잉크와 stroke 경계를 검사하면 먼저 사용하고, unresolved 진단은 수동 이동으로 숨기지 않는다. map root `xMm/yMm` 변경은 preserve update로 명시하며 실제 binding을 재열기 뒤 확인한다. 서식·자료 좌표·사용자 설정을 반복 수동 보정으로 대체하지 않는다.

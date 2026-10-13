@@ -1,0 +1,1249 @@
+{
+  "version": 1,
+  "types": {
+    "D1_Table": "references/types/D1_Table.md",
+    "D2_Chart": "references/types/D2_Chart.md",
+    "D3_Graph": "references/types/D3_Graph.md",
+    "D4_Diagram": "references/types/D4_Diagram.md",
+    "I1_Photo": "references/types/I1_Photo.md",
+    "I2_Illustration": "references/types/I2_Illustration.md",
+    "I3_Map": "references/types/I3_Map.md",
+    "ITA_TypeSwap": "references/types/ITA_TypeSwap.md",
+    "ITB_ImageSwap": "references/types/ITB_ImageSwap.md",
+    "ITC_Fixed": "references/types/ITC_Fixed.md"
+  },
+  "modules": {
+    "frame": "references/rules/frame.md",
+    "bubble": "references/rules/bubble.md",
+    "photo": "references/rules/photo.md",
+    "speech": "references/rules/speech.md",
+    "artwork-asset": "references/rules/artwork-asset.md",
+    "document": "references/rules/document.md",
+    "activity": "references/rules/activity.md",
+    "horizontal": "references/rules/horizontal.md",
+    "vertical": "references/rules/vertical.md",
+    "presentation": "references/rules/presentation.md",
+    "newspaper": "references/rules/newspaper.md",
+    "screen": "references/rules/screen.md",
+    "paper": "references/rules/paper.md",
+    "scroll": "references/rules/scroll.md",
+    "board": "references/rules/board.md",
+    "worksheet": "references/rules/worksheet.md",
+    "real-data": "references/rules/real-data.md",
+    "free-art": "references/rules/free-art.md",
+    "vectorization": "references/rules/vectorization.md",
+    "artwork": "references/rules/artwork.md",
+    "flat-table": "references/rules/flat-table.md",
+    "chart-axes": "references/rules/chart-axes.md",
+    "graph-style": "references/rules/graph-style.md",
+    "bar-options": "references/rules/bar-options.md",
+    "point-options": "references/rules/point-options.md",
+    "concept-options": "references/rules/concept-options.md",
+    "dot-options": "references/rules/dot-options.md",
+    "graph-api": "references/rules/graph-api.md",
+    "graph-helper": "references/rules/graph-helper.md",
+    "continuous-api": "references/rules/continuous-api.md",
+    "node-diagram": "references/rules/node-diagram.md",
+    "trace-helper": "references/rules/trace-helper.md",
+    "organic-detail": "references/rules/organic-detail.md",
+    "map-preset": "references/rules/map-preset.md",
+    "map-korea": "references/rules/map-korea.md",
+    "map-native": "references/rules/map-native.md",
+    "map-dem": "references/rules/map-dem.md",
+    "map-edit": "references/rules/map-edit.md",
+    "map-inset": "references/rules/map-inset.md",
+    "map-points": "references/rules/map-points.md",
+    "map-korea-points": "references/rules/map-korea-points.md",
+    "map-area": "references/rules/map-area.md",
+    "map-korea-area": "references/rules/map-korea-area.md",
+    "map-route": "references/rules/map-route.md",
+    "map-korea-route": "references/rules/map-korea-route.md",
+    "map-statistics": "references/rules/map-statistics.md",
+    "map-korea-statistics": "references/rules/map-korea-statistics.md",
+    "map-natural": "references/rules/map-natural.md",
+    "map-tectonic-ice": "references/rules/map-tectonic-ice.md",
+    "map-korea-natural": "references/rules/map-korea-natural.md",
+    "map-historical": "references/rules/map-historical.md",
+    "map-korea-historical": "references/rules/map-korea-historical.md",
+    "map-projection": "references/rules/map-projection.md",
+    "map-korea-projection": "references/rules/map-korea-projection.md",
+    "map-feature": "references/rules/map-feature.md",
+    "graph-schema": "references/rules/graph-schema.md",
+    "map-runtime": "references/rules/map-runtime.md",
+    "asset-runtime": "references/rules/asset-runtime.md",
+    "composition": "references/rules/composition.md",
+    "reservation": "references/rules/reservation.md",
+    "long-operation": "references/rules/long-operation.md",
+    "text-lines": "references/rules/text-lines.md",
+    "person-speech": "references/rules/person-speech.md",
+    "axis-options": "references/rules/axis-options.md",
+    "mixed-options": "references/rules/mixed-options.md",
+    "data-surface": "references/rules/data-surface.md",
+    "artwork-geometry": "references/rules/artwork-geometry.md",
+    "real-data-map": "references/rules/real-data-map.md",
+    "map-review": "references/rules/map-review.md",
+    "map-composition": "references/rules/map-composition.md",
+    "vertical-messenger": "references/rules/vertical-messenger.md",
+    "vertical-gap": "references/rules/vertical-gap.md",
+    "person-spacing": "references/rules/person-spacing.md",
+    "presentation-artwork": "references/rules/presentation-artwork.md",
+    "presentation-photo": "references/rules/presentation-photo.md"
+  },
+  "subtypes": {
+    "D1-01_Flat": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-01_Flat.md",
+      "modules": [
+        "flat-table"
+      ]
+    },
+    "D1-02_MultiFlat": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-02_MultiFlat.md",
+      "modules": [
+        "flat-table"
+      ]
+    },
+    "D1-03_Cross": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-03_Cross.md",
+      "modules": []
+    },
+    "D1-04_Nested": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-04_Nested.md",
+      "modules": []
+    },
+    "D1-05_Checklist": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-05_Checklist.md",
+      "modules": []
+    },
+    "D1-06_Others": {
+      "type": "D1_Table",
+      "file": "references/subtypes/D1_Table/D1-06_Others.md",
+      "modules": []
+    },
+    "D2-01_Bar": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-01_Bar.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "chart-axes",
+        "bar-options",
+        "axis-options"
+      ]
+    },
+    "D2-02_StackedBar": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-02_StackedBar.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "chart-axes",
+        "bar-options",
+        "axis-options"
+      ]
+    },
+    "D2-03_Pie": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-03_Pie.md",
+      "modules": [
+        "data-surface",
+        "graph-schema"
+      ]
+    },
+    "D2-04_Line": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-04_Line.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "chart-axes",
+        "point-options",
+        "axis-options"
+      ]
+    },
+    "D2-05_Scatter": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-05_Scatter.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "chart-axes",
+        "point-options",
+        "axis-options"
+      ]
+    },
+    "D2-06_Dot": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-06_Dot.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "chart-axes",
+        "point-options",
+        "dot-options",
+        "axis-options"
+      ]
+    },
+    "D2-07_Radar": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-07_Radar.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-api"
+      ]
+    },
+    "D2-08_Others": {
+      "type": "D2_Chart",
+      "file": "references/subtypes/D2_Chart/D2-08_Others.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "graph-api",
+        "axis-options"
+      ]
+    },
+    "D3-01_Curve": {
+      "type": "D3_Graph",
+      "file": "references/subtypes/D3_Graph/D3-01_Curve.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "continuous-api",
+        "concept-options",
+        "graph-api",
+        "axis-options",
+        "point-options"
+      ]
+    },
+    "D3-02_Frontier": {
+      "type": "D3_Graph",
+      "file": "references/subtypes/D3_Graph/D3-02_Frontier.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "continuous-api",
+        "concept-options",
+        "graph-api",
+        "axis-options",
+        "point-options"
+      ]
+    },
+    "D3-03_Distribution": {
+      "type": "D3_Graph",
+      "file": "references/subtypes/D3_Graph/D3-03_Distribution.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "continuous-api",
+        "concept-options",
+        "graph-api",
+        "axis-options",
+        "point-options"
+      ]
+    },
+    "D3-04_Others": {
+      "type": "D3_Graph",
+      "file": "references/subtypes/D3_Graph/D3-04_Others.md",
+      "modules": [
+        "data-surface",
+        "graph-schema",
+        "graph-style",
+        "continuous-api",
+        "concept-options",
+        "graph-api",
+        "axis-options",
+        "point-options"
+      ]
+    },
+    "D4-01_Tree": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-01_Tree.md",
+      "modules": [
+        "node-diagram"
+      ]
+    },
+    "D4-02_Network": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-02_Network.md",
+      "modules": [
+        "node-diagram"
+      ]
+    },
+    "D4-03_Flowchart": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-03_Flowchart.md",
+      "modules": [
+        "node-diagram"
+      ]
+    },
+    "D4-04_Venn": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-04_Venn.md",
+      "modules": []
+    },
+    "D4-05_Timeline": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-05_Timeline.md",
+      "modules": []
+    },
+    "D4-06_Schematic": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-06_Schematic.md",
+      "modules": []
+    },
+    "D4-07_Others": {
+      "type": "D4_Diagram",
+      "file": "references/subtypes/D4_Diagram/D4-07_Others.md",
+      "modules": []
+    },
+    "I3-11_Locator": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-11_Locator.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-points",
+        "map-area",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-12_Topographic": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-12_Topographic.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-natural",
+        "map-dem",
+        "map-feature",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-13_OldMap": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-13_OldMap.md",
+      "modules": [
+        "photo",
+        "map-historical"
+      ]
+    },
+    "I3-14_Others": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-14_Others.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-projection",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-21_Area": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-21_Area.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-area",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-22_Route": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-22_Route.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-route",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-23_Symbol": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-23_Symbol.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-points",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-31_Choropleth": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-31_Choropleth.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-statistics",
+        "map-area",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-32_Dot": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-32_Dot.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-statistics",
+        "map-points",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-33_Proportional": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-33_Proportional.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-statistics",
+        "map-points",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-34_Isoline": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-34_Isoline.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-natural",
+        "map-statistics",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "I3-35_Flow": {
+      "type": "I3_Map",
+      "file": "references/subtypes/I3_Map/I3-35_Flow.md",
+      "modules": [
+        "map-preset",
+        "map-native",
+        "map-edit",
+        "map-route",
+        "map-statistics",
+        "map-runtime",
+        "map-review"
+      ]
+    },
+    "ITA-1_TypeBoard": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-1_TypeBoard.md",
+      "modules": [],
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "ITA-2_Solo": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-2_Solo.md",
+      "modules": [
+        "speech",
+        "bubble",
+        "presentation"
+      ],
+      "peopleRequired": true
+    },
+    "ITA-3_DialogueH": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-3_DialogueH.md",
+      "modules": [
+        "speech",
+        "bubble",
+        "horizontal"
+      ],
+      "peopleRequired": true
+    },
+    "ITA-4_DialogueV": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-4_DialogueV.md",
+      "modules": [
+        "speech",
+        "bubble",
+        "vertical"
+      ]
+    },
+    "ITA-5_SoloBoard": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-5_SoloBoard.md",
+      "modules": [
+        "presentation"
+      ],
+      "peopleRequired": true,
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ],
+        "plain": [
+          "document"
+        ]
+      }
+    },
+    "ITA-6_GroupBoard": {
+      "type": "ITA_TypeSwap",
+      "file": "references/subtypes/ITA_TypeSwap/ITA-6_GroupBoard.md",
+      "modules": [],
+      "peopleRequired": true,
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ],
+        "plain": [
+          "document"
+        ]
+      }
+    },
+    "ITB-1_ImageBoard": {
+      "type": "ITB_ImageSwap",
+      "file": "references/subtypes/ITB_ImageSwap/ITB-1_ImageBoard.md",
+      "modules": [],
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "ITB-2_SoloImageBoard": {
+      "type": "ITB_ImageSwap",
+      "file": "references/subtypes/ITB_ImageSwap/ITB-2_SoloImageBoard.md",
+      "modules": [
+        "presentation"
+      ],
+      "peopleRequired": true,
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ],
+        "plain": [
+          "document"
+        ]
+      }
+    },
+    "ITB-3_GroupImageBoard": {
+      "type": "ITB_ImageSwap",
+      "file": "references/subtypes/ITB_ImageSwap/ITB-3_GroupImageBoard.md",
+      "modules": [],
+      "peopleRequired": true,
+      "variants": {
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ],
+        "plain": [
+          "document"
+        ]
+      }
+    },
+    "ITC-1_Figure": {
+      "type": "ITC_Fixed",
+      "file": "references/subtypes/ITC_Fixed/ITC-1_Figure.md",
+      "modules": [],
+      "peopleRequired": true,
+      "variants": {
+        "horizontal": [
+          "speech",
+          "bubble",
+          "horizontal"
+        ],
+        "vertical": [
+          "speech",
+          "bubble",
+          "vertical"
+        ],
+        "presentation": [
+          "speech",
+          "bubble",
+          "presentation"
+        ],
+        "scene": [],
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "ITC-2_RealPhoto": {
+      "type": "ITC_Fixed",
+      "file": "references/subtypes/ITC_Fixed/ITC-2_RealPhoto.md",
+      "modules": [
+        "photo"
+      ],
+      "peopleRequired": true,
+      "variants": {
+        "horizontal": [
+          "speech",
+          "bubble",
+          "horizontal"
+        ],
+        "vertical": [
+          "speech",
+          "bubble",
+          "vertical"
+        ],
+        "presentation": [
+          "speech",
+          "bubble",
+          "presentation"
+        ],
+        "scene": [],
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "ITC-3_Place": {
+      "type": "ITC_Fixed",
+      "file": "references/subtypes/ITC_Fixed/ITC-3_Place.md",
+      "modules": [],
+      "variants": {
+        "horizontal": [
+          "speech",
+          "bubble",
+          "horizontal"
+        ],
+        "vertical": [
+          "speech",
+          "bubble",
+          "vertical"
+        ],
+        "presentation": [
+          "speech",
+          "bubble",
+          "presentation"
+        ],
+        "scene": [],
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "ITC-4_Costume": {
+      "type": "ITC_Fixed",
+      "file": "references/subtypes/ITC_Fixed/ITC-4_Costume.md",
+      "modules": [],
+      "peopleRequired": true,
+      "variants": {
+        "horizontal": [
+          "speech",
+          "bubble",
+          "horizontal"
+        ],
+        "vertical": [
+          "speech",
+          "bubble",
+          "vertical"
+        ],
+        "presentation": [
+          "speech",
+          "bubble",
+          "presentation"
+        ],
+        "scene": [],
+        "newspaper": [
+          "frame",
+          "document",
+          "newspaper"
+        ],
+        "screen": [
+          "frame",
+          "document",
+          "screen"
+        ],
+        "paper": [
+          "frame",
+          "document",
+          "paper"
+        ],
+        "scroll": [
+          "frame",
+          "document",
+          "scroll"
+        ],
+        "board": [
+          "frame",
+          "activity",
+          "board"
+        ],
+        "worksheet": [
+          "frame",
+          "activity",
+          "worksheet"
+        ]
+      }
+    },
+    "photo-original": {
+      "type": "I1_Photo",
+      "file": "references/subtypes/I1_Photo/photo-original.md",
+      "modules": [
+        "photo"
+      ]
+    },
+    "illustration-portrait": {
+      "type": "I2_Illustration",
+      "file": "references/subtypes/I2_Illustration/illustration-portrait.md",
+      "modules": [
+        "artwork"
+      ],
+      "peopleRequired": true
+    },
+    "illustration-object": {
+      "type": "I2_Illustration",
+      "file": "references/subtypes/I2_Illustration/illustration-object.md",
+      "modules": [
+        "artwork",
+        "free-art"
+      ]
+    },
+    "illustration-scene": {
+      "type": "I2_Illustration",
+      "file": "references/subtypes/I2_Illustration/illustration-scene.md",
+      "modules": [
+        "artwork",
+        "free-art"
+      ]
+    }
+  },
+  "features": {
+    "real-data": {
+      "modules": [
+        "real-data"
+      ],
+      "description": "실제 수치·기간·지역 자료를 조사하여 사용"
+    },
+    "composition": {
+      "modules": [
+        "composition"
+      ],
+      "description": "독립 자료 또는 예약 칸을 복합 조판"
+    },
+    "reserve": {
+      "modules": [
+        "text-lines",
+        "reservation"
+      ],
+      "description": "mm/줄 수로 빈 텍스트 공간 예약"
+    },
+    "photo": {
+      "modules": [
+        "photo"
+      ],
+      "description": "실제 사진·스캔·기존 작품을 삽입"
+    },
+    "artwork": {
+      "modules": [
+        "artwork",
+        "free-art"
+      ],
+      "description": "사물/장면 신규 작화(작은 인물은 --people로 선택)"
+    },
+    "vectorize": {
+      "modules": [
+        "vectorization",
+        "trace-helper"
+      ],
+      "description": "원화 내부까지 순수 벡터가 명시적으로 필요"
+    },
+    "organic": {
+      "modules": [
+        "organic-detail"
+      ],
+      "description": "생물·식물의 세부 구조/부분 확대"
+    },
+    "node": {
+      "modules": [
+        "node-diagram"
+      ],
+      "description": "모식도 등에서 실제 노드·연결 구조가 있음",
+      "types": [
+        "D4_Diagram"
+      ]
+    },
+    "graph-helper": {
+      "modules": [
+        "graph-helper"
+      ],
+      "description": "native graph 미지원으로 기존 Node fallback 실행",
+      "types": [
+        "D2_Chart",
+        "D3_Graph"
+      ]
+    },
+    "cartesian": {
+      "modules": [
+        "chart-axes"
+      ],
+      "description": "기타 차트에서 실제 직교 수치 축을 사용",
+      "types": [
+        "D2_Chart"
+      ]
+    },
+    "mixed-axis": {
+      "modules": [
+        "mixed-options"
+      ],
+      "description": "실제 이중 축/혼합 차트 요청",
+      "types": [
+        "D2_Chart",
+        "D3_Graph"
+      ]
+    },
+    "korea": {
+      "modules": [
+        "map-korea"
+      ],
+      "description": "한국 행정/지역/한반도 바탕",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "inset": {
+      "modules": [
+        "map-inset"
+      ],
+      "description": "확대창·비교 패널·고상세 보완 자료",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "points": {
+      "modules": [
+        "map-points"
+      ],
+      "description": "지도에 위치점/범주기호·인출선 추가",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "area": {
+      "modules": [
+        "map-area"
+      ],
+      "description": "지도에 영역 채움·무늬 추가",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "route": {
+      "modules": [
+        "map-route"
+      ],
+      "description": "지도에 경로/연결 추가",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "statistics": {
+      "modules": [
+        "map-statistics"
+      ],
+      "description": "지도에 실제 정량 주제층 추가",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "natural": {
+      "modules": [
+        "map-natural",
+        "map-feature"
+      ],
+      "description": "지도에 하천·산줄기·지질/기후 등 자연층",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "tectonic-ice": {
+      "modules": [
+        "map-natural",
+        "map-tectonic-ice"
+      ],
+      "description": "판 구조/빙상 자료의 역할·시점 구분",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "historical": {
+      "modules": [
+        "map-historical"
+      ],
+      "description": "역사 경계/고지리 자료",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "projection": {
+      "modules": [
+        "map-projection"
+      ],
+      "description": "도법·중심·좌표·시차/방위를 변경 또는 주제로 표현",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "dem": {
+      "modules": [
+        "map-dem"
+      ],
+      "description": "검증 DEM으로 실제 등고선 제작",
+      "types": [
+        "I3_Map"
+      ]
+    },
+    "speech-horizontal": {
+      "modules": [
+        "speech",
+        "bubble",
+        "horizontal"
+      ],
+      "description": "보드/고정형에 가로 발언이 실제 있음",
+      "types": [
+        "ITA_TypeSwap",
+        "ITB_ImageSwap",
+        "ITC_Fixed"
+      ]
+    },
+    "speech-vertical": {
+      "modules": [
+        "speech",
+        "bubble",
+        "vertical"
+      ],
+      "description": "보드/고정형에 세로 발언이 실제 있음",
+      "types": [
+        "ITA_TypeSwap",
+        "ITB_ImageSwap",
+        "ITC_Fixed"
+      ]
+    },
+    "speech-solo": {
+      "modules": [
+        "speech",
+        "bubble",
+        "presentation"
+      ],
+      "description": "보드/고정형에 한 화자 발언이 실제 있음",
+      "types": [
+        "ITA_TypeSwap",
+        "ITB_ImageSwap",
+        "ITC_Fixed"
+      ]
+    },
+    "messenger": {
+      "modules": [
+        "frame",
+        "screen"
+      ],
+      "description": "인물 없이 메신저 화면의 세로 발언",
+      "types": [
+        "ITA_TypeSwap"
+      ]
+    },
+    "long-operation": {
+      "modules": [
+        "long-operation"
+      ],
+      "description": "장기/다수 제작에서 진행 조회·체크포인트·복구 사용"
+    }
+  },
+  "people": {
+    "file": "references/people.md",
+    "modules": [
+      "artwork",
+      "artwork-asset",
+      "asset-runtime"
+    ],
+    "originalPhotoSubtypes": [
+      "ITC-2_RealPhoto",
+      "photo-original",
+      "I3-13_OldMap"
+    ]
+  },
+  "koreaOverlays": {
+    "points": "map-korea-points",
+    "area": "map-korea-area",
+    "route": "map-korea-route",
+    "statistics": "map-korea-statistics",
+    "natural": "map-korea-natural",
+    "historical": "map-korea-historical",
+    "projection": "map-korea-projection"
+  }
+}
