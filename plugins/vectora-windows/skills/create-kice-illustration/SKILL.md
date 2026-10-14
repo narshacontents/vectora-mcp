@@ -84,6 +84,12 @@ node scripts/prepare_rules.mjs --subtype <세부 ID> --out <내부 임시 폴더
 
 <!-- VECTORA_CLIENT_BOUNDARY -->
 
+### Gemini CLI에서 실행할 때
+
+Gemini CLI 확장은 같은 세 단계 원칙을 사용한다. 현재 노출된 MCP 이름·스키마로 Vectora를 호출하고 도구 이름의 접두사를 추정하지 않는다. 로컬 앱 연결은 Gemini CLI용이며 일반 Gemini 웹 채팅에 자동 연결되지 않는다. 실제 이미지 파일은 `read_file` 등 이미지 입력을 지원하는 도구로 열어 픽셀을 검수한다. 경로·도구의 성공 메시지만으로 이미지 확인을 대신하지 않는다.
+
+`prepare_rules.mjs`는 위 명령 그대로 실행한다. 선택 세부 문서에서 선택적 `build_graph.mjs`, `build_text_frame.mjs`, `trace_artwork.mjs`, `audit_svg.py`가 필요하면 **확장 루트**에서 `node scripts/gemini/run-helper.mjs <스크립트 파일명> <원래 인자>`로 번들된 휴대형 실행본을 사용한다. 원본·출력은 절대 경로로 전달한다. 원칙 문서는 현재 스킬의 것을 유지하며 실행본이 있는 다른 클라이언트의 지침을 추가로 읽지 않는다. 감사 스크립트만 별도 Python 3 실행이 필요하다. 새 원화는 현재 연결된 이미지 생성 도구를 확인하고 선택 세부·인물 문서의 화풍을 적용한다. 이 확장은 이미지 생성 모델을 포함하지 않는다.
+
 ## 최소 Vectora 실행 계약
 
 - 기존 설치 앱을 사용하고 `vectora_status`로 버전·연결과 실제 도구 스키마를 확인한다. 제작을 위해 앱 코드·버전·패키지를 변경하지 않는다. MCP는 앱 UI 미저장 탭과 독립 세션이다. Computer Use/브라우저 DOM/앱 스크립트 주입으로 대체하지 않는다. 생성은 이 문서로 충분하며 use-vectora/서버 옛 guide를 추가 지침으로 읽지 않는다.

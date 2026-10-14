@@ -1,6 +1,6 @@
-# Vectora MCP + 평가원 스타일 스킬 1.3.2
+# Vectora MCP + 평가원 스타일 스킬 1.3.4
 
-Codex와 Claude에서 **GitHub 마켓플레이스로 설치**합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
+Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소의 **Git 확장**으로 설치합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
 
 | 표시 이름 | 호출 이름 | 상태 |
 |---|---|---|
@@ -25,6 +25,7 @@ Codex와 Claude에서 **GitHub 마켓플레이스로 설치**합니다. Vectora 
 | Codex macOS | Vectora (macOS) · `vectora-macos@vectora` |
 | Codex Windows | Vectora (Windows) · `vectora-windows@vectora` |
 | Claude Code / 데스크톱 Cowork | Vectora · `vectora@vectora` |
+| Gemini CLI (macOS / Windows) | Vectora · `vectora` 확장 |
 
 ## Codex 설치
 
@@ -62,6 +63,25 @@ MCP와 세 스킬이 함께 설치되므로 별도 스킬 ZIP 업로드가 필�
 
 **Vectora의 로컬 MCP는 Claude Code와 데스크톱 Cowork 로컬 세션에서 사용합니다. 일반 Claude 채팅·웹/클라우드 세션에서는 컴퓨터의 Vectora 앱에 연결되지 않습니다.** 계정에서 플러그인만 보인다고 로컬 도구가 연결된 것은 아닙니다. 설치 범위와 경로 문제는 [Claude 설치 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)를 참고하세요.
 
+## Gemini CLI 설치
+
+컴퓨터에 Vectora 앱, 평가원 작업용 UND폰트v3.0, Gemini CLI와 Git을 설치합니다. 연결 실행기는 Gemini CLI에서 사용하는 Node.js를 실행합니다. 배포 확인 환경은 Gemini CLI 0.50.0입니다. 다음 명령을 터미널에서 실행하고 확장이 요청하는 MCP·스킬 사용 권한을 확인합니다.
+
+```sh
+gemini extensions install https://github.com/narshacontents/vectora-mcp
+gemini extensions list
+gemini skills list
+gemini mcp list
+```
+
+새 CLI 세션에서 “평가원 스타일로 막대그래프를 만들어줘”처럼 요청하면 해당 스킬을 활성화합니다. `vectora` MCP의 실제 연결과 스킬의 설치 경로를 확인하세요. 같은 이름의 사용자·작업공간 스킬이나 수동 MCP 설정이 있으면 확장보다 우선할 수 있습니다.
+
+**이 확장은 로컬 Gemini CLI용입니다. 일반 Gemini 웹 채팅에 업로드하는 패키지가 아닙니다.** 원화 이미지 생성 모델은 포함하지 않습니다. 새 인물·삽화 제작에는 현재 세션에 연결된 이미지 생성 도구 또는 사용자가 제공한 원화가 필요하며, 없는 경우 스킬은 미완료 조건을 알립니다.
+
+Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치는 설치된 확장 루트의 `scripts/configure-app.sh` 또는 `scripts/configure-app.ps1`로 등록하세요. 셸의 `VECTORA_APP_PATH`가 전달된다고 가정하지 않습니다. 선택적 조판·추적 보조 프로그램은 `scripts/gemini/run-helper.mjs`로 함께 설치된 휴대형 실행본을 사용합니다. Python 감사 스크립트를 실행할 때만 Python 3가 추가로 필요합니다. 통합과학은 준비 중이며 자동 제작에 사용하지 않습니다.
+
+설정 구조와 배포 방식은 [Gemini 공식 확장 문서](https://geminicli.com/docs/extensions/reference/)와 [배포 안내](https://geminicli.com/docs/extensions/releasing/)를 따릅니다. GitHub topic을 통한 갤러리 수집과 저장소 URL로 직접 설치하는 것은 별개입니다.
+
 ## 업데이트
 
 마켓플레이스는 GitHub의 `main`에 게시된 파일을 가져옵니다. GitHub Release만 게시하면 기존 설치가 즉시 갱신된다고 보장하지 않습니다.
@@ -69,8 +89,9 @@ MCP와 세 스킬이 함께 설치되므로 별도 스킬 ZIP 업로드가 필�
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v1.3.4`를 추가합니다.
 
-v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일은 설치할 필요가 없습니다.
+v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 
 ## 앱 경로와 연결
 
@@ -93,7 +114,7 @@ MCP는 일반 편집 창의 미저장 문서를 자동 조작하지 않습니다
 
 ## 유지보수와 릴리스
 
-루트의 매니페스트·실행기·`skills/`가 원본이고 `plugins/`는 마켓플레이스에서 설치하는 생성본입니다. Claude에는 클라이언트별 도구·파일 경로 안내를 적용하되 평가원 화풍 규칙을 유지합니다. 생성·검사에는 Node.js와 Python 3가 필요합니다. 아래 명령은 저장소에 포함된 의존성을 사용하므로 네트워크 설치를 하지 않습니다.
+루트의 매니페스트·실행기·`skills/`가 원본이고 `plugins/`는 마켓플레이스에서 설치하는 생성본입니다. Gemini CLI는 루트 확장과 같은 원본 스킬을 읽습니다. 클라이언트별 도구·파일 경로 안내만 조정하고 평가원 화풍 규칙은 유지합니다. 로컬 작업은 `vectora-source/vectora-mcp`의 독립 저장소에서 수행합니다. 생성·검사에는 Node.js와 Python 3가 필요합니다. 아래 명령은 저장소에 포함된 의존성을 사용하므로 네트워크 설치를 하지 않습니다.
 
 ```sh
 node scripts/build-marketplace.mjs

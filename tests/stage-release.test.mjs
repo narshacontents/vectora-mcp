@@ -36,6 +36,16 @@ function createFixture({ wrongCodexSource = false, notesVersion = version } = {}
   }
   writeJson(root, 'plugins/vectora/.claude-plugin/plugin.json', { name: 'vectora', version });
   writeFileSync(path.join(root, 'plugins/vectora/runtime.txt'), 'claude runtime\n');
+  writeJson(root, 'gemini-extension.json', {
+    name: 'vectora', version, contextFileName: 'GEMINI.md',
+    mcpServers: { vectora: { command: 'node', args: ['${extensionPath}/scripts/gemini/gemini-mcp-launcher.mjs'] } },
+  });
+  writeFileSync(path.join(root, 'GEMINI.md'), '# Vectora Gemini CLI\n');
+  mkdirSync(path.join(root, 'scripts/gemini'), { recursive: true });
+  writeFileSync(path.join(root, 'scripts/gemini/gemini-mcp-launcher.mjs'), '// test launcher\n');
+  writeFileSync(path.join(root, 'scripts/gemini/run-helper.mjs'), '// test helper\n');
+  mkdirSync(path.join(root, 'skills'), { recursive: true });
+  writeFileSync(path.join(root, 'skills/SKILL.md'), 'test skills\n');
   writeFileSync(path.join(root, 'CLAUDE_INSTALLATION.md'), '# Claude install\n');
   mkdirSync(path.join(root, 'docs'), { recursive: true });
   writeFileSync(path.join(root, 'docs/CLAUDE_INSTALLATION.md'), '# Claude install\n');
@@ -71,6 +81,9 @@ test('stages only release notes and internal evidence for marketplace-only distr
   assert.deepEqual(evidence.plugins.map(({ name }) => name), ['vectora-macos', 'vectora-windows', 'vectora']);
   assert.ok(evidence.catalogs.every(({ sha256 }) => /^[a-f0-9]{64}$/.test(sha256)));
   assert.ok(evidence.plugins.every(({ sha256 }) => /^[a-f0-9]{64}$/.test(sha256)));
+  assert.equal(evidence.extensions[0].client, 'gemini-cli');
+  assert.equal(evidence.extensions[0].version, version);
+  assert.match(evidence.extensions[0].skillsSha256, /^[a-f0-9]{64}$/);
 });
 
 test('rejects a Codex catalog source that does not point to its runtime tree', (t) => {
@@ -93,4 +106,16 @@ test('refuses to stage from a dirty source checkout', (t) => {
   writeFileSync(path.join(root, 'RELEASE_NOTES.md'), 'uncommitted change\n');
 
   assert.throws(() => stageRelease({ root }), /Commit the reviewed source changes before staging a release/);
+});
+
+test('rejects a Gemini manifest version that differs from the release', (t) => {
+  const root = createFixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const file = path.join(root, 'gemini-extension.json');
+  const manifest = JSON.parse(readFileSync(file, 'utf8'));
+  manifest.version = '0.0.1';
+  writeFileSync(file, JSON.stringify(manifest));
+  execFileSync('git', ['add', 'gemini-extension.json'], { cwd: root });
+  execFileSync('git', ['commit', '-qm', 'wrong Gemini version'], { cwd: root });
+  assert.throws(() => stageRelease({ root }), /Gemini extension version must match/);
 });

@@ -18,7 +18,7 @@ jobs:
           node-version: 22
       - name: Check generated plugins match their canonical sources
         run: node scripts/build-marketplace.mjs --check
-      - name: Test Claude marketplace launcher contract
-        run: node --test tests/claude-launcher.test.mjs
+      - name: Test client launchers and Gemini extension
+        run: node --test tests/claude-launcher.test.mjs tests/gemini-extension.test.mjs
       - name: Test marketplace release staging safeguards
         run: node --test tests/stage-release.test.mjs

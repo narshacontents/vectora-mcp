@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildClaudePlugin } from './build-claude-packages.mjs';
+import { buildGeminiExtension } from './build-gemini-extension.mjs';
 import { copyCodexPlugin, PLUGIN_ROOT } from './build-packages.mjs';
 
 const PLUGINS_ROOT = path.join(PLUGIN_ROOT, 'plugins');
@@ -149,7 +150,8 @@ export function buildMarketplace({ check = false } = {}) {
         }
       }
       if (drift.length) throw new Error(`Marketplace output is stale: ${drift.join(', ')}. Run node scripts/build-marketplace.mjs.`);
-      return { checked: true, plugins, catalogs: ['.agents/plugins/marketplace.json', '.claude-plugin/marketplace.json'] };
+      buildGeminiExtension({ check: true });
+      return { checked: true, plugins, catalogs: ['.agents/plugins/marketplace.json', '.claude-plugin/marketplace.json'], extensions: ['gemini-extension.json'] };
     }
 
     mkdirSync(PLUGINS_ROOT, { recursive: true });
@@ -162,7 +164,8 @@ export function buildMarketplace({ check = false } = {}) {
       mkdirSync(path.dirname(pathname), { recursive: true });
       writeFileSync(pathname, contents, 'utf8');
     }
-    return { checked: false, plugins, catalogs: ['.agents/plugins/marketplace.json', '.claude-plugin/marketplace.json'] };
+    buildGeminiExtension();
+    return { checked: false, plugins, catalogs: ['.agents/plugins/marketplace.json', '.claude-plugin/marketplace.json'], extensions: ['gemini-extension.json'] };
   } finally {
     rmSync(stageRoot, { recursive: true, force: true });
   }

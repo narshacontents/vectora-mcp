@@ -126,6 +126,17 @@ function validateMarketplace(root) {
   assert.equal(claudeManifest.name, CLAUDE_PLUGIN, 'Claude plugin manifest name must match its catalog entry.');
   assert.equal(claudeManifest.version, version, 'Claude plugin version must match the root manifest.');
 
+  const geminiManifestPath = 'gemini-extension.json';
+  const geminiManifest = readJson(path.join(root, geminiManifestPath));
+  assert.equal(geminiManifest.name, 'vectora', 'Gemini extension name must be vectora.');
+  assert.equal(geminiManifest.version, version, 'Gemini extension version must match the root manifest.');
+  assert.equal(geminiManifest.contextFileName, 'GEMINI.md');
+  assert.equal(geminiManifest.mcpServers?.vectora?.command, 'node');
+  assert.deepEqual(geminiManifest.mcpServers.vectora.args, ['${extensionPath}/scripts/gemini/gemini-mcp-launcher.mjs']);
+  for (const file of ['GEMINI.md', 'scripts/gemini/gemini-mcp-launcher.mjs', 'scripts/gemini/run-helper.mjs']) {
+    requireRegularFile(path.join(root, file));
+  }
+
   const rootGuide = requireRegularFile(path.join(root, 'CLAUDE_INSTALLATION.md'));
   const docsGuide = requireRegularFile(path.join(root, 'docs/CLAUDE_INSTALLATION.md'));
   assert.deepEqual(readFileSync(rootGuide), readFileSync(docsGuide), 'Keep docs/CLAUDE_INSTALLATION.md identical to the root Claude installation guide.');
@@ -133,6 +144,14 @@ function validateMarketplace(root) {
   return {
     version,
     rootManifest: { path: ROOT_MANIFEST, name: rootManifest.name, version },
+    extensions: [{
+      name: geminiManifest.name, client: 'gemini-cli', path: geminiManifestPath, version,
+      sha256: fileSha256(path.join(root, geminiManifestPath)),
+      contextSha256: fileSha256(path.join(root, 'GEMINI.md')),
+      skillsSha256: treeSha256(path.join(root, 'skills')),
+      launcherSha256: fileSha256(path.join(root, 'scripts/gemini/gemini-mcp-launcher.mjs')),
+      helperSha256: fileSha256(path.join(root, 'scripts/gemini/run-helper.mjs')),
+    }],
     catalogs: [
       { path: CODEX_CATALOG, sha256: fileSha256(path.join(root, CODEX_CATALOG)) },
       { path: CLAUDE_CATALOG, sha256: fileSha256(path.join(root, CLAUDE_CATALOG)) },
@@ -198,6 +217,7 @@ export function stageRelease({ root = PLUGIN_ROOT } = {}) {
       rootManifest: marketplace.rootManifest,
       catalogs: marketplace.catalogs,
       plugins: marketplace.plugins,
+      extensions: marketplace.extensions,
     };
     writeFileSync(path.join(temporary, 'evidence.json'), `${JSON.stringify(evidence, null, 2)}\n`);
 

@@ -12,6 +12,8 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 현재 세션에 Vectora MCP가 보이지 않으면 연결된 것으로 간주하지 않는다. Claude 웹 채팅/클라우드 세션에는 이 로컬 실행기가 연결되지 않으므로 최종 Vectora 저장·재열기를 주장하지 말고, 사용자가 로컬 MCP를 쓸 수 있는 Claude Desktop 또는 Claude Code에서 이어가도록 안내한다.
 ## 연결과 단위
 
+- Gemini CLI에서는 현재 노출된 MCP 이름·스키마를 사용한다. 로컬 앱 연결은 CLI용이며 일반 Gemini 웹 채팅 연결을 뜻하지 않는다. 이 확장의 실행기에는 Node.js가 필요하다. 사용자 지정 앱 위치는 확장 루트의 `scripts/configure-app.sh`·`configure-app.ps1`로 저장한다. Gemini의 환경 변수 필터 때문에 셸의 `VECTORA_APP_PATH` 전달을 가정하지 않는다. 실제 이미지 확인은 `read_file` 등 이미지 입력을 지원하는 도구로 수행한다.
+
 - `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 배포 패키지의 `CLAUDE_INSTALLATION.md`를 참고한다.
 - Claude Desktop Cowork 로컬 세션과 Claude Code의 Vectora MCP는 이 컴퓨터에 설치된 앱을 실행한다. 기본 설치 위치에서 앱을 찾지 못하면 플러그인 안의 `configure-app.sh` 또는 `configure-app.ps1`을 사용한다. 마켓플레이스에 플러그인을 추가해도 Claude 일반 웹 채팅에는 로컬 MCP 실행기가 연결되지 않는다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.

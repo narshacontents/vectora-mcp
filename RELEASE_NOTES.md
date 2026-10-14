@@ -1,21 +1,24 @@
-# Vectora MCP v1.3.3
+# Vectora MCP v1.3.4
 
-평가원 일러스트 스킬을 자료형 분류 v3에 맞춰 공통 원칙 → 유형별 원칙 → 세부유형별 원칙의 3단계로 정리했습니다. 기존 제작 원칙을 적용 대상에 맞게 옮기고 중복을 통합했으며, 앱과 MCP 실행 기능은 변경하지 않았습니다.
+Gemini CLI에서 Vectora MCP와 평가원 스타일 스킬을 같은 GitHub 저장소의 확장으로 설치할 수 있습니다. 기존 Codex·Claude 마켓플레이스 배포도 함께 유지합니다.
 
-- **제작 지침 3개 파일:** 복합형을 제외한 제작은 공통 문서, 유형 문서, 선택 조건에 맞춰 준비한 세부 문서만 읽습니다. 인물이 들어갈 때만 별도 인물 원칙을 추가합니다. 모든 하위 유형에 적용되는 원칙만 상위 문서에 둡니다.
-- **필요한 원칙 선택:** `prepare_rules.mjs`가 세부유형·매체 형식·추가 요소에 해당하는 규칙만 하나의 세부 문서로 준비합니다. 여러 유형이 공유하는 규칙은 한 원본에서 관리하며, 맞지 않는 옵션 조합이나 기존 파일 덮어쓰기를 차단합니다.
-- **분류와 적용 범위 정리:** 10개 유형·50개 세부유형을 유지합니다. 세부 폴더가 없는 사진·삽화에는 제작용 선택 경로를 마련했습니다. 고지도 원본 보존, 현대 지도 프리셋, 원그래프와 좌표축, 메신저와 인물 대화 등 서로 다른 규칙이 불필요하게 함께 읽히지 않도록 분리했습니다.
-- **인물·원본 보존:** 새 인물 원화의 화풍 계약을 별도 문서로 모았습니다. 실제 사진·기존 미술작품의 원본 보존과 새 원화 생성 지시를 구분했습니다.
-- 기존 화풍·수치·배치·편집성·지도 프리셋·Vectora Alt+Space 반칸(U+2002)·저장 및 JPEG 검수 규칙은 유지합니다. 사용자 원본 이미지와 글꼴 파일은 배포에 포함하지 않습니다.
+- **Gemini CLI 지원:** 저장소 루트의 확장 설정으로 macOS·Windows의 설치된 Vectora 앱을 연결하고 기존 스킬을 자동 발견합니다. 도구 이름·실제 스키마와 로컬 이미지 확인 방식에 맞춘 실행 지침을 추가했습니다.
+- **동일한 제작 원칙:** 공통 → 유형 → 선택 세부 문서의 3단계와 인물 예외 문서를 유지합니다. Gemini를 위한 별도 평가원 원칙 사본을 만들지 않습니다.
+- **휴대형 보조 실행:** 선택적 조판·추적·감사 스크립트는 함께 배포되는 의존성을 사용합니다. 이미지 생성 모델은 포함하지 않으며, 새 원화에 필요한 도구가 없으면 미완료 조건을 알립니다.
+- **통합 배포 검증:** Gemini 설정·버전·실행기와 기존 클라이언트 배포본을 함께 검사합니다. 통합과학 스킬은 계속 준비 중입니다.
 
-검증은 문서 선택 경로, 규칙 적용 범위, 보조 스크립트와 배포본 일치 여부를 대상으로 했습니다. 이번 구조 개편에서는 일러스트를 새로 생성해 시각 검수하지 않았습니다.
+Gemini CLI 0.50.0의 격리 설치에서 세 스킬 인식과 MCP 연결을 확인했습니다. macOS의 실제 Vectora 1.4.3에서 편집 가능한 UND 한글 문서의 저장·재열기·4배 회색조 JPEG 출력과 이미지 확인을 마쳤습니다. Windows는 실행 인자와 경로 처리 검증 범위이며 실제 Windows 앱 실행은 이번 검증에 포함하지 않았습니다. Gemini 모델의 전체 일러스트 생성 품질을 검증한 결과는 아닙니다.
 
 ## 설치·업데이트
 
-Codex와 Claude 모두 **`narshacontents/vectora-mcp` GitHub 마켓플레이스**로 배포합니다. 설치된 플러그인은 각 클라이언트에서 업데이트한 뒤 새 세션에서 사용하세요. 이 릴리스만으로 현재 세션의 설치본이 자동 갱신되지는 않습니다.
+Gemini CLI의 터미널에서 설치합니다.
 
-- Codex: 운영체제에 맞는 `vectora-macos@vectora` 또는 `vectora-windows@vectora`
-- Claude Code·데스크톱 Cowork 로컬 세션: `vectora@vectora`
-- [설치 안내](https://github.com/narshacontents/vectora-mcp#readme) · [Claude 설치 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)
+```sh
+gemini extensions install https://github.com/narshacontents/vectora-mcp
+```
 
-수동 설치 ZIP·MCPB·개별 스킬 압축파일은 제공하지 않습니다. GitHub의 자동 Source code 압축파일은 설치 패키지가 아닙니다.
+설치 후 새 세션에서 사용합니다. 이후 업데이트는 `gemini extensions update vectora`로 받습니다. 특정 버전 고정은 설치 명령에 `--ref v1.3.4`를 추가합니다.
+
+Codex는 `vectora-macos@vectora` 또는 `vectora-windows@vectora`, Claude Code·데스크톱 Cowork 로컬 세션은 `vectora@vectora`를 기존 GitHub 마켓플레이스에서 설치·업데이트합니다. [클라이언트별 설치 안내](https://github.com/narshacontents/vectora-mcp#readme)
+
+Gemini 지원 범위는 로컬 CLI이며 일반 Gemini 웹 채팅 연결을 뜻하지 않습니다. 이 릴리스만으로 기존 설치본이 자동 갱신되지는 않습니다. 수동 설치 ZIP·MCPB·개별 스킬 압축파일은 제공하지 않습니다.
