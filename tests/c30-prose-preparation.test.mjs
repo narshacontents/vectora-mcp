@@ -39,7 +39,7 @@ const FRAME_TEXT_KEYS = new Set([
   'text', 'underlines', 'inlineBlanks', 'verticalGroups', 'fontWeight', 'fontStyle',
   'inlineBoxes', 'inlineBoxSpacing', 'styles', 'styleProvenance', 'widthMm', 'fontPt',
   'tracking', 'lineHeight', 'textAlign', 'fill', 'fontFamily', 'textFlow', 'textFlowBounds',
-  'textProfile', 'horizontalScale', 'leading', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
+  'textProfile', 'horizontalScale', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
 ]);
 
 function graphemes(text) {
@@ -118,13 +118,12 @@ test('mixed prose, CRLF, combining graphemes, and inline metadata pass through w
   assert.equal(Object.hasOwn(result, 'fontFamily'), false);
 });
 
-test('registered text profile and explicit typography and paragraph metadata pass through without defaults', () => {
+test('supplied text profile and explicit typography and paragraph metadata pass through without defaults', () => {
   const input = {
     text: '본문\u2002다음',
     textProfile: 'und-batang-body-11_5-v1',
     fontPt: 12.25,
     horizontalScale: 93,
-    leading: 17.5,
     leadingPt: 13.125,
     paragraphLayouts: [{paragraphStart: 0, at: 0, end: 4, paragraphEnd: 5, firstLineIndentMm: 2}],
     paragraphIndents: [{paragraphStart: 0, at: 0, xMm: 1}],
@@ -138,9 +137,57 @@ test('registered text profile and explicit typography and paragraph metadata pas
   assert.equal(Object.hasOwn(plain, 'textProfile'), false);
 });
 
-test('unknown text profiles are rejected instead of forwarded', () => {
-  assert.throws(() => prepareProse({text: '본문', textProfile: 'und-unknown-v1'}), /textProfile.*registered/u);
-  assert.throws(() => prepareProse({text: '본문', textProfile: null}), /textProfile.*registered/u);
+test('new text profile identifiers pass through unchanged without inferred typography or defaults', () => {
+  // Replaces unknown-ID rejection: only the connected app can validate its current profile registry.
+  for (const textProfile of ['new-registered-style-v2', 'und-unknown-v1', 'custom-serif-bold-18pt-v2', ' profile-v2 ', 'p'.repeat(256)]) {
+    const input = deepFreeze({text: '본문', textProfile});
+    assert.deepEqual(prepareProse(input), input);
+  }
+
+  const explicit = deepFreeze({
+    text: '본문', textProfile: 'new-registered-style-v2', leadingPt: 13.125,
+    fontFamily: 'Explicit Family', fontPt: 12.25, horizontalScale: 93,
+    styles: {0: {0: {fontWeight: 700}}},
+  });
+  assert.deepEqual(prepareProse(explicit), explicit, 'a new profile name does not override supplied fields or styles');
+});
+
+test('text profile identifiers reject nonstrings, empty or whitespace-only values, and excessive length', () => {
+  for (const textProfile of [undefined, null, false, 0, [], {}, '', ' \t\n ', 'p'.repeat(257)]) {
+    assert.throws(() => prepareProse({text: '본문', textProfile}), {
+      name: 'TypeError', message: /textProfile.*nonempty string.*256/u,
+    });
+  }
+  assert.deepEqual(prepareProse({text: '본문'}), {text: '본문'}, 'an omitted profile remains optional');
+});
+
+test('the original four text profile identifiers remain compatible without adding defaults', () => {
+  // Historical compatibility fixtures, not a registry used to accept or reject newer profiles.
+  for (const textProfile of ['und-illust-8-v1', 'und-box-prose-10-v1', 'und-batang-body-11_5-v1', 'und-batang-table-10-v1']) {
+    const input = {text: '본문', textProfile};
+    assert.deepEqual(prepareProse(input), input);
+  }
+});
+
+test('FrameText rejects general-style leading and preserves explicit leadingPt, profile, and styles without defaults', () => {
+  assert.throws(() => prepareProse({text: '본문', leading: 17.5}), /Unsupported FrameText field: leading/u);
+
+  const input = {
+    text: '본문',
+    textProfile: 'und-batang-body-11_5-v1',
+    leadingPt: 13.125,
+    fontPt: 12.25,
+    horizontalScale: 93,
+    styles: [{start: 0, end: 1, style: {fontWeight: 700}}],
+  };
+  assert.deepEqual(prepareProse(input), {
+    text: '본문',
+    textProfile: 'und-batang-body-11_5-v1',
+    leadingPt: 13.125,
+    fontPt: 12.25,
+    horizontalScale: 93,
+    styles: {0: {0: {fontWeight: 700}}},
+  });
 });
 
 test('Fabric serialized ranges become line/character styles while explicit formatting and inline tokens remain intact', () => {
@@ -151,7 +198,7 @@ test('Fabric serialized ranges become line/character styles while explicit forma
     textProfile: 'und-box-prose-10-v1',
     fontPt: 9.5,
     horizontalScale: 96,
-    leading: 15,
+    leadingPt: 15.25,
     styles: [
       {start: 0, end: 4, style: {fontWeight: 700, fontStyle: 'italic', horizontalScale: 95}},
       {start: 4, end: 5, style: {fontFamily: LEGACY_BODY, fontWeight: 600}},
@@ -166,7 +213,7 @@ test('Fabric serialized ranges become line/character styles while explicit forma
   assert.equal(result.textProfile, input.textProfile);
   assert.equal(result.fontPt, input.fontPt);
   assert.equal(result.horizontalScale, input.horizontalScale);
-  assert.equal(result.leading, input.leading);
+  assert.equal(result.leadingPt, input.leadingPt);
   assert.ok(!Array.isArray(result.styles));
   assert.equal(Object.hasOwn(result, 'styleProvenance'), false, 'the helper does not invent provenance for input styles');
   assert.deepEqual(result.styles, {

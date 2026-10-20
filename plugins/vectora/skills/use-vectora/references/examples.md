@@ -20,6 +20,8 @@ Legacy line:
 
 이 예제는 앱 graph discovery schema에 정의된 실행 예를 따른다. 실제 실행 시 값 배열 길이, 수치 도메인, 스타일별 옵션과 물리적 크기 적합성을 추가 검사한다. spec 저장은 렌더 결과의 겹침 검수 완료를 뜻하지 않으므로 delivery audit와 실제 JPEG를 확인한다.
 
+등록 문자 스타일이 지원되고 `und-illust-8-v1`이 catalog에 있는지 먼저 확인한다.
+
 `vectora_new_document({"name":"관계도","width":108,"height":60})`로 생성 후 일반 편집:
 
 ```json
@@ -30,7 +32,7 @@ Legacy line:
   "commands": [
     {"type":"typography","profile":"kice"},
     {"type":"add","shape":"rect","values":{"name":"상자 A","left":10,"top":20,"width":30,"height":16,"fill":"#ffffff","stroke":"#000000","strokeWidth":0.3}},
-    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","fontFamily":"UND v3.1","fontSize":8,"charSpacing":-60,"fill":"#000000","textAlign":"center"}},
+    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","textProfile":"und-illust-8-v1","fill":"#000000","textAlign":"center"}},
     {"type":"add","shape":"line","values":{"left":43,"top":28,"width":22,"stroke":"#000000","strokeWidth":0.3,"arrowStart":"arrow-3","arrowEnd":"arrow-3"}},
     {"type":"add","shape":"ellipse","values":{"left":68,"top":20,"width":26,"height":16,"fill":"none","stroke":"#000000","strokeWidth":0.3}}
   ]

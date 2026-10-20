@@ -140,7 +140,9 @@ test('common file excludes subtype-only style, media and map contracts',()=>{
  assert.ok(root.length<18000);assert.equal(root.split('<!-- VECTORA_CLIENT_BOUNDARY -->').length,2);
  for(const token of ['STYLE CONTRACT:', 'map-korea-sido-2025','bodyHeight','boundaryDashPt','barWidthMm','신문 외피','두루마리 외피','승인 원화와 읽기 전용 계획'])assert.ok(!root.includes(token),token);
  const task=make('ITA-1_TypeBoard',{variant:'newspaper'}).task;
- for(const token of ['108mm','UND v3.0','장평 95%','charSpacing:-60','BoldItalic'])assert.ok(task.contents.design.includes(token),token);
+ // Shared design selects typography by role instead of injecting the old blanket metrics.
+ for(const token of ['108mm','textProfiles.catalog','영역의 역할에 맞는 등록 스타일','실제 설치된 면','실제 Bold/BoldItalic 면으로 유지','기존 문서의 명시적 서식은 요청 없이 소급 변경하지 않는다'])assert.ok(task.contents.design.includes(token),token);
+ assert.doesNotMatch(task.contents.design,/장평\s*95\s*%|charSpacing\s*:\s*-60\b/);
  for(const token of ['scale:4','transparent:false','실제 JPEG'])assert.ok(task.contents.deliver.includes(token),token);
  assert.ok(root.includes('prepare_task.mjs'));
 });

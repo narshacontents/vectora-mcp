@@ -6,7 +6,7 @@
 
 - `vectora_new_document`(기본 mm) 또는 지정 `vectora_open_document` → production/apply/import → inspect/preview → save/open/export. 실제 응답의 documentId/최신 expectedRevision/개체 ID 사용; 동일 재시도는 동일 requestId, 다른 편집은 새 ID. 일반 배치 1,000개 이하, 실패 시 복원. 일반 명령 add/select/style/transform는 대상 ID를 확인한다.
 
-- 일반 `units:"mm-pt"`는 위치·크기·경로·대지 mm, 글·획·행간·파선 pt; tracking은 1/1000em. production `*Mm/*Pt`는 다시 환산하지 않는다. inspect 원시 objects는 px, pathNodes/geometry 문서 좌표는 반환 단위를 확인한다. px 경로는 **96px=25.4mm=72pt**, 8pt=10.666666667px, 0.3pt=0.4px. 직접 SVG는 width/height mm, viewBox 해당 px, letter-spacing=-0.64px.
+- 일반 `units:"mm-pt"`는 위치·크기·경로·대지 mm, 글·획·행간·파선 pt; tracking은 1/1000em. production `*Mm/*Pt`는 다시 환산하지 않는다. inspect 원시 objects는 px, pathNodes/geometry 문서 좌표는 반환 단위를 확인한다. px 경로는 **96px=25.4mm=72pt**, 8pt=10.666666667px, 0.3pt=0.4px. 직접 SVG는 width/height mm, viewBox 해당 px를 사용한다. letter-spacing은 선택한 실제 pt와 자간에서 환산하며 -0.64px를 모든 스타일에 고정하지 않는다.
 
 - 지원되는 전용 생성 기능을 우선 사용하고 일부 미지원 항목만 편집으로 보충한다. 생성은 `vectora_production({documentId,expectedRevision,requestId,action:"create",spec})`. inspect의 `production.components`에서 실제 component ID·저장 spec·roles 개체 ID·warnings를 읽으며 `includeGeometry:true`의 세계 좌표/외곽을 확인한다. component ID는 자료/계열/노드 ID와 다르다.
 

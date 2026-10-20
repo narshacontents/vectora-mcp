@@ -18,7 +18,7 @@
 
 `sharedScene.artwork.dataRegions`는 opt-in이다. 실행 직전 현재 연결된 `vectora://production/dialogue/schema`에서 요청 layout의 실제 schema branch를 확인하고, 같은 연결의 `vectora://production/dialogue` 입력 설명으로 호출 필드를 확인한 경우에만 쓴다. 미지원 구버전 앱에서는 필드를 생략하고 별도 편집 객체 조판을 명시적 fallback으로 쓰며 장면 영역과의 자동 바인딩이 없다고 밝힌다. 각 영역은 짧고 안정된 고유 `id`, 원화 `visibleBounds` 안에서 머리·이름·다른 자료 영역과 겹치지 않도록 검수한 원본 픽셀 `bounds:{x,y,width,height}`, `insetMm`(기본 1), `align`/`verticalAlign`(`start|center|end`, 생략 시 `start`)을 가진다. 내용은 `spec` 또는 프레임 없는 `text`와 선택적 `richText`다. `spec`은 독립 `table`, `graph`, 매체용 `kind:"text"` 프레임 또는 `composition`이며 구성 자식도 `spec` 또는 `text`/`richText`로 둔다. `richText.text`는 `text`와 정확히 같아야 한다. 모호한 표에는 실제 방문 경로의 `specRecipes` 매핑을 지정하고, 검수 없는 고정 좌표를 복사하지 않는다.
 
-자식은 안정 ID의 native owner에 남겨 장면 변환을 반영하고 대화·내용 수정 때 자동 재흐름하게 한다. 원본 이미지와 데이터는 그대로 보존하며, 표 열은 명시 제약이 없으면 자동 배치한다. 제목·단위·축·범례·라벨·선 두께를 포함한 전체 paint bounds가 영역 안에 드는지 확인하고 8pt를 유지한다. 말풍선·꼬리·이름과 자료 paint가 겹치면 artwork.md의 안전영역 원칙으로 원화 영역과 대화 배치를 조정해 데이터와 대화가 서로를 가리지 않게 한다. 공간 부족 오류는 글자 축소, 그룹 스케일, 원문 라벨 축약을 허가하지 않는다.
+자식은 안정 ID의 native owner에 남겨 장면 변환을 반영하고 대화·내용 수정 때 자동 재흐름하게 한다. 원본 이미지와 데이터는 그대로 보존하며, 표 열은 명시 제약이 없으면 자동 배치한다. 제목·단위·축·범례·라벨·선 두께를 포함한 전체 paint bounds가 영역 안에 드는지 확인하고 각 역할에서 선택한 문자 프로필의 크기를 유지한다. 말풍선·꼬리·이름과 자료 paint가 겹치면 artwork.md의 안전영역 원칙으로 원화 영역과 대화 배치를 조정해 데이터와 대화가 서로를 가리지 않게 한다. 공간 부족 오류는 글자 축소, 그룹 스케일, 원문 라벨 축약을 허가하지 않는다.
 
 라이브 계약의 `sharedScene.board:{title,titleRichText?}`는 읽을 제목·칠판·받침을 별도로 소유하며 문단 박스와 부분 서식을 유지한다. 개별 원화가 필요한 단순한 접촉 장면은 `table:{kind:"projected-round",contacts:[{speakerId,assetId,x,y}]}`를 사용할 수 있다. 접점은 검수된 흉상/전신 래스터의 실제 받침 손 원본 픽셀 좌표이며, 얼굴 좌표나 동일한 y값으로 추측하지 않는다. 이 한 점 방식은 임의 자세나 두 팔의 자연스러움을 보증하지 않는다. 손끝이 닿아도 몸통 절단면이나 받침 팔이 떠 있으면 미완료다. 요청하지 않은 보드·탁자는 추가하지 않는다.
 

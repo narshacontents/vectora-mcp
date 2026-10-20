@@ -1,6 +1,6 @@
 {
   "name": "vectora",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "Local Vectora MCP and illustration skills for Gemini CLI on macOS and Windows.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
