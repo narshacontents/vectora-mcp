@@ -40,9 +40,9 @@ export function patchWindowsGraphFontLookup(targetRoot) {
   const value = readFileSync(helperPath, 'utf8');
   const oldFontSearch = `export function findFont(explicit){
   if(explicit)return explicit;
-  const dir=path.join(os.homedir(),'Library/Fonts');
-  const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UND(?:-v3\\.0|v30)-Regular\\.otf$/i.test(n));
-  check(file,'Installed UND v3.0 Regular font not found. Supply --font; no fallback is used.');
+  const dir=path.join(os.homedir(),'Library','Fonts');
+  const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UNDv31-Regular\\.ttf$/i.test(n));
+  check(file,'Installed UNDv31-Regular.ttf not found in ~/Library/Fonts. Supply --font; no UND v3.0 fallback is used.');
   return path.join(dir,file);
 }`;
   const newFontSearch = `export function findFont(explicit){
@@ -52,13 +52,13 @@ export function patchWindowsGraphFontLookup(targetRoot) {
     process.env.WINDIR&&path.join(process.env.WINDIR,'Fonts'),
   ].filter(Boolean);
   for(const dir of directories){
-    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UND(?:-v3\\.0|v30)-Regular\\.otf$/i.test(n));
+    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UNDv31-Regular\\.ttf$/i.test(n));
     if(file)return path.join(dir,file);
   }
-  check(false,'Installed UND v3.0 Regular OTF font not found in %LOCALAPPDATA%/Microsoft/Windows/Fonts or %WINDIR%/Fonts. Supply --font; no fallback is used.');
+  check(false,'Installed UNDv31-Regular.ttf not found in %LOCALAPPDATA%/Microsoft/Windows/Fonts or %WINDIR%/Fonts. Supply --font; no UND v3.0 fallback is used.');
 }`;
   if (value.split(oldFontSearch).length !== 2) {
-    throw new Error('Expected one canonical UND v3 font lookup to adapt for the Windows Codex package.');
+    throw new Error('Expected exactly one canonical UND v3.1 font lookup block before applying the Windows font-path adapter.');
   }
   writeFileSync(helperPath, value.replace(oldFontSearch, newFontSearch), 'utf8');
 }

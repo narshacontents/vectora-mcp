@@ -3,10 +3,15 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, lstatSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import test from 'node:test';
+import test, {after} from 'node:test';
 import { PLUGIN_ROOT, PLUGIN_VERSION } from '../scripts/build-packages.mjs';
+import {buildClaudePlugin} from '../scripts/build-claude-packages.mjs';
 
-const plugin = path.join(PLUGIN_ROOT, 'plugins', 'vectora');
+// Test a fresh package without changing checked-in or installed distributions.
+const packageFixture=mkdtempSync(path.join(os.tmpdir(),'vectora-package-contracts-'));
+after(()=>rmSync(packageFixture,{recursive:true,force:true}));
+const plugin=path.join(packageFixture,'vectora');
+buildClaudePlugin(plugin);
 const skill = path.join(plugin, 'skills', 'create-kice-illustration');
 const json = (relative) => JSON.parse(readFileSync(path.join(PLUGIN_ROOT, relative), 'utf8'));
 
@@ -22,9 +27,9 @@ test('Claude marketplace installs one self-contained plugin with three skills an
   const catalog = json('.claude-plugin/marketplace.json');
   assert.equal(catalog.name, 'vectora');
   assert.deepEqual(catalog.plugins.map(({ name, source }) => ({ name, source })), [{ name: 'vectora', source: './plugins/vectora' }]);
-  const manifest = json('plugins/vectora/.claude-plugin/plugin.json');
+  const manifest = JSON.parse(readFileSync(path.join(plugin,'.claude-plugin/plugin.json'),'utf8'));
   assert.equal(manifest.name, 'vectora'); assert.equal(manifest.version, PLUGIN_VERSION);
-  const server = json('plugins/vectora/.mcp.json').mcpServers.vectora;
+  const server = JSON.parse(readFileSync(path.join(plugin,'.mcp.json'),'utf8')).mcpServers.vectora;
   assert.equal(server.command, 'node');
   assert.deepEqual(server.args, ['${CLAUDE_PLUGIN_ROOT}/scripts/claude/claude-mcp-launcher.mjs']);
   assert.deepEqual(readdirSync(path.join(plugin, 'skills')).sort(), ['create-kice-illustration', 'create-kice-science-illustration', 'use-vectora']);
@@ -51,22 +56,21 @@ test('the science skill stays metadata-only in every marketplace plugin', () => 
 });
 
 test('Claude adaptations preserve the assessment artwork rules', () => {
-  const references = listFiles(path.join(PLUGIN_ROOT, 'skills/create-kice-illustration/references'))
-    .filter(file => file.endsWith('.md'));
-  assert.equal(references.filter(file=>file.startsWith('types/')).length, 10);
-  assert.equal(references.filter(file=>file.startsWith('subtypes/')).length, 54);
-  for (const name of references) {
-    const relative = `references/${name}`;
-    const expected = readFileSync(path.join(PLUGIN_ROOT, 'skills/create-kice-illustration', relative), 'utf8')
+  const sourceSkill=path.join(PLUGIN_ROOT,'skills/create-kice-illustration');
+  const documents=listFiles(sourceSkill).filter(file=>file.endsWith('.md') && /^(?:references|core|recipes|components|execution)\//.test(file));
+  assert.equal(documents.filter(file=>file.startsWith('references/families/')).length,10);
+  assert.equal(documents.filter(file=>/^recipes\/[^/]+\/[^/]+\.md$/.test(file)&&!file.startsWith('recipes/layouts/')).length,54);
+  for(const relative of [...documents,'references/rule-index.json','scripts/prepare_task.mjs','scripts/prepare_rules.mjs']){
+    const expected=readFileSync(path.join(sourceSkill,relative),'utf8')
       .replaceAll('node skills/create-kice-illustration/scripts/', 'node scripts/')
       .replaceAll('python3 skills/create-kice-illustration/scripts/', 'python3 scripts/');
-    assert.equal(readFileSync(path.join(skill, relative), 'utf8'), expected, name);
+    assert.equal(readFileSync(path.join(skill,relative),'utf8'),expected,relative);
   }
   const root = readFileSync(path.join(skill, 'SKILL.md'), 'utf8');
   assert.match(root, /Claude 로컬 실행 경계/);
   assert.match(root, /이미지 생성 모델을 포함하지 않는다/);
-  assert.match(readFileSync(path.join(skill,'references/people.md'),'utf8'), /STYLE CONTRACT: Draw a living human character/);
-  assert.match(readFileSync(path.join(skill,'references/rules/free-art.md'),'utf8'), /STYLE CONTRACT: Draw a clean grayscale/);
+  assert.match(readFileSync(path.join(skill,'components/people.md'),'utf8'), /STYLE CONTRACT: Draw a living human character/);
+  assert.ok(readFileSync(path.join(skill,'components/free-art.md'),'utf8').includes('STYLE CONTRACT: Draw the requested subject and action as a restrained grayscale editorial ink illustration'));
 });
 
 test('copied Claude helpers parse fonts and trace PNG without source-workspace dependencies', (t) => {

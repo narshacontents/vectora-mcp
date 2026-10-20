@@ -1,1 +1,0 @@
-- 복합형은 `kind:"composition",layout:"row"|"column"|"grid",widthMm,gapMm,maxHeightMm?,columns?,children`의 지원을 확인한다. 각 child는 안정된 고유 id와 `spec` 또는 `reserve` 하나이며 선택 widthMm를 가진다. grid에서만 columns를 쓴다. children은 최대32개, 중첩은 깊이6/총128개 한도다. 안정 ID와 수동 수정 보존을 확인한다. 내부 의미 단위는 각각 편집 가능한 컴포넌트로 유지하고 무조건 한 SVG로 평탄화하지 않는다. 무지원이면 기존 개체·그룹으로 같은 조판을 구성한다.

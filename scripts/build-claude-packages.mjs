@@ -76,7 +76,7 @@ function adaptUseVectora(skillRoot) {
 }
 
 function adaptCreateKice(skillRoot) {
-  // Client restrictions belong in the first/common document, never a fourth reference.
+  // Keep client availability boundaries discoverable at entry; production rules are selected per task.
   const skillPath = path.join(skillRoot, 'SKILL.md');
   updateFile(skillPath, (value) => replaceExactlyOnce(
     value,
@@ -89,9 +89,9 @@ Claude에서 현재 노출된 MCP 도구 목록으로 Vectora 연결·실제 도
 
 Claude 코드 실행 첨부 경로는 로컬 앱·글꼴 경로와 별개일 수 있다. 실제 노출된 vectora_fonts 및 제공되는 vectora_check_font/vectora_measure_text를 사용하고, SVG 문자열/data URL은 가져오기 스키마가 허용할 때만 전달한다. 첨부 경로를 Vectora 저장 경로로 재사용하지 말고 사용자가 지정한 실제 로컬 경로를 사용한다. Claude Code 로컬 플러그인에서는 번들된 보조 스크립트를 사용할 수 있다.
 
-이 패키지는 이미지 생성 모델을 포함하지 않는다. 먼저 현재 세션에 실제 연결된 외부 이미지 생성/편집 MCP 등의 도구를 확인한다. 있으면 선택 세부 문서와 인물 예외 문서의 해당 화풍 계약·참조 검색·배경 조건을 해당 도구의 실제 스키마에 맞춰 전달한다. 생성 결과는 실제로 열어 대상·화풍·배경을 확인하고 Vectora가 접근 가능한 로컬 파일 또는 지원되는 data URL로 가져온다. 원격 URL이나 Claude 첨부 경로를 로컬 파일 경로로 간주하지 않는다.
+이 패키지는 이미지 생성 모델을 포함하지 않는다. 먼저 현재 세션에 실제 연결된 외부 이미지 생성/편집 MCP 등의 도구를 확인한다. 있으면 이번 작업에 준비된 제작·인물 지침의 해당 화풍 계약·참조 검색·배경 조건을 해당 도구의 실제 스키마에 맞춰 전달한다. 생성 결과는 실제로 열어 대상·화풍·배경을 확인하고 Vectora가 접근 가능한 로컬 파일 또는 지원되는 data URL로 가져온다. 원격 URL이나 Claude 첨부 경로를 로컬 파일 경로로 간주하지 않는다.
 
-생성 도구 부재의 재사용 검토·생성 프롬프트·비최종 조판·미완료 보고는 선택 세부 문서의 「새 원화와 참조 검색」 규칙을 적용한다.`,
+생성 도구 부재의 재사용 검토·생성 프롬프트·비최종 조판·미완료 보고는 작업 지침의 「새 원화와 참조 검색」 규칙을 적용한다.`,
     'create-kice-illustration/SKILL.md client boundary',
   ));
 }
@@ -134,23 +134,27 @@ function addProductionSources(skillRoot) {
     value = replaceExactlyOnce(value, "'../../../src/production/graphs-core.mjs'", "'./production/graphs-core.mjs'", 'build_graph.mjs source import');
     const oldFontSearch = `export function findFont(explicit){
   if(explicit)return explicit;
-  const dir=path.join(os.homedir(),'Library/Fonts');
-  const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UND(?:-v3\\.0|v30)-Regular\\.otf$/i.test(n));
-  check(file,'Installed UND v3.0 Regular font not found. Supply --font; no fallback is used.');
+  const dir=path.join(os.homedir(),'Library','Fonts');
+  const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UNDv31-Regular\\.ttf$/i.test(n));
+  check(file,'Installed UNDv31-Regular.ttf not found in ~/Library/Fonts. Supply --font; no UND v3.0 fallback is used.');
   return path.join(dir,file);
 }`;
     const newFontSearch = `export function findFont(explicit){
   if(explicit)return explicit;
   const directories=[
     path.join(os.homedir(),'Library','Fonts'),
-    path.join(os.homedir(),'AppData','Local','Microsoft','Windows','Fonts'),
+    process.env.LOCALAPPDATA&&path.join(process.env.LOCALAPPDATA,'Microsoft','Windows','Fonts'),
     path.join(process.env.WINDIR||'C:\\\\Windows','Fonts'),
-  ];
+    path.join(os.homedir(),'AppData','Local','Microsoft','Windows','Fonts'),
+    path.join(os.homedir(),'.local','share','fonts'),
+    '/usr/local/share/fonts',
+    '/usr/share/fonts',
+  ].filter(Boolean);
   for(const dir of directories){
-    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UND(?:-v3\\.0|v30)-Regular\\.otf$/i.test(n));
+    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UNDv31-Regular\\.ttf$/i.test(n));
     if(file)return path.join(dir,file);
   }
-  throw new Error('Installed UND v3.0 Regular OTF font not found. Supply --font; no fallback is used.');
+  throw new Error('Installed UNDv31-Regular.ttf not found in ~/Library/Fonts, %LOCALAPPDATA%/Microsoft/Windows/Fonts, %WINDIR%/Fonts, or standard Linux font directories. Supply --font; no UND v3.0 fallback is used.');
 }`;
     return replaceExactlyOnce(value, oldFontSearch, newFontSearch, 'build_graph.mjs font lookup');
   });

@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { buildClaudePlugin } from '../scripts/build-claude-packages.mjs';
-import { prepareRules, readIndex, writePreparedRules } from '../skills/create-kice-illustration/scripts/prepare_rules.mjs';
+import { filterModuleBlocks, prepareRules, readIndex, writePreparedRules } from '../skills/create-kice-illustration/scripts/prepare_rules.mjs';
+import { prepareTask, writeTask } from '../skills/create-kice-illustration/scripts/prepare_task.mjs';
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skill=path.join(repo,'skills/create-kice-illustration');
 const read=rel=>readFileSync(path.join(skill,rel),'utf8');
@@ -84,8 +85,13 @@ const approvedLeaves = {
 
 const corpusKeys=Object.values(approvedLeaves).flat().sort();
 const executionKeys=['photo-original','illustration-portrait','illustration-object','illustration-scene'];
-const make=(subtype,extra={})=>prepareRules({subtype,...extra});
-
+// Semantic assertions inspect the task that a producer actually receives.
+const make=(subtype,extra={})=>{
+ const task=prepareTask({units:[{id:'subject',recipe:subtype,...extra}]});
+ const selected=task.resolved[0];
+ return {...selected,hasPeople:selected.people,task,content:Object.values(task.contents).join('\n\n')};
+};
+const combinedRules=result=>result.content;
 test('v3 taxonomy keeps ten types and all 50 corpus leaves, plus four explicitly execution-only paths',()=>{
  assert.deepEqual(Object.keys(index.types).sort(),Object.keys(approvedLeaves).sort());
  assert.deepEqual(Object.keys(index.subtypes).filter(x=>!executionKeys.includes(x)).sort(),corpusKeys);
@@ -94,45 +100,62 @@ test('v3 taxonomy keeps ten types and all 50 corpus leaves, plus four explicitly
   assert.ok(existsSync(path.join(skill,row.file)),key);
   assert.ok(read(row.file).length>30,key);
  }
- for(const rel of Object.values(index.modules))assert.ok(existsSync(path.join(skill,rel)),rel);
+ const visit=(value,field='index')=>{
+  if(Array.isArray(value))value.forEach((item,n)=>visit(item,`${field}[${n}]`));
+  else if(value&&typeof value==='object')for(const [key,item] of Object.entries(value))visit(item,`${field}.${key}`);
+  else if(typeof value==='string' && (/^(?:references|recipes|components|execution|core|assets|scripts)\//.test(value)||/\.(?:md|json|mjs|js|py|svg|png|jpg)$/.test(value)))assert.ok(existsSync(path.join(skill,value)),`${field}: ${value}`);
+ };
+ visit(index);
  assert.equal(new Set(Object.values(index.modules)).size,Object.keys(index.modules).length,'one canonical file per block');
- assert.match(read('references/types/I1_Photo.md'),/자료 분류에는 하위 코드가 없다/);
- assert.match(read('references/types/I2_Illustration.md'),/자료 분류에는 하위 코드가 없/);
+ const taxonomy=read('references/taxonomy.md');
+ for(const type of ['I1_Photo','I2_Illustration']){
+  const section=taxonomy.match(new RegExp(`## ${type}[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)`));
+  assert.ok(section,type);assert.match(section[1],/자료 분류에는 하위 코드가 없/,type);
+ }
 });
 
-test('every subtype and supported variant prepares a complete third-level document',t=>{
- const temporary=mkdtempSync(path.join(os.tmpdir(),'kice-rule-paths-'));let count=0;
- try {
-  for(const [subtype,row] of Object.entries(index.subtypes)) for(const variant of row.variants?Object.keys(row.variants):[undefined]) {
-   const result=writePreparedRules({subtype,variant},temporary);
-   assert.equal(result.read.length,row.peopleRequired?4:3,subtype);
-   assert.equal(result.read[0],path.join(skill,'SKILL.md'));
-   assert.equal(result.read[1],path.join(skill,index.types[row.type]));
-   const leaf=readFileSync(result.subtypeFile,'utf8');
-   assert.match(leaf,/세 번째 지침/);assert.ok(leaf.length>200,subtype);
-   assert.equal(new Set(result.modules).size,result.modules.length);
-   if(row.peopleRequired)assert.equal(result.read[3],path.join(skill,'references/people.md'));
-   count++;
+test('every subtype and supported variant retains its selected production rules',t=>{
+ let count=0;
+ for(const [subtype,row] of Object.entries(index.subtypes))for(const variant of row.variants?Object.keys(row.variants):[undefined]){
+  const result=make(subtype,{variant});
+  const sources=Object.values(result.task.phaseSources).flat().map(source=>source.path);
+  assert.ok(sources.includes(index.types[row.type]),subtype);
+  assert.ok(sources.includes(row.file),subtype);
+  assert.ok(result.content.includes(read(row.file).split('\n')[0]),subtype);
+  assert.ok(result.content.length>200,subtype);
+  assert.equal(new Set(result.modules).size,result.modules.length);
+  for(const module of result.modules)assert.ok(sources.includes(index.modules[module]),`${subtype}: ${module}`);
+  assert.equal(sources.includes(index.people.file),result.hasPeople,subtype);
+  for(const source of sources){
+   const expected=filterModuleBlocks(read(source).trim(),new Set(result.modules),new Set(Object.keys(index.modules)),source);
+   assert.ok(result.content.includes(expected),`${subtype}: complete content of ${source}`);
   }
-  t.diagnostic(`${count} complete selection routes verified`);
- }finally{rmSync(temporary,{recursive:true,force:true});}
+  count++;
+ }
+ t.diagnostic(`${count} complete selection routes verified`);
 });
 
 test('common file excludes subtype-only style, media and map contracts',()=>{
  const root=read('SKILL.md');
  assert.ok(root.length<18000);assert.equal(root.split('<!-- VECTORA_CLIENT_BOUNDARY -->').length,2);
  for(const token of ['STYLE CONTRACT:', 'map-korea-sido-2025','bodyHeight','boundaryDashPt','barWidthMm','신문 외피','두루마리 외피','승인 원화와 읽기 전용 계획'])assert.ok(!root.includes(token),token);
- for(const token of ['108mm','UNDv30-Regular','charSpacing:-60','scale:4','transparent:false','실제 JPEG','prepare_rules.mjs'])assert.ok(root.includes(token),token);
+ const task=make('ITA-1_TypeBoard',{variant:'newspaper'}).task;
+ for(const token of ['108mm','UND v3.0','장평 95%','charSpacing:-60','BoldItalic'])assert.ok(task.contents.design.includes(token),token);
+ for(const token of ['scale:4','transparent:false','실제 JPEG'])assert.ok(task.contents.deliver.includes(token),token);
+ assert.ok(root.includes('prepare_task.mjs'));
 });
 
 test('representative selections contain required rules and exclude unrelated sibling rules',()=>{
- const pie=make('D2-03_Pie').content;
+ const pieSelection=make('D2-03_Pie'),pie=pieSelection.content;
+ assert.ok(!pieSelection.task.phaseSources.design.some(source=>source.path===index.modules['chart-axes']));
  assert.match(pie,/각도=비율×360/);assert.match(pie,/#EEEEEE/);
  assert.doesNotMatch(pie,/Y지표명|yTitleOrientation|barWidthMm|보조 파선 선/);
- assert.doesNotMatch(read('references/types/D2_Chart.md'),/보조 파선을 기본|이중 축은|축 눈금·부호/);
+ assert.doesNotMatch(read(index.types.D2_Chart),/보조 파선을 기본|이중 축은|축 눈금·부호/);
  assert.doesNotMatch(read('SKILL.md'),/oceanFill|highlightFill|Native graph\/map production/);
- const line=make('D2-04_Line').content;
- for(const token of ['0.4pt','1.5/1pt','가로 보조 파선','chartStyle:"line"','xNumeric'])assert.ok(line.includes(token),token);
+ const lineSelection=make('D2-04_Line'),line=lineSelection.content;
+ assert.ok(lineSelection.task.phaseSources.design.some(source=>source.path===index.modules['chart-axes']));
+ assert.match(lineSelection.task.contents.design,/주요 Y눈금의 가로 파선/);
+ for(const token of ['0.4pt','1.5/1pt','chartStyle:"line"','xNumeric'])assert.ok(line.includes(token),token);
  assert.doesNotMatch(line,/barWidthMm|dumbbell에서만|radarStartAngle/);
  const oldMap=make('I3-13_OldMap').content;
  assert.match(oldMap,/실제 원본을 이미지 개체로 유지/);assert.doesNotMatch(oldMap,/vectora_list_presets|mapSchemaVersion|등고선은 검증 가능한/);
@@ -153,17 +176,108 @@ test('representative selections contain required rules and exclude unrelated sib
  const photoPresenter=make('ITC-2_RealPhoto',{variant:'presentation'}).content;
  assert.match(photoPresenter,/사진을 재생성해 해결하지 않는다/);
  assert.doesNotMatch(photoPresenter,/그 배치에 맞는 인물을 새로 생성|다시 생성한다/);
- const fixedScene=make('ITC-4_Costume',{variant:'scene'}).content;assert.match(fixedScene,/STYLE CONTRACT: Draw a clean grayscale/);
+ const fixedScene=make('ITC-4_Costume',{variant:'scene'}).content;assert.match(fixedScene,/STYLE CONTRACT: Draw the requested subject and action as a restrained grayscale/);
  const scene=make('illustration-scene',{people:true});assert.equal(scene.hasPeople,true);
- assert.match(scene.content,/STYLE CONTRACT: Draw a clean grayscale/);assert.doesNotMatch(scene.content,/전체 그림의 좌우 끝에 붙이며|registerAsset/);
+ assert.match(scene.content,/STYLE CONTRACT: Draw the requested subject and action as a restrained grayscale/);assert.doesNotMatch(scene.content,/전체 그림의 좌우 끝에 붙이며|registerAsset/);
 });
 
-test('people style is single-source and only the explicit people exception adds a file',()=>{
- assert.match(read('references/people.md'),/STYLE CONTRACT: Draw a living human character/);
- assert.match(read('references/people.md'),/statues, sculptural busts/);
- assert.match(read('references/people.md'),/원본 인물 사진·기존 작품/);
- assert.match(read('references/people.md'),/이 절의 화풍·생성·수정 생성 검사는 새로 그린 인물/);
- assert.match(read('references/rules/person-speech.md'),/실제 사진·기존 작품의 인물은 원본 충실도로 승인/);
+test('migrated rules preserve key behavior, allowed selection scope and selected family rules',()=>{
+ const removed=['flat-table','bar-options','dot-options','concept-options','continuous-api','presentation-photo'];
+ for(const name of removed){
+  assert.equal(index.modules[name],undefined,`${name} has no module reference`);
+  assert.equal(existsSync(path.join(skill,`references/rules/${name}.md`)),false,`${name} source was removed`);
+ }
+ const flatHeading='## 단일 머리의 목록표 공통 — Flat·MultiFlat';
+ const flat01=make('D1-01_Flat'),flat02=make('D1-02_MultiFlat');
+ for(const result of [flat01,flat02]){
+  const aggregate=combinedRules(result);
+  assert.ok(aggregate.includes(flatHeading));
+  assert.match(aggregate,/rowId\/columnId/);
+  assert.match(aggregate,/전치로 의미가 달라지는 표를 교차표로 취급하지 않는다/);
+  assert.ok(aggregate.includes(read('core/style.md').trim()));
+ }
+ for(const subtype of approvedLeaves.D1_Table){
+  const selected=make(subtype);
+  assert.equal(selected.modules.includes('flat-table-layout'),['D1-01_Flat','D1-02_MultiFlat'].includes(subtype),subtype);
+  assert.ok(selected.modules.includes('table-api'),subtype);
+  assert.ok(selected.task.contents.execute.includes(read(index.modules['table-api']).trim()),subtype);
+  assert.doesNotMatch(read(index.subtypes[subtype].file),/## 단일 머리의 목록표 공통/);
+ }
+ assert.match(read(index.modules['flat-table-layout']),/rowId\/columnId/);
+ assert.equal(combinedRules(make('D1-03_Cross')).includes(flatHeading),false,'cross tables exclude the flat-only rule');
+
+ const bar01=make('D2-01_Bar'),bar02=make('D2-02_StackedBar');
+ for(const result of [bar01,bar02]){
+  const aggregate=combinedRules(result);
+  assert.match(aggregate,/- 막대: `barWidthMm`와 `groupGapMm`/);
+  assert.match(aggregate,/`barGapRatio`는 0–3이다/);
+  assert.ok(aggregate.includes(read('core/style.md').trim()));
+ }
+ for(const subtype of approvedLeaves.D2_Chart){
+  const selected=make(subtype);
+  assert.equal(selected.modules.includes('bar-sizing'),['D2-01_Bar','D2-02_StackedBar'].includes(subtype),subtype);
+  assert.equal(selected.modules.includes('continuous-graph-api'),false,subtype);
+  assert.doesNotMatch(read(index.subtypes[subtype].file),/barWidthMm|barGapRatio/);
+ }
+ assert.match(read(index.modules['bar-sizing']),/`barGapRatio`는 0–3이다/);
+ assert.equal(combinedRules(make('D2-03_Pie')).includes('- 막대: `barWidthMm`'),false,'pie charts exclude bar options');
+
+ const dot=combinedRules(make('D2-06_Dot'));
+ assert.match(dot,/덤벨 방향: `orientation:"horizontal"\|"vertical"`은 dumbbell에서만 사용한다/);
+ assert.equal(combinedRules(make('D2-05_Scatter')).includes('덤벨 방향:'),false,'scatter excludes dot-only options');
+
+ for(const subtype of approvedLeaves.D3_Graph){
+  const result=make(subtype),aggregate=combinedRules(result);
+  assert.match(aggregate,/chartOptions:\{mode:"concept",semanticLabels:/,subtype);
+  assert.match(aggregate,/legacy 연속 선은 폭 40–108mm/,subtype);
+  assert.ok(result.modules.includes('continuous-graph-api'),subtype);
+  assert.ok(result.task.contents.execute.includes(read(index.modules['continuous-graph-api']).trim()),subtype);
+  assert.doesNotMatch(result.task.contents.design,/chartOptions:\{mode:"concept"|legacy 연속 선은 폭/);
+  assert.match(aggregate,/## 연속 관계의 공통 규칙/,subtype);
+  assert.ok(aggregate.includes(read('core/style.md').trim()),`${subtype} includes shared style`);
+  assert.ok(aggregate.includes('# D3_Graph'),`${subtype} includes selected family`);
+  const recipeSource=read(index.subtypes[subtype].file).trim();
+  const selectedRecipe=filterModuleBlocks(recipeSource,new Set(result.modules),new Set(Object.keys(index.modules)),index.subtypes[subtype].file);
+  assert.ok(result.task.contents.design.includes(selectedRecipe),`${subtype} includes its applicable recipe guidance`);
+  assert.equal(index.subtypes[subtype].modules.some(module=>removed.includes(module)),false,`${subtype} has no migrated rule modules`);
+ }
+ const chartAggregate=combinedRules(make('D2-04_Line'));
+ assert.doesNotMatch(chartAggregate,/chartOptions:\{mode:"concept",semanticLabels:/);
+ assert.doesNotMatch(chartAggregate,/legacy 연속 선은 폭 40–108mm/);
+
+ const photoScene=make('ITC-2_RealPhoto',{variant:'scene'});
+ const photoHorizontal=make('ITC-2_RealPhoto',{variant:'horizontal'});
+ const photoPresentation=make('ITC-2_RealPhoto',{variant:'presentation'});
+ const photoHeading='## 실제 인물 사진의 발표 배치';
+ assert.equal(combinedRules(photoScene).includes(photoHeading),false);
+ assert.equal(combinedRules(photoHorizontal).includes(photoHeading),false);
+ assert.ok(combinedRules(photoPresentation).includes(photoHeading));
+ assert.match(combinedRules(photoPresentation),/원본 보존과 지정 치수가 충돌하면 충돌을 밝히며 사진을 재생성해 해결하지 않는다/);
+ assert.equal(photoPresentation.modules.includes('presentation-photo'),false);
+ assert.equal(photoPresentation.modules.includes('presentation-artwork'),false);
+ const generatedPresenter=make('ITA-2_Solo');
+ assert.ok(generatedPresenter.modules.includes('presentation-artwork'));
+ assert.match(generatedPresenter.content,/새 발표자 원화 제작/);
+});
+
+test('conditional module blocks reject absent conditions and unclosed markers clearly',()=>{
+ const known=new Set(Object.keys(index.modules));
+ const enabled=new Set(['presentation']);
+ assert.equal(filterModuleBlocks('before<!-- when-module:presentation -->photo<!-- /when-module -->after',enabled,known),'beforephotoafter');
+ assert.equal(filterModuleBlocks('before<!-- when-module:presentation -->photo<!-- /when-module -->after',new Set(),known),'beforeafter');
+ assert.throws(()=>filterModuleBlocks('<!-- when-module:missing -->x<!-- /when-module -->',enabled,known),/Unknown conditional module.*missing/);
+ assert.throws(()=>filterModuleBlocks('<!-- when-module:presentation -->x',enabled,known),/Unclosed when-module:presentation/);
+ assert.throws(()=>filterModuleBlocks('<!-- when-module -->x<!-- /when-module -->',enabled,known),/Malformed conditional module marker/);
+ assert.throws(()=>filterModuleBlocks('<!-- /when-module -->',enabled,known),/close without open/);
+ assert.throws(()=>filterModuleBlocks('<!-- when-module: -->x<!-- /when-module -->',enabled,known),/Invalid conditional module/);
+});
+
+test('people component retains artwork style and original-photo exemptions',()=>{
+ assert.match(read(index.people.file),/STYLE CONTRACT: Draw a living human character/);
+ assert.match(read(index.people.file),/statues, sculptural busts/);
+ assert.match(read(index.people.file),/원본 인물 사진·기존 작품/);
+ assert.match(read(index.people.file),/이 절의 화풍·생성·수정 생성 검사는 새로 그린 인물/);
+ assert.match(read(index.modules['person-speech']),/실제 사진·기존 작품은 원본 충실도로 승인하고 새 화풍이나 수정 생성을 요구하지 않는다/);
  assert.doesNotMatch(read('SKILL.md'),/STYLE CONTRACT:/);
  const portrait=make('illustration-portrait');assert.equal(portrait.hasPeople,true);
  assert.equal(make('illustration-object').hasPeople,false);
@@ -171,16 +285,17 @@ test('people style is single-source and only the explicit people exception adds 
 });
 
 test('preparer rejects missing choices and invalid scopes without dumping every rule',()=>{
- assert.throws(()=>make('ITA-1_TypeBoard'),/requires --variant/);
- assert.throws(()=>make('D2-03_Pie',{variant:'newspaper'}),/no --variant/);
- assert.throws(()=>make('D1-01_Flat',{features:['korea']}),/does not apply/);
- assert.throws(()=>make('I3-13_OldMap',{features:['dem']}),/original old-map/);
- assert.throws(()=>make('ITA-4_DialogueV',{people:true,features:['messenger']}),/people-free/);
- assert.throws(()=>make('ITC-2_RealPhoto',{variant:'horizontal',features:['artwork']}),/actual portrait/);
- assert.throws(()=>make('ITA-3_DialogueH',{features:['speech-vertical']}),/Conflicting layouts/);
- assert.throws(()=>make('ITA-4_DialogueV',{features:['messenger','speech-horizontal']}),/Conflicting layouts/);
- assert.throws(()=>make('bad'),/Unknown subtype/);
- assert.throws(()=>make('D1-01_Flat',{features:['typo']}),/Unknown feature/);
+ const prepareRulesSelection=(subtype,extra={})=>prepareRules({subtype,...extra});
+ assert.throws(()=>prepareRulesSelection('ITA-1_TypeBoard'),/requires --variant/);
+ assert.throws(()=>prepareRulesSelection('D2-03_Pie',{variant:'newspaper'}),/no --variant/);
+ assert.throws(()=>prepareRulesSelection('D1-01_Flat',{features:['korea']}),/does not apply/);
+ assert.throws(()=>prepareRulesSelection('I3-13_OldMap',{features:['dem']}),/original old-map/);
+ assert.throws(()=>prepareRulesSelection('ITA-4_DialogueV',{people:true,features:['messenger']}),/people-free/);
+ assert.throws(()=>prepareRulesSelection('ITC-2_RealPhoto',{variant:'horizontal',features:['artwork']}),/actual portrait/);
+ assert.throws(()=>prepareRulesSelection('ITA-3_DialogueH',{features:['speech-vertical']}),/Conflicting layouts/);
+ assert.throws(()=>prepareRulesSelection('ITA-4_DialogueV',{features:['messenger','speech-horizontal']}),/Conflicting layouts/);
+ assert.throws(()=>prepareRulesSelection('bad'),/Unknown subtype/);
+ assert.throws(()=>prepareRulesSelection('D1-01_Flat',{features:['typo']}),/Unknown feature/);
 });
 
 test('prepared files are deterministic, cannot overwrite user files or alter installed rules',()=>{
@@ -188,7 +303,7 @@ test('prepared files are deterministic, cannot overwrite user files or alter ins
  try {
   const selection={subtype:'D2-04_Line'};
   const first=writePreparedRules(selection,temporary),second=writePreparedRules(selection,temporary);
-  assert.equal(first.subtypeFile,second.subtypeFile);assert.equal(first.read.length,3);
+  assert.equal(first.subtypeFile,second.subtypeFile);assert.ok(first.read.every(file=>existsSync(file)));
   writeFileSync(first.subtypeFile,'user content');
   assert.throws(()=>writePreparedRules(selection,temporary));assert.equal(readFileSync(first.subtypeFile,'utf8'),'user content');
   const invalid=path.join(skill,'should-not-be-created');
@@ -197,22 +312,22 @@ test('prepared files are deterministic, cannot overwrite user files or alter ins
 });
 
 test('circled marker spacing retains native Alt+Space and body-only underline',()=>{
- const root=read('SKILL.md');
+ const root=prepareTask({units:[{recipe:'vertical-dialogue',contains:['underline']}]}).contents.design;
  for(const token of ['Alt+Space','U+2002','㉠\u2002본문'.replace('\\u2002','\u2002'),'일반 공백 폭의 절반','원문자와 반칸은 밑줄 범위에서 제외','textRange/underlines 위치를 다시 계산'])assert.ok(root.includes(token),token);
 });
 
-test('portable helper and Claude packaging keep the same three-file routing',()=>{
- const help=execFileSync(process.execPath,[path.join(skill,'scripts/prepare_rules.mjs'),'--help'],{encoding:'utf8'});
- for(const token of ['--out','--variant','--features','--people','I3-13_OldMap','photo-original'])assert.ok(help.includes(token));
+test('portable task helper and Claude packaging preserve selected rules',()=>{
+ const help=execFileSync(process.execPath,[path.join(skill,'scripts/prepare_task.mjs'),'--help'],{encoding:'utf8'});
+ for(const token of ['--request','--out','recipe','variant','features','people'])assert.ok(help.includes(token),token);
  const temporary=mkdtempSync(path.join(os.tmpdir(),'kice-claude-routing-'));
  try{
   buildClaudePlugin(path.join(temporary,'plugin'));
   const staged=path.join(temporary,'plugin/skills/create-kice-illustration');
   const root=readFileSync(path.join(staged,'SKILL.md'),'utf8');
   assert.match(root,/Claude 로컬 실행 경계/);assert.match(root,/이미지 생성 모델을 포함하지 않는다/);
-  const result=writePreparedRules({subtype:'D2-03_Pie'},path.join(temporary,'prepared'),staged);
-  assert.equal(result.read.length,3);
-  assert.ok(result.read.every(p=>realpathSync(p).startsWith(realpathSync(temporary))));
-  assert.match(readFileSync(result.subtypeFile,'utf8'),/각도=비율×360/);
+  const result=writeTask({client:'claude',units:[{recipe:'pie'}]},path.join(temporary,'prepared'),staged);
+  const files=[...result.readNow,...result.beforeExecute,...result.beforeDeliver];
+  assert.ok(files.every(p=>realpathSync(p).startsWith(realpathSync(temporary))));
+  assert.match(readFileSync(result.readNow[0],'utf8'),/각도=비율×360/);
  }finally{rmSync(temporary,{recursive:true,force:true});}
 });

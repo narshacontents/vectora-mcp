@@ -1,0 +1,14 @@
+# Native 3D 곡면 실행 계약
+
+실제 실행 직전에 현재 연결된 Vectora의 `vectora://production/graph/schema`와 `vectora_production` 입력 schema를 읽어 `kind:"graph", type:"surface"` 및 이번 요청의 필드가 지원되는지 확인한다. 이 저장소의 C22 source 계약이나 예시는 설치 기능의 증거가 아니다. live schema에 surface branch가 없거나 확인할 수 없으면 native surface를 호출하지 말고 기존 편집 가능한 path/면 경로로 전환한다.
+
+## 입력과 충실도
+
+- 요청 의미와 제목을 그대로 보존한다. exact는 제공된 식·격자값을 그대로 나타내고, approximate는 출처 관계의 근사임을 밝히며, concept는 정성 관계만 보여준다. concept에 근거 없는 수치·눈금·실측 의미를 덧붙이지 않는다.
+- 지원 schema에 맞춰 명시된 완전한 X/Y/Z 격자 또는 명명된 변수·매개변수·정의역·샘플을 갖춘 식 중 하나를 사용한다. 식은 live parser가 허용하는 안전한 산술식과 지원 함수만 사용하며, 코드 실행·JavaScript·임의 함수 평가를 시도하지 않는다. 격자의 X/Y는 유한하고 증가해야 하며 Z는 빈 칸 없는 직사각 배열이어야 한다.
+- 곡면·mesh·윤곽·축은 하나의 orthographic projection을 공유한다. 투영 가림을 자료의 구멍이나 불연속으로 오해하지 않는다.
+- 축명, 제목, 변수 기호의 원문과 의미를 추측·자동 변경하지 않는다. 축별 연결감과 실제 글자 간격을 확인한다. `widthMm`와 폭 맞춤은 곡면 기하만 조정하며 UND Regular 8pt 문자와 실제 획 두께를 확대·축소하지 않는다.
+- 요청된 식, 매개변수, 격자, 정의역 또는 투영이 바뀌면 저장된 source 값을 기준으로 표면·가림·윤곽·축·측정된 라벨 배치를 전부 재생성한다. 일부 이전 점/윤곽을 섞어 재사용하지 않는다.
+- 폭 변경은 지원되는 `widthMm` source 갱신 또는 네이티브 그래프/기존 native parent 단독 `fitContentWidth`로 수행한다. 독립 보충 문자가 있을 때는 재생성된 표면의 새 geometry를 기준으로 위치만 다시 잡고 UND Regular 8pt를 유지한다.
+
+이 branch는 제한된 orthographic 단일값 높이장이다. perspective, overhang, 닫힌 입체, 다중 높이, 산포 삼각망, 빈 격자 셀 보간, 임의 함수, 사용자 정의 표면 채움, 자동 수치 눈금은 지원 계약 밖이다. 기본 표면이 지원되면 생성기로 그 전체 기하를 만든 뒤, 개별 옵션이나 작은 시각 요소만 미지원일 때 해당 부분만 편집 가능한 path/text로 보충한다. 가짜 `series`나 `chartStyle`, 지원하지 않는 필드를 만들지 않으며, 보충 요소가 기본 생성 결과와 중복되거나 의미를 바꾸지 않는지 확인한다.

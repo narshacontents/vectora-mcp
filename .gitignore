@@ -8,3 +8,6 @@ __pycache__/
 .env*
 *.pem
 *.key
+
+# Local generation and verification evidence; never marketplace payloads.
+artifacts/

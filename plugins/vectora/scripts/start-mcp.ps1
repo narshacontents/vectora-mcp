@@ -72,8 +72,70 @@ if ($isOldVersion -or $isUnreleasedPrerelease) {
     Stop-VectoraMcp "Vectora 1.0.0 or later is required; selected version is $versionText."
 }
 
-# Electron treats this variable as a Node.js child-process request. Never inherit it into Vectora.
+# Electron must not inherit the Node child-process switch.
 Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue
+
+# Capture the actual client, not only this long-lived PowerShell bridge.
+$hostInfo = Get-CimInstance Win32_Process -Filter "ProcessId = $PID" -ErrorAction Stop
+$hostProcess = [System.Diagnostics.Process]::GetProcessById([int]$hostInfo.ParentProcessId)
+# Force a handle now so a later PID reuse cannot turn a dead host into a live one.
+[void]$hostProcess.Handle
+
+# A per-launch job owns only this MCP process tree. Closing/crashing the bridge
+# closes the job handle and reclaims Chromium children, even after main exits.
+Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+public static class VectoraMcpJob {
+    [StructLayout(LayoutKind.Sequential)] struct Basic {
+        public long ProcessTime, JobTime; public uint Flags;
+        public UIntPtr Minimum, Maximum; public uint Active; public UIntPtr Affinity;
+        public uint Priority, Scheduling;
+    }
+    [StructLayout(LayoutKind.Sequential)] struct Counters { public ulong A, B, C, D, E, F; }
+    [StructLayout(LayoutKind.Sequential)] struct Extended {
+        public Basic Limits; public Counters IO; public UIntPtr ProcessMemory, JobMemory, PeakProcess, PeakJob;
+    }
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)] static extern IntPtr CreateJobObject(IntPtr security, string name);
+    [DllImport("kernel32.dll", SetLastError=true)] static extern bool SetInformationJobObject(IntPtr job, int info, IntPtr data, uint length);
+    [DllImport("kernel32.dll", SetLastError=true)] static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
+    [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr handle);
+    public static IntPtr Create() {
+        IntPtr job = CreateJobObject(IntPtr.Zero, null);
+        if (job == IntPtr.Zero) throw new Win32Exception();
+        var value = new Extended(); value.Limits.Flags = 0x2000; // KILL_ON_JOB_CLOSE
+        int size = Marshal.SizeOf(value); IntPtr data = Marshal.AllocHGlobal(size);
+        try {
+            Marshal.StructureToPtr(value, data, false);
+            if (!SetInformationJobObject(job, 9, data, (uint)size)) throw new Win32Exception();
+            return job;
+        } catch { CloseHandle(job); throw; } finally { Marshal.FreeHGlobal(data); }
+    }
+    public static void Assign(IntPtr job, IntPtr process) {
+        if (!AssignProcessToJobObject(job, process)) throw new Win32Exception();
+    }
+}
+'@
+function Stop-OwnedProcessTree {
+    param([System.Diagnostics.Process]$OwnedProcess)
+    if ($null -eq $OwnedProcess -or $OwnedProcess.HasExited) { return }
+    $killInfo = [System.Diagnostics.ProcessStartInfo]::new()
+    $killInfo.FileName = Join-Path $env:SystemRoot 'System32\taskkill.exe'
+    $killInfo.Arguments = "/PID $($OwnedProcess.Id) /T /F"
+    $killInfo.UseShellExecute = $false
+    $killInfo.CreateNoWindow = $true
+    $killInfo.RedirectStandardOutput = $true
+    $killInfo.RedirectStandardError = $true
+    $killer = [System.Diagnostics.Process]::Start($killInfo)
+    try {
+        [void]$killer.StandardOutput.BaseStream.CopyToAsync([System.IO.Stream]::Null)
+        [void]$killer.StandardError.BaseStream.CopyToAsync([Console]::OpenStandardError())
+        if (-not $killer.WaitForExit(5000)) { [Console]::Error.WriteLine('Vectora MCP: process-tree cleanup timed out.') }
+    } finally { $killer.Dispose() }
+}
+
+# Electron treats this variable as a Node.js child-process request. Never inherit it into Vectora.
 
 # Electron's Windows GUI stdin can close before the MCP handshake. Use a
 # current-user-only duplex pipe inside the launcher; Codex still sees stdio.
@@ -89,23 +151,27 @@ $pipe = [System.IO.Pipes.NamedPipeServerStream]::new(
     [System.IO.Pipes.PipeTransmissionMode]::Byte,
     [System.IO.Pipes.PipeOptions]::Asynchronous, 65536, 65536, $pipeSecurity)
 $process = $null
+$job = [VectoraMcpJob]::Create()
 $exitCode = 1
 try {
     $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
     $startInfo.FileName = $vectoraExe
-    $startInfo.Arguments = "--mcp-stdio --mcp-pipe=$pipeName"
+    $startInfo.Arguments = "--mcp-stdio --mcp-pipe=$pipeName --mcp-host-pid=$($hostProcess.Id)"
     $startInfo.UseShellExecute = $false
     $startInfo.CreateNoWindow = $true
     $startInfo.EnvironmentVariables['ELECTRON_NO_ATTACH_CONSOLE'] = '1'
     $startInfo.RedirectStandardOutput = $true
     $startInfo.RedirectStandardError = $true
     $process = [System.Diagnostics.Process]::Start($startInfo)
+    try { [VectoraMcpJob]::Assign($job, $process.Handle) }
+    catch { Stop-OwnedProcessTree $process; throw }
     # Runtime console noise must never enter the JSON-RPC output channel.
     $noiseCopy = $process.StandardOutput.BaseStream.CopyToAsync([System.IO.Stream]::Null)
     $diagnosticCopy = $process.StandardError.BaseStream.CopyToAsync([Console]::OpenStandardError())
     $connection = $pipe.WaitForConnectionAsync()
     $clock = [System.Diagnostics.Stopwatch]::StartNew()
     while (-not $connection.Wait(100)) {
+        if ($hostProcess.HasExited) { throw 'MCP client exited during startup.' }
         if ($process.HasExited) { throw "Vectora exited before MCP connected (code $($process.ExitCode))." }
         if ($clock.Elapsed.TotalSeconds -gt 35) { throw 'Vectora MCP startup timed out.' }
     }
@@ -113,14 +179,14 @@ try {
     $inputCopy = [Console]::OpenStandardInput().CopyToAsync($pipe)
     $outputCopy = $pipe.CopyToAsync([Console]::OpenStandardOutput())
     while (-not $process.WaitForExit(250)) {
-        if ($inputCopy.IsCompleted -or $outputCopy.IsCompleted) {
+        if ($hostProcess.HasExited -or $inputCopy.IsCompleted -or $outputCopy.IsCompleted) {
             $pipe.Dispose()
-            if (-not $process.WaitForExit(5000)) { $process.Kill() }
+            if (-not $process.WaitForExit(5000)) { Stop-OwnedProcessTree $process }
             break
         }
     }
-    [void]$process.WaitForExit()
-    $exitCode = $process.ExitCode
+    if ($process.WaitForExit(5000)) { $exitCode = $process.ExitCode }
+    else { [Console]::Error.WriteLine('Vectora MCP: shutdown timed out; closing owned job.') }
     try { [void][Threading.Tasks.Task]::WaitAll(@($noiseCopy, $diagnosticCopy), 2000) } catch {}
 } catch {
     [Console]::Error.WriteLine("Vectora MCP: $($_.Exception.Message)")
@@ -128,9 +194,11 @@ try {
     $pipe.Dispose()
     if ($null -ne $process) {
         if (-not $process.HasExited) {
-            if (-not $process.WaitForExit(5000)) { $process.Kill() }
+            if (-not $process.WaitForExit(5000)) { Stop-OwnedProcessTree $process }
         }
         $process.Dispose()
     }
+    [void][VectoraMcpJob]::CloseHandle($job)
+    $hostProcess.Dispose()
 }
 exit $exitCode

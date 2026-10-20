@@ -23,8 +23,7 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 
 ## 점 편집과 프리셋
 
-- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
-- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.0 계열의 Regular 면 8pt·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임은 실제 UNDv30-Bold/UNDv30-Italic 면을 쓴다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
+- 새 도형은 채우기 없음·검정 선 0.4pt, 새 문자는 UND v3.1 계열의 Regular 면 8pt·장평 95%·자간 charSpacing:-60(1/1000em)이 기본이다. 굵게·기울임·굵은 기울임은 현재 설치된 해당 계열의 실제 면을 쓴다. 기본 UND는 한글·영문·숫자·기호 모두 SDIJ 돋움 기반이며 별도 UND v3.1 Batang(UND 3.1 바탕) 계열을 사용한다. 이 기본 자간은 가로·세로 새 문자 생성에 적용한다. 입력 스키마가 charSpacing을 노출하면 -60을 전달하고, 측정 도구가 있으면 실제 글꼴로 측정한다. 기존 문자의 서체·자간은 요청 없이 바꾸지 않는다. 혼합 라틴·한글 경계 문제를 수동 자간 값으로 가리지 말고 native text layout과 저장된 -60 값을 유지한다. 평가원 작업은 별도 제작 원칙의 유형별 선 굵기와 자간 등을 따른다.
 - `vectora_inspect(includeObjects:true)`의 `pathNodes`는 각 개체의 **문서 좌표 mm**와 0부터 시작하는 점 번호를 제공한다. `objects`의 원시 경로 px와 혼동하지 않는다.
 - 개별 점은 `vectora_apply`의 `{type:"pathPoint",id,index,point:{x,y}}`로 이동한다. `incoming`/`outgoing`은 곡률 핸들의 절대 좌표이며 `null`이면 그 핸들을 접는다. 점만 옮기면 연결된 핸들도 함께 움직인다. 사각형·타원 등의 한 꼭짓점을 수정하면 같은 ID를 유지한 편집 경로가 된다. 잠긴 대상은 먼저 해당 잠금을 해제한다.
 - 사용자가 프리셋을 요청하면 `vectora_list_presets`로 실제 ID를 조회하고 `vectora_create_preset`으로 새 문서를 만든다. 자료 틀과 말풍선은 빈 틀이며 그래프·모식도의 글·수치는 편집용 예시다. 사용자의 자료로 교체한다. 원 그래프 프리셋은 `pieChart` 명령으로 수치를 다시 수정할 수 있다. 통합사회 평가원 그림은 최신 create-kice-illustration 원칙으로 새로 설계하되, 지도 양식이 필요하면 해당 스킬의 지도 원칙에 따라 적합한 프리셋을 조회해 새 문서로 시작한다.
@@ -81,11 +80,12 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 - 하나의 텍스트 덩어리는 줄 수와 관계없이 하나의 편집 가능한 글상자로 만든다. 자동 줄바꿈·명시 개행과 부분 서식을 같은 개체 안에 유지한다. 한 줄씩 글상자를 만들거나 그룹으로 묶어 대신하지 않는다. SVG/production에서 분리되면 전체 원문을 한 네이티브 글상자로 재구성하고 저장·재열기 뒤 실제 개체 수와 범위 서식을 확인한다.
 - 글상자의 부분 단일/이중 밑줄은 같은 ID의 native `textRange`에 적용한다. live schema가 지원하면 `textRange.values.doubleUnderline:true`를 쓴다. 범위는 grapheme 기준이며 명시 개행을 걸쳐 지정할 수 있다. 개행을 가로질러도 하나의 텍스트 객체와 범위 서식을 유지하고 글상자를 나누지 않는다. 별도 line/path/사각형으로 밑줄을 만들지 않는다.
 - Rich production text의 `underlines:[{start,end,double:true}]`는 해당 kind의 live schema가 노출될 때만 쓴다. 이 별도 payload는 grapheme 범위여도 명시 개행을 넘을 수 없으므로 개행마다 범위 메타데이터만 나누고 텍스트 객체는 하나로 둔다. 글 수정·줄바꿈 후 서식이 해당 문자열에 따라가는지 확인한다.
-- 실제 글꼴 목록 도구 vectora_fonts로 UND v3.0 및 UND v3.0 Body의 설치 face를 찾고, vectora_check_font가 현재 도구 목록에 있으면 실제 출력 문자열과 사용할 family/style/weight를 확인한다. supportsText와 missingGlyphs를 읽는다. 이름 검색만으로 글리프 존재를 보증하지 않는다.
-- 기존 0→⓪ 입력 변환은 유지한다. 현재 UND v3.0 면은 ⓪ 글리프를 제공하지 않으므로 UND 지원 문자라고 주장하지 말고 실제 누락 글리프로 보고한다.
+- 실제 글꼴 목록 도구 vectora_fonts로 UND v3.1과 UND v3.1 Batang 계열의 실제 설치 face를 찾고, vectora_check_font가 현재 도구 목록에 있으면 실제 출력 문자열과 사용할 family/style/weight를 확인한다. supportsText와 missingGlyphs를 읽는다. 이름 검색만으로 글리프 존재를 보증하지 않으며, 3.0 문서의 호환 로드를 신규 3.1 글꼴 검증으로 대신하지 않는다.
+- 기존 0→⓪ 입력 변환은 유지한다. ⓪를 포함한 실제 출력 기호는 위의 현재 설치 면 검사로 지원 여부를 판단하고, 확인된 누락만 보고한다. 예전 폰트의 누락 목록을 새 면에 그대로 적용하지 않는다.
 - vectora_open_document/vectora_import_svg의 현재 입력 스키마에 fontReplacements가 있을 때만 {"원본 글꼴명":"설치 글꼴명"} 형태의 매핑을 보낸다. MISSING_FONTS가 반환되면 목록과 vectora_fonts에서 실제 설치 글꼴을 확인하고 사용자가 선택한 경우만 재시도한다. 미지원 필드는 보내지 않고 UND v3.0을 임의 대체하지 않는다. 기존 문서의 글꼴은 요청 없이 변환하지 않는다.
-- 통합사회 평가원 작업은 create-kice-illustration의 최신 규칙을 읽고 UND v3.0을 기본으로 사용한다. 일반 명령에서 typography의 profile:kice를 지정하는 기능은 현재 입력 스키마에서 지원될 때만 쓴다. vectora_audit_illustration은 인쇄 크기·팔레트까지 보증하지 않는다.
-- 긴 산문에서는 텍스트 일러스트·문서·활동·대화의 영어 라틴 문자 범위에 UND v3.0 Body를 기본 적용한다. 한국어와 기호는 UND v3.0에 둔다. 한글 문장 안의 영어 단어도 범위별 textRange/fontFamily 서식을 적용하며, 문단 전체를 Body로 바꾸지 않는다. 라이브 스키마에서 실제 지원되는 범위 필드만 사용한다.
+- 통합사회 평가원 작업은 create-kice-illustration의 최신 규칙을 읽고 UND v3.1을 기본으로 사용한다. 일반 명령에서 typography의 profile:kice를 지정하는 기능은 현재 입력 스키마에서 지원될 때만 쓴다. vectora_audit_illustration은 인쇄 크기·팔레트까지 보증하지 않는다.
+- 새 글의 기본 장평은 95%다. 실제 문자 속성으로 측정·생성하고 전체 그룹의 가로 Scale로 대신하지 않는다. UND v3.0 Body를 새 영문 범위에 자동 적용하지 않는다. 기존 문서의 명시된 서체·장평은 요청 없이 변경하지 않는다.
+- 사용자가 커서 위치 기준으로 같은 문단의 다음 줄 시작점을 맞추려 하면 Ctrl+Shift+Tab의 네이티브 문단 들여쓰기를 사용한다. 라이브 `vectora_apply`가 지원하면 `{type:"paragraphIndent",id,at,action:"set"}`를 쓰며 `at`은 최종 문자열의 논리 grapheme 커서 위치다. 해제는 같은 문단에서 `action:"clear"`다. 현재 줄·앞줄·다른 문단을 보존하며 공백·강제 개행·줄별 객체로 대체하지 않는다. 지원되는 정렬과 후속 본문 수정·재열기에서의 보존을 확인한다.
 - PDF에서 설치 글꼴을 보존하려면 `outlineText:true`를 지정한다. 배포 사본의 글자만 윤곽선으로 바뀌며 원본 문자·이력은 보존된다. 살아 있는 문자가 필요한 원본 SVG를 함께 저장한다. 글꼴 파일을 결과물이나 플러그인에 복사하지 않는다.
 - `.ai`는 PDF 호환 데이터가 있는 파일만 지원한다. 경고·변환 한계를 전달한다. AI로 다시 저장하지 않는다.
 - `vectora_import_svg`로 SVG를 배치하고, `vectora_trace_image`로 PNG/JPEG/GIF/WebP를 경로로 추적한다. 픽셀을 가져온 것과 추적한 벡터를 구분한다. 평가원 글자는 추적 선화로 대신하지 않는다.
@@ -101,6 +101,6 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 
 ## 원 그래프와 부채꼴 (0.9)
 
-단순 원 그래프는 `vectora_apply`의 `pieChart` 명령을 우선합니다. `spec:{data:"A30, B30, C40",diameterMm:50,fontSizePt:8,palette:"gray",clockwise:true}`로 한 개체를 만듭니다. 기본은 12시부터 시계 방향, 흰색·연한 회색·진한 회색과 검정 경계선입니다. 색상은 `palette:"color"`, 반시계 방향은 `clockwise:false`를 명시합니다. 항목명과 백분율은 두 줄로 가운데 정렬하며 UND v3.0 8pt·자간 -60이 기본입니다. 크기를 바꾸어도 글자 크기를 유지합니다. 기존 개체의 실제 `id`를 넣어 데이터를 수정하고, SVG를 다시 열어 데이터와 글자 크기를 확인합니다. 원/타원은 선택 후 `sector` 명령의 `startAngle`·`endAngle`로 부채꼴로 만들 수 있습니다. 각도는 오른쪽 0°, 반시계 방향이며 0→360은 전체 원입니다.
+단순 원 그래프는 `vectora_apply`의 `pieChart` 명령을 우선합니다. `spec:{data:"A30, B30, C40",diameterMm:50,fontSizePt:8,palette:"gray",clockwise:true}`로 한 개체를 만듭니다. 기본은 12시부터 시계 방향, 흰색·연한 회색·진한 회색과 검정 경계선입니다. 색상은 `palette:"color"`, 반시계 방향은 `clockwise:false`를 명시합니다. 항목명과 백분율은 두 줄로 가운데 정렬하며 UND v3.1 8pt·자간 -60이 기본입니다. 크기를 바꾸어도 글자 크기를 유지합니다. 기존 개체의 실제 `id`를 넣어 데이터를 수정하고, SVG를 다시 열어 데이터와 글자 크기를 확인합니다. 원/타원은 선택 후 `sector` 명령의 `startAngle`·`endAngle`로 부채꼴로 만들 수 있습니다. 각도는 오른쪽 0°, 반시계 방향이며 0→360은 전체 원입니다.
 
 기준점 회전·기울이기, 개별 변형, 기준 개체 정렬, 컴파운드 패스, 가변 획 프로파일의 계약은 [제작 API](references/production.md)의 0.8 절을 확인합니다.

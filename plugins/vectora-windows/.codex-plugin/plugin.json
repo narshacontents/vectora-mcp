@@ -1,7 +1,7 @@
 {
   "name": "vectora-windows",
-  "version": "1.3.4",
-  "description": "macOS와 Windows에서 Vectora 편집 엔진을 MCP로 사용합니다. 새 그래프·지도·표·보존·출력 개선은 Vectora 앱 1.4.2 이상과 라이브 스키마를 확인해 사용합니다.",
+  "version": "1.3.5",
+  "description": "macOS와 Windows에서 Vectora를 MCP로 편집합니다. 평가원 조판·지도·도식의 새 기능은 앱 1.4.6 이상에서 실제 스키마 지원을 확인해 사용합니다.",
   "author": {
     "name": "Vectora"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Vectora (Windows)",
     "shortDescription": "macOS와 Windows에서 MCP로 벡터 그림을 편집",
-    "longDescription": "Vectora 앱 1.4.0 이상에서 네이티브 표, 복합 조판·예약 영역, 승인 PNG/JPEG 로컬 원화, 점진적 MCP 리소스·간결/변경 검사와 검사를 거친 평가원 .vectora·JPEG 납품을 지원합니다. 새 그래프 스키마·라벨 충돌 검사, 지도 지물 검색·저장/재열기, 표 정렬·실제 외곽과 문자·두루마리 개선은 앱 1.4.2 이상 및 라이브 스키마 지원을 확인하세요. 구형 앱은 지원하는 기존 편집·저장 경로를 사용합니다. 진행 상태·체크포인트·진단 미리보기는 앱 1.3.0 이상, JPEG/PNG 회색조 내보내기는 앱 1.2.0 이상이 필요합니다. 실제 UND 조판을 Computer Use 없이 편집합니다.",
+    "longDescription": "요청의 구성요소에 필요한 평가원 제작 지침을 준비하고, 편집 가능한 .vectora와 실제 검수한 JPEG를 함께 만듭니다. 2028 예시문항의 역할별 UND v3.1 조판, 네이티브 문단 배치·본문 숫자 서식, 상세 지도와 경로·본문 흐름, 타원 벤 다이어그램과 순위 도식은 앱 1.4.6 이상 및 라이브 스키마를 확인해 사용하세요. 구형 앱은 지원되는 기존 편집·저장 경로를 유지합니다. 실제 UND 문자·자료를 Computer Use 없이 편집합니다.",
     "developerName": "Vectora",
     "category": "Productivity",
     "capabilities": [

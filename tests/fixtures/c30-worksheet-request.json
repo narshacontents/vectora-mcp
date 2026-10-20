@@ -1,0 +1,90 @@
+{
+  "units": [
+    {
+      "id": "c30-worksheet-inference",
+      "recipe": "worksheet",
+      "specRecipes": {
+        "spec.blocks[3].spec": "table"
+      },
+      "spec": {
+        "kind": "text",
+        "variant": "worksheet",
+        "widthMm": 90,
+        "title": "자료 분석 활동",
+        "worksheet": {
+          "fields": [
+            {
+              "id": "author",
+              "label": {
+                "text": "작성자",
+                "underlines": [{"start": 0, "end": 1}]
+              },
+              "value": {
+                "text": "가\uFFFC나다",
+                "inlineBoxes": [{"at": 1, "label": "(가)", "widthMm": 6}]
+              }
+            }
+          ],
+          "footer": {
+            "text": "자료를 근거로 답하세요.",
+            "styles": [{"start": 0, "end": 2, "style": {"doubleUnderline": true}}]
+          }
+        },
+        "blocks": [
+          {
+            "type": "text",
+            "id": "instruction",
+            "text": {
+              "text": "자료를 읽으세요.",
+              "underlines": [{"start": 0, "end": 2}]
+            }
+          },
+          {"type": "response", "id": "symbol-response", "text": "(가)"},
+          {
+            "type": "graph",
+            "id": "graph",
+            "graph": {
+              "kind": "graph",
+              "type": "bar",
+              "series": [{"label": "수치", "values": [2, 5]}]
+            }
+          },
+          {
+            "type": "component",
+            "id": "table",
+            "spec": {
+              "kind": "table",
+              "rows": [{"id": "r1"}],
+              "columns": [{"id": "c1"}],
+              "cells": [
+                {
+                  "id": "cell",
+                  "rowId": "r1",
+                  "columnId": "c1",
+                  "richText": {
+                    "text": "자료",
+                    "underlines": [{"start": 0, "end": 2}]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "response",
+            "id": "written-response",
+            "text": {
+              "text": "서술",
+              "underlines": [{"start": 0, "end": 1}]
+            },
+            "label": {
+              "text": "근거",
+              "underlines": [{"start": 0, "end": 1}]
+            },
+            "widthMm": 40,
+            "lines": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# Vectora MCP + 평가원 스타일 스킬 1.3.4
+# Vectora MCP + 평가원 스타일 스킬 1.3.5
 
 Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소의 **Git 확장**으로 설치합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
 
@@ -10,9 +10,9 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-[출제 에이전트 연동 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)가 세 플러그인에 함께 설치됩니다. 표시 원문과 표시 금지 출제 맥락·정답을 분리해 의뢰하고, 제작자는 상태·실제 파일 경로·실측 mm·실행한 검사·미충족 조건을 응답 본문으로 전달합니다. 이 가이드는 제작자의 공통→유형→하위유형 지침에 추가되는 필수 문서가 아닙니다.
+[출제 에이전트 연동 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)가 세 플러그인에 함께 설치됩니다. 표시 원문과 표시 금지 출제 맥락·정답을 분리해 의뢰하고, 제작자는 상태·실제 파일 경로·실측 mm·실행한 검사·미충족 조건을 응답 본문으로 전달합니다. 이 가이드는 출제 에이전트가 의뢰를 준비할 때 읽으며, 일반 제작자는 해당 작업의 단계별 지침을 따릅니다.
 
-평가원 스킬은 자료형 분류 v3의 10유형·50세부유형을 유지합니다. 제작자는 공통 → 유형 → 선택 조건으로 준비된 세부 문서, 세 파일을 읽습니다. 사진·삽화에도 제작용 세부 경로가 있으며 인물이 있을 때만 인물 원칙을 추가합니다. 공유 규칙은 단일 원본으로 관리하고 `prepare_rules.mjs`가 필요한 내용만 준비합니다. 원문자 뒤 밑줄 앞에는 Vectora Alt+Space의 고정 반칸(U+2002)을 사용합니다.
+평가원 스킬은 자료형 분류 v3의 10유형·50세부유형을 검색·기록용으로 유지합니다. 제작할 배치와 구성요소를 선택하면 `prepare_task.mjs`가 설계·실행·검수 단계에 필요한 지침만 준비합니다. 공통 원칙, 제작 방식, 조건부 구성요소와 도구 계약은 각각 한 원본으로 관리하며, 인물·내부 표/차트·문단 박스 등의 실제 내용에 따라 연결됩니다. 고정된 파일 수나 분류 계층을 읽기 순서로 강제하지 않습니다. 원문자 뒤 밑줄 앞에는 Vectora Alt+Space의 고정 반칸(U+2002)을 사용합니다.
 
 실제 자료로 그래프·지도를 요청하면 공신력 있는 원자료를 확인하고, 출처와 가공 방법을 밝히면서 시험지에 적합한 단위·숫자 표기·시각화 형식을 선택합니다.
 
@@ -89,7 +89,7 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v1.3.4`를 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v1.3.5`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 
@@ -126,3 +126,5 @@ node scripts/build-marketplace.mjs --check
 원본과 생성된 파일을 함께 커밋합니다. `--check`는 소스와 설치본의 불일치를 검사하며 네트워크 설치나 파일 수정을 하지 않습니다. 릴리스는 사용자 요청이 있을 때만 버전을 올리고 생성본을 갱신한 뒤, 필요한 검증·커밋·푸시·태그·GitHub Release 게시를 수행합니다. `node scripts/stage-release.mjs`는 깨끗한 소스와 생성본을 확인하고 게시할 설명문과 내부 검증 기록만 준비합니다. 설치 아카이브를 만들거나 업로드하지 않습니다.
 
 [Codex 플러그인 공식 안내](https://developers.openai.com/plugins/build/plugins) · [Claude 마켓플레이스 설치](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude Code 설치·업데이트](https://code.claude.com/docs/en/plugins/install)
+
+2028 예시문항 기준의 새 문단 배치·본문 숫자 서식·지도 흐름·타원 및 순위 도식은 **앱 1.4.6 이상**에서 실제 capability/schema가 노출될 때 사용합니다. 스킬은 요청한 구성요소에 필요한 규칙만 준비하고, 첫 완성본과 저장된 JPEG를 직접 확인합니다. 구형 앱의 미지원 기능을 임의의 문자 치환이나 글자 축소로 흉내 내지 않습니다.

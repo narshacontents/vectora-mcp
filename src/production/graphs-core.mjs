@@ -44,7 +44,8 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
   const SW = pt(strokePt), AX = pt(.4), RULE = pt(.3), PAD = mm(2), GAP = mm(3);
   const font = fontAdapter;
   check(font && typeof font.normalize === 'function' && typeof font.measure === 'function', 'An actual UND font metrics adapter is required.');
-  check(font.postscriptName==='UNDv30-Regular','The actual font face must be UNDv30-Regular.');
+  const fontFamily=font.postscriptName==='UNDv31-Regular'?'UND v3.1':font.postscriptName==='UNDv30-Regular'?'UND v3.0':undefined;
+  check(fontFamily,'The actual font face must be UNDv31-Regular by default or UNDv30-Regular when explicitly requested.');
   const W = mm(widthMm), parts = [], boxes = [], geometry = [], substitutions = [], vectorGlyphs = [], idCounts = new Map();
   const normalized = x => font.normalize(String(x).normalize('NFC'), substitutions);
   const measure = str => {
@@ -71,7 +72,7 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
       vectorGlyphs.push({name,source:str,reason:'UND bracket code points render other symbols; retain bracket shape as editable rules'});
       str=str.slice(1,-1);x=b.x+b.w/2;anchor='middle';
     } else check(!/[\[\]]/.test(str),'Embedded square brackets require explicit vector composition in UND.');
-    str.split('\n').forEach((l,i)=>add('text',{'data-name':name,x,y:b.y+i*LH+F*.9,'text-anchor':anchor,'font-family':'UND v3.0','font-weight':400,'font-style':'normal','font-size':F,'letter-spacing':TRACK,fill:'#000000'},esc(l)));
+    str.split('\n').forEach((l,i)=>add('text',{'data-name':name,x,y:b.y+i*LH+F*.9,'text-anchor':anchor,'font-family':fontFamily,'font-weight':400,'font-style':'normal','font-size':F,'letter-spacing':TRACK,fill:'#000000'},esc(l)));
     return b;
   };
   const rect = (name,x,y,w,h,fill='#FFFFFF',sw=SW) => add('rect',{'data-name':name,x,y,width:w,height:h,fill,stroke:sw?'#000000':'none','stroke-width':sw});
@@ -105,7 +106,7 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
   });
   check(new Set(series.map(v=>v.label)).size===series.length,'Series labels must be unique.');
   check(new Set(series.map(v=>v.id)).size===series.length,'Series ids must be unique.');
-  if(s.type==='points')return buildPointsGraph({...s,series},{fontAdapter:font,widthMm,plotMm,strokePt,palette});
+  if(s.type==='points')return buildPointsGraph({...s,series},{fontAdapter:font,fontFamily,widthMm,plotMm,strokePt,palette});
   const curveDash = style => style.line==='solid'?undefined:(style.line==='dash'?(strokePt===.8?[3,1.5]:[2,1]):(strokePt===.8?[6,1,1,1]:[5,1,1,1])).map(pt).join(' ');
   const marker = (name,x,y,style) => {
     const r=pt(1.65),common={'data-name':name,fill:'#000000',stroke:'none'};

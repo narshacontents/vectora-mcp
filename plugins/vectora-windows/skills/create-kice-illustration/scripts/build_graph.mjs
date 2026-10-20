@@ -16,10 +16,10 @@ export function findFont(explicit){
     process.env.WINDIR&&path.join(process.env.WINDIR,'Fonts'),
   ].filter(Boolean);
   for(const dir of directories){
-    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UND(?:-v3\.0|v30)-Regular\.otf$/i.test(n));
+    const file=fs.existsSync(dir)&&fs.readdirSync(dir).find(n=>/^UNDv31-Regular\.ttf$/i.test(n));
     if(file)return path.join(dir,file);
   }
-  check(false,'Installed UND v3.0 Regular OTF font not found in %LOCALAPPDATA%/Microsoft/Windows/Fonts or %WINDIR%/Fonts. Supply --font; no fallback is used.');
+  check(false,'Installed UNDv31-Regular.ttf not found in %LOCALAPPDATA%/Microsoft/Windows/Fonts or %WINDIR%/Fonts. Supply --font; no UND v3.0 fallback is used.');
 }
 function adapter(fontPath){
   let fontkit;
@@ -28,7 +28,7 @@ function adapter(fontPath){
     throw error;
   }
   const font=fontkit.openSync(findFont(fontPath));
-  check(font.postscriptName==='UNDv30-Regular','The actual font face must be UNDv30-Regular.');
+  check(font.postscriptName==='UNDv31-Regular'||font.postscriptName==='UNDv30-Regular','The actual font face must be UNDv31-Regular by default or UNDv30-Regular when explicitly requested.');
   return {postscriptName:font.postscriptName,
     normalize(value,substitutions){let text=value;if(text.includes('−')&&!font.hasGlyphForCodePoint(0x2212)){substitutions.push({from:text,to:text.replaceAll('−','-'),reason:'UND lacks U+2212; same numeric sign'});text=text.replaceAll('−','-');}for(const c of text)check(c==='\n'||font.hasGlyphForCodePoint(c.codePointAt(0)),`Unsupported UND glyph ${JSON.stringify(c)} in ${JSON.stringify(text)}`);return text;},
     measure(text,fontPx,trackingPx){return font.layout(text).positions.reduce((sum,p)=>sum+p.xAdvance,0)*fontPx/font.unitsPerEm+Math.max(0,[...text].length-1)*trackingPx;}};
@@ -36,7 +36,7 @@ function adapter(fontPath){
 export function buildGraph(input,{fontPath}={}){return buildGraphCore(input,{fontAdapter:adapter(fontPath)});}
 if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href){try{
   const args=process.argv.slice(2),get=k=>args[args.indexOf(k)+1];
-  if(args.includes('--help')){console.log('node build_graph.mjs --spec input.json --output graph.svg [--font UND-v3.0-Regular.otf] [--force]\nInput JSON: type=bar|pie|line; dataFidelity=exact|approximate|relative; series=[{label,fill,pattern:none|dots|hatch,line:solid|dash|dash-dot,marker:circle|triangle|square|open-square,values?}]. widthMm=40..108, plotHeightMm=15..200, strokePt=0.6|0.7|0.8, legend=none|right|center, domain=[min,max], ticks=ascending values, grid=true for numeric comparisons, unit=original unit.\nBar layout horizontal: categories and series.values, domain starts at zero. panels: panels=[{label,values}] in series order, 1..4 common-scale panels. mirror: exactly two panels, positive values, legend:none.\nPie: panels=[{label,values,outside?}], each sum exactly 100; outside contains series indexes; labelMode=category-percent|percent. No normalization, relative data, or pie hatching.\nLine: x labels, optional increasing numeric xValues, series.values (null gaps); xAxis=zero|bottom, xLabelsAt=axis|bottom, yTitle/xTitle, arrows, labelMode=end|legend, valueLabels and series.labels. labelOffsets[series][point]=[dx,dy] uses document px.\nOptional panelGapMm and source (report metadata). Output is mm SVG plus .layout.json; requires visual review and import/save in Vectora. Installed UNDv30-Regular and fontkit required; no font fallback. Unsupported combinations error. Use production chartStyle for current supported styles; this helper is a legacy optional fallback.');process.exit(0);}
+  if(args.includes('--help')){console.log('node build_graph.mjs --spec input.json --output graph.svg [--font UNDv31-Regular.ttf|UND-v3.0-Regular.otf] [--force]\nInput JSON: type=bar|pie|line; dataFidelity=exact|approximate|relative; series=[{label,fill,pattern:none|dots|hatch,line:solid|dash|dash-dot,marker:circle|triangle|square|open-square,values?}]. widthMm=40..108, plotHeightMm=15..200, strokePt=0.6|0.7|0.8, legend=none|right|center, domain=[min,max], ticks=ascending values, grid=true for numeric comparisons, unit=original unit.\nBar layout horizontal: categories and series.values, domain starts at zero. panels: panels=[{label,values}] in series order, 1..4 common-scale panels. mirror: exactly two panels, positive values, legend:none.\nPie: panels=[{label,values,outside?}], each sum exactly 100; outside contains series indexes; labelMode=category-percent|percent. No normalization, relative data, or pie hatching.\nLine: x labels, optional increasing numeric xValues, series.values (null gaps); xAxis=zero|bottom, xLabelsAt=axis|bottom, yTitle/xTitle, arrows, labelMode=end|legend, valueLabels and series.labels. labelOffsets[series][point]=[dx,dy] uses document px.\nOptional panelGapMm and source (report metadata). Output is mm SVG plus .layout.json; requires visual review and import/save in Vectora. UNDv31-Regular.ttf is selected by default from ~/Library/Fonts; explicit UNDv30-Regular remains supported. fontkit is required and no v3.0 fallback is used. Unsupported combinations error. Use production chartStyle for current supported styles; this helper is a legacy optional fallback.');process.exit(0);}
   check(args.includes('--spec')&&args.includes('--output'),'Use --spec and --output; see --help.');
   const out=path.resolve(get('--output')),meta=out.replace(/\.svg$/i,'')+'.layout.json';
   check(out.endsWith('.svg'),'Output must end in .svg.');

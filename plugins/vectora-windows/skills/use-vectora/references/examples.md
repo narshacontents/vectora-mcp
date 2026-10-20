@@ -30,7 +30,7 @@ Legacy line:
   "commands": [
     {"type":"typography","profile":"kice"},
     {"type":"add","shape":"rect","values":{"name":"상자 A","left":10,"top":20,"width":30,"height":16,"fill":"#ffffff","stroke":"#000000","strokeWidth":0.3}},
-    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","fontFamily":"UND v3.0","fontSize":8,"charSpacing":-60,"fill":"#000000","textAlign":"center"}},
+    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","fontFamily":"UND v3.1","fontSize":8,"charSpacing":-60,"fill":"#000000","textAlign":"center"}},
     {"type":"add","shape":"line","values":{"left":43,"top":28,"width":22,"stroke":"#000000","strokeWidth":0.3,"arrowStart":"arrow-3","arrowEnd":"arrow-3"}},
     {"type":"add","shape":"ellipse","values":{"left":68,"top":20,"width":26,"height":16,"fill":"none","stroke":"#000000","strokeWidth":0.3}}
   ]

@@ -6,7 +6,7 @@ const finite=value=>typeof value==='number'&&Number.isFinite(value);
 const check=(value,message)=>{if(!value)throw new Error(message);};
 const overlaps=(a,b,pad=0)=>a.x<b.x+b.w+pad&&b.x<a.x+a.w+pad&&a.y<b.y+b.h+pad&&b.y<a.y+a.h+pad;
 
-export function buildPointsGraph(spec,{fontAdapter,widthMm,plotMm,strokePt,palette}){
+export function buildPointsGraph(spec,{fontAdapter,fontFamily,widthMm,plotMm,strokePt,palette}){
   const allowed=new Set(['type','dataFidelity','series','widthMm','plotHeightMm','strokePt','legend','grid','xTitle','yTitle','unit','source','xDomain','yDomain','xTicks','yTicks','axisBreaks','labelOffsets']);
   Object.keys(spec).forEach(key=>check(allowed.has(key),`Unknown points option: ${key}`));
   check(spec.dataFidelity==='exact'||spec.dataFidelity==='approximate','Points need dataFidelity: exact | approximate.');
@@ -24,7 +24,7 @@ export function buildPointsGraph(spec,{fontAdapter,widthMm,plotMm,strokePt,palet
   const box=(value,x,y,anchor='middle')=>{const lines=normalize(value).split('\n'),w=measure(value),h=lines.length*LH;return{x:x-(anchor==='middle'?w/2:anchor==='end'?w:0),y:y-h/2,w,h};};
   const text=(name,value,x,y,anchor='middle')=>{
     const normalized=normalize(value),b=box(normalized,x,y,anchor);boxes.push({...b,name,text:normalized});
-    normalized.split('\n').forEach((line,index)=>parts.push(`<text ${attrs({'data-name':name,x,y:b.y+index*LH+F*.9,'text-anchor':anchor,'font-family':'UND v3.0','font-weight':400,'font-style':'normal','font-size':F,'letter-spacing':track,fill:'#000000'})}>${esc(line)}</text>`));
+    normalized.split('\n').forEach((line,index)=>parts.push(`<text ${attrs({'data-name':name,x,y:b.y+index*LH+F*.9,'text-anchor':anchor,'font-family':fontFamily,'font-weight':400,'font-style':'normal','font-size':F,'letter-spacing':track,fill:'#000000'})}>${esc(line)}</text>`));
   };
   const line=(name,x1,y1,x2,y2,stroke=ruleSw,dash)=>parts.push(`<line ${attrs({'data-name':name,x1,y1,x2,y2,stroke:'#000000','stroke-width':stroke,'stroke-dasharray':dash,fill:'none'})}/>`);
   const marker=(name,x,y,series)=>{

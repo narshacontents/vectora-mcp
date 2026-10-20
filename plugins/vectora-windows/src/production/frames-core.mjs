@@ -18,7 +18,7 @@ export function buildTextFrame(spec) {
   const pad = px(number('paddingMm',3,1,15)), W = px(widthMm), B = px(bodyMm);
   const titleH = px(number('titleHeightMm',0,0,100));
   const variant = spec.variant, parts = [], slots = [], reserved = [], idCounts = new Map();
-  const stroke = '#222222', sw = px(.12), gap = px(2);
+  const stroke = '#000000', sw = 96 / 72 * .3, gap = px(2);
   let H = 0;
   const attrs = values => Object.entries(values).filter(([,v])=>v!==undefined).map(([k,v])=>`${k}="${escape(typeof v === 'number' ? round(v) : v)}"`).join(' ');
   const add = (tag,values) => {
@@ -58,12 +58,12 @@ export function buildTextFrame(spec) {
       parts.push(`<g id="vframe.paper-edge-shadow.1" data-name="paper-edge-shadow" transform="translate(0 ${px(.4)})">`);
       curve('shadow',d,'#B8B8B8','none');parts.push('</g>');
       curve('paper',d,'#FFFFFF');
-      line('masthead-rule',px(1.2),header,W-px(1.2),header,'#888888',px(.35));
+      line('masthead-rule',px(1.2),header,W-px(1.2),header);
     } else {
       rect('paper',px(.5),px(.5),W-px(1),H-px(1));
       rect('masthead-band',pad,px(2),W-2*pad,header-px(2.8),'#CCCCCC','none');
-      line('masthead-rule-top',pad,px(1.5),W-pad,px(1.5),'#888888');
-      line('masthead-rule-bottom',pad,header-px(.3),W-pad,header-px(.3),'#888888');
+      line('masthead-rule-top',pad,px(1.5),W-pad,px(1.5));
+      line('masthead-rule-bottom',pad,header-px(.3),W-pad,header-px(.3));
     }
     box('masthead','chrome',W*.32,px(2),W*.33,header-px(3),variant==='newspaper-wave');
     box('date','chrome',W*.68,px(2),W*.28-pad,header-px(3),variant==='newspaper-wave');
@@ -109,7 +109,7 @@ export function buildTextFrame(spec) {
     for(let i=0;i<3;i++)line('menu-line',W*.82,cy-unit+i*unit,W*.842,cy-unit+i*unit,'#666666');
     for(let i=0;i<3;i++)ellipse('menu-dot',W*.94+i*unit*1.2,cy,unit*.15,unit*.15,'#666666','none');
     rect('scrollbar-rail',W-rail-px(.5),header,rail,H-header-px(.5),'#E8E8E8','none');
-    rect('scrollbar-thumb',W-rail,header+px(2),rail-px(1),Math.min(px(10),B/3),'#CCCCCC','#777777',{rx:px(.4)});
+    rect('scrollbar-thumb',W-rail,header+px(2),rail-px(1),Math.min(px(10),B/3),'#CCCCCC',stroke,{rx:px(.4)});
     for(const [y,sign] of [[header+px(.8),-1],[H-px(.8),1]])curve('scrollbar-arrow',`M ${W-rail} ${y-sign*px(.35)} L ${W-px(.9)} ${y-sign*px(.35)} L ${W-rail*.5-px(.25)} ${y+sign*px(.35)} Z`,'#777777','none');
     const asideW=px(number('asideWidthMm',0,0,widthMm*.5));
     if(asideW){

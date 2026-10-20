@@ -1,4 +1,4 @@
 interface:
   display_name: "통합사회 평가원 스타일 일러스트 만들기"
-  short_description: "현재 분류의 10유형·50세부유형으로 편집 가능한 통합사회 그림 제작"
-  default_prompt: "$create-kice-illustration 스킬로 공통→유형→선택 세부 원칙 세 문서를 읽고 요청한 그림을 제작·직접 검수해줘. 인물이 있으면 인물 원칙도 읽고, 같은 이름의 .vectora와 .jpeg로 저장해줘."
+  short_description: "배치와 구성요소에 맞춘 지침으로 편집 가능한 평가원 그림 제작"
+  default_prompt: "$create-kice-illustration 스킬로 요청의 제작 방식과 구성요소로 지침을 준비하고 단계별로 읽어 제작·직접 검수해줘. 같은 이름의 .vectora와 .jpeg로 저장해줘."

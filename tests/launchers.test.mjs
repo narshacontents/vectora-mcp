@@ -79,7 +79,7 @@ test('canonical Windows config fixture matches the launcher config exactly', () 
   const fixturePath = path.join(PLUGIN_ROOT, 'tests', 'fixtures', 'windows-mcp.json');
   const fixtureText = readFileSync(fixturePath, 'utf8');
   assert.equal(fixtureText, `${JSON.stringify(createMcpConfig('windows'), null, 2)}\n`);
-  assert.equal(createHash('sha256').update(fixtureText).digest('hex'), '599abd1682b3f7b1ae4c23ed9fc14fab9c3322c2892b9740fd8a637a6b82962e');
+  assert.equal(createHash('sha256').update(fixtureText).digest('hex'), '1fe33cc0aa166e77b9829a9988cdfeb70c906faf494682aa65586d8efb3b589b');
   const decoded = JSON.parse(fixtureText);
   const server = decoded.mcpServers.vectora;
   assert.equal(server.command, 'powershell.exe');

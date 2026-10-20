@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Prepare exactly one third-level instruction document from single-source rules.
+// Legacy selection resolver. New production tasks use prepare_task.mjs.
 // This script only reads installed skill data and writes an internal temporary file.
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
@@ -18,10 +18,57 @@ function readSource(root, relative) {
   return readFileSync(absolute, 'utf8').trim();
 }
 
-export function prepareRules({ subtype, variant, features = [], people = false }, root = skillRoot) {
+export function filterModuleBlocks(text, enabledModules, knownModules, source = '<input>') {
+  const open = '<!-- when-module';
+  const close = '<!-- /when-module -->';
+  let cursor = 0;
+  let result = '';
+  while (cursor < text.length) {
+    const openAt = text.indexOf(open, cursor);
+    const closeAt = text.indexOf(close, cursor);
+    if (closeAt !== -1 && (openAt === -1 || closeAt < openAt)) {
+      throw new Error(`Conditional module close without open in ${source}`);
+    }
+    if (openAt === -1) {
+      result += text.slice(cursor);
+      break;
+    }
+    result += text.slice(cursor, openAt);
+    const conditionStart = openAt + open.length;
+    if (text[conditionStart] !== ':') throw new Error(`Malformed conditional module marker in ${source}`);
+    const markerEnd = text.indexOf('-->', conditionStart + 1);
+    if (markerEnd === -1) throw new Error(`Malformed conditional module marker in ${source}`);
+    const condition = text.slice(conditionStart + 1, markerEnd).trim();
+    if (!/^[a-z][a-z0-9-]*$/.test(condition)) {
+      throw new Error(`Invalid conditional module in ${source}: ${condition || '(empty)'}`);
+    }
+    if (!knownModules.has(condition)) {
+      throw new Error(`Unknown conditional module in ${source}: ${condition}`);
+    }
+    const contentStart = markerEnd + 3;
+    const blockEnd = text.indexOf(close, contentStart);
+    if (blockEnd === -1) throw new Error(`Unclosed when-module:${condition} block in ${source}`);
+    const nestedOpen = text.indexOf(open, contentStart);
+    if (nestedOpen !== -1 && nestedOpen < blockEnd) {
+      throw new Error(`Nested when-module blocks are not supported in ${source}`);
+    }
+    if (enabledModules.has(condition)) result += text.slice(contentStart, blockEnd);
+    cursor = blockEnd + close.length;
+  }
+  return result;
+}
+
+export function prepareRules(options, root = skillRoot) {
+  const { subtype, variant, features = [], people = false, nativeSpec } = options;
   const index = readIndex(root);
   const row = index.subtypes[subtype];
   if (!row) throw new Error(`Unknown subtype: ${subtype}. Use --help to choose an existing ID.`);
+  const sharedSceneArtwork = nativeSpec?.kind === 'dialogue'
+    && typeof nativeSpec.sharedScene?.artwork?.assetId === 'string'
+    && nativeSpec.sharedScene.artwork.assetId.length > 0;
+  if (sharedSceneArtwork && options.people === false) {
+    throw new Error('people:false contradicts shared-scene artwork asset at nativeSpec.sharedScene.artwork.assetId');
+  }
   const selected = [...new Set(features)];
   for (const feature of selected) {
     if (!index.features[feature]) throw new Error(`Unknown feature: ${feature}`);
@@ -35,7 +82,7 @@ export function prepareRules({ subtype, variant, features = [], people = false }
   if (selected.filter(x => x.startsWith('speech-')).length > 1) {
     throw new Error('Choose one speech layout for this unit; use separate units for a composite.');
   }
-  if (selected.includes('messenger') && (subtype !== 'ITA-4_DialogueV' || people)) {
+  if (selected.includes('messenger') && (subtype !== 'ITA-4_DialogueV' || people || sharedSceneArtwork)) {
     throw new Error('messenger is the people-free ITA-4_DialogueV variant.');
   }
   if (subtype === 'I3-13_OldMap' && selected.some(x => ['korea','dem','projection','area','points','route','statistics','natural','tectonic-ice'].includes(x))) {
@@ -54,23 +101,31 @@ export function prepareRules({ subtype, variant, features = [], people = false }
   if (selected.includes('real-data') && row.type === 'I3_Map') modules.add('real-data-map');
   if (selected.includes('composition') && row.type === 'I3_Map') modules.add('map-composition');
 
-  const hasPeople = people || row.peopleRequired === true;
+  const hasPeople = people || sharedSceneArtwork || row.peopleRequired === true;
   const originalPerson = index.people.originalPhotoSubtypes.includes(subtype);
+  const nativeDialogueLayout = nativeSpec?.kind === 'dialogue'
+    && ['horizontal','vertical','presentation'].includes(nativeSpec.layout);
+  const speakerLayout = modules.has('speech') || modules.has('bubble') || layouts.length > 0 || nativeDialogueLayout;
   if (hasPeople) {
     if (!originalPerson) {
       modules.add('artwork');
       modules.add('artwork-geometry');
-      if (variant === 'scene') modules.add('free-art');
+      if (variant === 'scene' || sharedSceneArtwork) modules.add('free-art');
     }
-    // Generic scene people are checked by the people exception, without portrait framing.
-    if (modules.has('bubble') || (row.type.startsWith('IT') && variant !== 'scene')) {
+    // People in a page or illustration do not by themselves imply speakers.
+    if (speakerLayout) {
       modules.add('person-speech');
       modules.add('person-spacing');
+    }
+    // Preserve approved artwork and asset registration for non-speaking people too.
+    if (speakerLayout || (row.type.startsWith('IT') && variant !== 'scene')) {
       modules.add('artwork-asset');
       modules.add('asset-runtime');
     }
   }
-  if (modules.has('presentation')) modules.add(originalPerson?'presentation-photo':'presentation-artwork');
+  if (modules.has('presentation') && !originalPerson) {
+    modules.add('presentation-artwork');
+  }
   if (modules.has('vertical')) {
     modules.add('vertical-gap');
     if (!hasPeople) {
@@ -78,7 +133,22 @@ export function prepareRules({ subtype, variant, features = [], people = false }
       modules.add('vertical-messenger');
     }
   }
+  const speechFamily = row.type === 'ITA_TypeSwap' || row.type === 'ITB_ImageSwap';
+  const selectedDialogueLayout = speechFamily
+    && ['horizontal','vertical','presentation'].some(name => modules.has(name));
+  if ((selectedDialogueLayout || nativeDialogueLayout)
+    && !selected.includes('messenger') && !modules.has('vertical-messenger')) {
+    modules.add('dialogue-native');
+  }
+  const screenPresentationVariant = speechFamily && variant === 'screen' && modules.has('presentation');
+  const screenNativeDialogue = nativeSpec?.kind === 'dialogue'
+    && nativeSpec.layout === 'presentation'
+    && (nativeSpec.presentationMode === 'screen' || nativeSpec.mode === 'screen');
+  if (screenPresentationVariant || screenNativeDialogue) {
+    modules.add('presentation-screen-native');
+  }
   if (modules.has('map-natural')) modules.add('map-feature');
+  if (modules.has('map-route')) modules.add('map-routes-native');
   if (selected.includes('korea')) {
     for (const [topic, module] of Object.entries(index.koreaOverlays)) {
       if (modules.has(`map-${topic}`)) modules.add(module);
@@ -93,14 +163,18 @@ export function prepareRules({ subtype, variant, features = [], people = false }
     if (!index.modules[key]) throw new Error(`Missing rule module: ${key}`);
     return index.modules[key];
   })];
-  const sections = sources.map(file => readSource(root, file));
+  const knownModules = new Set(Object.keys(index.modules));
+  const sections = sources.map((file, position) => {
+    const text = readSource(root, file);
+    return position === 0 ? filterModuleBlocks(text, modules, knownModules, file) : text;
+  });
   const body = sections.join('\n\n');
   const signature = createHash('sha256').update(JSON.stringify({subtype,variant,selected,hasPeople})).update(body).digest('hex').slice(0,16);
   const content = `<!-- prepared-rules:${signature}; single-source selection, do not edit -->\n`
     + `# 선택 세부 원칙 — ${subtype}${variant ? ` / ${variant}` : ''}\n\n`
-    + `이 문서는 공통 → ${row.type} → 세부유형의 세 번째 지침이다. 선택 조건: ${selected.join(', ') || '기본'}. `
-    + (hasPeople ? '인물 원칙은 예외 파일로 함께 읽는다.' : '인물 원칙은 읽지 않는다.')
-    + '\n공통과 유형 원칙은 상속한다. 아래에 이미 필요한 조건이 포함되어 있으므로 원본 조각이나 다른 세부 문서를 추가로 읽지 않는다.\n\n'
+    + `이 문서는 ${row.type} 제작 규칙의 호환 선택 결과다. 새 작업은 prepare_task.mjs로 준비한다. 선택 조건: ${selected.join(', ') || '기본'}. `
+    + (hasPeople ? '인물 구성요소가 필요하다.' : '인물 원칙은 읽지 않는다.')
+    + '\n새 작업은 prepare_task.mjs가 공통·제작·구성요소·실행·검수 지침을 단계별로 준비한다. 이 호환 결과만으로 전체 제작 원칙을 읽었다고 판단하지 않는다.\n\n'
     + body + '\n';
   return {
     subtype, type: row.type, variant: variant ?? null, features: selected,
@@ -136,7 +210,7 @@ export function writePreparedRules(selection, out, root = skillRoot) {
 function main(args) {
   if (args.includes('--help')) {
     const index=readIndex();
-    console.log('Usage: node scripts/prepare_rules.mjs --subtype ID --out INTERNAL_TEMP_DIR [--variant FORMAT] [--features a,b] [--people]\nRead SKILL.md, the selected type, and the returned subtypeFile; only people adds a fourth file.\n');
+    console.log('Usage: node scripts/prepare_rules.mjs --subtype ID --out INTERNAL_TEMP_DIR [--variant FORMAT] [--features a,b] [--people]\nLegacy resolver; use prepare_task.mjs for new phase-based production tasks.\n');
     for (const type of Object.keys(index.types)) {
       console.log(type);
       for (const [key,row] of Object.entries(index.subtypes).filter(([,row])=>row.type===type)) {
