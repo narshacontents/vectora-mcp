@@ -5,10 +5,17 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 const PROVENANCE_SCHEMA = 'vectora.style-provenance/v1';
+const TEXT_PROFILE_IDS = new Set([
+  'und-illust-8-v1',
+  'und-box-prose-10-v1',
+  'und-batang-body-11_5-v1',
+  'und-batang-table-10-v1',
+]);
 const FRAME_TEXT_KEYS = new Set([
   'text', 'underlines', 'inlineBlanks', 'verticalGroups', 'fontWeight', 'fontStyle',
   'inlineBoxes', 'inlineBoxSpacing', 'styles', 'styleProvenance', 'widthMm', 'fontPt',
   'tracking', 'lineHeight', 'textAlign', 'fill', 'fontFamily', 'textFlow', 'textFlowBounds',
+  'textProfile', 'horizontalScale', 'leading', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
 ]);
 
 function isRecord(value) {
@@ -75,6 +82,9 @@ function validateInput(input, graphemes, positions, nativePositions) {
   if (typeof input.text !== 'string') fail('FrameText.text must be a string.');
   if (/\r(?!\n)/u.test(input.text)) fail('FrameText.text contains a bare CR whose line indexing differs between Vectora and Fabric; resolve it in the source first.');
   if (input.fontFamily !== undefined && typeof input.fontFamily !== 'string') fail('FrameText.fontFamily must be a string when present.');
+  if (input.textProfile !== undefined && !TEXT_PROFILE_IDS.has(input.textProfile)) {
+    fail('FrameText.textProfile must be one of the four registered text profiles.');
+  }
   if (input.styleProvenance !== undefined) validateProvenance(input.styleProvenance);
 
   for (const [key, noNewline] of [['underlines', true], ['verticalGroups', true]]) {

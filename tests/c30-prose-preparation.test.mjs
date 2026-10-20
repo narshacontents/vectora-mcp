@@ -39,6 +39,7 @@ const FRAME_TEXT_KEYS = new Set([
   'text', 'underlines', 'inlineBlanks', 'verticalGroups', 'fontWeight', 'fontStyle',
   'inlineBoxes', 'inlineBoxSpacing', 'styles', 'styleProvenance', 'widthMm', 'fontPt',
   'tracking', 'lineHeight', 'textAlign', 'fill', 'fontFamily', 'textFlow', 'textFlowBounds',
+  'textProfile', 'horizontalScale', 'leading', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
 ]);
 
 function graphemes(text) {
@@ -117,11 +118,40 @@ test('mixed prose, CRLF, combining graphemes, and inline metadata pass through w
   assert.equal(Object.hasOwn(result, 'fontFamily'), false);
 });
 
+test('registered text profile and explicit typography and paragraph metadata pass through without defaults', () => {
+  const input = {
+    text: '본문\u2002다음',
+    textProfile: 'und-batang-body-11_5-v1',
+    fontPt: 12.25,
+    horizontalScale: 93,
+    leading: 17.5,
+    leadingPt: 13.125,
+    paragraphLayouts: [{paragraphStart: 0, at: 0, end: 4, paragraphEnd: 5, firstLineIndentMm: 2}],
+    paragraphIndents: [{paragraphStart: 0, at: 0, xMm: 1}],
+    underlines: [{start: 0, end: 2}],
+    inlineBlanks: [{at: 5, widthMm: 10}],
+  };
+  assert.deepEqual(prepareProse(input), input);
+
+  const plain = prepareProse({text: '별도 프로필 없는 산문'});
+  assert.equal(Object.hasOwn(plain, 'fontPt'), false, 'the helper does not inject the historical 8pt size');
+  assert.equal(Object.hasOwn(plain, 'textProfile'), false);
+});
+
+test('unknown text profiles are rejected instead of forwarded', () => {
+  assert.throws(() => prepareProse({text: '본문', textProfile: 'und-unknown-v1'}), /textProfile.*registered/u);
+  assert.throws(() => prepareProse({text: '본문', textProfile: null}), /textProfile.*registered/u);
+});
+
 test('Fabric serialized ranges become line/character styles while explicit formatting and inline tokens remain intact', () => {
   const text = 'Cafe\u0301\r\nX\uFFFC Y재';
   const boxAt = indexOfGrapheme(text, '\uFFFC');
   const input = {
     text,
+    textProfile: 'und-box-prose-10-v1',
+    fontPt: 9.5,
+    horizontalScale: 96,
+    leading: 15,
     styles: [
       {start: 0, end: 4, style: {fontWeight: 700, fontStyle: 'italic', horizontalScale: 95}},
       {start: 4, end: 5, style: {fontFamily: LEGACY_BODY, fontWeight: 600}},
@@ -133,6 +163,10 @@ test('Fabric serialized ranges become line/character styles while explicit forma
   const result = prepareProse(input);
 
   assert.equal(JSON.stringify(input), originalJson, 'the original serialized payload remains unchanged');
+  assert.equal(result.textProfile, input.textProfile);
+  assert.equal(result.fontPt, input.fontPt);
+  assert.equal(result.horizontalScale, input.horizontalScale);
+  assert.equal(result.leading, input.leading);
   assert.ok(!Array.isArray(result.styles));
   assert.equal(Object.hasOwn(result, 'styleProvenance'), false, 'the helper does not invent provenance for input styles');
   assert.deepEqual(result.styles, {
