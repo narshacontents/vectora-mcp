@@ -265,7 +265,7 @@ export function buildClaudePlugin(targetRoot) {
     writeFileSync(path.join(stagedRoot, '.claude-plugin', 'plugin.json'), `${JSON.stringify({
       name: 'vectora',
       version: PLUGIN_VERSION,
-      description: 'Local Vectora MCP with editing, integrated social studies illustration, and an empty integrated science skill for Claude. Native tables, composition, compact/delta inspection and checked KICE delivery require Vectora app 1.4.0 or later; new graph, map, table alignment, save/reopen and output-bound improvements require 1.4.2 and live schema support. Older apps use supported editing and saving paths.',
+      description: 'Vectora MCP and three illustration skills. App 2.0 integrates (가)–(하) into UND v3.1 Main/Batang and supports four text presets, percentage leading, and unified paragraph anchoring. Check the live schema before using new fields.',
       author: { name: 'Vectora' },
     }, null, 2)}\n`);
     writeFileSync(path.join(stagedRoot, '.mcp.json'), `${JSON.stringify({

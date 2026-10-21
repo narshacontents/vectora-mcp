@@ -27,7 +27,7 @@ jobs:
       - name: Check marketplace and bundled contracts
         run: |
           node scripts/build-marketplace.mjs --check
-          node --test tests/*.test.mjs
+          node --test --test-concurrency=1 tests/*.test.mjs
       - name: Validate clean release staging
         run: node scripts/stage-release.mjs
 

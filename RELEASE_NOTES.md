@@ -1,14 +1,13 @@
-# Vectora MCP v1.3.6
+# Vectora MCP v1.3.7
 
-2028 평가원 예시문항의 약108mm 문항 폭을 기준으로 본문·표·발언·라벨을 각각 조판하도록 스킬을 개선했습니다.
+Vectora 앱 2.0의 문자·문단 기능을 반영했습니다.
 
-- **역할별 문자 스타일:** 연결 앱의 등록 스타일 목록에서 선택합니다. 모든 문자를8pt로 맞추거나 스타일 수를 네 가지로 제한하지 않습니다. 전체 본문·부분 서식·혼합 표 셀을 보존하고, 실제 pt·장평·자간·행간을 측정과 생성에 동일하게 적용합니다.
-- **문단 간격과 편집:** 지원 앱의 첫 줄 들여쓰기·고정 본문 열·문단 뒤 간격을 활용합니다. 한 글상자를 유지하며 빈 줄이나 별도 글상자로 간격을 흉내 내지 않습니다.
-- **대화와 복합 자료:** 가로대화 인물·이름을 각 발언 열에 맞춰 배치하고, 세로대화의 위쪽 정렬과 좁은 행 간격을 유지합니다. 지도·그래프·본문을 결합할 때 각 구성요소의 규칙과 크기를 함께 적용합니다.
-- **납품 확인:** 실제 내용 외곽으로 아트보드를 맞추고 같은 이름의 `.vectora`와 `.jpeg`를 저장합니다. 최종 JPEG 직접 확인과 저장·재열기 검증을 구별합니다.
+- UND v3.1 Main/Batang의 Regular·Bold·Italic·BoldItalic 총 8개 면을 별도 글꼴 폴더에서 수동 설치합니다. `(가)`~`(하)` 표시는 두 v3.1 서체에 통합되어 새 설치에 v3.0 보조 글꼴은 필요하지 않습니다.
+- 바탕 11.5pt·10.5pt, 돋움 10pt·8pt의 네 문자 프리셋과 비율 행간을 안내합니다. 프리셋은 저장된 비율을 적용하고 글자 크기를 바꾸면 현재 비율을 유지합니다.
+- 통합 문단 항목 고정 경로와 앱 2.0 기능에 맞춘 플러그인·마켓플레이스 설명을 반영했습니다. 새 필드는 연결된 앱의 live schema를 확인하세요.
 
-새 문자 스타일과 문단 기능은 Vectora 앱1.4.6 이상에서 실제 공개 스키마의 지원 여부를 확인합니다. 이미지 생성·웹 검색 도구는 플러그인에 포함되지 않습니다.
+설치 및 업데이트:
 
-Codex와 Claude Code·데스크톱 Cowork 로컬 세션은 GitHub 마켓플레이스에서, Gemini CLI는 같은 저장소의 Git 확장으로 설치·업데이트합니다. [클라이언트별 설치 안내](https://github.com/narshacontents/vectora-mcp#readme)
-
-Gemini CLI 업데이트는 `gemini extensions update vectora`, 버전 고정 설치는 `gemini extensions install https://github.com/narshacontents/vectora-mcp --ref v1.3.6`을 사용합니다. 일반 웹 채팅 지원이나 기존 설치본의 자동 갱신을 뜻하지 않습니다. 별도 ZIP·MCPB·개별 스킬 압축파일은 배포하지 않습니다.
+- Codex와 Claude Code/Cowork는 [GitHub 마켓플레이스 안내](https://github.com/narshacontents/vectora-mcp#readme)를 따릅니다.
+- Gemini CLI 설치: `gemini extensions install https://github.com/narshacontents/vectora-mcp --ref v1.3.7`
+- Gemini CLI 업데이트: `gemini extensions update vectora`

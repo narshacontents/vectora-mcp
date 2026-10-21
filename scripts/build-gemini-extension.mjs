@@ -14,7 +14,7 @@ export function buildGeminiExtension({ check = false, root = PLUGIN_ROOT } = {})
   const manifest = {
     name: 'vectora',
     version,
-    description: 'Local Vectora MCP and illustration skills for Gemini CLI on macOS and Windows.',
+    description: 'Vectora MCP and illustration skills for Gemini CLI. App 2.0 integrates (가)–(하) in UND v3.1 Main/Batang and adds four text presets, percentage leading, and unified paragraph anchoring; check live schema support.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
       vectora: {

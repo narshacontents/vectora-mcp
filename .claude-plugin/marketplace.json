@@ -3,7 +3,7 @@
   "owner": {
     "name": "Vectora"
   },
-  "description": "Vectora MCP and Korean assessment illustration skills for Claude. Native tables, composition, compact/delta inspection and checked KICE delivery require Vectora app 1.4.0 or later; new graph, map, table alignment, reopen and output-bound improvements require app 1.4.2 and live schema support. UND 3.1 prose roles, paragraph layout, ellipse sets, ordinal radar and detailed map routes require app 1.4.6 with live schema support. Older apps use supported editing and saving paths.",
+  "description": "Vectora MCP and three illustration skills. App 2.0 integrates (가)–(하) into UND v3.1 Main/Batang and adds four text presets, percentage leading, and unified paragraph anchoring. Check live schemas before using new fields.",
   "plugins": [
     {
       "name": "vectora",
