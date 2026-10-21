@@ -20,7 +20,7 @@ Legacy line:
 
 이 예제는 앱 graph discovery schema에 정의된 실행 예를 따른다. 실제 실행 시 값 배열 길이, 수치 도메인, 스타일별 옵션과 물리적 크기 적합성을 추가 검사한다. spec 저장은 렌더 결과의 겹침 검수 완료를 뜻하지 않으므로 delivery audit와 실제 JPEG를 확인한다.
 
-등록 문자 스타일이 지원되고 `und-illust-8-v1`이 catalog에 있는지 먼저 확인한다.
+등록 문자 스타일이 지원되고 아래 예제의 `und-dotum-8-default-v1`이 현재 새 제작 catalog에 있는지 먼저 확인한다. 다른 앱 버전에서는 실제 catalog의 돋움 기본 스타일 ID로 대체하며, 호환용 ID를 새 기본값으로 가정하지 않는다.
 
 `vectora_new_document({"name":"관계도","width":108,"height":60})`로 생성 후 일반 편집:
 
@@ -32,7 +32,7 @@ Legacy line:
   "commands": [
     {"type":"typography","profile":"kice"},
     {"type":"add","shape":"rect","values":{"name":"상자 A","left":10,"top":20,"width":30,"height":16,"fill":"#ffffff","stroke":"#000000","strokeWidth":0.3}},
-    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","textProfile":"und-illust-8-v1","fill":"#000000","textAlign":"center"}},
+    {"type":"add","shape":"text","values":{"name":"A 라벨","left":14,"top":25,"width":22,"text":"A 지역","textProfile":"und-dotum-8-default-v1","fill":"#000000","textAlign":"center"}},
     {"type":"add","shape":"line","values":{"left":43,"top":28,"width":22,"stroke":"#000000","strokeWidth":0.3,"arrowStart":"arrow-3","arrowEnd":"arrow-3"}},
     {"type":"add","shape":"ellipse","values":{"left":68,"top":20,"width":26,"height":16,"fill":"none","stroke":"#000000","strokeWidth":0.3}}
   ]
@@ -45,7 +45,7 @@ Legacy line:
 {"type":"textRange","id":"실제 문자 ID","start":1,"end":2,"values":{"script":"sub","underline":true}}
 ```
 
-`script`는 `normal/super/sub`, `baselineShift`는 pt이며 양수가 위쪽이다. 부분 서식에는 글꼴·크기·굵기·스타일·색·선·밑줄·취소선·첨자·기준선 이동이 가능하다. 자간과 행간은 문자 개체 전체의 `style`로 적용한다.
+`script`는 `normal/super/sub`, `baselineShift`는 pt이며 양수가 위쪽이다. 부분 서식에는 글꼴·크기·굵기·스타일·색·선·밑줄·취소선·첨자·기준선 이동이 가능하다. 자간과 행간은 문자 개체 전체의 `style`로 적용한다. 행간은 `values:{leadingPercent:130}`처럼 백분율로 지정한다. 프리셋을 바꿀 때는 옛 pt 행간을 함께 보내지 않는다.
 
 여러 줄 본문은 하나의 `shape:"text"`에 전체 문자열과 개행을 넣는다. 한 줄마다 add하지 않으며 줄별 글상자를 그룹으로 묶는 방식도 쓰지 않는다. 부분 밑줄은 위 `textRange`의 `values:{underline:true}`로 같은 글상자 안에 적용한다. 밑줄용 별도 선·경로를 추가하지 않는다.
 
