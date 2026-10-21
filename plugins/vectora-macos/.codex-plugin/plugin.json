@@ -1,7 +1,7 @@
 {
   "name": "vectora-macos",
-  "version": "2.0.1",
-  "description": "Vectora 벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0의 통합 문자 표시와 간결한 문자·문단 조판을 지원합니다.",
+  "version": "2.0.2",
+  "description": "Vectora 벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0의 UND v3.1 Main 전용 문맥 표시와 간결한 문자·문단 조판을 지원합니다.",
   "author": {
     "name": "Vectora"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Vectora (macOS)",
     "shortDescription": "벡터 편집·4개 문자 프리셋·비율 행간의 Vectora MCP",
-    "longDescription": "Vectora MCP와 세 스킬로 편집 가능한 그림과 평가원 스타일 자료를 제작합니다. 앱 2.0은 (가)~(하)를 UND v3.1 Main/Batang에 통합하고, 네 가지 문자 프리셋·비율 행간·통합 문단 항목 고정을 제공합니다. 새 필드는 연결된 앱의 live schema를 확인하세요.",
+    "longDescription": "Vectora MCP와 세 스킬로 편집 가능한 그림과 평가원 스타일 자료를 제작합니다. 앱 2.0은 UND v3.1 Main에서만 (가)~(하)를 문맥에 따라 고정 표시하고 Batang은 세 문자 원문으로 표시합니다. 네 가지 문자 프리셋·비율 행간·통합 문단 항목 고정을 제공합니다. 새 필드는 연결된 앱의 live schema를 확인하세요.",
     "developerName": "Vectora",
     "category": "Productivity",
     "capabilities": [

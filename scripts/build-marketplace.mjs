@@ -20,11 +20,11 @@ const CLAUDE_PLUGIN = { id: 'vectora' };
 function codexMarketplaceText() {
   return `${JSON.stringify({
     name: 'vectora',
-    description: '벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0은 (가)~(하)를 UND v3.1 돋움·바탕에 통합하고, 문자 프리셋 4종·비율 행간·통합 문단 고정을 지원합니다. 새 기능은 live schema를 확인하세요.',
+    description: '벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0은 UND v3.1 Main에서만 (가)~(하)를 문맥에 따라 고정 표시하고 Batang은 세 문자 원문으로 표시합니다. 문자 프리셋 4종·비율 행간·통합 문단 고정을 지원합니다. 새 기능은 live schema를 확인하세요.',
     interface: { displayName: 'Vectora' },
     plugins: CODEX_PLUGINS.map(({ id }) => ({
       name: id,
-      description: '벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0은 (가)~(하)를 UND v3.1 돋움·바탕에 통합하고, 문자 프리셋 4종·비율 행간·통합 문단 고정을 지원합니다. 새 기능은 live schema를 확인하세요.',
+      description: '벡터 편집·평가원 제작 MCP와 세 스킬. 앱 2.0은 UND v3.1 Main에서만 (가)~(하)를 문맥에 따라 고정 표시하고 Batang은 세 문자 원문으로 표시합니다. 문자 프리셋 4종·비율 행간·통합 문단 고정을 지원합니다. 새 기능은 live schema를 확인하세요.',
       source: { source: 'local', path: `./plugins/${id}` },
       policy: { installation: 'AVAILABLE', authentication: 'ON_INSTALL' },
       category: 'Productivity',
@@ -36,7 +36,7 @@ function claudeMarketplaceText() {
   return `${JSON.stringify({
     name: 'vectora',
     owner: { name: 'Vectora' },
-    description: 'Vectora MCP and three illustration skills. App 2.0 integrates (가)–(하) into UND v3.1 Main/Batang and adds four text presets, percentage leading, and unified paragraph anchoring. Check live schemas before using new fields.',
+    description: 'Vectora MCP and three illustration skills. App 2.0 limits contextual fixed glyphs for (가)–(하) to UND v3.1 Main; Batang displays the literal three characters. It adds four text presets, percentage leading, and unified paragraph anchoring. Check live schemas before using new fields.',
     plugins: [{ name: 'vectora', source: './plugins/vectora' }],
   }, null, 2)}\n`;
 }

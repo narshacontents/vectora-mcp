@@ -265,7 +265,7 @@ export function buildClaudePlugin(targetRoot) {
     writeFileSync(path.join(stagedRoot, '.claude-plugin', 'plugin.json'), `${JSON.stringify({
       name: 'vectora',
       version: PLUGIN_VERSION,
-      description: 'Vectora MCP and three illustration skills. App 2.0 integrates (가)–(하) into UND v3.1 Main/Batang and supports four text presets, percentage leading, and unified paragraph anchoring. Check the live schema before using new fields.',
+      description: 'Vectora MCP and three illustration skills. App 2.0 limits contextual fixed glyphs for (가)–(하) to UND v3.1 Main; Batang displays the literal three characters. It supports four text presets, percentage leading, and unified paragraph anchoring. Check the live schema before using new fields.',
       author: { name: 'Vectora' },
     }, null, 2)}\n`);
     writeFileSync(path.join(stagedRoot, '.mcp.json'), `${JSON.stringify({
