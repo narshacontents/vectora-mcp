@@ -29,7 +29,7 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 ## Codex 설치
 
-1. 평가원 그림에는 UND v3.1과 UND v3.1 Batang을 사용합니다. Vectora 2.0의 별도 글꼴 폴더에는 두 서체의 Regular·Bold·Italic·BoldItalic, 총 8개 면이 있습니다. `(가)`~`(하)`의 문맥에 따른 고정 표시는 Main에만 적용됩니다. Batang은 SDIJ 바탕의 모든 글리프를 보존하고 이름만 바꾼 서체로, 같은 원문을 세 문자 그대로 표시합니다. 새 설치에는 v3.0 보조 글꼴이 필요하지 않습니다. 글꼴은 직접 설치하며 앱·MCP가 자동 설치하지 않습니다. 기존 v3.0 문서는 계속 보존됩니다.
+1. 평가원 그림에는 UND v3.1과 UND v3.1 Batang을 사용합니다. Vectora 2.0의 별도 글꼴 폴더에는 두 서체의 Regular·Bold·Italic·BoldItalic, 총 8개 면이 있습니다. `(가)`~`(하)`의 문맥에 따른 고정 표시는 Main에만 적용됩니다. Batang은 SDIJ 바탕 기반에 검증된 평가원 기호 보정만 적용하며, 같은 원문을 세 문자 그대로 표시합니다. 새 설치에는 v3.0 보조 글꼴이 필요하지 않습니다. 글꼴은 직접 설치하며 앱·MCP가 자동 설치하지 않습니다. 기존 v3.0 문서는 계속 보존됩니다.
 2. Codex의 **플러그인 → 마켓플레이스 추가**에서 출처에 `narshacontents/vectora-mcp`, Git ref에 `main`을 입력하고 Sparse 경로는 비워 둡니다.
 3. Vectora 마켓플레이스에서 운영체제에 맞는 **한 항목만** 설치합니다.
 4. 새 대화에서 “Vectora 연결 상태를 확인해줘”라고 요청합니다. MCP와 세 스킬이 함께 표시되어야 합니다.
