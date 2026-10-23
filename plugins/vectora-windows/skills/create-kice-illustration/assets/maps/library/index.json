@@ -6,9 +6,9 @@
       "title": "세계 대서양 중심",
       "svg": "world-atlantic.svg",
       "manifest": "world-atlantic.manifest.json",
-      "sha256": "87131c801bae55d72cbcdc51b8099f0b405b17e94567eb0db1811fca7185aae0",
-      "bytes": 495166,
-      "status": "nativeVerified",
+      "sha256": "a12823325723a4a59b2e044ff524177dc0ec0cced1302c06d91b1a3c153bddeb",
+      "bytes": 4292924,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -19,10 +19,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "87131c801bae55d72cbcdc51b8099f0b405b17e94567eb0db1811fca7185aae0",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "a12823325723a4a59b2e044ff524177dc0ec0cced1302c06d91b1a3c153bddeb"
       }
     },
     {
@@ -30,9 +30,9 @@
       "title": "세계 태평양 중심",
       "svg": "world-pacific.svg",
       "manifest": "world-pacific.manifest.json",
-      "sha256": "b4ec463d23427455ab29b7e06224892dd5db826d7e9d4db62e2a25879c4b67a7",
-      "bytes": 489805,
-      "status": "nativeVerified",
+      "sha256": "81ccd74a32294d5a2d6875f10d9edc9806e0c7c4180015e83e109c0c83d2a16f",
+      "bytes": 4251158,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -43,10 +43,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "b4ec463d23427455ab29b7e06224892dd5db826d7e9d4db62e2a25879c4b67a7",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "81ccd74a32294d5a2d6875f10d9edc9806e0c7c4180015e83e109c0c83d2a16f"
       }
     },
     {
@@ -54,18 +54,18 @@
       "title": "북극 중심",
       "svg": "pole-north.svg",
       "manifest": "pole-north.manifest.json",
-      "sha256": "5872acc5719b78ddc1a1cf0ad32d7dd6b9f05a32d2602676fca4fe326962c698",
-      "bytes": 381481,
-      "status": "nativeVerified",
+      "sha256": "5d9db9147e2b3189dbe1324914f59be104c092eea80292cabe5c27e16e25e65d",
+      "bytes": 3454379,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Stereographic",
       "extent": null,
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "5872acc5719b78ddc1a1cf0ad32d7dd6b9f05a32d2602676fca4fe326962c698",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "5d9db9147e2b3189dbe1324914f59be104c092eea80292cabe5c27e16e25e65d"
       }
     },
     {
@@ -73,18 +73,18 @@
       "title": "남극 중심",
       "svg": "pole-south.svg",
       "manifest": "pole-south.manifest.json",
-      "sha256": "2d691579312375b9e5badb8f1ff94edb17761a794c11d64e0dfc7ee94a333a7c",
-      "bytes": 142650,
-      "status": "nativeVerified",
+      "sha256": "7c56356b1367bb9e43e01fb8b289eda7175f3f800989315c390860492fefefa2",
+      "bytes": 1051066,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Stereographic",
       "extent": null,
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "2d691579312375b9e5badb8f1ff94edb17761a794c11d64e0dfc7ee94a333a7c",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "7c56356b1367bb9e43e01fb8b289eda7175f3f800989315c390860492fefefa2"
       }
     },
     {
@@ -92,18 +92,18 @@
       "title": "동반구",
       "svg": "hemisphere-east.svg",
       "manifest": "hemisphere-east.manifest.json",
-      "sha256": "f4e11542e01c5e334e0d3cb218526f38ca16e136f80ccfd9c016f5a902ca425d",
-      "bytes": 336166,
-      "status": "nativeVerified",
+      "sha256": "8a1a0fda999602e3fe17f10916bf9ae289da391401f332300eefd8583e68e304",
+      "bytes": 2436132,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Orthographic",
       "extent": null,
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "f4e11542e01c5e334e0d3cb218526f38ca16e136f80ccfd9c016f5a902ca425d",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "8a1a0fda999602e3fe17f10916bf9ae289da391401f332300eefd8583e68e304"
       }
     },
     {
@@ -111,18 +111,18 @@
       "title": "서반구",
       "svg": "hemisphere-west.svg",
       "manifest": "hemisphere-west.manifest.json",
-      "sha256": "3ad4eeda7c9fe8687fc7b51e3053529593dff71bfb4bd3c1252282ca2ef0a1c4",
-      "bytes": 216642,
-      "status": "nativeVerified",
+      "sha256": "61d16c5781766c153410c533af8c5fd29a92a15003bdcef9daa81736a6934717",
+      "bytes": 1955042,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Orthographic",
       "extent": null,
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "3ad4eeda7c9fe8687fc7b51e3053529593dff71bfb4bd3c1252282ca2ef0a1c4",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "61d16c5781766c153410c533af8c5fd29a92a15003bdcef9daa81736a6934717"
       }
     },
     {
@@ -130,9 +130,9 @@
       "title": "유럽",
       "svg": "continent-europe.svg",
       "manifest": "continent-europe.manifest.json",
-      "sha256": "c08f69e0cab2839485719718cbdc043005f201a26cdf3c98f282f7b531620db6",
-      "bytes": 676076,
-      "status": "nativeVerified",
+      "sha256": "d410a146f341939ae25c9a051b74c4bf503d2e9f34bd80daba15cbc3f7233896",
+      "bytes": 766171,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -143,10 +143,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "c08f69e0cab2839485719718cbdc043005f201a26cdf3c98f282f7b531620db6",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "d410a146f341939ae25c9a051b74c4bf503d2e9f34bd80daba15cbc3f7233896"
       }
     },
     {
@@ -154,9 +154,9 @@
       "title": "아프리카",
       "svg": "continent-africa.svg",
       "manifest": "continent-africa.manifest.json",
-      "sha256": "e1b11f3a2df1e9d74a47e7308ecfc55398b87ac8eed85e666086258290fc017e",
-      "bytes": 621699,
-      "status": "nativeVerified",
+      "sha256": "bce369af96683a188ce2e8c917625445b7138c40c883183d031425f11a78079a",
+      "bytes": 717062,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -167,10 +167,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "e1b11f3a2df1e9d74a47e7308ecfc55398b87ac8eed85e666086258290fc017e",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "bce369af96683a188ce2e8c917625445b7138c40c883183d031425f11a78079a"
       }
     },
     {
@@ -178,9 +178,9 @@
       "title": "아시아",
       "svg": "continent-asia.svg",
       "manifest": "continent-asia.manifest.json",
-      "sha256": "bb3cdf0c65d7fb724d8ccecb33028a8b511d9d98fcf6de155687d3ff138c949a",
-      "bytes": 1518808,
-      "status": "nativeVerified",
+      "sha256": "0f24b1c4babb342c9d1a96d12f7935f9a90900e2bdf96d8893c8e46e021dd5d9",
+      "bytes": 1648444,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -191,10 +191,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "bb3cdf0c65d7fb724d8ccecb33028a8b511d9d98fcf6de155687d3ff138c949a",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "0f24b1c4babb342c9d1a96d12f7935f9a90900e2bdf96d8893c8e46e021dd5d9"
       }
     },
     {
@@ -202,9 +202,9 @@
       "title": "북아메리카",
       "svg": "continent-north-america.svg",
       "manifest": "continent-north-america.manifest.json",
-      "sha256": "544b5971f7feb5f5ed46a9bd15dfa67e083fe904d8aa86d59d13e88363ea12b8",
-      "bytes": 1054918,
-      "status": "nativeVerified",
+      "sha256": "6aeef994b50bc4469442a27d27847ea55d9318f1ccd104cc25156dd4eaff35b9",
+      "bytes": 1181974,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -215,10 +215,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "544b5971f7feb5f5ed46a9bd15dfa67e083fe904d8aa86d59d13e88363ea12b8",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "6aeef994b50bc4469442a27d27847ea55d9318f1ccd104cc25156dd4eaff35b9"
       }
     },
     {
@@ -226,9 +226,9 @@
       "title": "남아메리카",
       "svg": "continent-south-america.svg",
       "manifest": "continent-south-america.manifest.json",
-      "sha256": "ab326b71ea7b9d65dd07cf831e396c6839ad4e75307ec9d1316e8a8c49435a7e",
-      "bytes": 368534,
-      "status": "nativeVerified",
+      "sha256": "1ba8c157151b2dbcff4199e0cc89e886f1fa9ea6db2809a5e1b197983633c1e6",
+      "bytes": 465000,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -239,10 +239,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "ab326b71ea7b9d65dd07cf831e396c6839ad4e75307ec9d1316e8a8c49435a7e",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "1ba8c157151b2dbcff4199e0cc89e886f1fa9ea6db2809a5e1b197983633c1e6"
       }
     },
     {
@@ -250,9 +250,9 @@
       "title": "오세아니아",
       "svg": "continent-oceania.svg",
       "manifest": "continent-oceania.manifest.json",
-      "sha256": "b4d84627e656756d7eafafa0693e6391e4a52fee0f9424c05b84e9f4f6b1f105",
-      "bytes": 409840,
-      "status": "nativeVerified",
+      "sha256": "f511e8d9833101b9823c49c37ba0a5997e37c73d9823ffa0df148e50bad93311",
+      "bytes": 442600,
+      "status": "sourceVerified",
       "targetISO": null,
       "projection": "Equirectangular",
       "extent": [
@@ -263,10 +263,10 @@
       ],
       "sourceKind": "reprojected-geographic-data",
       "nativeValidation": {
-        "status": "nativeVerified",
-        "appVersion": "1.1.8",
-        "sourceSha256": "b4d84627e656756d7eafafa0693e6391e4a52fee0f9424c05b84e9f4f6b1f105",
-        "visualReview": "passed"
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "f511e8d9833101b9823c49c37ba0a5997e37c73d9823ffa0df148e50bad93311"
       }
     },
     {
@@ -580,6 +580,174 @@
         "sourceSha256": "07a7e3212b9ceeaf81b633a6352017957a8e3a83f7798f4cdefd37048920e1c8",
         "visualReview": "passed"
       }
+    },
+    {
+      "id": "detail-north-america-ne10m",
+      "title": "상세 북아메리카·북태평양 (NE 10m 권역)",
+      "svg": "detail-north-america-ne10m.svg",
+      "manifest": "detail-north-america-ne10m.manifest.json",
+      "sha256": "1e70abc9e6dea505c84bbc7a7dc2f86b786222415a4b0d043072a7a3d120eeeb",
+      "bytes": 4653046,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        -183,
+        12,
+        -57,
+        90
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "1e70abc9e6dea505c84bbc7a7dc2f86b786222415a4b0d043072a7a3d120eeeb"
+      }
+    },
+    {
+      "id": "detail-europe-north-africa-ne10m",
+      "title": "상세 유럽·북아프리카·서아시아 (NE 10m 권역)",
+      "svg": "detail-europe-north-africa-ne10m.svg",
+      "manifest": "detail-europe-north-africa-ne10m.manifest.json",
+      "sha256": "cfbfa2bb7a5418f3e21bbf12641eee790546eac939866ed5d9302b8f1970914e",
+      "bytes": 5754634,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        -63,
+        12,
+        63,
+        90
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "cfbfa2bb7a5418f3e21bbf12641eee790546eac939866ed5d9302b8f1970914e"
+      }
+    },
+    {
+      "id": "detail-asia-north-pacific-ne10m",
+      "title": "상세 아시아·북태평양 (NE 10m 권역)",
+      "svg": "detail-asia-north-pacific-ne10m.svg",
+      "manifest": "detail-asia-north-pacific-ne10m.manifest.json",
+      "sha256": "96ed9e1e705601e16e13d8da90d7a489ad9450d11d6f2e69452b958b96ad0ed1",
+      "bytes": 3223079,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        57,
+        12,
+        183,
+        90
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "96ed9e1e705601e16e13d8da90d7a489ad9450d11d6f2e69452b958b96ad0ed1"
+      }
+    },
+    {
+      "id": "detail-south-america-pacific-ne10m",
+      "title": "상세 남아메리카·동태평양 (NE 10m 권역)",
+      "svg": "detail-south-america-pacific-ne10m.svg",
+      "manifest": "detail-south-america-pacific-ne10m.manifest.json",
+      "sha256": "8615c8e3fe9d3bda5967a38027153ea37f147cb1d65374104fd02695a86b5a94",
+      "bytes": 1855127,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        -183,
+        -63,
+        -57,
+        18
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "8615c8e3fe9d3bda5967a38027153ea37f147cb1d65374104fd02695a86b5a94"
+      }
+    },
+    {
+      "id": "detail-africa-south-atlantic-ne10m",
+      "title": "상세 아프리카·남대서양 (NE 10m 권역)",
+      "svg": "detail-africa-south-atlantic-ne10m.svg",
+      "manifest": "detail-africa-south-atlantic-ne10m.manifest.json",
+      "sha256": "c1c060306b57f1f2a357e0e766b2e730bac78c37e1523825bbb7e0237d7abee0",
+      "bytes": 2303734,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        -63,
+        -63,
+        63,
+        18
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "c1c060306b57f1f2a357e0e766b2e730bac78c37e1523825bbb7e0237d7abee0"
+      }
+    },
+    {
+      "id": "detail-oceania-indian-ocean-ne10m",
+      "title": "상세 오세아니아·인도양·동남아시아 (NE 10m 권역)",
+      "svg": "detail-oceania-indian-ocean-ne10m.svg",
+      "manifest": "detail-oceania-indian-ocean-ne10m.manifest.json",
+      "sha256": "e4e47f530664be63f2e7c090b88a6df57a80ccbf8dd174416b65431683349828",
+      "bytes": 2779890,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Equirectangular",
+      "extent": [
+        57,
+        -63,
+        183,
+        18
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "e4e47f530664be63f2e7c090b88a6df57a80ccbf8dd174416b65431683349828"
+      }
+    },
+    {
+      "id": "detail-antarctica-ne10m",
+      "title": "상세 남극·남빙양 (NE 10m 권역)",
+      "svg": "detail-antarctica-ne10m.svg",
+      "manifest": "detail-antarctica-ne10m.manifest.json",
+      "sha256": "6bac19083735d448885d058e57ab86df4866f7bb434ec156ce56efdbcf353635",
+      "bytes": 910766,
+      "status": "sourceVerified",
+      "targetISO": null,
+      "projection": "Stereographic",
+      "extent": [
+        -180,
+        -90,
+        180,
+        -57
+      ],
+      "sourceKind": "reprojected-geographic-data",
+      "nativeValidation": {
+        "status": "notRun",
+        "saveReopenExportVerified": false,
+        "visualReview": "notRun",
+        "sourceSha256": "6bac19083735d448885d058e57ab86df4866f7bb434ec156ce56efdbcf353635"
+      }
     }
   ],
   "selection": [
@@ -635,20 +803,17 @@
     }
   ],
   "schemaGuide": "SCHEMA.md",
-  "status": "nativeVerified",
+  "status": "mixed-sourceVerified-nativePending",
   "nativeValidation": {
-    "status": "nativeVerified",
-    "appVersion": "1.1.8",
-    "verifiedAt": "2026-10-03T15:40:43.997803+00:00",
-    "templateCount": 25,
-    "structuralIssueCount": 0,
-    "visualReview": "passed",
-    "evidence": {
-      "nativeSummarySha256": "68a755e35729ab7a962fd30605a31a3dea81c3d3647a335f0a3878878d262140",
-      "visualReviewSha256": "bb58c495c5d9a7738ba24aff07111a506312d65719b99c9991d5c05592787db2",
-      "runtimeFileDependency": false,
-      "summary": "Source-hash matched native save/reopen/JPEG and parent visual review; structural issues 0."
-    },
-    "nativeArtifactsIncludedInLibrary": false
+    "status": "notRun-for-regional-subset",
+    "refreshedIds": [
+      "detail-north-america-ne10m",
+      "detail-europe-north-africa-ne10m",
+      "detail-asia-north-pacific-ne10m",
+      "detail-south-america-pacific-ne10m",
+      "detail-africa-south-atlantic-ne10m",
+      "detail-oceania-indian-ocean-ne10m",
+      "detail-antarctica-ne10m"
+    ]
   }
 }

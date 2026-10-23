@@ -72,7 +72,7 @@ vectora_export({documentId, path:"/절대/경로/그림.jpeg", format:"jpeg", sc
 vectora_export({documentId, path:"/절대/경로/그림.png", format:"png", scale:4, rasterColorMode:"color"})
 ~~~
 
-rasterColorMode를 생략하면 JPEG/PNG는 회색조다. 컬러 요청은 "color"로 지정한다. 이 옵션은 PNG/JPEG 내보내기에만 보내며 SVG/PDF/WebP 내보내기에 포함하면 거부된다. vectora_export_package의 옵션은 PNG 출력에만 적용된다. 변환은 출력에만 적용되며 편집 원본과 vectora_preview, SVG/PDF/WebP 미리보기의 색은 유지된다. PDF의 colorMode는 별개다.
+rasterColorMode를 생략하면 JPEG/PNG는 회색조다. 컬러 요청은 "color"로 지정한다. 이 옵션은 PNG/JPEG 내보내기에만 보내며 SVG/PDF/WebP 내보내기에 포함하면 거부된다. vectora_export_package에서는 legacy 프로필의 PNG 또는 kice 프로필의 JPEG에 적용된다. 변환은 출력에만 적용되며 편집 원본과 vectora_preview, SVG/PDF/WebP 미리보기의 색은 유지된다. PDF의 colorMode는 별개다.
 
 ## 사용자 프리셋
 

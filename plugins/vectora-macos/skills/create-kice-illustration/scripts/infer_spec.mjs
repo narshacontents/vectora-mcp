@@ -2,6 +2,7 @@
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const list=v=>Array.isArray(v)?v:[];
 const nonempty=v=>typeof v==='string'&&v.length>0;
+const nonblank=v=>typeof v==='string'&&v.trim().length>0;
 export function inferSpec(unit, prefix, checkBinding=()=>{}){
  let contains=new Set(unit.contains??[]);
  const provenance=[],children=[],used=new Set(),active=new Set();
@@ -57,6 +58,18 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
   text(block.text,`${p}.text`);
   if(block.richText!==undefined)text(block.richText,`${p}.richText`);
  }
+ function formulaStyle(s,p){if(!object(s))return;for(const k of ['underline','doubleUnderline'])if(s[k]===true)add('underline',`${p}.${k}`,'true');}
+ function formulaPart(part,p){
+  if(!object(part))return;
+  text(part.text,`${p}.text`);
+  const rich=part.richText;
+  if(!object(rich))return;
+  text(rich.text,`${p}.richText.text`);
+  formulaStyle(rich,`${p}.richText`);
+  if(list(rich.underlines).length)add('underline',`${p}.richText.underlines`,'nonempty array');
+  if(Array.isArray(rich.styles))rich.styles.forEach((run,i)=>formulaStyle(run?.style,`${p}.richText.styles[${i}].style`));
+  else if(object(rich.styles))for(const [line,chars] of Object.entries(rich.styles))if(/^\d+$/.test(line)&&object(chars))for(const [char,s] of Object.entries(chars))if(/^\d+$/.test(char))formulaStyle(s,`${p}.richText.styles.${line}.${char}`);
+ }
  function reserve(v,p){if(v!==undefined){if(!object(v))throw new Error(`${p}: reserve must be an object; runtime validates reservation dimensions`);add('reserve',p,'native reserve');}}
  function scopedReserve(v,p){
   if(v===undefined)return;
@@ -67,6 +80,7 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
   ({contains,hasText,people,localProvenance,localDataSource}=saved);
  }
  function recipe(s){
+  if(s.kind==='map'&&object(s.radial))return 'proportional-map';
   if(s.kind==='map'&&object(s.scalar))return 'isoline-map';
   if(s.kind==='graph'){
    if(s.type==='surface')return 'surface';
@@ -75,7 +89,8 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
    if(s.type==='pie')return 'pie';
    if(s.type==='line')return 'line';
   }
-  if(s.kind==='text')return ({'newspaper-wave':'newspaper','newspaper-band':'newspaper',browser:'screen',scroll:'scroll','scroll-screen':'scroll',noticeboard:'board',chalkboard:'teacher-board',worksheet:'worksheet'})[s.variant];
+  if(s.kind==='schematic'&&s.layout==='formula')return 'formula';
+  if(s.kind==='text')return ({'newspaper-wave':'newspaper','newspaper-band':'newspaper',browser:'screen',scroll:'scroll','scroll-screen':'scroll',noticeboard:'board',chalkboard:'teacher-board',worksheet:'worksheet',paper:'paper'})[s.variant];
   if(s.kind==='dialogue')return ({vertical:'vertical-dialogue',horizontal:'horizontal-dialogue',presentation:'presentation'})[s.layout];
   // A native table does not distinguish flat/cross/nested/checklist semantics.
  }
@@ -94,6 +109,10 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
    if(!object(binding)||!nonempty(binding.recipe)||Object.keys(binding).some(k=>!allowed.includes(k))||binding.people!==undefined&&typeof binding.people!=='boolean')throw new Error(`${p}: specRecipes mapping requires a recipe string or {recipe,variant?,people?,dataSource?,textMode?,contains?,features?}`);
    used.add(relative);
   }else if(!root&&s.kind!=='composition')binding={recipe:recipe(s)};
+  if(root&&s.kind==='map'&&object(s.radial)&&!binding?.recipe){
+   binding={...unit,recipe:'proportional-map'};
+   rootRecipe='proportional-map';
+  }
   if(root&&s.kind==='map'&&object(s.scalar)&&!binding?.recipe){
    binding={...unit,recipe:'isoline-map'};
    rootRecipe='isoline-map';
@@ -113,12 +132,13 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
   if(binding){
    const selection=checkBinding(binding,s,p);
    if(s.kind==='map'&&object(s.scalar)&&selection?.type==='I3_Map'&&selection.subtype!=='I3-34_Isoline')throw new Error(`${p}.scalar: native scalar maps use the isoline-map recipe`);
+   if(s.kind==='map'&&object(s.radial)&&selection?.type==='I3_Map'&&selection.subtype!=='I3-33_Proportional')throw new Error(`${p}.radial: native radial maps use the proportional-map recipe`);
    if(mergedSpans.length&&s.kind==='table'&&selection?.type==='D1_Table'&&selection.subtype!=='D1-04_Nested')throw new Error(`${p}: merged native table cells at ${mergedSpans.join(', ')} conflict with explicit ${selection.subtype}; use D1-04_Nested`);
    if(!root)note(p,explicit?'explicit specRecipes mapping':`native ${s.kind}${s.chartStyle?':'+s.chartStyle:s.type?':'+s.type:''}`,binding.recipe);
   }
   switch(s.kind){
    case 'text':
-    if(s.variant!==undefined&&!['newspaper-wave','newspaper-band','scroll','scroll-screen','browser','noticeboard','chalkboard','worksheet'].includes(s.variant))throw new Error(`${p}.variant: unsupported native text frame variant ${s.variant}; use a supported native text frame variant`);
+    if(s.variant!==undefined&&!['newspaper-wave','newspaper-band','scroll','scroll-screen','browser','noticeboard','chalkboard','worksheet','paper'].includes(s.variant))throw new Error(`${p}.variant: unsupported native text frame variant ${s.variant}; use a supported native text frame variant`);
     if(s.variant==='browser'&&object(s.aside)&&s.aside.layout==='wrap'&&nonempty(s.aside.anchorBlockId))add('text-flow',`${p}.aside.layout`,'native browser aside.layout === "wrap" with nonempty anchorBlockId');
     for(const k of ['title','body'])text(s[k],`${p}.${k}`);
     if(s.variant==='worksheet'&&object(s.worksheet)){
@@ -131,6 +151,7 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
     list(s.blocks).forEach((b,i)=>{const r=`${relative}.blocks[${i}]`;if(b?.type==='text')text(b.text,`${prefix}.${r}.text`);else if(b?.type==='response'&&s.variant==='worksheet'){text(b.text,`${prefix}.${r}.text`);text(b.label,`${prefix}.${r}.label`);for(const k of ['widthMm','heightMm','lines'])if(b[k]!==undefined)add('reserve',`${prefix}.${r}.${k}`,`explicit worksheet response ${k}`);}else if(b?.type==='reserve')reserve(b.reserve,`${prefix}.${r}.reserve`);else if(b?.type==='graph')visit(b.graph,r+'.graph',false,depth+1);else if(b?.type==='component')visit(b.spec,r+'.spec',false,depth+1);else throw new Error(`${prefix}.${r}: unsupported block type`);});
     list(s.graphSlots).forEach((slot,i)=>visit(slot?.graph,`${relative}.graphSlots[${i}].graph`,false,depth+1));break;
    case 'composition':
+    if(!Array.isArray(s.children)||s.children.length===0||s.children.some(c=>!object(c)||!['spec','text','richText','reserve'].some(k=>Object.hasOwn(c,k))))throw new Error(`${p}.children: native composition requires children with spec, text, richText, or reserve content`);
     composition=true;
     if(object(s.sharedScalar)){
      note(`${p}.sharedScalar`,'native composition shared scalar owner','shared-scalar-owner',s.sharedScalar.schema);
@@ -149,12 +170,22 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
     list(s.children).forEach((c,i)=>{const r=`${relative}.children[${i}]`;scopedReserve(c?.reserve,`${prefix}.${r}.reserve`);if(c?.spec!==undefined)visit(c.spec,r+'.spec',false,depth+1);else textBlock(c,`${prefix}.${r}`);});break;
    case 'dialogue':
     if(nonempty(s.sharedScene?.artwork?.assetId)){people=true;note(`${p}.sharedScene.artwork.assetId`,'nonempty shared-scene artwork asset reference','people');}
-    list(s.speakers).forEach((v,i)=>{text(v?.label,`${p}.speakers[${i}].label`);if(nonempty(v?.assetId)){people=true;note(`${p}.speakers[${i}].assetId`,'portrait asset reference','people');}});
+    list(s.speakers).forEach((v,i)=>{text(v?.label,`${p}.speakers[${i}].label`);text(v?.labelRichText,`${p}.speakers[${i}].labelRichText`);if(nonempty(v?.assetId)){people=true;note(`${p}.speakers[${i}].assetId`,'portrait asset reference','people');}});
     list(s.turns).forEach((v,i)=>{text(v?.text,`${p}.turns[${i}].text`);text(v?.richText,`${p}.turns[${i}].richText`);});
+    const speechCondition=({horizontal:'speech-horizontal',vertical:'speech-vertical',presentation:'speech-solo'})[s.layout];
+    if(speechCondition){
+     const source=list(s.turns).map((turn,i)=>typeof turn?.text==='string'?`${p}.turns[${i}].text`:nonblank(turn?.richText?.text)?`${p}.turns[${i}].richText.text`:undefined).find(Boolean);
+     if(source){
+      const screenMode=s.layout==='presentation'&&(s.mode||s.presentationMode||'speech')==='screen';
+      const reason=screenMode&&s.presentationOptions?.layout==='speech-above-board'?'native presentation speech-above-board layout renders every speaker turn as a bubble above the board':screenMode?'native presentation screen mode renders every speaker turn as a bubble below the screen':`native ${s.layout} dialogue renders every speaker turn as a speech bubble`;
+      add(speechCondition,source,reason);
+     }
+    }
     text(s.screenText,`${p}.screenText`);text(s.screenRichText,`${p}.screenRichText`);
     text(s.sharedScene?.board?.title,`${p}.sharedScene.board.title`);text(s.sharedScene?.board?.titleRichText,`${p}.sharedScene.board.titleRichText`);
     list(s.sharedScene?.artwork?.dataRegions).forEach((region,i)=>{const r=`${relative}.sharedScene.artwork.dataRegions[${i}]`;if(region?.spec!==undefined)visit(region.spec,`${r}.spec`,false,depth+1);else textBlock(region,`${prefix}.${r}`);});
-    if(s.screenGraph!==undefined)visit(s.screenGraph,relative+'.screenGraph',false,depth+1);break;
+    if(s.screenGraph!==undefined)visit(s.screenGraph,relative+'.screenGraph',false,depth+1);
+    if(s.screenComponent!==undefined)visit(s.screenComponent,relative+'.screenComponent',false,depth+1);break;
    case 'table':list(s.cells).forEach((c,i)=>{text(c?.text,`${p}.cells[${i}].text`);text(c?.richText,`${p}.cells[${i}].richText`);if(c?.content!==undefined)visit(c.content,`${relative}.cells[${i}].content`,false,depth+1);});break;
    case 'graph':
     for(const k of ['xTitle','yTitle','unit','xUnit','yUnit'])text(s[k],`${p}.${k}`);
@@ -168,6 +199,15 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
    case 'map':
     if(list(s.locators).length)add('inset',`${p}.locators`,'owned native map locators');
     list(s.overlays).forEach((v,i)=>{if(v?.kind==='label')text(v.text,`${p}.overlays[${i}].text`);});
+    if(object(s.radial)){
+     add('statistics',`${p}.radial`,'native directional radial map');
+     const directions=list(s.radial.angleOrder),selected=s.radial.legend?.directionIndices;
+     const displayed=selected===undefined||selected===null?directions.map((_,i)=>i):Array.isArray(selected)?selected:[];
+     for(const i of displayed)if(Number.isInteger(i)&&i>=0&&i<directions.length&&nonblank(directions[i]))text(directions[i],`${p}.radial.angleOrder[${i}]`);
+     const title=s.radial.legend?.title,visibleTitle=nonblank(title)?title:'';
+     if(visibleTitle)text(visibleTitle,`${p}.radial.legend.title`);
+     if(nonblank(s.radial.unit)&&!String(title??'').includes(s.radial.unit))text(s.radial.unit,`${p}.radial.unit`);
+    }
     if(object(s.scalar)){
      add('statistics',`${p}.scalar`,'native scalar grid map');
      if(s.scalar.grid?.provenance!==undefined){
@@ -191,7 +231,17 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
      }
     }
     break;
-   case 'asset':case 'schematic':break;
+   case 'schematic':
+    if(s.layout==='formula'&&object(s.formula)&&Array.isArray(s.formula.items))s.formula.items.forEach((item,i)=>{
+     const itemPath=`${p}.formula.items[${i}]`;
+     if(item?.kind==='text')formulaPart(item,itemPath);
+     else if(item?.kind==='fraction'){
+      formulaPart(item.numerator,`${itemPath}.numerator`);
+      formulaPart(item.denominator,`${itemPath}.denominator`);
+     }
+    });
+    break;
+   case 'asset':break;
    default:throw new Error(`${p}: unsupported native kind ${s.kind}; rule preparation does not validate native specs`);
   }
   if(binding?.textMode==='none'&&hasText)throw new Error(`${p}: textMode:none contradicts actual text at ${localProvenance.find(x=>x.inferred==='text').path}`);

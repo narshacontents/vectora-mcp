@@ -17,6 +17,7 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 - Windows에서 MCP 실행기는 Windows PowerShell 기본 `powershell.exe`와 설치된 `Vectora.exe`를 사용한다. Node.js/Python 런타임은 필요하지 않다. 앱 경로 우선순위는 `VECTORA_APP_PATH`, `%APPDATA%\Vectora\mcp-app-path`, `%LOCALAPPDATA%\Programs\Vectora\Vectora.exe`, `%ProgramFiles%\Vectora\Vectora.exe`, `%ProgramFiles(x86)%\Vectora\Vectora.exe`다. 사용자 지정 경로는 `scripts/configure-app.ps1 -AppPath <Vectora.exe 절대 경로>`로 저장한다. macOS는 `scripts/configure-app.sh <Vectora.app 절대 경로>` 또는 Applications 기본 위치를 사용한다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.
 - `vectora_apply`의 기본 `units: "mm-pt"`: 도형 위치·크기·경로 `d`·대지·가이드·오프셋은 **mm**, 문자 크기·선 굵기·기준선 이동·행간·점선 길이는 **pt**. 자간 `charSpacing`은 **1/1000em**이다. `units: "px"`는 모든 길이를 px로 받는다.
+- `add`의 `shape:"path"`에서 `d`에 문서 절대 좌표를 계산했다면 `left`/`top`과 `geometryOrigin`은 생략한다. 명시한 `left`/`top`은 경로의 기하 경계 시작점을 그 위치로 다시 배치한다. `geometryOrigin:true`만 보내면 빠진 위치가 0으로 처리되어 절대 좌표 경로가 원점으로 이동하므로 사용하지 않는다. 경로 일부를 보충할 때 먼저 실제 `pathNodes`가 계산한 좌표와 일치하는지 확인한다.
 - `vectora_inspect`의 선택/대지 치수는 mm/pt이고 `includeObjects`의 원시 개체는 **px**다. 원시 값을 명령에 재사용할 때 `units: "px"` 또는 정확한 환산을 사용한다. 96px = 25.4mm = 72pt.
 - 기존 `vectora_apply_illustration`의 `vectora.kice/v1` 장면은 **문자·선까지 전부 px**다. 같은 크기의 원점 대지를 `unit: "px"`로 먼저 만든다. 새 작업에는 mm/pt를 받는 일반 편집 명령을 우선한다.
 
@@ -70,7 +71,7 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 
 ## 래스터 내보내기 색상
 
-- vectora_export는 PNG/JPEG에서만 rasterColorMode: "grayscale" | "color"를 받으며 생략 시 회색조다. scale:4 기본을 유지한다. 사용자가 컬러를 요청하면 color를 명시한다. SVG/PDF/WebP 내보내기에 이 필드를 보내면 거부되므로 생략한다. vectora_export_package의 옵션은 PNG 출력에만 적용된다.
+- vectora_export는 PNG/JPEG에서만 rasterColorMode: "grayscale" | "color"를 받으며 생략 시 회색조다. scale:4 기본을 유지한다. 사용자가 컬러를 요청하면 color를 명시한다. SVG/PDF/WebP 내보내기에 이 필드를 보내면 거부되므로 생략한다. vectora_export_package에서는 legacy 프로필의 PNG 또는 kice 프로필의 JPEG에 적용한다. 라이브 스키마가 지원하면 공통 배율은 rasterScale로 지정한다.
 - 옵션은 내보내기 결과에만 적용하고 편집 원본의 색을 바꾸지 않는다. vectora_preview 및 SVG/PDF/WebP 미리보기는 원래 색을 보존한다. PDF의 colorMode: "rgb" | "cmyk"는 별도 계약이다.
 - 요청 전에 현재 tools/list 입력 스키마를 확인한다. rasterColorMode가 없으면 그 입력을 보내거나 새 기능을 주장하지 않는다. 앱 1.2.0 이상으로 업데이트하고 앱/MCP를 다시 연결한다. 회색 변환을 Computer Use나 다른 변환기로 대신하지 않는다.
 

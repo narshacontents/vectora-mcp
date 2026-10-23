@@ -1,7 +1,6 @@
 /** Browser-safe geometry and SVG calculation shared by the editor and the Node CLI. */
 import {buildPointsGraph} from './graphs-points.mjs';
 const mm = x => x * 96 / 25.4, pt = x => x * 96 / 72;
-const F = pt(8), TRACK = -.06 * F, LH = F * 1.24;
 export const palette = ['#FFFFFF','#EEEEEE','#CCCCCC','#AAAAAA','#666666','#000000'];
 const fmt = x => Number(x.toFixed(6));
 const esc = x => String(x).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -9,6 +8,12 @@ const attrs = a => Object.entries(a).filter(([,v])=>v!==undefined).map(([k,v])=>
 const finite = x => typeof x==='number' && Number.isFinite(x);
 const check = (ok, message) => { if (!ok) throw new Error(message); };
 const overlap = (a,b,p=0) => a.x < b.x+b.w+p && b.x < a.x+a.w+p && a.y < b.y+b.h+p && b.y < a.y+a.h+p;
+function graphTypography(fontFace,fontFamily) {
+  const legacy=fontFace==='UNDv30-Regular',fontPt=8,charSpacing=legacy?-60:0,leadingPercent=legacy?124:130;
+  return {fontPt,charSpacing,leadingPercent,report:legacy
+    ?{fontPt,charSpacing}
+    :{textProfile:'und-dotum-8-default-v1',fontFamily,fontPt,charSpacing,horizontalScale:100,leadingPercent,leadingPt:fontPt*leadingPercent/100}};
+}
 const crosses = (a,b,box) => {
   let t0=0,t1=1;
   for(const [p,q] of [[a.x-b.x,a.x-box.x],[b.x-a.x,box.x+box.w-a.x],[a.y-b.y,a.y-box.y],[b.y-a.y,box.y+box.h-a.y]]) {
@@ -46,6 +51,10 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
   check(font && typeof font.normalize === 'function' && typeof font.measure === 'function', 'An actual UND font metrics adapter is required.');
   const fontFamily=font.postscriptName==='UNDv31-Regular'?'UND v3.1':font.postscriptName==='UNDv30-Regular'?'UND v3.0':undefined;
   check(fontFamily,'The actual font face must be UNDv31-Regular by default or UNDv30-Regular when explicitly requested.');
+  // Fresh v3.1 graphs follow the app's current illustration text profile.
+  // An explicitly selected v3.0 face keeps the app's historical replay metrics.
+  const typography=graphTypography(font.postscriptName,fontFamily),{fontPt,charSpacing,leadingPercent}=typography;
+  const F=pt(fontPt),TRACK=charSpacing*F/1000,LH=F*leadingPercent/100;
   const W = mm(widthMm), parts = [], boxes = [], geometry = [], substitutions = [], vectorGlyphs = [], idCounts = new Map();
   const normalized = x => font.normalize(String(x).normalize('NFC'), substitutions);
   const measure = str => {
@@ -106,7 +115,7 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
   });
   check(new Set(series.map(v=>v.label)).size===series.length,'Series labels must be unique.');
   check(new Set(series.map(v=>v.id)).size===series.length,'Series ids must be unique.');
-  if(s.type==='points')return buildPointsGraph({...s,series},{fontAdapter:font,fontFamily,widthMm,plotMm,strokePt,palette});
+  if(s.type==='points')return buildPointsGraph({...s,series},{fontAdapter:font,fontFamily,widthMm,plotMm,strokePt,palette,typography});
   const curveDash = style => style.line==='solid'?undefined:(style.line==='dash'?(strokePt===.8?[3,1.5]:[2,1]):(strokePt===.8?[6,1,1,1]:[5,1,1,1])).map(pt).join(' ');
   const marker = (name,x,y,style) => {
     const r=pt(1.65),common={'data-name':name,fill:'#000000',stroke:'none'};
@@ -389,7 +398,7 @@ export function buildGraphCore(input, {fontAdapter} = {}) {
     for(let j=0;j<i;j++)if(overlap(b,boxes[j],.2))collisions.push([boxes[j].name,b.name]);
   }
   check(!collisions.length,`Text collisions: ${JSON.stringify(collisions)}. Adjust layout/labelOffsets before delivery.`);
-  const report={type:s.type,layout:s.layout??null,dataFidelity:s.dataFidelity,source:s.source??null,widthMm,heightMm:H*25.4/96,fontFace:font.postscriptName,fontPt:8,charSpacing:-60,strokePt,legend:legendMode,substitutions,vectorGlyphs,geometry,textBounds:boxes,resolvedSeries:series.map(({id,label,fill,pattern,line,marker})=>({id,label,fill,pattern,line,marker})),checks:{numericDomain:true,textInsidePage:true,textTextCollisions:0},requiresVisualReview:true};
+  const report={type:s.type,layout:s.layout??null,dataFidelity:s.dataFidelity,source:s.source??null,widthMm,heightMm:H*25.4/96,fontFace:font.postscriptName,...typography.report,strokePt,legend:legendMode,substitutions,vectorGlyphs,geometry,textBounds:boxes,resolvedSeries:series.map(({id,label,fill,pattern,line,marker})=>({id,label,fill,pattern,line,marker})),checks:{numericDomain:true,textInsidePage:true,textTextCollisions:0},requiresVisualReview:true};
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${fmt(widthMm)}mm" height="${fmt(H*25.4/96)}mm" viewBox="0 0 ${fmt(W)} ${fmt(H)}">\n<rect id="vgraph.background.1" data-name="graph-background" x="0" y="0" width="${fmt(W)}" height="${fmt(H)}" fill="#FFFFFF"/>\n${parts.join('\n')}\n</svg>\n`;
   return {svg,report};
 }

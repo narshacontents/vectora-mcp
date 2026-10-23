@@ -38,7 +38,8 @@ test('Claude marketplace installs one self-contained plugin with three skills an
   }
   for (const file of listFiles(plugin)) {
     assert.doesNotMatch(file, /\.(?:node|so|dylib|dll|pyd|exe|pyc|ttf|otf)$/i, file);
-    assert.doesNotMatch(file, /(?:^|\/)(?:__pycache__|\.git)(?:\/|$)/, file);
+    assert.doesNotMatch(file, /(?:^|\/)(?:__pycache__|\.git|tests?|fixtures?)(?:\/|$)/, file);
+    assert.doesNotMatch(file, /(?:^|\/)\.DS_Store$/, file);
   }
   assert.match(readFileSync(path.join(skill, 'vendor/python/fonttools-4.63.0.dist-info/WHEEL'), 'utf8'), /^Tag: py3-none-any$/m);
 });

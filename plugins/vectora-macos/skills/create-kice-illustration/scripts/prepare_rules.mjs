@@ -88,14 +88,18 @@ export function prepareRules(options, root = skillRoot) {
   if (subtype === 'I3-13_OldMap' && selected.some(x => ['korea','dem','projection','area','points','route','statistics','natural','tectonic-ice'].includes(x))) {
     throw new Error('An original old-map image is preserved as an image. Use historical/photo/annotation context, not modern preset layers.');
   }
-  if (variant && ['horizontal','vertical','presentation'].includes(variant) && selected.some(x => x.startsWith('speech-'))) {
-    throw new Error('The variant already selects a speech layout; do not add a second layout.');
-  }
   const modules = new Set(row.modules);
   for (const name of row.variants?.[variant] ?? []) modules.add(name);
   for (const feature of selected) for (const name of index.features[feature].modules) modules.add(name);
+  const nativeDialogueLayout = nativeSpec?.kind === 'dialogue'
+    && ['horizontal','vertical','presentation'].includes(nativeSpec.layout)
+    ? nativeSpec.layout
+    : null;
   const layouts=['horizontal','vertical','presentation'].filter(name=>modules.has(name));
+  if (nativeDialogueLayout && !layouts.includes(nativeDialogueLayout)) layouts.push(nativeDialogueLayout);
   if (layouts.length > 1) throw new Error(`Conflicting layouts: ${layouts.join(', ')}. Select one layout per unit.`);
+  // Explicit native layout must select its rules even when a board has no turns yet.
+  if (nativeDialogueLayout) modules.add(nativeDialogueLayout);
   if (selected.includes('messenger') && layouts.some(name=>name!=='vertical')) throw new Error('messenger requires the vertical layout only.');
   if (modules.has('artwork')) modules.add('artwork-geometry');
   if (selected.includes('real-data') && row.type === 'I3_Map') modules.add('real-data-map');
@@ -103,8 +107,6 @@ export function prepareRules(options, root = skillRoot) {
 
   const hasPeople = people || sharedSceneArtwork || row.peopleRequired === true;
   const originalPerson = index.people.originalPhotoSubtypes.includes(subtype);
-  const nativeDialogueLayout = nativeSpec?.kind === 'dialogue'
-    && ['horizontal','vertical','presentation'].includes(nativeSpec.layout);
   const speakerLayout = modules.has('speech') || modules.has('bubble') || layouts.length > 0 || nativeDialogueLayout;
   if (hasPeople) {
     if (!originalPerson) {
@@ -164,10 +166,7 @@ export function prepareRules(options, root = skillRoot) {
     return index.modules[key];
   })];
   const knownModules = new Set(Object.keys(index.modules));
-  const sections = sources.map((file, position) => {
-    const text = readSource(root, file);
-    return position === 0 ? filterModuleBlocks(text, modules, knownModules, file) : text;
-  });
+  const sections = sources.map(file => filterModuleBlocks(readSource(root, file), modules, knownModules, file));
   const body = sections.join('\n\n');
   const signature = createHash('sha256').update(JSON.stringify({subtype,variant,selected,hasPeople})).update(body).digest('hex').slice(0,16);
   const content = `<!-- prepared-rules:${signature}; single-source selection, do not edit -->\n`

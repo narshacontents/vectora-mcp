@@ -170,19 +170,67 @@ test('descendant presentation conditions stay on the child and original photo ma
  const r=prepare(req);
  assert.equal(r.resolved[0].people,false);assert.deepEqual(r.resolved[0].contains,[]);
  assert.equal(r.resolved[1].people,true);assert.ok(r.resolved[1].modules.includes('person-speech'));
- assert.deepEqual(r.resolved[1].contains,[]);assert.deepEqual(r.resolved[2].contains,['underline']);
+ assert.deepEqual(r.resolved[1].contains,['speech-solo']);assert.deepEqual(r.resolved[2].contains,['underline']);
  assert.equal(r.resolved[2].people,false);
  const photo=prepare({...req,specRecipes:{'spec.children[0].spec':{recipe:'original-person',variant:'presentation',people:true,dataSource:'provided'}}});
  assert.equal(photo.resolved[1].variant,'presentation');assert.ok(!photo.resolved[1].modules.includes('artwork'));assert.ok(!photo.resolved[1].modules.includes('presentation-artwork'));
  assert.throws(()=>prepare({...req,specRecipes:{'spec.children[0].spec':{recipe:'presentation',people:false}}}),/people:false.*assetId/);
 });
-test('root broad kind compatibility and explicit shell composition binding',()=>{
+test('root kind compatibility and native composition shape guards stay specific',()=>{
  assert.throws(()=>prepare({recipe:'bar',spec:{kind:'text',variant:'newspaper-wave',body:'본문'}}),/incompatible.*text/);
  assert.throws(()=>prepare({recipe:'table',spec:{kind:'graph',type:'bar'}}),/incompatible.*graph/);
  assert.doesNotThrow(()=>prepare({recipe:'paper',spec:{kind:'composition',layout:'column',children:[{id:'r',reserve:{heightMm:3}}]}}));
- assert.throws(()=>prepare({recipe:'bar',spec:{kind:'composition',layout:'column',children:[]}}),/composition binding.*shell/);
+ for(const children of [[],[{}],[null]])assert.throws(()=>prepare({recipe:'bar',spec:{kind:'composition',layout:'column',children}}),/composition requires children with spec, text, richText, or reserve/);
+ assert.throws(()=>prepare({recipe:'paper',spec:{kind:'composition',children:[{spec:{kind:'composition',children:[]}}]}}),/native composition requires children/);
+ // Explicit paper and image-board roots remain intentional outer frames.
+ assert.equal(prepare({recipe:'paper',spec:{kind:'composition',children:[{id:'p',spec:{kind:'text',variant:'paper',body:'본문'}}]}}).resolved[0].recipe,'paper');
+ assert.equal(prepare({recipe:'image-board',variant:'screen',spec:{kind:'composition',children:[{id:'p',spec:{kind:'text',variant:'paper',body:'본문'}}]}}).resolved[0].recipe,'image-board');
+ const originalPerson=prepare({recipe:'original-person',variant:'presentation',spec:{kind:'composition',children:[{id:'p',spec:{kind:'text',variant:'paper',body:'사진 설명'}}]}});
+ assert.equal(originalPerson.resolved[0].recipe,'original-person');assert.equal(originalPerson.resolved[0].type,'ITC_Fixed');
+ assert.throws(()=>prepare({recipe:'old-map',spec:{kind:'composition',children:[{id:'map',spec:{kind:'map',overlays:[]}}]},specRecipes:{'spec.children[0].spec':'route-map'}}),/old-map is an original scan.*cannot bind a native composition/);
+ assert.throws(()=>prepare({recipe:'route-map',spec:{kind:'composition',children:[{id:'map',spec:{kind:'map',overlays:[]}}]},specRecipes:{'spec.children[0].spec':'route-map'}}),/native map roots remain unsupported/);
  // Historical override is allowed when there is no actual portrait asset.
  assert.equal(prepare({recipe:'vertical-dialogue',people:false,spec:{kind:'dialogue',layout:'vertical',speakers:[{id:'s'}],turns:[{id:'t',speakerId:'s',text:'문장'}]}}).resolved[0].people,false);
+});
+test('D1-D4 root compositions retain semantic recipes and infer paper children once',()=>{
+ const makeUnit=(recipe,id,children,layout='column',extra={})=>({id,recipe,spec:{kind:'composition',layout,children,...extra}});
+ const flowChildren=[
+  {id:'collect',spec:{kind:'text',variant:'paper',title:'자료: 수집',body:{text:'설문 자료를 모은다.',styles:[{start:0,end:2,style:{underline:true}}]}}},
+  {id:'analyze',spec:{kind:'text',variant:'paper',title:'자료 분석',body:{text:'응답을 분류한다.',styles:[{start:0,end:2,style:{underline:true}}]}}},
+  {id:'conclude',spec:{kind:'text',variant:'paper',title:'결론 도출',body:{text:'가설을 검증한다.',styles:[{start:0,end:2,style:{underline:true}}]}}},
+ ];
+ const request={units:[
+  makeUnit('table','table-root',[{id:'table-content',spec:{kind:'text',variant:'paper',body:'표 자료'}}]),
+  makeUnit('bar','bar-root',[{id:'bar-content',spec:{kind:'text',variant:'paper',body:'막대 자료'}}]),
+  makeUnit('curve','curve-root',[{id:'curve-content',spec:{kind:'text',variant:'paper',body:'곡선 자료'}}]),
+  makeUnit('flowchart','flow-root',flowChildren,'row',{stageArrows:[{id:'collect-analyze',from:'collect',to:'analyze',widthMm:2.6,lengthMm:3.4},{id:'analyze-conclude',from:'analyze',to:'conclude',widthMm:2.6,lengthMm:3.4}]}),
+ ]};
+ const before=structuredClone(request),result=prepareTask(request);
+ assert.deepEqual(request,before,'inference and review preserve the supplied native composition');
+ const roots=result.resolved.filter(unit=>unit.id.endsWith('-root'));
+ assert.deepEqual(roots.map(({recipe,type})=>[recipe,type]),[
+  ['table','D1_Table'],['bar','D2_Chart'],['curve','D3_Graph'],['flowchart','D4_Diagram'],
+ ]);
+ assert.ok(roots.every(unit=>!unit.type.startsWith('IT')&&!unit.modules.includes('artwork')&&!unit.modules.includes('photo')));
+ const paperChildren=result.resolved.filter(unit=>unit.recipe==='paper');
+ assert.equal(paperChildren.length,6);
+ assert.ok(paperChildren.every(unit=>unit.textMode==='prose'&&unit.type==='ITA_TypeSwap'));
+ const flowTextChildren=paperChildren.filter(unit=>unit.id.startsWith('flow-root:native-'));
+ assert.equal(flowTextChildren.length,3);
+ assert.ok(flowTextChildren.every(unit=>unit.contains.includes('underline')));
+ assert.ok(flowTextChildren.every(unit=>['frame','document','paper'].every(module=>unit.modules.includes(module))));
+ const flowRoot=result.resolved.find(unit=>unit.id==='flow-root');
+ assert.ok(flowRoot.modules.includes('node-diagram'));
+ assert.ok(!flowRoot.modules.some(module=>['frame','document','paper'].includes(module)));
+ assert.equal(Object.values(result.phaseSources).flat().filter(source=>source.path==='core/composition.md').length,1);
+ assert.equal(result.inputReview.warnings.filter(w=>w.ruleId==='display-colon-spacing'&&w.path==='units[3].spec.children[0].spec.title').length,1);
+ assert.equal(flowRoot.contains.includes('underline'),false,'child typography conditions stay scoped to child units');
+ assert.equal(result.inputReview.blocking,false);
+});
+test('native formula requirements remain incompatible with composition and other root recipes',()=>{
+ const formula={kind:'schematic',layout:'formula',formula:{items:[{kind:'text',text:'x'}]}};
+ assert.throws(()=>prepare({recipe:'formula',spec:{kind:'composition',children:[{id:'formula',spec:formula}]}}),/recipe formula requires native schematic layout:formula/);
+ assert.throws(()=>prepare({recipe:'flowchart',spec:formula}),/native schematic layout:formula conflicts with recipe flowchart/);
 });
 test('structured mappings support image-board variants and reject unsupported fields',()=>{
  const req={recipe:'paper',spec:{kind:'composition',layout:'column',children:[{id:'b',spec:{kind:'text',variant:'newspaper-wave',body:'자료'}}]},specRecipes:{'spec.children[0].spec':{recipe:'image-board',variant:'newspaper',people:false,dataSource:'provided'}}};
@@ -248,7 +296,8 @@ test('dialogue execution contracts follow layout and native screen signals',()=>
 test('screen mode alone does not select the presentation screen contract for horizontal or vertical dialogue',()=>{
  for(const layout of ['horizontal','vertical'])for(const field of ['presentationMode','mode']){
   const spec={kind:'dialogue',layout,[field]:'screen',speakers:[{id:'s'}],turns:[{id:'t',text:'설명'}]};
-  const result=prepare({recipe:'presentation',spec});
+  const recipe=layout==='horizontal'?'horizontal-dialogue':'vertical-dialogue';
+  const result=prepare({recipe,spec});
   assert.ok(!result.resolved[0].modules.includes('presentation-screen-native'),`${layout}.${field}`);
  }
 });

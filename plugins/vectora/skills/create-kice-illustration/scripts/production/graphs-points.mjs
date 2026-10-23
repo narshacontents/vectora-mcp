@@ -6,7 +6,7 @@ const finite=value=>typeof value==='number'&&Number.isFinite(value);
 const check=(value,message)=>{if(!value)throw new Error(message);};
 const overlaps=(a,b,pad=0)=>a.x<b.x+b.w+pad&&b.x<a.x+a.w+pad&&a.y<b.y+b.h+pad&&b.y<a.y+a.h+pad;
 
-export function buildPointsGraph(spec,{fontAdapter,fontFamily,widthMm,plotMm,strokePt,palette}){
+export function buildPointsGraph(spec,{fontAdapter,fontFamily,widthMm,plotMm,strokePt,palette,typography}){
   const allowed=new Set(['type','dataFidelity','series','widthMm','plotHeightMm','strokePt','legend','grid','xTitle','yTitle','unit','source','xDomain','yDomain','xTicks','yTicks','axisBreaks','labelOffsets']);
   Object.keys(spec).forEach(key=>check(allowed.has(key),`Unknown points option: ${key}`));
   check(spec.dataFidelity==='exact'||spec.dataFidelity==='approximate','Points need dataFidelity: exact | approximate.');
@@ -17,7 +17,7 @@ export function buildPointsGraph(spec,{fontAdapter,fontFamily,widthMm,plotMm,str
   check(spec.series.every(series=>series.line==='solid'||series.line===undefined),'Points are never joined by lines.');
   check(spec.xDomain?.length===2&&spec.xDomain.every(finite)&&spec.xDomain[0]<spec.xDomain[1],'Points need an increasing xDomain.');
   check(spec.yDomain?.length===2&&spec.yDomain.every(finite)&&spec.yDomain[0]<spec.yDomain[1],'Points need an increasing yDomain.');
-  const font=fontAdapter,sw=pt(strokePt),axisSw=pt(.4),ruleSw=pt(.3),F=pt(8),LH=F*1.24,track=-.06*F,W=mm(widthMm),pad=mm(2),gap=mm(3);
+  const font=fontAdapter,sw=pt(strokePt),axisSw=pt(.4),ruleSw=pt(.3),F=pt(typography.fontPt),LH=F*typography.leadingPercent/100,track=typography.charSpacing*F/1000,W=mm(widthMm),pad=mm(2),gap=mm(3);
   const normalize=value=>font.normalize(String(value).normalize('NFC'),[]);
   const measure=value=>Math.max(0,...normalize(value).split('\n').map(line=>font.measure(line,F,track)));
   const boxes=[],parts=[],geometry=[];
@@ -117,7 +117,7 @@ export function buildPointsGraph(spec,{fontAdapter,fontFamily,widthMm,plotMm,str
   check(!collisions.length,`Text collisions: ${JSON.stringify(collisions)}.`);
   const height=Math.max(bottom+pad+LH*2,spec.xTitle?bottom+LH*2+pad:0,legendWidth?top+legendHeight+pad:0),heightMm=height*25.4/96;
   const axisBreakMapping={...(xb?{x:{from:xb.from,to:xb.to,gapMm:xb.gapPx*25.4/96}}:{}),...(yb?{y:{from:yb.from,to:yb.to,gapMm:yb.gapPx*25.4/96}}:{})};
-  const report={type:'points',dataFidelity:spec.dataFidelity,source:spec.source??null,widthMm,heightMm,fontFace:font.postscriptName,fontPt:8,charSpacing:-60,strokePt,legend,geometry,textBounds:boxes,axisBreakMapping,resolvedSeries:spec.series.map(({id,label,fill,pattern,line,marker})=>({id,label,fill,pattern,line,marker})),checks:{numericDomain:true,textInsidePage:true,textTextCollisions:0},requiresVisualReview:true};
+  const report={type:'points',dataFidelity:spec.dataFidelity,source:spec.source??null,widthMm,heightMm,fontFace:font.postscriptName,...typography.report,strokePt,legend,geometry,textBounds:boxes,axisBreakMapping,resolvedSeries:spec.series.map(({id,label,fill,pattern,line,marker})=>({id,label,fill,pattern,line,marker})),checks:{numericDomain:true,textInsidePage:true,textTextCollisions:0},requiresVisualReview:true};
   const ids=new Map(),identified=parts.map(part=>{
     const match=part.match(/^<(\w+)\s+[^>]*data-name="([^"]+)"/);if(!match)return part;
     const [,tag,name]=match,count=(ids.get(name)??0)+1;ids.set(name,count);

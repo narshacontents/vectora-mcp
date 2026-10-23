@@ -1,4 +1,4 @@
-# Vectora MCP + 평가원 스타일 스킬 2.0.0
+# Vectora MCP + 평가원 스타일 스킬 2.0.5
 
 Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소의 **Git 확장**으로 설치합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
 
@@ -9,6 +9,8 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 | 통합과학 평가원 스타일 일러스트 만들기 | `create-kice-science-illustration` | 등록 정보만 있으며 본문은 비어 있음 |
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
+
+2.0.5는 제본·서신·기기·디지털 화면 배치와 신문·화면 프레임 지침을 보강하고, 수식 및 중첩 자료의 구성요소를 실제 콘텐츠에 따라 선택적으로 라우팅합니다. 표시 문자 검수와 대화의 선택 실행을 추가했으며, 새 v3.1 그래프는 현재 문자 프로필을 사용하고 명시적 v3.0 작업은 기존 측정값을 유지합니다. 지역 상세 지도와 출처 manifest를 fallback 라이브러리에 추가했습니다. 이 새 네이티브 수식·화면 구성·그래프 문자 기능에는 Vectora 앱 2.0.6 이상을 권장합니다.
 
 [출제 에이전트 연동 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)가 세 플러그인에 함께 설치됩니다. 표시 원문과 표시 금지 출제 맥락·정답을 분리해 의뢰하고, 제작자는 상태·실제 파일 경로·실측 mm·실행한 검사·미충족 조건을 응답 본문으로 전달합니다. 이 가이드는 출제 에이전트가 의뢰를 준비할 때 읽으며, 일반 제작자는 해당 작업의 단계별 지침을 따릅니다.
 
@@ -89,7 +91,7 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.0.0`을 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.0.5`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 

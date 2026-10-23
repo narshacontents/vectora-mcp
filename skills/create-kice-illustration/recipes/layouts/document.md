@@ -4,13 +4,15 @@
 
 #### 선택 배경 도구—지원 매체만
 
-라이브 스키마가 제공하면 `vectora_production`의 native text variant를 우선한다. 신문·브라우저·두루마리 배경을 자동 구성할 때 fallback 스크립트를 사용할 수 있으며, 이는 외피와 빈 슬롯만 만든다. 미지원 매체와 paper는 직접 구성한다. variant와 고유 슬롯/설정은 task instructions에 선택된 해당 외피 조건 및 현재 실행 경로를 따른다.
+라이브 스키마가 제공하면 종이형을 포함한 `vectora_production`의 native text variant를 우선한다. 신문·브라우저·두루마리의 네이티브 경로를 사용할 수 없을 때 fallback 스크립트를 사용할 수 있으며, 이는 외피와 빈 슬롯만 만든다. 현재 연결본이 지원하지 않는 매체·부속만 직접 보충한다. variant와 고유 슬롯/설정은 task instructions에 선택된 해당 외피 조건 및 현재 실행 경로를 따른다.
 
-스킬 루트에서 `node scripts/build_text_frame.mjs --spec <입력.json> --output <배경.svg>` 또는 `buildTextFrame(spec)`을 사용한다. 기존 출력 교체는 명시적 `--force`만 허용한다.
+위 fallback 조건에 해당할 때만 스킬 루트에서 `node scripts/build_text_frame.mjs --spec <입력.json> --output <배경.svg>` 또는 `buildTextFrame(spec)`을 사용한다. 책·엽서 등 미지원 매체를 helper의 몇 가지 외형으로 대체하지 않는다. 기존 출력 교체는 명시적 `--force`만 허용한다.
 
 `widthMm` 기본 108/범위 30–108, 필수 `contentHeightMm`은 실제 측정/지정 본문 높이이며 `paddingMm`은 그 밖에 더한다. 반환 `{svg,layout}`의 `layout.slots`는 문서 px 좌표이며 실제 높이에 맞는 `textAlign`/`verticalAlign`을 적용한다. `lineCount`/`contentWidthMm`은 미지원이므로 입력하지 않고 실제 content 슬롯의 연속 너비/높이를 확인한다. 색·아이콘은 반환 SVG/개체를 편집한다.
 도구는 본문을 작성하거나 줄 수를 측정하지 않는다. 지정 너비는 외곽/여백 계산과 실제 슬롯으로 확인하며, 여러 슬롯 면적의 합이 아닌 하나의 연속 content 직사각형이 지정 크기를 수용해야 한다.
 
+구형 helper의 신문은 제호/하단이 결합된 두 외피, 브라우저는 고정 조작부 한 종류다. native의 독립 외형 옵션을 지원한다고 추정하지 않으며, 선택한 디자인과 다른 부속은 첫 완성본 제작에 앞서 편집·보충할 계획을 세운다. helper가 반환하는 구형 typography 메타데이터를 현재 문자 프로필 대신 복사하지 않는다. 공통 문자 원칙과 실제 앱 프로필로 측정·조판한다.
+
 #### 내부 자료와 예약 공간
 
-현재 newspaper/scroll/browser native text 프레임의 blocks에서만 `{type:"component",id,spec}`로 실제 내부 표·자료를, `{type:"reserve",id,reserve}`로 치수 또는 UND 측정 줄 수 공간을 둔다. 공통 실행 계약과 라이브 종류별 스키마를 확인한다. 예약용 probe 문구는 최종 문서에 포함하지 않는다. 예약 칸의 빈 의미와 표시할 실제 원문을 구별하고 전체 외피와 내부 자료를 따로 편집 가능하게 유지한다. maxHeightMm은 실제 외피 전체 높이 상한이다. 최대 높이를 넘으면 원문을 줄이거나 글자를 축소하지 말고 열·영역·흐름을 다시 조판한다. 무지원이면 기존 편집 개체로 같은 내용을 배치하고 실제 측정 결과를 보고한다.
+현재 매체의 라이브 스키마가 해당 blocks를 지원할 때 `{type:"component",id,spec}`로 실제 내부 표·자료를, `{type:"reserve",id,reserve}`로 치수 또는 UND 측정 줄 수 공간을 둔다. 공통 실행 계약과 해당 외피의 종류별 스키마를 확인하며 한 매체의 지원을 다른 매체에 추정 적용하지 않는다. 예약용 probe 문구는 최종 문서에 포함하지 않는다. 예약 칸의 빈 의미와 표시할 실제 원문을 구별하고 전체 외피와 내부 자료를 따로 편집 가능하게 유지한다. maxHeightMm은 실제 외피 전체 높이 상한이다. 최대 높이를 넘으면 원문을 줄이거나 글자를 축소하지 말고 열·영역·흐름을 다시 조판한다. 무지원이면 기존 편집 개체로 같은 내용을 배치하고 실제 측정 결과를 보고한다.

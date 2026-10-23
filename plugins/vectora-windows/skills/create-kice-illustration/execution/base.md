@@ -8,7 +8,11 @@
 
 - 일반 `units:"mm-pt"`는 위치·크기·경로·대지 mm, 글·획·행간·파선 pt; tracking은 1/1000em. production `*Mm/*Pt`는 다시 환산하지 않는다. inspect 원시 objects는 px, pathNodes/geometry 문서 좌표는 반환 단위를 확인한다. px 경로는 **96px=25.4mm=72pt**, 8pt=10.666666667px, 0.3pt=0.4px. 직접 SVG는 width/height mm, viewBox 해당 px를 사용한다. letter-spacing은 선택한 실제 pt와 자간에서 환산하며 -0.64px를 모든 스타일에 고정하지 않는다.
 
+- **첫 측정·생성 전에 표시 문자열을 확정한다.** 받은 본문뿐 아니라 제작자가 추가한 제목·단위·범례·중첩 자료까지 실제 native spec을 `prepare_task.mjs`에 전달해 `inputReview`를 읽거나, `scripts/inspect_display_text.mjs`의 `inspectDisplayText(spec)`로 검사한다. 문자열은 자동 수정되지 않는다. 경고를 typography 원칙과 대조해 고치고 URL·코드·사용자 명시 예외와 미검사 경로를 구별한 뒤 서식 범위를 계산한다. 처음 요청만 검사한 결과를 이후 추가 문구의 통과 근거로 삼지 않는다.
+
 - 지원되는 전용 생성 기능을 우선 사용하고 일부 미지원 항목만 편집으로 보충한다. 생성은 `vectora_production({documentId,expectedRevision,requestId,action:"create",spec})`. inspect의 `production.components`에서 실제 component ID·저장 spec·roles 개체 ID·warnings를 읽으며 `includeGeometry:true`의 세계 좌표/외곽을 확인한다. component ID는 자료/계열/노드 ID와 다르다.
+
+- native 내용 위에 외피·접힘·고정 부속을 보충할 때는 plan의 로컬 슬롯을 문서 원점으로 간주하지 않는다. 실제 컴포넌트/내용 면의 문서 좌표에 연결해 배치하고, 기본 삽입 위치나 그룹 변환을 중복 가산하지 않는다. native가 이미 그린 테두리·봉·그림자는 역할 ID로 확인하여 같은 부속을 한 번 더 겹치지 않는다.
 
 - 수정은 `action:"update",id,patch,policy:"preserve"`: 객체 깊은 병합, 배열 전체 교체, 생략 유지, null 선택 필드 삭제. 배열 교체 시 유지할 항목의 안정 ID·값·스타일도 보내며 종류 변경 시 이전 전용 옵션은 지운다. 수동 override를 유지하는 preserve 결과는 spec만으로 보증하지 말고 warnings·렌더를 확인한다. reset은 사용자에게 수동 편집 초기화 권한이 있을 때만; 상위 배치를 지우는 명령으로 해석하지 않는다. 불필요 detach 금지. 보충 개체는 자동 재배치되지 않으므로 자료·폭·높이 변경 뒤 좌표·라벨·연결 대응을 재검수한다. 대지는 component 증가로 자동 확대되지 않는다. 잘못된 내용은 입력을 수정하고 지원·측정 실패를 숨기지 않는다.
 

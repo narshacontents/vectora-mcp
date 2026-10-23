@@ -13,22 +13,162 @@
     "ITC_Fixed": "references/families/ITC_Fixed.md"
   },
   "recipeAliases": {
-    "place": {"subtype": "ITC-3_Place"},
-    "comparison": {"subtype": "D4-07_Others", "features": ["node"]},
+    "place": {
+      "subtype": "ITC-3_Place"
+    },
+    "comparison": {
+      "subtype": "D4-07_Others",
+      "features": [
+        "node"
+      ]
+    },
+    "formula": {
+      "subtype": "D4-06_Schematic",
+      "nativeKinds": [
+        "schematic"
+      ],
+      "moduleOverrides": {
+        "default": {
+          "modules": [
+            "formula-native"
+          ]
+        }
+      }
+    },
     "site-plan": {
       "subtype": "I3-14_Others",
-      "nativeKinds": ["schematic", "map"],
+      "nativeKinds": [
+        "schematic",
+        "map"
+      ],
       "moduleOverrides": {
-        "default": {"modules": ["node-diagram"], "omitModules": ["real-data-map"]},
+        "default": {
+          "modules": [
+            "node-diagram"
+          ],
+          "omitModules": [
+            "real-data-map"
+          ]
+        },
         "map": {}
       }
     },
     "surface": {
       "subtype": "D3-04_Others",
-      "nativeKinds": ["graph"],
+      "nativeKinds": [
+        "graph"
+      ],
       "moduleOverrides": {
-        "default": {"modules": ["data-surface", "graph-style", "surface-graph-api"]}
+        "default": {
+          "modules": [
+            "data-surface",
+            "graph-style",
+            "surface-graph-api"
+          ]
+        }
       }
+    },
+    "book": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "bound-paper"
+      ]
+    },
+    "notebook": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "bound-paper"
+      ]
+    },
+    "ring-card": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "bound-paper"
+      ]
+    },
+    "album": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "bound-paper"
+      ]
+    },
+    "postcard": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "correspondence"
+      ]
+    },
+    "letter": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "correspondence"
+      ]
+    },
+    "brochure": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "display-medium"
+      ]
+    },
+    "poster": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "display-medium"
+      ]
+    },
+    "display-sign": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "display-medium"
+      ]
+    },
+    "film-frame": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "display-medium"
+      ]
+    },
+    "email": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "device-medium"
+      ]
+    },
+    "social-feed": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "device-medium"
+      ]
+    },
+    "mobile-screen": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "device-medium"
+      ]
+    },
+    "video-screen": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper",
+      "features": [
+        "device-medium"
+      ]
+    },
+    "projection-screen": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "scroll"
     }
   },
   "modules": {
@@ -38,6 +178,7 @@
     "speech": "components/speech.md",
     "artwork-asset": "execution/modules/artwork-asset.md",
     "dialogue-native": "execution/modules/dialogue-native.md",
+    "formula-native": "execution/modules/formula-native.md",
     "presentation-screen-native": "execution/modules/presentation-screen-native.md",
     "document": "recipes/layouts/document.md",
     "activity": "recipes/layouts/activity.md",
@@ -45,11 +186,17 @@
     "vertical": "recipes/layouts/vertical.md",
     "presentation": "recipes/layouts/presentation.md",
     "newspaper": "recipes/layouts/newspaper.md",
+    "newspaper-frame-native": "execution/modules/newspaper-frame-native.md",
     "screen": "recipes/layouts/screen.md",
+    "screen-frame-native": "execution/modules/screen-frame-native.md",
     "paper": "recipes/layouts/paper.md",
     "scroll": "recipes/layouts/scroll.md",
     "board": "recipes/layouts/board.md",
     "worksheet": "recipes/layouts/worksheet.md",
+    "bound-paper": "recipes/layouts/bound-paper.md",
+    "correspondence": "recipes/layouts/correspondence.md",
+    "display-medium": "recipes/layouts/display-medium.md",
+    "device-medium": "recipes/layouts/device-medium.md",
     "real-data": "components/real-data.md",
     "free-art": "components/free-art.md",
     "vectorization": "components/vectorization.md",
@@ -60,6 +207,7 @@
     "graph-api": "execution/modules/graph-api.md",
     "graph-helper": "execution/modules/graph-helper.md",
     "node-diagram": "components/node-diagram.md",
+    "schematic-layout": "components/schematic-layout.md",
     "trace-helper": "execution/modules/trace-helper.md",
     "organic-detail": "components/organic-detail.md",
     "map-preset": "execution/modules/map-preset.md",
@@ -110,7 +258,8 @@
     "bar-sizing": "components/bar-sizing.md",
     "table-api": "execution/modules/table-api.md",
     "continuous-graph-api": "execution/modules/continuous-graph-api.md",
-    "surface-graph-api": "execution/modules/surface-graph-api.md"
+    "surface-graph-api": "execution/modules/surface-graph-api.md",
+    "frame-decoration-native": "execution/modules/frame-decoration-native.md"
   },
   "subtypes": {
     "D1-01_Flat": {
@@ -336,7 +485,9 @@
     "D4-06_Schematic": {
       "type": "D4_Diagram",
       "file": "recipes/D4_Diagram/D4-06_Schematic.md",
-      "modules": []
+      "modules": [
+        "schematic-layout"
+      ]
     },
     "D4-07_Others": {
       "type": "D4_Diagram",
@@ -502,32 +653,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -571,32 +730,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ],
         "plain": [
           "document"
@@ -612,32 +779,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ],
         "plain": [
           "document"
@@ -652,32 +827,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -692,32 +875,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ],
         "plain": [
           "document"
@@ -733,32 +924,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ],
         "plain": [
           "document"
@@ -790,32 +989,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -846,32 +1053,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -899,32 +1114,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -953,32 +1176,40 @@
         "newspaper": [
           "frame",
           "document",
-          "newspaper"
+          "newspaper",
+          "newspaper-frame-native",
+          "frame-decoration-native"
         ],
         "screen": [
           "frame",
           "document",
-          "screen"
+          "screen",
+          "screen-frame-native",
+          "frame-decoration-native"
         ],
         "paper": [
           "frame",
           "document",
-          "paper"
+          "paper",
+          "frame-decoration-native"
         ],
         "scroll": [
           "frame",
           "document",
-          "scroll"
+          "scroll",
+          "frame-decoration-native"
         ],
         "board": [
           "frame",
           "activity",
-          "board"
+          "board",
+          "frame-decoration-native"
         ],
         "worksheet": [
           "frame",
           "activity",
-          "worksheet"
+          "worksheet",
+          "frame-decoration-native"
         ]
       }
     },
@@ -1015,6 +1246,30 @@
     }
   },
   "features": {
+    "bound-paper": {
+      "modules": [
+        "bound-paper"
+      ],
+      "description": "제본·고리·앨범형 종이 매체의 페이지 관계와 외피"
+    },
+    "correspondence": {
+      "modules": [
+        "correspondence"
+      ],
+      "description": "엽서·편지형 종이 매체의 발신·수신·본문 관계"
+    },
+    "display-medium": {
+      "modules": [
+        "display-medium"
+      ],
+      "description": "브로슈어·포스터·전시 표지·영화 프레임형 표시 매체"
+    },
+    "device-medium": {
+      "modules": [
+        "device-medium"
+      ],
+      "description": "이메일·피드·모바일·영상 화면형 매체의 표시 흐름"
+    },
     "real-data": {
       "modules": [
         "real-data"

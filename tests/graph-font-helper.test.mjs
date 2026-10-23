@@ -89,6 +89,11 @@ test('graph helper defaults to v3.1, preserves explicit v3.0, and adapts portabl
     assert.equal(portable.findFont(explicitV30), explicitV30);
     const v31Graph = portable.buildGraph(spec);
     assert.equal(v31Graph.report.fontFace, 'UNDv31-Regular');
+    assert.deepEqual(
+      Object.fromEntries(['textProfile','fontFamily','fontPt','charSpacing','horizontalScale','leadingPercent'].map(key=>[key,v31Graph.report[key]])),
+      {textProfile:'und-dotum-8-default-v1',fontFamily:'UND v3.1',fontPt:8,charSpacing:0,horizontalScale:100,leadingPercent:130},
+    );
+    assert.match(v31Graph.svg, /letter-spacing="0"/);
     assert.match(v31Graph.svg, /font-family="UND v3\.1"/);
     const pointsGraph = portable.buildGraph({
       type: 'points', dataFidelity: 'exact', series: [{ label: 'A', points: [{ x: 0, y: 0 }] }],
@@ -96,9 +101,16 @@ test('graph helper defaults to v3.1, preserves explicit v3.0, and adapts portabl
       legend: 'none', grid: false, widthMm: 70, plotHeightMm: 30,
     });
     assert.equal(pointsGraph.report.fontFace, 'UNDv31-Regular');
+    assert.deepEqual(
+      Object.fromEntries(['textProfile','fontPt','charSpacing','horizontalScale','leadingPercent'].map(key=>[key,pointsGraph.report[key]])),
+      {textProfile:'und-dotum-8-default-v1',fontPt:8,charSpacing:0,horizontalScale:100,leadingPercent:130},
+    );
+    assert.match(pointsGraph.svg, /letter-spacing="0"/);
     assert.match(pointsGraph.svg, /font-family="UND v3\.1"/);
     const v30Graph = portable.buildGraph(spec, { fontPath: explicitV30 });
     assert.equal(v30Graph.report.fontFace, 'UNDv30-Regular');
+    assert.equal(v30Graph.report.charSpacing, -60);
+    assert.match(v30Graph.svg, /letter-spacing="-0\.64"/);
     assert.match(v30Graph.svg, /font-family="UND v3\.0"/);
 
     rmSync(canonicalV31);
