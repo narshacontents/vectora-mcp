@@ -39,4 +39,4 @@
 - 2018 군위/대구의 선택 음영은 area + 검증된 2018 경계다. 단지 과거 연도라는 이유로 historical로 재분류하지 않는다. 2025 대구 면에서 군위를 빼거나 지명을 경북으로 바꾸는 것만으로 당시 전국 경계를 보증하지 않는다. 역사 경계의 변화·고증 자체가 주제일 때 historical을 선택한다.
 - 통계+독도 확대는 statistics 하나에서 표 단위·시점·구간을 검증하고 본창/확대창에 같은 계급을 적용한다. 울릉 행정 feature가 독도 전용 ID나 충분한 섬 상세도 보증은 아니다. 확인한 분리면만 확대하고 독도를 새 통계 행으로 중복 집계하지 않는다.
 
-한국 바탕 후보는 `assets/maps/library/korea/index.json`과 선택 manifest의 source·해시·통계 단위·roles에서 확인한다. 자산 검증 기록은 현재 연결 앱의 제작·저장·재열기 검수와 구별한다. 실제 목록/plan에 없거나 DATA_PACK_MISSING/blocked이면 그 연결에서 제작 가능하다고 약속하지 않는다.
+한국 바탕 후보는 현재 `vectora_list_presets` 목록에서 찾고, 선택 ID와 정확히 대응하는 `vectora_map_plan`의 source/notes/registration/hash 및 현재 프리셋 inspect에서 통계 단위·roles·coverage를 확인한다. 자산 검증 기록은 현재 연결 앱의 제작·저장·재열기 검수와 구별한다. 실제 목록/plan에 없거나 DATA_PACK_MISSING/blocked이면 그 연결에서 제작 가능하다고 약속하지 않는다.
