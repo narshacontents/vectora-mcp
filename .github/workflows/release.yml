@@ -1,8 +1,12 @@
 name: Publish marketplace release notes
 
 on:
-  push:
-    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing version tag to validate and publish notes for
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -11,15 +15,24 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate requested version tag
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::release_tag must be an existing vX.Y.Z tag"
+            exit 1
+          fi
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.release_tag }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Validate explicit version tag and main source
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           node --input-type=module -e 'import assert from "node:assert/strict"; import fs from "node:fs"; const version = JSON.parse(fs.readFileSync(".codex-plugin/plugin.json", "utf8")).version; assert.match(version, /^\d+\.\d+\.\d+$/); assert.equal(process.env.RELEASE_TAG, `v${version}`);'
           git fetch origin main
@@ -38,9 +51,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag }}
       - name: Publish notes without installation assets
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
           GH_REPO: ${{ github.repository }}
         run: gh release create "$RELEASE_TAG" --verify-tag --title "Vectora MCP $RELEASE_TAG" --notes-file RELEASE_NOTES.md

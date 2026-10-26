@@ -1,1 +1,3 @@
 - 내용 예약은 `{widthMm?,heightMm}` 또는 `{widthMm?,lines,text?,lineHeight?}` 중 하나다. heightMm와 lines를 함께 보내지 않는다. 줄 수는 선택한 문자 프로필의 실측 결과와 일치해야 한다. `lines` 경로가 그 프로필을 지원하지 않으면 측정한 heightMm를 사용하며, 내부 8pt 기본값으로 대신 계산하지 않는다. 임시 측정 문구는 그림에 표시하지 않는다. 연결된 live schema에서 지원을 확인한 뒤 newspaper/scroll/browser와 worksheet의 reserve/component blocks, worksheet response 블록을 쓴다. Response의 widthMm는 상자 폭, heightMm는 전체 상자 높이, lines는 필기 줄 수를 지정하며, 세 값이 없으면 supplied placeholder는 기본 얕은 한 줄 상자에 둔다. noticeboard blocks는 계속 지원 범위에 포함하지 않는다. 예약은 조판 공간이며 실제 원문/빈칸 의미를 대체하지 않는다.
+
+- 지정 치수를 가진 상자를 만들 때 선폭이 이미 포함되는지는 해당 native plan·실제 외곽으로 확인한다. 생성기 계약을 확인하지 않고 선폭을 미리 빼서 입력하지 않는다. 사용 가능 내용 영역인지 상자 외곽 치수인지 요청의 기준을 유지하고, 첫 납품 전 같은 기준의 실제 치수를 대조한다.

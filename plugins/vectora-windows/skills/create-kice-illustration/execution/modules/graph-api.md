@@ -18,6 +18,8 @@
 
 - 어두운 누적 구간에서 생성기가 값 문자를 흰색으로 만들었는지 실제 속성을 확인한다. 이 자동 대비색을 공통 판독성 규칙의 검정 글자·흰 윤곽선과 혼동하지 않는다. 원자료 옵션에 없는 문자 외관은 해당 값 문자의 네이티브 스타일로 첫 조판에 보충하고, 자료를 갱신한 뒤에도 같은 역할의 문자 외관이 유지되는지 확인한다.
 
+- live graph 계약이 제공하면 가로 100% 띠의 구간 이름·시점 간 경계 연결은 `chartOptions.percentBarComparison:{segmentLabels:true,boundaryLinks:true}`로 만든다. `type:"bar",chartStyle:"percent-bar"`의 한 누적 묶음에서만 쓰며 필요 없는 항목은 생략하거나 false로 둔다. 이름은 첫 띠의 실제 구간 중심, 점선은 인접 띠의 내부 누적 경계를 따른다. 원자료의 계열 ID·순서를 유지해 값을 갱신하고 선 끝을 별도로 옮기지 않는다. 구간보다 넓은 이름은 이웃 글자와 전체 외곽 폭을 함께 확인한다. 미지원 연결본에서만 보충하며 값 수정 뒤 수동 갱신이 필요한 한계를 기록한다.
+
 - `legend:above|beneath|right|inside|none`; 아래는 beneath이고 bottom/below 별칭은 쓰지 않는다. inside의 `legendAnchor:top-left|top-right|bottom-left|bottom-right`, `legendReverse`, `legendStyle:swatch|label-fill` 중 견본 상자는 swatch 우선이다.
 
 - chartStyle을 생략하는 legacy는 별도 계약이다. `layout,panels,x,yDomain,labelOffsets`를 새 spec에 섞지 않는다. legacy는 새 그래프 UI 편집 지원을 약속하지 않는다. live 도구 spec이 open record여도 허용 옵션을 추측하지 않는다.

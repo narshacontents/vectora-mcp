@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {inferSpec} from '../skills/create-kice-illustration/scripts/infer_spec.mjs';
 import {prepareTask} from '../skills/create-kice-illustration/scripts/prepare_task.mjs';
 // Native fixtures are selection-bearing subsets, not claims of complete runtime validity.
 const prepare=unit=>prepareTask({units:[unit]});
@@ -29,7 +30,10 @@ test('ambiguous and unsupported children fail with actionable exact mapping diag
  for(const spec of [{kind:'table'},{kind:'graph',type:'points'},{kind:'graph',type:'line',chartStyle:'stacked-area'},{kind:'unrecognized'}]){
   assert.throws(()=>prepare({recipe:'paper',spec:{kind:'composition',children:[{spec}]}}),/spec.children\[0\].spec.*specRecipes/);
  }
- assert.throws(()=>prepare({recipe:'paper',spec:{kind:'wat'}}),/incompatible with native kind/);
+ const unsupported=prepare({recipe:'paper',spec:{kind:'wat'}});
+ assert.ok(unsupported.resolved[0].inference.some(entry=>entry.inferred==='uninspected-native-kind'&&entry.evidence?.kind==='wat'));
+ assert.ok(unsupported.warnings?.some(warning=>warning.code==='uninspected-native-kind'&&warning.kind==='wat'&&warning.path==='units[0].spec'));
+ assert.throws(()=>prepare({recipe:'paper',spec:{kind:'map'}}),/incompatible with native kind map/);
  assert.throws(()=>prepare({recipe:'paper',spec:{kind:'text',blocks:[{type:'wat'}]}}),/unsupported block/);
  assert.throws(()=>prepare({recipe:'paper',spec:{kind:'composition',children:[{spec:{kind:'table'}}]},specRecipes:{'spec.children[0].spec':'typo'}}),/Unknown recipe/);
  assert.throws(()=>prepare({recipe:'paper',spec:{kind:'text'},specRecipes:{'spec.metadata':'bar'}}),/Unused specRecipes/);
@@ -261,11 +265,16 @@ test('numeric native table merges resolve generic aliases to Nested at root and 
  assert.ok(nested.resolved[1].inference.some(x=>x.path==='units[0].spec.children[0].spec.cells[0].rowSpan'&&x.inferred==='D1-04_Nested'));
 });
 
-test('explicit Nested remains valid and conflicting explicit table subtypes report merge paths',()=>{
+test('explicit table subtypes remain selected while merged cells retain Nested structural provenance',()=>{
  const spec={kind:'table',cells:[{rowId:'header',columnId:'student',colSpan:2,role:'header'}]};
  assert.equal(prepare({recipe:'D1-04_Nested',spec}).resolved[0].subtype,'D1-04_Nested');
- assert.throws(()=>prepare({recipe:'D1-01_Flat',spec}),/merged native table.*units\[0\]\.spec\.cells\[0\]\.colSpan.*D1-01_Flat.*D1-04_Nested/);
- assert.throws(()=>prepare({recipe:'paper',spec:{kind:'composition',children:[{spec}]},specRecipes:{'spec.children[0].spec':'D1-03_Cross'}}),/merged native table.*units\[0\]\.spec\.children\[0\]\.spec\.cells\[0\]\.colSpan.*D1-03_Cross.*D1-04_Nested/);
+ const flat=prepare({recipe:'D1-01_Flat',spec}).resolved[0];
+ assert.equal(flat.subtype,'D1-01_Flat');
+ assert.ok(flat.inference.some(x=>x.path==='units[0].spec.cells[0].colSpan'&&x.inferred==='D1-04_Nested'&&x.evidence?.structuralOnly===true));
+ const cross=prepare({recipe:'paper',spec:{kind:'composition',children:[{spec}]},specRecipes:{'spec.children[0].spec':'D1-03_Cross'}}).resolved[1];
+ assert.equal(cross.subtype,'D1-03_Cross');
+ assert.ok(cross.inference.some(x=>x.path==='units[0].spec.children[0].spec.cells[0].colSpan'&&x.inferred==='D1-04_Nested'&&x.evidence?.structuralOnly===true));
+ assert.throws(()=>prepare({recipe:'flowchart',spec}),/recipe flowchart is incompatible with native kind table/);
 });
 
 test('tables without numeric merged spans keep existing explicit and ambiguous selection behavior',()=>{
@@ -444,4 +453,75 @@ test('native browser owned-wrap text-flow remains scoped to a nested child',()=>
  assert.ok(child.contains.includes('text-flow'));
  assert.ok(child.modules.includes('text-flow'));
  assert.ok(child.inference.some(x=>x.path==='units[0].spec.children[0].spec.aside.layout'&&x.condition==='native browser aside.layout === "wrap" with nonempty anchorBlockId'&&x.inferred==='text-flow'));
+});
+
+test('timeline pin v1 and periods v1 infer only renderer-visible text in nested specs',()=>{
+ const timeline={kind:'schematic',layout:'timeline',timeline:{version:1,spacing:'sequence',appearance:'pin',events:[
+  {id:'event:one',time:'원래 시간',timeLabel:'시각',label:'사건'},
+  {id:'event-two',time:'문자열 시간',label:'원인'},
+  {id:'event-three',time:2030,label:'결과'},
+ ]},metadata:{text:'숨김'},numericData:[42],rawProvenance:{text:'숨김'}};
+ const periods={kind:'schematic',layout:'periods',periods:{version:1,spacing:'sequence',boundaries:[
+  {id:'b0',time:'경계 시간',labelAfter:'구간'}, {id:'b1',time:25},
+ ],rows:[{id:'row:id',label:'행',intervals:[{id:'interval:id',from:'b0',to:'b1',label:'기간'}]}]},metadata:{text:'숨김'}};
+ const request={recipe:'paper',spec:{kind:'composition',layout:'column',children:[{id:'timeline',spec:timeline},{id:'periods',spec:periods}]},specRecipes:{
+  'spec.children[0].spec':'flowchart','spec.children[1].spec':'flowchart',
+ }};
+ const before=structuredClone(request),result=inferSpec(request,'units[0]');
+ assert.deepEqual(request,before,'selection inference preserves native source fields');
+ const inferred=result.children.flatMap(child=>child.inference.provenance).filter(entry=>entry.inferred==='text').map(entry=>entry.path);
+ assert.deepEqual(inferred,[
+  'units[0].spec.children[0].spec.timeline.events[0].label',
+  'units[0].spec.children[0].spec.timeline.events[0].timeLabel',
+  'units[0].spec.children[0].spec.timeline.events[1].label',
+  'units[0].spec.children[0].spec.timeline.events[1].time',
+  'units[0].spec.children[0].spec.timeline.events[2].label',
+  'units[0].spec.children[1].spec.periods.boundaries[0].labelAfter',
+  'units[0].spec.children[1].spec.periods.rows[0].label',
+  'units[0].spec.children[1].spec.periods.rows[0].intervals[0].label',
+ ]);
+});
+
+test('timeline bands and malformed or unknown schematic time versions produce no text inference',()=>{
+ const specs=[
+  {kind:'schematic',layout:'timeline',timeline:{version:2,spacing:'sequence',events:[{id:'e',time:'시간',label:'사건'}]}},
+  {kind:'schematic',layout:'timeline',timeline:{version:1,spacing:'sequence',appearance:'unknown',events:[{id:'a',time:'시간',label:'사건'},{id:'b',time:'시간',label:'사건'}]}},
+  {kind:'schematic',layout:'timeline',timeline:{version:1,spacing:'sequence',appearance:'band',events:[{id:'e',time:'시간',label:'사건'}]}},
+  {kind:'schematic',layout:'periods',periods:{version:2,spacing:'sequence',boundaries:[],rows:[{id:'r',label:'행',intervals:[]}]}},
+  {kind:'schematic',layout:'periods',periods:{version:1,spacing:'sequence',boundaries:[{id:'b0',time:0},{id:'b1',time:1}],rows:[{id:'r',label:'행',intervals:[{id:'i',from:'missing',to:'b1',label:'기간'}]}]}},
+  {kind:'schematic',layout:'periods',periods:{version:1,spacing:'sequence',strokePt:0,boundaries:[{id:'b0',time:0},{id:'b1',time:1}],rows:[{id:'r',label:'행',intervals:[{id:'i',from:'b0',to:'b1',label:'기간'}]}]}},
+ ];
+ for(const spec of specs){
+  const inferred=inferSpec({recipe:'flowchart',spec},'units[0]');
+  assert.deepEqual(inferred.provenance.filter(entry=>entry.inferred==='text'),[]);
+ }
+});
+
+test('timeline band v1 infers times only when shown and never invents labels from numeric or missing times',()=>{
+ const band={kind:'schematic',layout:'timeline',timeline:{version:1,spacing:'sequence',appearance:'band',showTimes:true,events:[
+  {id:'a',time:0,timeLabel:'표시 시각',label:'시작'},
+  {id:'b',time:'문자 시각',label:'중간'},
+  {id:'c',label:'시간 생략'},
+  {id:'d',time:2030,label:'숫자 시각'},
+ ],intervals:[{id:'ab',from:'a',to:'b',label:'기간'}]}};
+ const shown=inferSpec({recipe:'flowchart',spec:band},'units[0]');
+ assert.deepEqual(shown.provenance.filter(entry=>entry.inferred==='text').map(entry=>entry.path),[
+  'units[0].spec.timeline.events[0].label',
+  'units[0].spec.timeline.events[0].timeLabel',
+  'units[0].spec.timeline.events[1].label',
+  'units[0].spec.timeline.events[1].time',
+  'units[0].spec.timeline.events[2].label',
+  'units[0].spec.timeline.events[3].label',
+  'units[0].spec.timeline.intervals[0].label',
+ ]);
+
+ const hidden=structuredClone(band);hidden.timeline.showTimes=false;
+ const hiddenResult=inferSpec({recipe:'flowchart',spec:hidden},'units[0]');
+ assert.deepEqual(hiddenResult.provenance.filter(entry=>entry.inferred==='text').map(entry=>entry.path),[
+  'units[0].spec.timeline.events[0].label',
+  'units[0].spec.timeline.events[1].label',
+  'units[0].spec.timeline.events[2].label',
+  'units[0].spec.timeline.events[3].label',
+  'units[0].spec.timeline.intervals[0].label',
+ ]);
 });

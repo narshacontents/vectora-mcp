@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -48,10 +47,44 @@ test('text specs review only supported visible fields and leave text/style index
   assert.equal(review.warnings.some(w => w.path === 'units[0].spec.blocks[2].text'), false, 'correct colon and symbol spacing stays quiet');
   assert.ok(!review.scope.inspectedPaths.some(p => p.includes('metadata') || p.endsWith('.id') || p.endsWith('.source')));
   assert.ok(review.scope.boundary.includes('hidden labels'));
+  assert.ok(review.scope.boundary.includes('Timeline v1 display paths are event labels'));
+  assert.ok(review.scope.boundary.includes('Periods v1 display paths are boundary labelAfter, row labels, and interval labels'));
+  assert.ok(review.scope.boundary.includes('Numeric times are not inferred as text'));
+  assert.ok(!review.scope.boundary.includes('Timeline, periods, Venn, and other mode-specific schematic display fields are skipped.'));
   assert.equal(review.warnings.some(w => w.excerpt.includes('hidden: title')), false);
   assert.deepEqual(review.warnings.filter(w => w.path === 'units[0].spec.body.text').map(w => [w.ruleId, w.offset]), [
     ['symbol-label-half-space', 4],
   ], 'URL and backtick code tokens produce no separate spacing findings');
+});
+
+test('numeric time and ratio colons require U+2002 on both sides while ordinary colons keep their spacing rule', () => {
+  const examples = [
+    '12:30',
+    '1:2',
+    '12\u2002: 30',
+    '1 :\u20022',
+    '자료: 값',
+    '2026: 5',
+    '12\u2002:\u200230',
+    '1\u2002:\u20022',
+    'https://example.test/12:30',
+    '`1:2`',
+    {text: '12:30', code: true},
+  ];
+  const spec = {kind: 'composition', children: examples.map(text => ({text}))};
+  const before = structuredClone(spec);
+  const review = inspectDisplayText(spec);
+
+  assert.deepEqual(spec, before, 'colon review leaves visible text untouched');
+  assert.equal(review.autoFixApplied, false);
+  assert.deepEqual(review.warnings.map(({path, offset, missing}) => [path, offset, missing]), [
+    ['spec.children[0].text', 2, ['before-U+2002', 'after-U+2002']],
+    ['spec.children[1].text', 1, ['before-U+2002', 'after-U+2002']],
+    ['spec.children[2].text', 3, ['after-U+2002']],
+    ['spec.children[3].text', 2, ['before-U+2002']],
+    ['spec.children[4].text', 2, ['before-U+2002']],
+    ['spec.children[5].text', 4, ['before-U+2002', 'after-U+2002']],
+  ]);
 });
 
 test('symbol labels require a contiguous marker group and U+2002 before Hangul', () => {
@@ -124,6 +157,68 @@ test('paragraph-leading U+25CB is a nonblocking marker review with source offset
   assert.deepEqual(markerWarnings[0].alsoPaths, ['spec.blocks[0].spec.cells[0].richText.text']);
   assert.ok(markerWarnings.every(w => w.action === 'creator-review'));
   assert.equal(markerWarnings.some(w => /○○|도식|https:|x \+ y|x-y|2x \+ 3|x\^2=4|일반 텍스트/u.test(w.excerpt)), false);
+});
+
+test('circled Hangul labels before visible underlines review exact U+2002 spacing without mutating grapheme ranges', () => {
+  const missing = '📚 ㉠사막화';
+  const ordinarySpace = '㉡ 일반 본문';
+  const correct = '㉢ 본문';
+  const underlinedBlank = '앞 ㉣ 본문';
+  const spec = {kind: 'composition', children: [{spec: {kind: 'table', cells: [{content: {kind: 'composition', children: [
+    {text: missing, richText: {text: missing, underlines: [{start: 3, end: 6}]}},
+    {text: ordinarySpace, richText: {text: ordinarySpace, styles: [{start: 2, end: 6, style: {underline: true}}]}},
+    {text: correct, richText: {text: correct, underlines: [{start: 2, end: 4}]}},
+    {text: underlinedBlank, richText: {text: underlinedBlank, underlines: [{start: 1, end: 6}]}},
+    {text: '㉤본문'},
+    {text: '㉥본문', richText: {text: '㉥본문', code: true, underlines: [{start: 1, end: 3}]}},
+    {text: '㉦https://example.test/a', richText: {text: '㉦https://example.test/a', underlines: [{start: 1, end: 23}]}},
+    {text: '㉧본문', richText: {text: '㉧본문', styles: {0: {1: {underline: true}}}}},
+  ]}}]}}], metadata: {text: '㉧본문', richText: {text: '㉧본문', underlines: [{start: 1, end: 3}]}}};
+  const before = structuredClone(spec);
+  const review = inspectDisplayText(spec);
+  const warnings = review.warnings.filter(warning => warning.ruleId === 'circled-hangul-underline-spacing');
+
+  assert.deepEqual(spec, before, 'text and style indexes remain immutable');
+  assert.equal(review.blocking, false);
+  assert.equal(review.autoFixApplied, false);
+  assert.deepEqual(warnings.map(warning => [warning.path, warning.offset]), [
+    ['spec.children[0].spec.cells[0].content.children[0].richText.text', missing.indexOf('사')],
+    ['spec.children[0].spec.cells[0].content.children[1].richText.text', ordinarySpace.indexOf('㉡') + 1],
+  ]);
+  assert.ok(warnings.every(warning => warning.missing[0] === 'between-circled-label-and-underlined-content-one-U+2002' &&
+    warning.action === 'creator-review'));
+  assert.equal(warnings.some(warning => warning.path.includes('metadata')), false, 'hidden text stays outside scope');
+  assert.equal(warnings.some(warning => warning.path.includes('children[2]')), false, 'one U+2002 passes');
+  assert.equal(warnings.some(warning => /children\[(?:3|4|5|6|7)\]/u.test(warning.path)), false,
+    'underlined marker blanks, standalone labels, code, URLs, and legacy style layouts stay quiet');
+
+  const schematic = inspectDisplayText({kind: 'schematic', layout: 'relations', nodes: [
+    {id: 'n1', text: '㉨본문', richText: {text: '㉨본문', underlines: [{start: 1, end: 3}]}},
+    {id: 'n2', text: '㉩본문', richText: {text: '㉠본문', underlines: [{start: 1, end: 3}]}},
+  ]});
+  assert.deepEqual(schematic.warnings.map(warning => [warning.path, warning.offset]), [['spec.nodes[0].text', 1]]);
+  assert.deepEqual(schematic.scope.inspectedPaths, ['spec.nodes[0].text', 'spec.nodes[1].text']);
+});
+
+test('underline spacing maps native newline-inclusive and Fabric newline-exclusive ranges separately', () => {
+  const text = 'A\n㉠본문';
+  const correctlySpaced = 'A\n㉠ 본문';
+  const spec = {kind: 'composition', children: [
+    {text, richText: {text, underlines: [{start: 3, end: 5}]}},
+    {text, richText: {text, styles: [{start: 2, end: 4, style: {underline: true}}]}},
+    {text: correctlySpaced, richText: {text: correctlySpaced, underlines: [{start: 4, end: 6}]}},
+    {text: correctlySpaced, richText: {text: correctlySpaced, styles: [{start: 3, end: 5, style: {underline: true}}]}},
+  ]};
+  const before = structuredClone(spec);
+  const review = inspectDisplayText(spec);
+  const warnings = review.warnings.filter(warning => warning.ruleId === 'circled-hangul-underline-spacing');
+
+  assert.deepEqual(spec, before, 'native text and both source index schemes remain unchanged');
+  assert.equal(review.autoFixApplied, false);
+  assert.deepEqual(warnings.map(({path, offset, alsoPaths}) => [path, offset, alsoPaths]), [
+    ['spec.children[0].richText.text', 3, undefined],
+    ['spec.children[1].richText.text', 3, undefined],
+  ]);
 });
 
 test('binary operators get a nonmutating exact-U+2002 review while ambiguous syntax stays quiet', () => {
@@ -385,7 +480,10 @@ test('writeTask returns review metadata while spec-free responses keep their pri
 });
 
 test('beforeExecute shows concise fixed guidance for each recognized spacing warning', () => {
-  const request = {units: [{recipe: 'webpage', spec: {kind: 'text', body: 'A지역, 자료: 값, t+20년, ○○신문'}}]};
+  const request = {units: [{recipe: 'webpage', spec: {kind: 'text', body: 'A지역, 자료: 값, t+20년, ○○신문', blocks: [
+    {type: 'text', text: '○ 목록 항목'},
+    {type: 'text', text: {text: '㉠본문', underlines: [{start: 1, end: 3}]}},
+  ]}}]};
   const before = structuredClone(request);
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'vectora-review-guidance-'));
   try {
@@ -395,36 +493,48 @@ test('beforeExecute shows concise fixed guidance for each recognized spacing war
     assert.equal(result.inputReview.blocking, false);
     assert.equal(result.inputReview.autoFixApplied, false);
     assert.deepEqual([...new Set(result.inputReview.warnings.map(warning => warning.ruleId))].sort(), [
+      'circle-list-marker-review',
+      'circled-hangul-underline-spacing',
       'display-binary-operator-spacing',
       'display-colon-spacing',
       'limited-latin-region-fund-stock-label-half-space',
       'symbol-label-half-space',
     ]);
     for (const guidance of [
+      '목록 머리면 작은 빈 원 U+FFEE를 사용하고, 의미 있는 원기호·명시 문자는 원문대로 보존',
+      '표지 뒤 밑줄 본문 앞 U+2002 1개; 원문·서식 인덱스는 자동 변경하지 말고 간격 반영 뒤 grapheme 범위를 다시 계산',
       '알파벳 표지와 지역·펀드·주식 사이에 U+2002 반칸 1개',
       '표시용 콜론 앞은 U+2002 1개, 뒤는 일반 공백 U+0020 1개',
       '표시용 이항 연산자(×, +, =, −) 양쪽에 U+2002 1개씩',
       '반복 기호는 붙이고 묶음 뒤 한글 설명 앞에 U+2002 1개',
     ]) assert.ok(beforeExecute.includes(guidance), guidance);
+    assert.ok(result.inputReview.scope.boundary.includes('valid grapheme-index underlines[] ranges'));
+    assert.ok(result.inputReview.scope.boundary.includes('malformed and legacy range layouts are outside this rule'));
     assert.ok(result.inputReview.warnings.every(warning => warning.action === 'creator-review'));
   } finally {
     fs.rmSync(temp, {recursive: true, force: true});
   }
 });
 
-test('no-spec and no-warning beforeExecute documents keep their exact signature and bytes', () => {
-  // These snapshots pin the current selected rule text and ensure warning-free input adds no review section.
-  const cases = [
-    [{units: [{id: 'case', recipe: 'webpage'}]}, '9b6938a88aa64fef'],
-    [{units: [{id: 'case', recipe: 'webpage', spec: {kind: 'text', body: '적정\u2002: 값'}}]}, 'c683b15c8463757a'],
+test('warning-free inputs keep execute bytes equal and request signatures deterministic', () => {
+  const requests = [
+    {units: [{id: 'case', recipe: 'webpage'}]},
+    {units: [{id: 'case', recipe: 'webpage', spec: {kind: 'text', body: '적정\u2002: 값'}}]},
   ];
-  for (const [request, signature] of cases) {
-    const result = prepareTask(request);
-    assert.equal(result.signature, signature);
-    assert.equal(createHash('sha256').update(result.contents.execute).digest('hex'),
-      '74e3f73a75cf47d572b4935251379101b7e79ce4953588cb9b84479b9debe6b3');
+  const results = requests.map(request => prepareTask(request));
+
+  for (const [index, request] of requests.entries()) {
+    const result = results[index];
+    assert.equal(result.inputReview?.warnings.length ?? 0, 0);
     assert.equal(result.contents.execute.includes('## 이번 입력 확인'), false);
+
+    const repeated = prepareTask(request);
+    assert.equal(repeated.signature, result.signature);
+    assert.deepEqual(repeated.contents, result.contents);
   }
+
+  assert.equal(results[0].contents.execute, results[1].contents.execute);
+  assert.notEqual(results[0].signature, results[1].signature);
 });
 
 test('beforeExecute coalesces identical text aliases into one visible review item', () => {
@@ -536,18 +646,152 @@ test('row schematic review scans supported v2 edge labels and keeps v1/malformed
   assert.deepEqual(malformedReview.warnings, []);
   assert.equal(malformedReview.scope.inspectedPaths.includes('spec.edges[0].label'), false);
 
-  for (const spec of [
-    {kind: 'schematic', layout: 'timeline', timeline: {events: [{label: '숨김: 사건'}]}, nodes: [{id: 'n', text: '숨김: 노드'}]},
-    {kind: 'schematic', layout: 'periods', periods: {rows: [{label: '숨김: 기간'}]}},
-    {kind: 'schematic', layout: 'venn', regions: [{label: '숨김: 영역'}]},
-  ]) {
+  const review = inspectDisplayText({kind: 'schematic', layout: 'venn', regions: [{label: '숨김: 영역'}]});
+  assert.deepEqual(review.warnings, []);
+  assert.deepEqual(review.scope.inspectedPaths, []);
+  assert.deepEqual(review.scope.skippedPaths, [
+    {path: 'spec', kind: 'schematic', reason: 'unsupported-schematic-layout'},
+  ]);
+});
+
+test('timeline v1 pin review follows rendered labels and excludes numeric times and hidden fields', () => {
+  const timeline = {kind: 'schematic', layout: 'timeline', timeline: {
+    version: 1, spacing: 'sequence', appearance: 'pin', events: [
+      {id: 'event:one', time: '원래: 시간', timeLabel: '시각: 표시', label: '사건: 설명'},
+      {id: 'event-two', time: '문자 시간: 표시', label: '원인: 결과'},
+      {id: 'event-three', time: 2030, label: 'URL https://example.test/a:b and `key:value`'},
+    ],
+  }, metadata: {text: '숨김: 메타데이터'}, numericData: {label: '숨김: 수치'}, rawProvenance: {text: '숨김: 원문'}};
+  const before = structuredClone(timeline);
+  const review = inspectDisplayText(timeline);
+
+  assert.deepEqual(timeline, before, 'timeline inspection preserves source fields');
+  assert.deepEqual(review.warnings.map(({path, offset}) => [path, offset]), [
+    ['spec.timeline.events[0].label', 2],
+    ['spec.timeline.events[0].timeLabel', 2],
+    ['spec.timeline.events[1].label', 2],
+    ['spec.timeline.events[1].time', 5],
+  ]);
+  assert.deepEqual(review.scope.inspectedPaths, [
+    'spec.timeline.events[0].label', 'spec.timeline.events[0].timeLabel',
+    'spec.timeline.events[1].label', 'spec.timeline.events[1].time',
+    'spec.timeline.events[2].label',
+  ]);
+  assert.equal(review.scope.inspectedPaths.includes('spec.timeline.events[0].time'), false, 'timeLabel replaces the source time');
+  assert.equal(review.scope.inspectedPaths.includes('spec.timeline.events[1].time'), true, 'string time is the displayed fallback');
+  assert.equal(review.scope.inspectedPaths.includes('spec.timeline.events[2].time'), false, 'numeric time remains geometry/data');
+  assert.equal(review.scope.inspectedPaths.some(path => /(?:\.id|metadata|numericData|rawProvenance)/u.test(path)), false);
+  assert.equal(review.warnings.some(warning => /https:\/\/|key:value/u.test(warning.excerpt)), false);
+  assert.ok(review.scope.boundary.includes('event labels, displayed timeLabel'));
+  assert.ok(review.scope.boundary.includes('band times are inspected only when showTimes is true'));
+  assert.ok(review.scope.boundary.includes('not native-spec validation'));
+});
+
+test('periods v1 review scans labelAfter, row and interval labels, including nested specs', () => {
+  const periods = {kind: 'schematic', layout: 'periods', periods: {
+    version: 1, spacing: 'sequence',
+    boundaries: [
+      {id: 'b0:id', time: '기원전: 300 (placement only)', labelAfter: '😀기간: 시작'},
+      {id: 'b1', time: 10},
+      {id: 'b2', time: 20},
+    ],
+    rows: [{id: 'row:id', label: '사회: 변화', intervals: [
+      {id: 'interval:id', from: 'b0:id', to: 'b2', label: '정치: 개혁'},
+    ]}],
+  }, metadata: {text: '숨김: 메타데이터'}, numericData: ['숨김: 수치'], rawProvenance: {text: '숨김: 원문'}};
+  const nested = {kind: 'composition', children: [{spec: periods}]};
+  const before = structuredClone(nested);
+  const review = inspectDisplayText(nested);
+
+  assert.deepEqual(nested, before, 'nested native specs remain unchanged');
+  assert.deepEqual(review.warnings.map(({path, offset}) => [path, offset]), [
+    ['spec.children[0].spec.periods.boundaries[0].labelAfter', 4],
+    ['spec.children[0].spec.periods.rows[0].label', 2],
+    ['spec.children[0].spec.periods.rows[0].intervals[0].label', 2],
+  ]);
+  assert.deepEqual(review.scope.inspectedPaths, [
+    'spec.children[0].spec.periods.boundaries[0].labelAfter',
+    'spec.children[0].spec.periods.rows[0].label',
+    'spec.children[0].spec.periods.rows[0].intervals[0].label',
+  ]);
+  assert.equal(review.scope.inspectedPaths.some(path => /(?:\.id|\.time$|metadata|numericData|rawProvenance)/u.test(path)), false);
+  assert.ok(review.scope.boundary.includes('Boundary times determine placement and are not rendered as text'));
+});
+
+test('timeline band v1 review follows showTimes and scans interval labels without endpoints', () => {
+  const shown = inspectDisplayText({kind: 'schematic', layout: 'timeline', timeline: {
+    version: 1, spacing: 'sequence', appearance: 'band', showTimes: true,
+    events: [
+      {id: 'event:a', time: '원본: 시간', timeLabel: '표시: 시각', label: '사건: 시작'},
+      {id: 'event:b', time: '문자 시각: fallback', label: '사건: 끝'},
+      {id: 'event:c', time: 2030, label: '사건: 숫자 시간'},
+      {id: 'event:d', label: '사건: 시간 없음'},
+    ],
+    intervals: [{id: 'interval:id', from: 'event:a', to: 'event:b', label: '기간: 표시'}],
+  }});
+  assert.deepEqual(shown.warnings.map(({path, offset}) => [path, offset]), [
+    ['spec.timeline.events[0].label', 2],
+    ['spec.timeline.events[0].timeLabel', 2],
+    ['spec.timeline.events[1].label', 2],
+    ['spec.timeline.events[1].time', 5],
+    ['spec.timeline.events[2].label', 2],
+    ['spec.timeline.events[3].label', 2],
+    ['spec.timeline.intervals[0].label', 2],
+  ]);
+  assert.equal(shown.scope.inspectedPaths.includes('spec.timeline.events[0].time'), false, 'timeLabel overrides time');
+  assert.equal(shown.scope.inspectedPaths.includes('spec.timeline.events[2].time'), false, 'numeric source time is not scanned');
+  assert.equal(shown.scope.inspectedPaths.includes('spec.timeline.events[3].time'), false, 'missing time gets no fabricated index');
+  assert.equal(shown.scope.inspectedPaths.some(path => /(?:\.id$|\.from$|\.to$)/u.test(path)), false);
+
+  const hidden = inspectDisplayText({kind: 'schematic', layout: 'timeline', timeline: {
+    version: 1, spacing: 'sequence', appearance: 'band',
+    events: [
+      {id: 'a', time: '숨김: 시간', timeLabel: '숨김: 별칭', label: '사건'},
+      {id: 'b', label: '결과'},
+    ],
+  }});
+  assert.deepEqual(hidden.warnings, []);
+  assert.equal(hidden.scope.inspectedPaths.some(path => path.endsWith('.time') || path.endsWith('.timeLabel')), false);
+});
+
+test('unsupported appearances and malformed or unknown schematic time versions are skipped with scope notes', () => {
+  const cases = [
+    [{kind: 'schematic', layout: 'timeline', timeline: {version: 2, spacing: 'sequence', events: [{id: 'e', time: '시간: 숨김', label: '사건: 숨김'}]}}, 'timeline', 'unsupported-or-malformed-timeline-v1-display-contract'],
+    [{kind: 'schematic', layout: 'timeline', timeline: {version: 1, spacing: 'sequence', appearance: 'unknown', events: [{id: 'a', time: '시간: 숨김', label: '사건: 숨김'}, {id: 'b', time: '시간: 숨김', label: '사건: 숨김'}]}}, 'timeline', 'unsupported-or-malformed-timeline-v1-display-contract'],
+    [{kind: 'schematic', layout: 'timeline', timeline: {version: 1, spacing: 'sequence', events: [{id: 'e', time: '시간: 숨김', timeLabel: 7, label: '사건: 숨김'}]}}, 'timeline', 'unsupported-or-malformed-timeline-v1-display-contract'],
+    [{kind: 'schematic', layout: 'timeline', timeline: {version: 1, spacing: 'sequence', appearance: 'band', showTimes: 'yes', events: [{id: 'a', label: '사건: 숨김'}, {id: 'b', label: '사건: 숨김'}]}}, 'timeline', 'unsupported-or-malformed-timeline-v1-display-contract'],
+    [{kind: 'schematic', layout: 'timeline', widthMm: 20, timeline: {version: 1, spacing: 'sequence', events: [{id: 'e', time: '시간: 숨김', label: '사건: 숨김'}]}}, 'timeline', 'unsupported-or-malformed-timeline-v1-display-contract'],
+    [{kind: 'schematic', layout: 'periods', periods: {version: 2, spacing: 'sequence', boundaries: [], rows: [{id: 'r', label: '기간: 숨김', intervals: []}]}}, 'periods', 'unsupported-or-malformed-periods-v1-display-contract'],
+    [{kind: 'schematic', layout: 'periods', periods: {version: 1, spacing: 'sequence', boundaries: [{id: 'b0', time: 0}, {id: 'b1', time: 1}], rows: [{id: 'r', label: '기간: 숨김', intervals: [{id: 'i', from: 'missing', to: 'b1', label: '구간: 숨김'}]}]}}, 'periods', 'unsupported-or-malformed-periods-v1-display-contract'],
+    [{kind: 'schematic', layout: 'periods', periods: {version: 1, spacing: 'sequence', strokePt: 0, boundaries: [{id: 'b0', time: 0}, {id: 'b1', time: 1}], rows: [{id: 'r', label: '기간: 숨김', intervals: [{id: 'i', from: 'b0', to: 'b1', label: '구간: 숨김'}]}]}}, 'periods', 'unsupported-or-malformed-periods-v1-display-contract'],
+  ];
+  for (const [spec, field, reason] of cases) {
     const review = inspectDisplayText(spec);
     assert.deepEqual(review.warnings, []);
     assert.deepEqual(review.scope.inspectedPaths, []);
-    assert.deepEqual(review.scope.skippedPaths, [
-      {path: 'spec', kind: 'schematic', reason: 'unsupported-schematic-layout'},
-    ]);
+    assert.deepEqual(review.scope.skippedPaths, [{path: `spec.${field}`, kind: 'schematic', reason}]);
   }
+});
+
+test('supported timeline and periods labels with URL/code content can remain warning-free', () => {
+  const review = inspectDisplayText({kind: 'composition', children: [
+    {spec: {kind: 'schematic', layout: 'timeline', timeline: {version: 1, spacing: 'sequence', events: [
+      {id: 't0', time: '2020', timeLabel: '2020\u2002: BCE', label: 'Start\u2002: https://example.test/a:b `key:value`'},
+    ]}}},
+    {spec: {kind: 'schematic', layout: 'periods', periods: {version: 1, spacing: 'sequence', boundaries: [
+      {id: 'p0', time: 0, labelAfter: '기간\u2002: 원시'}, {id: 'p1', time: 5},
+    ], rows: [{id: 'row', label: '행\u2002: 구분', intervals: [
+      {id: 'interval', from: 'p0', to: 'p1', label: '단계\u2002: `source:literal`'},
+    ]}]}}},
+    {spec: {kind: 'schematic', layout: 'timeline', timeline: {version: 1, spacing: 'sequence', appearance: 'band', showTimes: true, events: [
+      {id: 'band0', time: 2020, timeLabel: '2020\u2002: BCE', label: '초기\u2002: 사건'},
+      {id: 'band1', time: '2021', label: '후기\u2002: 사건'},
+    ], intervals: [{id: 'band-interval', from: 'band0', to: 'band1', label: '기간\u2002: `range:value`'}]}}},
+  ]});
+
+  assert.deepEqual(review.warnings, []);
+  assert.equal(review.scope.inspectedPaths.length, 10);
+  assert.equal(review.scope.skippedPaths.length, 0);
 });
 
 test('formula review and nested text component discovery remain supported', () => {

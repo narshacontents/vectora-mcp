@@ -24,7 +24,7 @@
 - 원자료 이미지 px/aspect는 측정값이며 DPI 없는 px를 제작 mm로 추정하지 않는다.
 - plan transform.xPx/yPx와 내부 recipe 값은 문서 px다. mm=px×25.4/96이며 화면 px가 아니다. *Mm 필드에 px를 넣거나 production을 apply.units로 다시 환산하지 않는다.
 
-최신 inspect의 documentId/revision/실제 계층/production.components를 확인하고 `vectora_map_plan({documentId,spec})`의 정규화 spec·sourceHashes·selectedPaths·report를 검토한다. `report.readiness`는 `ready|partial|blocked`; plan의 `render`, `save`, `reopen`, `export`는 아직 `notRun`이다. partial 사유를 남기고 blocked는 적용하지 않는다. plan은 삽입·revision 변경·자료 등록·저장·재열기를 수행하지 않으며 selectedPaths의 소스 UUID는 편집 ID가 아니다. 일반 plan을 폰트/렌더 검증으로 보지 않는다. 수량 지도에 명시적인 `report.flowPreflight`가 반환된 경우만 해당 새 구성요소의 native 실측 사전 검사 결과로 읽는다.
+최신 inspect의 documentId/revision/실제 계층/production.components를 확인하고 `vectora_map_plan({documentId,spec})`의 정규화 spec·sourceHashes·selectedPaths·report를 검토한다. `report.readiness`는 `ready|partial|blocked`; plan의 `render`, `save`, `reopen`, `export`는 아직 `notRun`이다. partial 사유를 남기고 blocked는 적용하지 않는다. plan은 삽입·revision 변경·자료 등록·저장·재열기를 수행하지 않으며 selectedPaths의 소스 UUID는 편집 ID가 아니다. 일반 plan을 폰트/렌더 검증으로 보지 않는다. 명시적인 `report.flowPreflight` 또는 `report.contourPreflight`가 반환된 경우만 해당 이동량/등치선 숫자의 native 실측 사전 검사 결과로 읽는다. 등치선 숫자의 `review`·`SCALAR_CONTOUR_LABEL_UNRESOLVED`는 제작 전에 숫자 위치·폭·범위를 재검토할 근거다. `passed`도 최종 이미지의 정렬·가독성 검수를 대신하지 않는다.
 
 
 preserve는 수동 스타일·고정 위치·부분 detach를 존중하며 미리보기/reset 전환과 실제 결과가 같다고 가정하지 않는다. 관리 원경로 이동·내부 view 변형·비균일 상위 배율/skew는 binding을 무효화할 수 있다. invalid에 preserve를 강행하거나 사용자 초기화 의도 없이 reset하지 않는다. 독립 편집 요청 대상만 실제 component/자식 ID로 detach한다. 부분 detach는 재생성에서 제외, 전체는 binding 제거다. 실행 전 대상 ID가 지도 루트인지 자식인지 대조하고, 부분 해제 후 루트의 binding과 나머지 지리 anchor가 유효한지 즉시 확인한다. 잘못된 루트 해제를 그대로 둔 채 다음 편집을 진행하지 않는다. 원자료 누락/미래 스키마의 unresolved 정적 그림을 자동 fetch/재생성하지 않는다.
@@ -41,9 +41,17 @@ preserve는 수동 스타일·고정 위치·부분 detach를 존중하며 미�
 
 live schema가 `scalar.paintDomain`을 지원하면 바다까지 관측값을 나타낼 때 `"all"`(생략 기본), 육지에만 채색하고 바다는 비워둘 때 `"land"`를 선택한다. `land`는 검증된 지도 육지·수역 면으로 등치면 채색만 잘라 내며 격자의 바다 노드·null·보간·척도는 바꾸지 않는다. 같은 map source의 값·범위·크기 변경으로 함께 재계산하게 하고 흰 바다 덮개를 별도 배치하지 않는다. 검증된 면 기하가 없는 양식이나 빈 육지 범위가 거절되면 적합한 등록 양식을 선택하며, `all`로 조용히 바꾸거나 누락 자료를 만들지 않는다. 미지원 앱에서는 필요한 보충과 이후 범위 편집 시 재생성 한계를 명시한다.
 
-제공된 `scale.thresholds`와 `bands`의 순서·ID·색·라벨을 유지한다. `interpolation`은 `linear-triangles-sw-ne`, `missing`은 `skip-cell`이며 null은 0이 아니다. 고도/DEM, 임의 CRS, cell-centered raster, 자동 구간 추정과 다른 정량 지도층을 섞지 않는다. 시점은 사용자가 준 패널 라벨·캡션에 두고 grid에 없는 시점 필드를 만들지 않는다.
+연속 분포의 육지에서 격자·해안 불일치로 생긴 작은 흰 틈을 없애야 하고 실제 결측 자체가 문제 단서가 아니면, live schema의 `scalar.missingPaint:"nearest-band"`를 사용한다. `paintDomain:"land"` 또는 `renderDomain:"selected"`의 검증된 육지에만 가까운 유효 구간의 색을 연장하며 원격자·null·수치·등치선은 그대로다. 바다·호수까지 채우거나 격자값을 복원한 것으로 해석하지 않는다. 생략/`"skip-cell"`은 기존 결측 표시다. 보완 범위를 제작 기록에 남기고 실제 JPEG의 해안·섬·빈틈을 확인한다. 유효 표본이나 검증된 면이 없어 거절되면 임의 사각형으로 덮지 않는다.
 
-native scalar는 채워진 ISOBANDS(등치면·단계 색칠)를 만든다. 정확한 등치선 경로나 선 라벨이 요구되면 연결 앱의 live schema/API 지원을 확인한다. 지원하지 않을 때는 필요한 선·라벨만 보충하며 등치면만으로 요청을 완료했다고 하지 않는다. 통계값을 DEM으로 바꾸지 않는다.
+제공된 `scale.thresholds`와 `bands`의 순서·ID·색·라벨을 유지한다. `interpolation`은 `linear-triangles-sw-ne`, `missing`은 `skip-cell`이며 null은 0이 아니다. 고도/DEM, 임의 CRS, 자동 구간 추정과 다른 정량 지도층을 섞지 않는다. cell-centered raster를 node grid인 척 그대로 넘기지 않는다. 변환이 필요하면 원자료 geotransform의 각 픽셀 중심 위경도를 명시 노드로 추출하고 값·결측을 보존하며, 새 노드 사이 보간이라는 해석과 원 해상도를 기록한다. 시점은 사용자가 준 패널 라벨·캡션에 두고 grid에 없는 시점 필드를 만들지 않는다.
+
+live schema가 `scalar.contours`를 지원하면 `mode:"lines"`는 선만, `"both"`는 기존 등치면과 선을 함께 만든다. 생략은 기존 등치면이다. 선은 같은 `scale.thresholds`·보간·결측 정책을 사용하므로 별도 임계값이나 DEM을 만들지 않는다. `domain:"all"`은 바다 포함, `"land"`는 검증된 전체 육지, `"selected"`는 `featureObjectIds`로 선택한 육지다. 회색 강조 국가 목록인 `verifiedIds`를 선택 영역으로 오인하지 않는다. `featureObjectIds`나 등치선 domain만으로 주변국의 공유 해안까지 제거되지는 않는다. 한 국가만 남기는 경우 live 계약에 `renderDomain:"selected"`가 있으면 등록 육지 ID를 `featureObjectIds`에 주고 이 모드를 사용한다. 바탕·외곽·등치면·등치선을 같은 선택 영역으로 제한하며 섬과 내부 수역은 보존한다. 미지원 앱에서 주변국 선이 남으면 적합한 바탕을 선택하거나 미충족으로 알리고 흰 사각형으로 덮어 성공 처리하지 않는다. 선의 domain과 면의 `paintDomain`은 별개이므로 둘을 함께 확인한다. 미지원 앱에서는 필요한 선·라벨만 보충하고 이후 재조판 한계를 밝힌다.
+
+등치선의 `strokePt`는 해안·보조선과 읽기 위계를 보고 정한다. live schema가 `scalar.contours.stroke`를 지원하면 명시한 회색 `#RRGGBB`로 외곽과 구분할 수 있고, 생략하면 기존 검정이다. `labels.show` 기본은 숫자 표시이며 원 단위를 별도로 읽히게 한다. 생성기가 실제 문자와 작은 흰 받침을 함께 배치한다. 숫자가 겹치거나 해안에 너무 붙으면 `labels.positions:[{value,ratio}]`로 해당 값의 가장 긴 가시 선 위 위치만 조정한다(ratio0~1). 관리 자식 숫자를 직접 끌어 연동을 끊거나 값·격자를 바꾸지 않는다. 라벨 공간 부족 경고가 있으면 폭·범위·숫자 위치를 검토하며 필요한 숫자를 조용히 생략하지 않는다. 폭·범위·원자료를 수정한 뒤 선과 숫자가 함께 갱신되고 서로 가리지 않는지 실제 JPEG로 확인한다.
+
+작은 등치선에 숫자를 넣기 어려우면 live schema의 `labels.callouts:[{id,value,positionMm:{x,y},anchor:{fragmentIndex,ratio}}]`를 사용할 수 있다. `positionMm`는 frameMm과 같은 지도 로컬 mm 좌표의 **실제 숫자 획 중심**이며 위경도나 프레임 비율이 아니다. `fragmentIndex`는 현재 가시 조각의 길이순 0부터, `ratio`는 그 조각을 따른 0~1 위치다(생략하면 가장 긴 조각의 가운데). 같은 값의 inline 숫자는 대체되며 `labels.positions`와 중복 지정하지 않는다. 격자·범위·투영 변경 후 실제 선에서 연결점을 다시 계산하지만, 고정한 숫자 위치와 조각 순위는 새 지리 형태에 적합한지 AI가 재검수한다. 사라진 등치값/조각의 unresolved 경고와 숨겨진 라벨을 성공으로 처리하지 않는다. 물리 8pt 숫자·작은 흰 받침·지시선 흰 테두리는 관리 개체에 유지하고 직접 자식 개체를 옮기지 않는다.
+
+광역 분포의 명시적 일반화가 적절할 때만 `scripts/generalize_scalar_grid.py 원격자.json 표시격자.json --sigma-km 값`을 선택해 쓴다. 이 도구는 지역의 규칙적인 위경도 격자에서 거리·면적을 반영한 가중 평균을 만들며 원본·좌표·원래 결측을 보존한다. 출력 JSON과 변환 기록을 함께 보존하고, 표시격자를 선과 면의 공통 입력으로 사용한다. 강도는 고정하지 않고 최종 인쇄상 약0.5–1.5mm에 해당하는 거리부터 비교하되 작은 극값이 문제 단서이면 사용하지 않는다. 표시 값이 원시 값과 같다고 보고하거나 새 등치선에 예전 지시선 앵커를 재사용하지 않는다.
 
 범례는 native 편집 가능한 UND 8pt다. `legend.maxWidthMm`가 있으면 실측 줄바꿈만 허용하고 글자 축소·절단은 하지 않는다. `highLabel`/`lowLabel`과 제목·구간 라벨을 보존한다. `widthMm`/`frameMm`은 계속 지도 viewport 치수이며, 오른쪽 범례의 실측 전체 경계는 별도로 계산한다.
 

@@ -2,7 +2,7 @@
 
 분류가 애매하거나 여러 방식이 섞일 때 해당 항목만 검색한다. 원칙 본문은 작업 지침 준비 도구가 선택한다. 이 문서는 매 작업의 필수 정독 대상이 아니다.
 
-- **배치/제작 방식부터 선택한다.** 일반 이름의 대화는 vertical-dialogue / horizontal-dialogue / presentation, 매체는 newspaper / webpage / paper / scroll / board / worksheet, 교사와 칠판은 teacher-board다. 단순 막대·선·원·산점은 bar / line / pie / scatter, 목록표(행=개체·열=속성)는 table, 교차표(행·열=범주, 셀=같은 지표의 교차값)는 cross-table, 도식은 tree / network / flowchart / venn / timeline / schematic이다.
+- **배치/제작 방식부터 선택한다.** 일반 이름의 대화는 vertical-dialogue / horizontal-dialogue / presentation, 매체는 newspaper / webpage / paper / scroll / board / worksheet, 한 명과 칠판은 teacher-board다. 여러 사람이 판을 함께 보는 경우는 아래 공유 장면 경로를 따른다. 단순 막대·선·원·산점은 bar / line / pie / scatter, 목록표(행=개체·열=속성)는 table, 교차표(행·열=범주, 셀=같은 지표의 교차값)는 cross-table, 도식은 tree / network / flowchart / venn / timeline / schematic이다.
 - 전후·좌우의 대상/특성을 대응시키는 비교판은 `comparison`(D4-07 + node-diagram)이다. 판정·절차 분기가 없으면 flowchart로 바꾸지 않는다. 실제 도시·유적·시설의 평면/배치도와 가상 계획도는 `site-plan`(I3-14)으로 참조자료·기하 구조 보충 지침을 읽는다. 실재 배치는 출처 평면 이미지를 확인하고, 가상 계획도는 `dataSource:hypothetical`로 구별한다.
 - 질문별 ○·×·체크 응답표는 `D1-05_Checklist`를 선택한다. 대각선 머리글이 있다는 이유만으로 cross-table로 바꾸지 않는다. 분류는 머리글 모양보다 셀의 의미를 우선한다.
 - 클립보드에 끼운 한 장의 보고서나 스프링 노트는 `paper` 외피다. 그림이 있으면 image-board의 paper variant를 쓰며, '보드'라는 이름 때문에 noticeboard 카드들로 나누지 않는다. worksheet는 지시·과제와 응답/작성 영역이 있는 양식에만 선택한다.
@@ -15,7 +15,7 @@
 - 호수·하천·지형 자체를 읽는 일반도는 topographic-map에서 시작한다. 이런 자연 자료층은 `contains:natural`, 위치도·확대창의 대응 관계가 있으면 `contains:inset`을 표시한다. 바탕 위 일반 경로로 보충할 지물도 실제 요청 조건에 포함하며, native spec에 없다는 이유로 해당 지침을 빠뜨리지 않는다.
 - 특정 인물은 figure, 원본 인물 사진은 original-person, 시대 복장이 단서이면 costume을 선택하고 실제 배치를 variant로 지정한다. 사진·지도·차트 칸이 있는 매체는 image-board와 지원 매체 variant(newspaper / screen / paper / scroll / board / worksheet)를 사용한다. 대표 매체가 웹페이지이면 image-board variant는 screen이다. 독립 webpage recipe와 native browser variant는 별도 계층이다. 내부의 독립 표·차트·지도는 별도 unit으로 함께 준비한다.
 - 특정 건축물·유적·장소의 식별이 핵심인 장면은 `place`(ITC-3_Place)를 선택한다. 장면 위 독립 발언은 scene variant에 speech-solo 조건, 인물 옆 발표 배치는 presentation variant를 쓴다. 원화를 asset으로 구현하더라도 일반 scene으로 분류를 바꾸거나, 상단 발언에 인물 옆 발표의 폭을 적용하지 않는다.
-- **인물/사진/새 원화, 실자료 조사, 긴 산문, 밑줄, 문단 박스, 빈 공간 예약**이 있으면 각각 contains 또는 dataSource에 표시한다. 단일 편집 문단이 래스터 옆에서 흐르고 래스터 아래에서 전체 폭으로 이어지는 조판을 요청한 경우에만 `contains:text-flow`를 지정한다. 치수/줄 수 예약은 reserve, 문장 속 박스는 inline-box이며 서로 다르다. 인물이 있는 일반 세로대화가 기본이고, 인물 없는 메시지 화면은 messenger다.
+- **인물/사진/새 원화, 실자료 조사, 긴 산문, 밑줄, 문단 박스, 빈 공간 예약**이 있으면 각각 contains 또는 dataSource에 표시한다. 단일 편집 문단이 이미지나 지원되는 네이티브 지도 옆에서 흐른 뒤 아래에서 전체 폭으로 이어지는 조판을 요청한 경우에만 `contains:text-flow`를 지정한다. 치수/줄 수 예약은 reserve, 문장 속 박스는 inline-box이며 서로 다르다. 인물이 있는 일반 세로대화가 기본이고, 인물 없는 메시지 화면은 messenger다.
 - 모식도에도 산·식생·동물·지형의 생김새를 읽는 삽화가 포함되면 `contains:artwork`와 `organic`을 함께 지정한다. 기하 구조의 편집 가능한 경계·기호·수치와 새 원화를 구별하며, schematic이라는 이름만으로 자연물을 코드 도형으로 대체하지 않는다.
 - 독립적으로 완결된 자료를 여러 units로 나눈다. 같은 장면에 서로 다른 발언 배치가 공존할 때는 해당 발언군만 추가 unit으로 지침을 준비하고 한 장면으로 조판한다. 한 unit에 충돌하는 발언 배치 조건을 넣거나, 외피·교사·짧은 보조 발언 때문에 별도 완성 그림을 만들지 않는다. 보조 발언은 speech-horizontal / speech-vertical / speech-solo 조건이다. 분류가 애매할 때만 [분류 사전](references/taxonomy.md)을 해당 항목으로 검색한다. 이름이 명확한 comparison / site-plan 별칭 외에는 Others로 우회하지 않는다. 분류 ID는 MCP kind가 아니다.
 

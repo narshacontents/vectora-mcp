@@ -39,7 +39,7 @@ const FRAME_TEXT_KEYS = new Set([
   'text', 'underlines', 'inlineBlanks', 'verticalGroups', 'fontWeight', 'fontStyle',
   'inlineBoxes', 'inlineBoxSpacing', 'styles', 'styleProvenance', 'widthMm', 'fontPt',
   'tracking', 'lineHeight', 'textAlign', 'fill', 'fontFamily', 'textFlow', 'textFlowBounds',
-  'textProfile', 'horizontalScale', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
+  'textProfile', 'horizontalScale', 'leadingPercent', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
 ]);
 
 function graphemes(text) {
@@ -166,6 +166,18 @@ test('the original four text profile identifiers remain compatible without addin
   for (const textProfile of ['und-illust-8-v1', 'und-box-prose-10-v1', 'und-batang-body-11_5-v1', 'und-batang-table-10-v1']) {
     const input = {text: '본문', textProfile};
     assert.deepEqual(prepareProse(input), input);
+  }
+});
+
+test('current FrameText leadingPercent is accepted and validates finite positive percentage bounds', () => {
+  for (const leadingPercent of [0.01, 130, 10000]) {
+    const input = {text: '본문', leadingPercent};
+    assert.deepEqual(prepareProse(input), input, 'the helper preserves an explicit valid percentage');
+  }
+  for (const leadingPercent of [0, -1, 10000.01, NaN, Infinity, '130', null]) {
+    assert.throws(() => prepareProse({text: '본문', leadingPercent}), {
+      name: 'TypeError', message: /leadingPercent.*finite.*greater than 0.*at most 10000/u,
+    });
   }
 });
 

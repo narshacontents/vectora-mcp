@@ -2,7 +2,7 @@
 
 
 
-- 기존 설치 앱을 사용하고 `vectora_status`로 버전·연결과 실제 도구 스키마를 확인한다. 제작을 위해 앱 코드·버전·패키지를 변경하지 않는다. MCP는 앱 UI 미저장 탭과 독립 세션이다. Computer Use/브라우저 DOM/앱 스크립트 주입으로 대체하지 않는다. 작업에 준비된 실행 계약과 라이브 스키마를 사용하며 use-vectora/서버 옛 guide를 무조건 추가로 읽지 않는다.
+- 기존 설치 앱을 사용하고 `vectora_status`로 버전·연결과 실제 도구 스키마를 확인한다. 제작을 위해 앱 코드·버전·패키지를 변경하지 않는다. MCP는 앱 UI 미저장 탭과 독립 세션이다. Computer Use/브라우저 DOM/앱 스크립트 주입으로 대체하지 않는다. 같은 연결에서 확인한 실행 계약·스키마는 재사용하고, 재연결·계약 변경·새 필드·관련 오류 때 다시 확인한다. use-vectora/서버 옛 guide를 무조건 추가로 읽지 않는다.
 
 - `vectora_new_document`(기본 mm) 또는 지정 `vectora_open_document` → production/apply/import → inspect/preview → save/open/export. 실제 응답의 documentId/최신 expectedRevision/개체 ID 사용; 동일 재시도는 동일 requestId, 다른 편집은 새 ID. 일반 배치 1,000개 이하, 실패 시 복원. 일반 명령 add/select/style/transform는 대상 ID를 확인한다.
 

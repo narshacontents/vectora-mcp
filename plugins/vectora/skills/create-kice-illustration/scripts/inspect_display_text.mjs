@@ -1,3 +1,4 @@
+import {isSupportedPeriodsV1, isSupportedTimelineV1} from './schematic_display_contracts.mjs';
 // Review only the explicitly supported native display-text paths. Never rewrite input.
 const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const supportedKinds = new Set(['text', 'composition', 'table', 'graph', 'dialogue', 'schematic']);
@@ -101,6 +102,43 @@ function isHorizontalSpace(character) {
   return character !== undefined && /[\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]/u.test(character);
 }
 
+function logicalGraphemeOffsets(text) {
+  if (typeof Intl.Segmenter !== 'function') return null;
+  const nativeStarts = [], nativeEnds = [], fabricStarts = [], fabricEnds = [];
+  const segmenter = new Intl.Segmenter(undefined, {granularity: 'grapheme'});
+  for (const {segment, index} of segmenter.segment(text)) {
+    nativeStarts.push(index);
+    nativeEnds.push(index + segment.length);
+    // Native underlines count newline graphemes; Fabric style ranges omit them.
+    if (segment !== '\n' && segment !== '\r' && segment !== '\r\n') {
+      fabricStarts.push(index);
+      fabricEnds.push(index + segment.length);
+    }
+  }
+  return {
+    native: {starts: nativeStarts, ends: nativeEnds},
+    fabric: {starts: fabricStarts, ends: fabricEnds},
+  };
+}
+
+function explicitUnderlineRanges(value, offsets) {
+  const ranges = [];
+  const append = (range, indexSpace) => {
+    const {starts, ends} = offsets[indexSpace];
+    if (!isRecord(range) || !Number.isInteger(range.start) || !Number.isInteger(range.end) ||
+        range.start < 0 || range.end <= range.start || range.end > starts.length) return;
+    const start = starts[range.start];
+    const end = ends[range.end - 1];
+    if (start === undefined || end === undefined) return;
+    ranges.push({start, end});
+  };
+  if (Array.isArray(value.underlines)) value.underlines.forEach(range => append(range, 'native'));
+  if (Array.isArray(value.styles)) value.styles.forEach(item => {
+    if (isRecord(item) && isRecord(item.style) && item.style.underline === true) append(item, 'fabric');
+  });
+  return ranges;
+}
+
 function isHangulAt(text, offset) {
   if (offset >= text.length) return false;
   const point = String.fromCodePoint(text.codePointAt(offset));
@@ -119,6 +157,29 @@ function nextCodePoint(text, offset) {
   if (point === undefined) return null;
   const end = offset + (point > 0xFFFF ? 2 : 1);
   return {end, char: text.slice(offset, end)};
+}
+
+function isNumericColon(text, offset) {
+  let before = offset;
+  let left;
+  while (before > 0) {
+    const point = previousCodePoint(text, before);
+    before = point.start;
+    if (isHorizontalSpace(point.char)) continue;
+    left = point.char;
+    break;
+  }
+  let after = offset + 1;
+  let right;
+  while (after < text.length) {
+    const point = nextCodePoint(text, after);
+    if (!point) break;
+    after = point.end;
+    if (isHorizontalSpace(point.char)) continue;
+    right = point.char;
+    break;
+  }
+  return left !== undefined && right !== undefined && /^\p{N}$/u.test(left) && /^\p{N}$/u.test(right);
 }
 
 function isWordCodePoint(character) {
@@ -310,6 +371,61 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
     }
   }
 
+  function reviewCircledHangulUnderlineSpacing(text, path, ownerPath, ignored, value) {
+    if (!isRecord(value)) return;
+    const offsets = logicalGraphemeOffsets(text);
+    if (!offsets) return;
+    const nativeOffsets = offsets.native;
+    const ranges = explicitUnderlineRanges(value, offsets);
+    if (!ranges.length) return;
+
+    const graphemeText = index => text.slice(nativeOffsets.starts[index], nativeOffsets.ends[index]);
+    const isCircledHangul = index => {
+      const content = graphemeText(index);
+      const points = Array.from(content);
+      return points.length === 1 && points[0].codePointAt(0) >= 0x3260 && points[0].codePointAt(0) <= 0x326D;
+    };
+
+    for (let index = 0; index < nativeOffsets.starts.length; index++) {
+      if (!isCircledHangul(index)) continue;
+      const markerStart = nativeOffsets.starts[index], markerEnd = nativeOffsets.ends[index];
+      const leftSpace = index > 0 && Array.from(graphemeText(index - 1)).every(isHorizontalSpace);
+      const rightSpace = index + 1 < nativeOffsets.starts.length && Array.from(graphemeText(index + 1)).every(isHorizontalSpace);
+      const markerAndSideSpacesUnderlined = leftSpace && rightSpace && ranges.some(range =>
+        range.start <= nativeOffsets.starts[index - 1] && range.end >= nativeOffsets.ends[index + 1]);
+      if (markerAndSideSpacesUnderlined) continue;
+
+      for (const range of ranges) {
+        const underlineStart = range.start;
+        const underlineEnd = range.end;
+        if (underlineStart < markerEnd) continue;
+        const underlinedText = text.slice(underlineStart, underlineEnd);
+        if (!underlinedText || /[\r\n]/u.test(underlinedText)) continue;
+        let contentStart = underlineStart;
+        while (contentStart < underlineEnd) {
+          const point = nextCodePoint(text, contentStart);
+          if (!point || !isHorizontalSpace(point.char)) break;
+          contentStart = point.end;
+        }
+        if (contentStart >= underlineEnd) continue;
+        const gap = text.slice(markerEnd, contentStart);
+        if (Array.from(gap).some(character => !isHorizontalSpace(character)) ||
+            gap === '\u2002' || overlaps(ignored, markerStart, underlineEnd)) continue;
+
+        addWarning({
+          ruleId: 'circled-hangul-underline-spacing',
+          path,
+          offset: markerEnd,
+          excerpt: excerpt(text, markerEnd),
+          missing: ['between-circled-label-and-underlined-content-one-U+2002'],
+          message: '원문자 표지와 뒤따르는 밑줄 본문 사이 U+2002 한 칸을 제작자가 확인하세요.',
+          action: 'creator-review',
+        }, ownerPath, text);
+        break;
+      }
+    }
+  }
+
   function scanString(text, path, ownerPath, value) {
     addInspected(path);
     if (!text) return;
@@ -333,9 +449,12 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
 
     for (let i = 0; i < text.length; i++) {
       if (text[i] !== ':' || overlaps(ignored, i, i + 1)) continue;
+      const numericSeparator = isNumericColon(text, i);
       const missing = [];
       if (text[i - 1] !== '\u2002') missing.push('before-U+2002');
-      if (text[i + 1] !== ' ') missing.push('after-U+0020');
+      if (numericSeparator) {
+        if (text[i + 1] !== '\u2002') missing.push('after-U+2002');
+      } else if (text[i + 1] !== ' ') missing.push('after-U+0020');
       if (!missing.length) continue;
       addWarning({
         ruleId: 'display-colon-spacing',
@@ -372,6 +491,7 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
     }
 
     reviewCircleListMarkers(text, path, ownerPath, ignored);
+    reviewCircledHangulUnderlineSpacing(text, path, ownerPath, ignored, value);
 
     for (let i = 0; i < text.length; i++) {
       if (!markerChars.has(text[i])) continue;
@@ -450,7 +570,7 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
     if (!isRecord(part)) return;
     inspectValue(part.text, `${path}.text`, path);
     if (isRecord(part.richText) && typeof part.richText.text === 'string') {
-      inspectValue(part.richText.text, `${path}.richText.text`, path);
+      inspectValue(part.richText, `${path}.richText`, path);
     }
   }
 
@@ -466,9 +586,57 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
     });
   }
 
+  function inspectSchematicTimeline(spec, path) {
+    if (!isSupportedTimelineV1(spec)) {
+      skippedPaths.push({path: `${path}.timeline`, kind: 'schematic', reason: 'unsupported-or-malformed-timeline-v1-display-contract'});
+      return;
+    }
+    const band = spec.timeline.appearance === 'band';
+    spec.timeline.events.forEach((event, index) => {
+      const eventPath = `${path}.timeline.events[${index}]`;
+      inspectValue(event.label, `${eventPath}.label`);
+      // Pin always displays timeLabel or its string-time fallback. Bands display
+      // either only when showTimes is true; numeric source times remain data.
+      if ((!band || spec.timeline.showTimes === true) && typeof event.timeLabel === 'string') {
+        inspectValue(event.timeLabel, `${eventPath}.timeLabel`);
+      } else if ((!band || spec.timeline.showTimes === true) && typeof event.time === 'string') {
+        inspectValue(event.time, `${eventPath}.time`);
+      }
+    });
+    if (band) spec.timeline.intervals?.forEach((interval, index) => {
+      inspectValue(interval.label, `${path}.timeline.intervals[${index}].label`);
+    });
+  }
+
+  function inspectSchematicPeriods(spec, path) {
+    if (!isSupportedPeriodsV1(spec)) {
+      skippedPaths.push({path: `${path}.periods`, kind: 'schematic', reason: 'unsupported-or-malformed-periods-v1-display-contract'});
+      return;
+    }
+    spec.periods.boundaries.forEach((boundary, index) => {
+      if (boundary.labelAfter !== undefined) inspectValue(boundary.labelAfter, `${path}.periods.boundaries[${index}].labelAfter`);
+    });
+    spec.periods.rows.forEach((row, rowIndex) => {
+      const rowPath = `${path}.periods.rows[${rowIndex}]`;
+      inspectValue(row.label, `${rowPath}.label`);
+      row.intervals.forEach((interval, intervalIndex) => {
+        inspectValue(interval.label, `${rowPath}.intervals[${intervalIndex}].label`);
+      });
+    });
+  }
+
   function inspectSchematic(spec, path) {
     if (spec.layout === 'formula') {
       inspectSchematicFormula(spec, path);
+      return;
+    }
+
+    if (spec.layout === 'timeline') {
+      inspectSchematicTimeline(spec, path);
+      return;
+    }
+    if (spec.layout === 'periods') {
+      inspectSchematicPeriods(spec, path);
       return;
     }
 
@@ -490,7 +658,13 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
       const nodePath = `${path}.nodes[${index}]`;
       // buildSchematic passes node.text last; richText is formatting and cannot
       // replace the rendered literal. Row layouts use node.text directly too.
-      if (typeof node.text === 'string') inspectValue(node.text, `${nodePath}.text`, nodePath);
+      if (typeof node.text === 'string') {
+        inspectValue(node.text, `${nodePath}.text`, nodePath);
+        if (isRecord(node.richText) && node.richText.text === node.text) {
+          reviewCircledHangulUnderlineSpacing(node.text, `${nodePath}.text`, nodePath,
+            codeRanges(node.text, node.richText), node.richText);
+        }
+      }
       if (!rowLayout && typeof node.affiliation === 'string' && node.affiliation.trim()) {
         inspectValue(node.affiliation, `${nodePath}.affiliation`, nodePath);
       }
@@ -546,6 +720,15 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
 
     inspectValue(options.title, `${path}.chartOptions.title`);
     inspectValue(options.note, `${path}.chartOptions.note`);
+
+    if (graph.chartStyle === 'ternary') {
+      inspectValue(graph.unit, `${path}.unit`);
+      inspectStringArray(graph.categories, `${path}.categories`);
+      if (Array.isArray(graph.series)) graph.series.forEach((series, index) => {
+        if (isRecord(series)) inspectValue(series.label, `${path}.series[${index}].label`);
+      });
+      return;
+    }
 
     if (hasAxes) {
       if (options.showXAxis !== false) {
@@ -634,6 +817,12 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
         const cellPath = `${path}.cells[${index}]`;
         inspectValue(cell.text, `${cellPath}.text`, cellPath);
         inspectValue(cell.richText, `${cellPath}.richText`, cellPath);
+        if (typeof cell.diagonalHeader?.upperRight === 'string') {
+          inspectValue(cell.diagonalHeader.upperRight, `${cellPath}.diagonalHeader.upperRight`, cellPath);
+        }
+        if (typeof cell.diagonalHeader?.lowerLeft === 'string') {
+          inspectValue(cell.diagonalHeader.lowerLeft, `${cellPath}.diagonalHeader.lowerLeft`, cellPath);
+        }
         if (cell.content !== undefined) visit(cell.content, `${cellPath}.content`, depth + 1);
       });
     } else if (current.kind === 'dialogue') {
@@ -670,7 +859,7 @@ export function inspectDisplayText(spec, rootPath = 'spec') {
       inspectedPaths,
       skippedPaths,
       offsetUnit: 'zero-based UTF-16 code units',
-      boundary: 'Only inspectedPaths were checked for spacing; this is not native-spec validation and does not establish that uninspected fields are valid. Native graph specs are limited to schema-defined visible display text: surface and chart titles, axis titles and units, visible category and series labels, and supported panel, point, legend, annotation, reference, and group labels. Native coordinate schematic specs are limited to nodes[i].text (the rendered literal; richText supplies formatting and node.text takes precedence), node affiliations and edge labels in coordinate layouts without rowLayout, and edge labels when layout is relations with a supported rowLayout.version 2 configuration. Row-layout node affiliations, rowLayout title/caption, and other mode-specific display fields were not inspected. Native schematic formula specs remain limited to formula item text and fraction numerator/denominator text, including their richText.text aliases. Timeline, periods, Venn, and other mode-specific schematic display fields are skipped. IDs, metadata, raw source/provenance, numeric data, arbitrary fields, hidden labels, and unsupported native kinds or nested paths were not inspected. Recognized URL tokens and explicitly marked code spans were excluded from spacing checks.',
+      boundary: 'Only inspectedPaths were checked for spacing; this is not native-spec validation and does not establish that uninspected fields are valid. Native graph specs are limited to schema-defined visible display text: surface and chart titles, axis titles and units, visible category and series labels, and supported panel, point, legend, annotation, reference, and group labels. Native coordinate schematic specs are limited to nodes[i].text (the rendered literal; richText supplies formatting and node.text takes precedence), node affiliations and edge labels in coordinate layouts without rowLayout, and edge labels when layout is relations with a supported rowLayout.version 2 configuration. Row-layout node affiliations, rowLayout title/caption, and other mode-specific display fields were not inspected. Native schematic formula specs remain limited to formula item text and fraction numerator/denominator text, including their richText.text aliases. Native timeline v1 specs are limited to recognizable pin and band display fields: event labels, displayed timeLabel or string time where enabled, and band interval labels. Pin displays times by default; band times are inspected only when showTimes is true. Numeric event times, IDs, interval endpoints, and source positions are not scanned. Unsupported appearances and malformed or unknown versions are skipped. Native periods specs are limited to recognizable v1 display fields: boundary labelAfter, row labels, and interval labels. Boundary times determine placement and are not rendered as text. Malformed or unknown versions are skipped. These guards identify supported display paths only and do not validate the native spec. Venn and other mode-specific schematic display fields are skipped. IDs, metadata, raw source/provenance, numeric data, arbitrary fields, hidden labels, and unsupported native kinds or nested paths were not inspected. Recognized URL tokens and explicitly marked code spans were excluded from spacing checks.',
     },
   };
 }

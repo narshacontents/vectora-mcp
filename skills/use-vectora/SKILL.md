@@ -84,7 +84,7 @@ Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DO
 - 글상자의 부분 단일/이중 밑줄은 같은 ID의 native `textRange`에 적용한다. live schema가 지원하면 `textRange.values.doubleUnderline:true`를 쓴다. 범위는 grapheme 기준이며 명시 개행을 걸쳐 지정할 수 있다. 개행을 가로질러도 하나의 텍스트 객체와 범위 서식을 유지하고 글상자를 나누지 않는다. 별도 line/path/사각형으로 밑줄을 만들지 않는다.
 - Rich production text의 `underlines:[{start,end,double:true}]`는 해당 kind의 live schema가 노출될 때만 쓴다. 이 별도 payload는 grapheme 범위여도 명시 개행을 넘을 수 없으므로 개행마다 범위 메타데이터만 나누고 텍스트 객체는 하나로 둔다. 글 수정·줄바꿈 후 서식이 해당 문자열에 따라가는지 확인한다.
 - 실제 글꼴 목록 도구 vectora_fonts로 UND v3.1과 UND v3.1 Batang 계열의 실제 설치 face를 찾고, vectora_check_font가 현재 도구 목록에 있으면 실제 출력 문자열과 사용할 family/style/weight를 확인한다. supportsText와 missingGlyphs를 읽는다. 이름 검색만으로 글리프 존재를 보증하지 않으며, 3.0 문서의 호환 로드를 신규 3.1 글꼴 검증으로 대신하지 않는다.
-- 기존 0→⓪ 입력 변환은 유지한다. ⓪를 포함한 실제 출력 기호는 위의 현재 설치 면 검사로 지원 여부를 판단하고, 확인된 누락만 보고한다. 예전 폰트의 누락 목록을 새 면에 그대로 적용하지 않는다.
+- 명시적인 입력 단축키의 0→⓪ 변환은 유지하되, 제공된 수치 0을 ⓪로 바꾸지 않는다. ⓪를 포함한 실제 출력 기호는 위의 현재 설치 면 검사로 지원 여부를 판단하고, 확인된 누락만 보고한다. 예전 폰트의 누락 목록을 새 면에 그대로 적용하지 않는다.
 - vectora_open_document/vectora_import_svg의 현재 입력 스키마에 fontReplacements가 있을 때만 {"원본 글꼴명":"설치 글꼴명"} 형태의 매핑을 보낸다. MISSING_FONTS가 반환되면 목록과 vectora_fonts에서 실제 설치 글꼴을 확인하고 사용자가 선택한 경우만 재시도한다. 미지원 필드는 보내지 않고 UND v3.0을 임의 대체하지 않는다. 기존 문서의 글꼴은 요청 없이 변환하지 않는다.
 - 통합사회 평가원 작업은 create-kice-illustration의 최신 규칙을 읽고 UND v3.1을 기본으로 사용한다. 일반 명령에서 typography의 profile:kice를 지정하는 기능은 현재 입력 스키마에서 지원될 때만 쓴다. vectora_audit_illustration은 인쇄 크기·팔레트까지 보증하지 않는다.
 - 장평은 선택한 등록 스타일 또는 명시값을 실제 문자 속성으로 적용하고 전체 그룹의 가로 Scale로 대신하지 않는다. UND v3.0 Body를 새 영문 범위에 자동 적용하지 않는다. 기존 문서의 명시된 서체·장평은 요청 없이 변경하지 않는다.

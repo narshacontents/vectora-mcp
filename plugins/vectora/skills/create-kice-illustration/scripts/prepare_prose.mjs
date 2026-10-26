@@ -10,7 +10,7 @@ const FRAME_TEXT_KEYS = new Set([
   'text', 'underlines', 'inlineBlanks', 'verticalGroups', 'fontWeight', 'fontStyle',
   'inlineBoxes', 'inlineBoxSpacing', 'styles', 'styleProvenance', 'widthMm', 'fontPt',
   'tracking', 'lineHeight', 'textAlign', 'fill', 'fontFamily', 'textFlow', 'textFlowBounds',
-  'textProfile', 'horizontalScale', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
+  'textProfile', 'horizontalScale', 'leadingPercent', 'leadingPt', 'paragraphLayouts', 'paragraphIndents',
 ]);
 
 function isRecord(value) {
@@ -77,6 +77,10 @@ function validateInput(input, graphemes, positions, nativePositions) {
   if (typeof input.text !== 'string') fail('FrameText.text must be a string.');
   if (/\r(?!\n)/u.test(input.text)) fail('FrameText.text contains a bare CR whose line indexing differs between Vectora and Fabric; resolve it in the source first.');
   if (input.fontFamily !== undefined && typeof input.fontFamily !== 'string') fail('FrameText.fontFamily must be a string when present.');
+  if (input.leadingPercent !== undefined && (!Number.isFinite(input.leadingPercent)
+      || input.leadingPercent <= 0 || input.leadingPercent > 10000)) {
+    fail('FrameText.leadingPercent must be finite, greater than 0 and at most 10000.');
+  }
   // The connected app owns profile registration; this helper only validates the identifier's shape.
   if (Object.hasOwn(input, 'textProfile') && (typeof input.textProfile !== 'string'
       || input.textProfile.trim().length === 0 || input.textProfile.length > TEXT_PROFILE_MAX_LENGTH)) {

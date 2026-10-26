@@ -1,3 +1,4 @@
+import {isSupportedPeriodsV1 as supportedPeriodsV1, isSupportedTimelineV1 as supportedTimelineV1} from './schematic_display_contracts.mjs';
 // Selection hints only: the installed runtime remains the native schema authority.
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const list=v=>Array.isArray(v)?v:[];
@@ -84,7 +85,7 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
   if(s.kind==='map'&&object(s.scalar))return 'isoline-map';
   if(s.kind==='graph'){
    if(s.type==='surface')return 'surface';
-   if(s.chartStyle!==undefined)return ({column:'bar',bar:'bar','stacked-column':'stacked-bar','stacked-bar':'stacked-bar','percent-column':'stacked-bar','percent-bar':'stacked-bar',line:'line','smooth-line':'line','step-line':'line',radar:'radar',mosaic:'mosaic'})[s.chartStyle];
+   if(s.chartStyle!==undefined)return ({column:'bar',bar:'bar','stacked-column':'stacked-bar','stacked-bar':'stacked-bar','percent-column':'stacked-bar','percent-bar':'stacked-bar',line:'line','smooth-line':'line','step-line':'line',radar:'radar',mosaic:'mosaic',ternary:'ternary',dumbbell:'dumbbell'})[s.chartStyle];
    if(s.type==='bar')return s.layout===undefined||['horizontal','mirror'].includes(s.layout)?'bar':undefined;
    if(s.type==='pie')return 'pie';
    if(s.type==='line')return 'line';
@@ -117,12 +118,22 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
    binding={...unit,recipe:'isoline-map'};
    rootRecipe='isoline-map';
   }
+  if(root&&s.kind==='graph'&&s.chartStyle==='ternary'){
+   binding={...unit,recipe:'ternary'};
+   rootRecipe='ternary';
+  }
+  const nativeDumbbell=s.kind==='graph'&&s.chartStyle==='dumbbell';
+  const overriddenDumbbellRecipe=nativeDumbbell?binding?.recipe:undefined;
+  if(nativeDumbbell){
+   binding={...binding,recipe:'dumbbell'};
+   if(root)rootRecipe='dumbbell';
+  }
   if(!root){
    if(binding&&!nonempty(binding.recipe))throw new Error(`${p}: cannot uniquely select recipe for kind ${s.kind}; set unit.specRecipes[${JSON.stringify(relative)}] to an explicit recipe`);
    contains=new Set(binding?.contains??[]);hasText=false;people=false;localProvenance=[];
   }
   const mergedSpans=s.kind==='table'?list(s.cells).flatMap((c,i)=>['rowSpan','colSpan'].filter(k=>typeof c?.[k]==='number'&&Number.isFinite(c[k])&&c[k]>1).map(k=>`${p}.cells[${i}].${k}`)):[];
-  for(const path of mergedSpans)note(path,'numeric span > 1','D1-04_Nested');
+  for(const path of mergedSpans)note(path,'native merged-cell structure requires Nested structural guidance','D1-04_Nested',{structuralOnly:true});
   if(mergedSpans.length&&binding?.recipe==='table'){
    binding={...binding,recipe:'D1-04_Nested'};
    if(root)rootRecipe=binding.recipe;
@@ -133,8 +144,9 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
    const selection=checkBinding(binding,s,p);
    if(s.kind==='map'&&object(s.scalar)&&selection?.type==='I3_Map'&&selection.subtype!=='I3-34_Isoline')throw new Error(`${p}.scalar: native scalar maps use the isoline-map recipe`);
    if(s.kind==='map'&&object(s.radial)&&selection?.type==='I3_Map'&&selection.subtype!=='I3-33_Proportional')throw new Error(`${p}.radial: native radial maps use the proportional-map recipe`);
-   if(mergedSpans.length&&s.kind==='table'&&selection?.type==='D1_Table'&&selection.subtype!=='D1-04_Nested')throw new Error(`${p}: merged native table cells at ${mergedSpans.join(', ')} conflict with explicit ${selection.subtype}; use D1-04_Nested`);
-   if(!root)note(p,explicit?'explicit specRecipes mapping':`native ${s.kind}${s.chartStyle?':'+s.chartStyle:s.type?':'+s.type:''}`,binding.recipe);
+   if(!root)note(p,nativeDumbbell?'native graph:dumbbell':explicit?'explicit specRecipes mapping':`native ${s.kind}${s.chartStyle?':'+s.chartStyle:s.type?':'+s.type:''}`,binding.recipe,nativeDumbbell&&overriddenDumbbellRecipe&&overriddenDumbbellRecipe!=='dumbbell'?{overrode:overriddenDumbbellRecipe}:undefined);
+   else if(rootRecipe==='ternary')note(p,'native graph:ternary',binding.recipe);
+   else if(rootRecipe==='dumbbell')note(p,'native graph:dumbbell',binding.recipe,overriddenDumbbellRecipe&&overriddenDumbbellRecipe!=='dumbbell'?{overrode:overriddenDumbbellRecipe}:undefined);
   }
   switch(s.kind){
    case 'text':
@@ -186,7 +198,7 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
     list(s.sharedScene?.artwork?.dataRegions).forEach((region,i)=>{const r=`${relative}.sharedScene.artwork.dataRegions[${i}]`;if(region?.spec!==undefined)visit(region.spec,`${r}.spec`,false,depth+1);else textBlock(region,`${prefix}.${r}`);});
     if(s.screenGraph!==undefined)visit(s.screenGraph,relative+'.screenGraph',false,depth+1);
     if(s.screenComponent!==undefined)visit(s.screenComponent,relative+'.screenComponent',false,depth+1);break;
-   case 'table':list(s.cells).forEach((c,i)=>{text(c?.text,`${p}.cells[${i}].text`);text(c?.richText,`${p}.cells[${i}].richText`);if(c?.content!==undefined)visit(c.content,`${relative}.cells[${i}].content`,false,depth+1);});break;
+   case 'table':list(s.cells).forEach((c,i)=>{text(c?.text,`${p}.cells[${i}].text`);text(c?.richText,`${p}.cells[${i}].richText`);if(typeof c?.diagonalHeader?.upperRight==='string')text(c.diagonalHeader.upperRight,`${p}.cells[${i}].diagonalHeader.upperRight`);if(typeof c?.diagonalHeader?.lowerLeft==='string')text(c.diagonalHeader.lowerLeft,`${p}.cells[${i}].diagonalHeader.lowerLeft`);if(c?.content!==undefined)visit(c.content,`${relative}.cells[${i}].content`,false,depth+1);});break;
    case 'graph':
     for(const k of ['xTitle','yTitle','unit','xUnit','yUnit'])text(s[k],`${p}.${k}`);
     for(const k of ['title','note','legendTitle','secondaryTitle','sizeLegendTitle'])text(s.chartOptions?.[k],`${p}.chartOptions.${k}`);
@@ -232,7 +244,29 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
     }
     break;
    case 'schematic':
-    if(s.layout==='formula'&&object(s.formula)&&Array.isArray(s.formula.items))s.formula.items.forEach((item,i)=>{
+    if(['sequential','shared','crossing','shared-results','relations'].includes(s.layout??'sequential')){
+     list(s.nodes).forEach((node,i)=>{
+      if(!object(node))return;
+      const nodePath=`${p}.nodes[${i}]`;
+      text(node.text,`${nodePath}.text`);
+      if(object(node.richText)&&node.richText.text===node.text)text(node.richText,`${nodePath}.richText`);
+     });
+    }
+    else if(s.layout==='timeline'&&supportedTimelineV1(s)){
+     const band=s.timeline.appearance==='band';
+     s.timeline.events.forEach((event,i)=>{
+     const eventPath=`${p}.timeline.events[${i}]`;
+     text(event.label,`${eventPath}.label`);
+     if((!band||s.timeline.showTimes===true)&&typeof event.timeLabel==='string')text(event.timeLabel,`${eventPath}.timeLabel`);
+     else if((!band||s.timeline.showTimes===true)&&typeof event.time==='string')text(event.time,`${eventPath}.time`);
+     });
+     if(band)list(s.timeline.intervals).forEach((interval,i)=>text(interval.label,`${p}.timeline.intervals[${i}].label`));
+    }
+    else if(s.layout==='periods'&&supportedPeriodsV1(s)){
+     s.periods.boundaries.forEach((boundary,i)=>{if(boundary.labelAfter!==undefined)text(boundary.labelAfter,`${p}.periods.boundaries[${i}].labelAfter`);});
+     s.periods.rows.forEach((row,i)=>{const rowPath=`${p}.periods.rows[${i}]`;text(row.label,`${rowPath}.label`);row.intervals.forEach((interval,j)=>text(interval.label,`${rowPath}.intervals[${j}].label`));});
+    }
+    else if(s.layout==='formula'&&object(s.formula)&&Array.isArray(s.formula.items))s.formula.items.forEach((item,i)=>{
      const itemPath=`${p}.formula.items[${i}]`;
      if(item?.kind==='text')formulaPart(item,itemPath);
      else if(item?.kind==='fraction'){
@@ -242,7 +276,7 @@ export function inferSpec(unit, prefix, checkBinding=()=>{}){
     });
     break;
    case 'asset':break;
-   default:throw new Error(`${p}: unsupported native kind ${s.kind}; rule preparation does not validate native specs`);
+   default:note(p,'native fields are outside rule inference coverage; no native validity was established','uninspected-native-kind',{kind:s.kind});
   }
   if(binding?.textMode==='none'&&hasText)throw new Error(`${p}: textMode:none contradicts actual text at ${localProvenance.find(x=>x.inferred==='text').path}`);
   if(binding?.people===false&&people){const source=localProvenance.find(x=>x.inferred==='people');const kind=source.path.endsWith('.sharedScene.artwork.assetId')?'shared-scene artwork asset':'portrait asset';throw new Error(`${p}: people:false contradicts ${kind} at ${source.path}`);}

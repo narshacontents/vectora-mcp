@@ -1,2 +1,2 @@
-- 그래프 생성 전 `vectora://production/graph/schema`의 compact 또는 legacy branch와 examples를 읽는다.
-- 합쳐진 schema의 최상위 properties만 읽고 다른 그래프 계열의 필드를 섞지 않는다. 카테시안 막대·선그래프의 제목은 `chartOptions.title`이며, surface 계열의 최상위 `title`을 그대로 보내지 않는다.
+- 해당 그래프 계열을 처음 실행하기 전 `vectora://production/graph/schema`의 compact 또는 legacy branch와 examples를 읽는다.
+- 합쳐진 schema의 최상위만 보고 추측하지 않는다. 선택한 branch의 필수값·조건을 읽고 다른 계열의 필드를 섞지 않는다. 카테시안 막대·선의 제목은 `chartOptions.title`이며 surface의 최상위 `title`과 구별한다.

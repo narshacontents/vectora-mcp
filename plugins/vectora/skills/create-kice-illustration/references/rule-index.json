@@ -189,6 +189,7 @@
     "newspaper-frame-native": "execution/modules/newspaper-frame-native.md",
     "screen": "recipes/layouts/screen.md",
     "screen-frame-native": "execution/modules/screen-frame-native.md",
+    "browser-chrome-micro-ui": "execution/modules/browser-chrome-micro-ui.md",
     "paper": "recipes/layouts/paper.md",
     "scroll": "recipes/layouts/scroll.md",
     "board": "recipes/layouts/board.md",
@@ -207,6 +208,7 @@
     "graph-api": "execution/modules/graph-api.md",
     "graph-helper": "execution/modules/graph-helper.md",
     "node-diagram": "components/node-diagram.md",
+    "node-diagram-native": "execution/modules/node-diagram-native.md",
     "schematic-layout": "components/schematic-layout.md",
     "trace-helper": "execution/modules/trace-helper.md",
     "organic-detail": "components/organic-detail.md",
@@ -217,6 +219,7 @@
     "map-dem": "execution/modules/map-dem.md",
     "map-edit": "execution/modules/map-edit.md",
     "map-inset": "components/map-inset.md",
+    "map-inset-native": "execution/modules/map-inset-native.md",
     "map-points": "components/map-points.md",
     "map-korea-points": "components/map-korea-points.md",
     "map-area": "components/map-area.md",
@@ -234,6 +237,7 @@
     "map-projection": "components/map-projection.md",
     "map-korea-projection": "components/map-korea-projection.md",
     "map-feature": "components/map-feature.md",
+    "map-feature-native": "execution/modules/map-feature-native.md",
     "graph-schema": "execution/modules/graph-schema.md",
     "map-runtime": "execution/modules/map-runtime.md",
     "asset-runtime": "execution/modules/asset-runtime.md",
@@ -1293,7 +1297,13 @@
       "modules": [
         "text-flow"
       ],
-      "description": "단일 편집 문단이 래스터 옆에서 흐른 뒤 아래에서 전체 폭으로 이어짐"
+      "description": "단일 편집 문단이 래스터 또는 지원 native 지도 장애물 옆에서 흐른 뒤 아래에서 전체 폭으로 이어짐"
+    },
+    "browser-chrome": {
+      "modules": [
+        "browser-chrome-micro-ui"
+      ],
+      "description": "브라우저 탭·조작부의 미세 여백과 짧고 긴 탭 제목 검수"
     },
     "photo": {
       "modules": [
@@ -1306,7 +1316,7 @@
         "artwork",
         "free-art"
       ],
-      "description": "사물/장면 신규 작화(작은 인물은 --people로 선택)"
+      "description": "사물/장면 신규 작화(작은 인물은 people:true로 선택)"
     },
     "vectorize": {
       "modules": [

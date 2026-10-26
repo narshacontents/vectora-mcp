@@ -1,6 +1,12 @@
 ## 수치 축 설정
 
-- 공통 조판: `yTitleOrientation:"horizontal"|"vertical"|"rotated"`, `xTitlePosition:"end"|"center"`, `labelPolicy:"all"|"major"`, `labelRotation:-90..90`(degree), `zeroLineStyle:"solid"|"dash"|"dot"`.
+- 공통 조판: `yTitleOrientation:"horizontal"|"vertical"`, `xTitlePosition:"end"|"center"`, `labelPolicy:"all"|"major"`, `labelRotation:-90..90`(degree), `zeroLineStyle:"solid"|"dash"|"dot"`.
+
+세로 Y축 제목은 `vertical`로 만든 뒤 실제 세로 텍스트박스인지 inspect로 확인한다. 원문 문자열의 강제 개행이나 회전으로 대신하지 않는다. 구형 생성기가 낱글자/개행 개체를 반환하면 이를 숨기고 지원되는 `verticalText` 한 개로 보충한다.
+
+월별 자료 등 좁은 범주축은 모든 관측값·원래 범주를 유지하면서 **표시할 눈금 문자만** 줄일 수 있다. live schema가 허용하는 기본 Cartesian 또는 범주형 `bar-scatter`에서 `chartOptions.labelIndices:[0,3,6,9]`처럼 0부터 시작하는 표시 인덱스를 선택한다. 숫자 X축/명시 `xValues`나 다른 확장형에는 지원을 추정하지 않는다. 규칙적인 시계열의 모든 월 숫자를 억지로 회전하기 전에 수평의 주요 월 표시를 검토하되, 순서를 추론할 수 없는 명목 범주는 필요한 이름을 생략하지 않는다. `labelPolicy:"major"`는 실측 자동 선택, 명시 `labelIndices`는 정확한 선택이며 `all`을 강제한 채 겹침을 방치하지 않는다. 실제 출력과 수치 수정·재열기에서 자료 위치와 표시 월이 일치하는지 확인한다.
+
+현재 graph schema가 지원하면 큰 수량 눈금은 `chartOptions.xLabelGrouping:true` / `yLabelGrouping:true`로 천 단위 구분을 설정한다. X 수치 독립축은 x, 값 축은 y이며 가로막대도 값 축에는 y 설정을 쓴다. 표시 문자열을 실측한 뒤 정렬하므로 생성된 눈금 문자를 따로 바꾸지 않는다. 원자료·축 범위·눈금값은 숫자로 유지하고, 연도·식별 번호에는 자동으로 쉼표를 넣지 않는다. 생략/false는 기존 표시를 보존한다.
 
 `domain,ticks`는 값 축, `xDomain,xTicks`는 독립축. 막대 값 축은 0을 포함하고 수동 축은 모든 표시값을 포함한다. 기본 선 수치 X에는 `chartOptions:{xNumeric:true},xValues`를 범주 수와 같은 엄격 증가 배열로 준다.
 

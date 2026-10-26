@@ -66,9 +66,11 @@ for(const withSpec of [false,true]) {
   assert.ok(withNodes.resolved[0].modules.includes('node-diagram'));
   assert.ok(sources(withNodes).includes('components/node-diagram.md'));
  });
- for(const dataSource of ['provided','research','hypothetical'])for(const textMode of ['labels','none']) {
+ for(const dataSource of ['provided','research','hypothetical','qualitative'])for(const textMode of ['labels','none']) {
   test(`site-plan ${withSpec?'spec':'brief'} / ${dataSource} / ${textMode} propagates source and geometry principles`, () => {
-   const unit={recipe:'site-plan',dataSource,textMode,...(withSpec?{spec:structuredClone(schematic)}:{})};
+   const spec=withSpec?structuredClone(schematic):undefined;
+   if(spec&&textMode==='none')for(const node of spec.nodes)delete node.text;
+   const unit={recipe:'site-plan',dataSource,textMode,...(spec?{spec}:{})};
    const original=structuredClone(unit),result=prepare(unit),resolved=result.resolved[0],paths=sources(result);
    assert.deepEqual(unit,original);
    assert.equal(resolved.subtype,'I3-14_Others');
@@ -79,7 +81,7 @@ for(const withSpec of [false,true]) {
    }
    assert.ok(paths.includes('components/node-diagram.md'));
    assert.ok(paths.includes('recipes/I3_Map/I3-14_Others.md'));
-   for(const principle of ['출처 평면 이미지를 직접 확인','성문·도로·건물','창작하지 않는다','dataSource:hypothetical','등록 GIS 프리셋 절차를 무조건 요구하지 않는다','현재 지원되는 schematic/일반 벡터','미확인 layout','원본 스캔'])assert.ok(result.contents.design.includes(principle),principle);
+   for(const principle of ['출처 도면·CAD·측량','성문·도로·건물','창작하지 않는다','dataSource:hypothetical','등록 GIS 프리셋 절차를 무조건 요구하지 않는다','현재 지원되는 schematic/일반 벡터','미확인 layout','원본 스캔'])assert.ok(result.contents.design.includes(principle),principle);
    assert.equal(resolved.features.includes('real-data'),dataSource==='research');
    assert.equal(resolved.modules.includes('map-points'),textMode!=='none');
    assert.equal(resolved.modules.includes('real-data'),dataSource==='research');
@@ -90,7 +92,11 @@ for(const withSpec of [false,true]) {
  }
 }
 
-for(const dataSource of ['provided','research','hypothetical'])for(const textMode of ['labels','none']) {
+test('site-plan textMode:none still rejects visible schematic node labels', () => {
+ assert.throws(()=>prepare({recipe:'site-plan',textMode:'none',spec:structuredClone(schematic)}),/textMode:none contradicts actual text at units\[0\]\.spec\.nodes\[0\]\.text/);
+});
+
+for(const dataSource of ['provided','research','hypothetical','qualitative'])for(const textMode of ['labels','none']) {
  test(`native map site-plan / ${dataSource} / ${textMode} retains the complete map contract`, () => {
   const unit={recipe:'site-plan',dataSource,textMode,spec:{kind:'map',overlays:[]}};
   const original=structuredClone(unit),result=prepare(unit),resolved=result.resolved[0];
@@ -104,11 +110,64 @@ for(const dataSource of ['provided','research','hypothetical'])for(const textMod
    assert.ok(resolved.modules.includes(mod),mod);
    assert.ok(result.phaseSources.execute.some(source=>source.path===index.modules[mod]),mod);
   }
-  assert.equal(resolved.modules.includes('real-data-map'),dataSource==='research');
-  assert.equal(result.phaseSources.design.some(source=>source.path===index.modules['real-data-map']),dataSource==='research');
+  const needsMapEvidenceContract=dataSource==='research'||dataSource==='provided';
+  assert.equal(resolved.modules.includes('real-data-map'),needsMapEvidenceContract);
+  assert.equal(result.phaseSources.design.some(source=>source.path===index.modules['real-data-map']),needsMapEvidenceContract);
+  assert.equal(resolved.modules.includes('real-data'),dataSource==='research');
+  assert.equal(resolved.features.includes('real-data'),dataSource==='research');
   assert.ok(result.phaseSources.design.some(source=>source.path==='recipes/I3_Map/I3-14_Others.md'));
  });
 }
+
+for(const dataSource of ['provided','hypothetical']) {
+ test(`bare ${dataSource} isoline request routes map evidence before grid construction`, () => {
+  // Original maps/request.json shape: both units are prepared before either has a native spec.
+  const request={caller:'exam-agent',units:[
+   {id:'M1',recipe:'isoline-map',contains:['statistics','natural'],dataSource,textMode:'labels'},
+   {id:'M2',recipe:'isoline-map',contains:['statistics','natural','area'],dataSource,textMode:'labels'},
+  ]};
+  const original=structuredClone(request),result=prepareTask(request);
+  assert.deepEqual(request,original);
+  assert.equal(result.resolved.length,2);
+  for(const resolved of result.resolved){
+   assert.equal(resolved.type,'I3_Map');
+   assert.ok(resolved.modules.includes('map-native'));
+   assert.equal(resolved.modules.includes('real-data-map'),dataSource==='provided');
+   assert.ok(!resolved.modules.includes('real-data'));
+   assert.ok(!resolved.features.includes('real-data'));
+  }
+  assert.equal(result.phaseSources.design.filter(source=>source.path===index.modules['real-data-map']).length,dataSource==='provided'?1:0);
+  assert.ok(!sources(result).includes(index.modules['real-data']));
+ });
+}
+
+test('provided isoline map loads map evidence rules without research lookup rules', () => {
+ const result=prepare({recipe:'isoline-map',dataSource:'provided',spec:{kind:'map',scalar:{grid:{provenance:{kind:'provided'}}}}});
+ const resolved=result.resolved[0];
+ assert.equal(resolved.subtype,'I3-34_Isoline');
+ assert.equal(resolved.modules.includes('real-data-map'),true);
+ assert.equal(result.phaseSources.design.some(source=>source.path===index.modules['real-data-map']),true);
+ assert.equal(resolved.modules.includes('real-data'),false);
+ assert.equal(resolved.features.includes('real-data'),false);
+});
+
+test('provided scalar provenance inferred from a native grid selects the same map evidence rules', () => {
+ const result=prepare({spec:{kind:'map',scalar:{grid:{provenance:{kind:'provided'}}}}});
+ const resolved=result.resolved[0];
+ assert.equal(resolved.recipe,'isoline-map');
+ assert.equal(resolved.dataSource,'provided');
+ assert.equal(resolved.modules.includes('real-data-map'),true);
+ assert.equal(result.phaseSources.design.some(source=>source.path===index.modules['real-data-map']),true);
+ assert.equal(resolved.modules.includes('real-data'),false);
+ assert.equal(resolved.features.includes('real-data'),false);
+});
+
+test('provided nonmap native graph and schematic site-plan do not load map evidence rules', () => {
+ const graph=prepare({recipe:'bar',dataSource:'provided',spec:{kind:'graph',type:'bar'}}).resolved[0];
+ const plan=prepare({recipe:'site-plan',dataSource:'provided',spec:structuredClone(schematic)}).resolved[0];
+ assert.equal(graph.modules.includes('real-data-map'),false);
+ assert.equal(plan.modules.includes('real-data-map'),false);
+});
 
 test('explicit site-plan overlays survive both schematic and native map routing', () => {
  for(const kind of ['schematic','map']){

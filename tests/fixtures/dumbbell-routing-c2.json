@@ -1,0 +1,67 @@
+{
+  "kind": "graph",
+  "type": "line",
+  "chartStyle": "dumbbell",
+  "styleProfile": "kice",
+  "widthMm": 70,
+  "plotHeightMm": 40,
+  "dataFidelity": "exact",
+  "categories": [
+    "(가)",
+    "(나)",
+    "(다)",
+    "(라)"
+  ],
+  "series": [
+    {
+      "id": "period-first",
+      "label": "2000~2005년",
+      "values": [
+        32,
+        24,
+        21,
+        6
+      ],
+      "fill": "#FFFFFF",
+      "marker": "open-circle"
+    },
+    {
+      "id": "period-second",
+      "label": "2020~2025년",
+      "values": [
+        12,
+        29,
+        11,
+        -2
+      ],
+      "fill": "#000000",
+      "marker": "circle"
+    }
+  ],
+  "domain": [
+    -10,
+    40
+  ],
+  "ticks": [
+    -10,
+    0,
+    10,
+    20,
+    30,
+    40
+  ],
+  "unit": "%",
+  "legend": "beneath",
+  "grid": true,
+  "valueLabels": false,
+  "chartOptions": {
+    "orientation": "vertical",
+    "gridStyle": "dash",
+    "zeroLineStyle": "solid",
+    "compact": true,
+    "yTitleOrientation": "vertical",
+    "guideStrokePt": 0.2,
+    "axisStrokePt": 0.4
+  },
+  "yTitle": "인구 증가율"
+}

@@ -92,7 +92,7 @@
 
 ### 작업 조건 선택
 
-- 인물이 있으면 `--people`; 생물 구조/부분 확대는 `organic`; 내부까지 순수 벡터를 명시한 경우만 `vectorize`.
+- 인물이 있으면 작업조건에 `people:true`; 생물 구조/부분 확대는 `organic`; 내부까지 순수 벡터를 명시한 경우만 `vectorize`.
 
 
 ## I3_Map — 지도
@@ -120,7 +120,7 @@
 
 ### 작업 조건 선택
 
-- `--features`: 한국 바탕 korea, 확대/패널 inset, 위치점 points, 면 강조 area, 경로 route, 통계 statistics, 자연층 natural, 판/빙상 tectonic-ice, 역사 historical, 도법/시차 projection, DEM dem. 해당 세부유형에 필수인 조건은 자동 포함되므로 중복 지정할 필요 없다. 고지도 원본은 프리셋을 자동 요구하지 않는다.
+- `features`: 한국 바탕 korea, 확대/패널 inset, 위치점 points, 면 강조 area, 경로 route, 통계 statistics, 자연층 natural, 판/빙상 tectonic-ice, 역사 historical, 도법/시차 projection, DEM dem. 해당 세부유형에 필수인 조건은 자동 포함되므로 중복 지정할 필요 없다. 고지도 원본은 프리셋을 자동 요구하지 않는다.
 
 
 ## ITA_TypeSwap
@@ -140,8 +140,8 @@
 
 ### 작업 조건 선택
 
-- 보드 세부유형은 `--variant`로 newspaper / screen / paper / scroll / board / worksheet 중 실제 매체를 고른다.
-- 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 인물 없는 메신저는 ITA-4 + `messenger`이며 `--people`을 쓰지 않는다.
+- 보드 세부유형은 `variant`로 newspaper / screen / paper / scroll / board / worksheet 중 실제 매체를 고른다.
+- 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 인물 없는 메신저는 ITA-4 + `messenger`이며 `people:true`를 지정하지 않는다.
 
 
 ## ITB_ImageSwap
@@ -158,7 +158,7 @@
 
 ### 작업 조건 선택
 
-- 보드 세부유형은 newspaper / screen / paper / scroll / board / worksheet, 해설자+틀 없는 자료는 plain을 `--variant`로 고른다.
+- 보드 세부유형은 newspaper / screen / paper / scroll / board / worksheet, 해설자+틀 없는 자료는 plain을 `variant`로 고른다.
 - 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 자료 칸이 실제 사진인지 새 작화인지에 따라 공통 조건을 선택한다.
 
 
@@ -177,7 +177,7 @@
 
 ### 작업 조건 선택
 
-- `--variant`로 실제 배치 horizontal / vertical / presentation / scene, 또는 매체 newspaper / screen / paper / scroll / board / worksheet를 고른다.
+- `variant`로 실제 배치 horizontal / vertical / presentation / scene, 또는 매체 newspaper / screen / paper / scroll / board / worksheet를 고른다.
 - 보드에 실제 보조 발언이 있을 때만 `speech-horizontal`, `speech-vertical`, `speech-solo` 중 하나를 선택한다. 발언 variant가 있으면 speech 조건을 중복 선택하지 않는다.
 
 ## 분류 우선순위
