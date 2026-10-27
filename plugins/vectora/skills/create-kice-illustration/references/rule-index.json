@@ -263,7 +263,8 @@
     "table-api": "execution/modules/table-api.md",
     "continuous-graph-api": "execution/modules/continuous-graph-api.md",
     "surface-graph-api": "execution/modules/surface-graph-api.md",
-    "frame-decoration-native": "execution/modules/frame-decoration-native.md"
+    "frame-decoration-native": "execution/modules/frame-decoration-native.md",
+    "pattern-library": "components/pattern-library.md"
   },
   "subtypes": {
     "D1-01_Flat": {
@@ -1525,6 +1526,12 @@
         "long-operation"
       ],
       "description": "장기/다수 제작에서 진행 조회·체크포인트·복구 사용"
+    },
+    "pattern": {
+      "modules": [
+        "pattern-library"
+      ],
+      "description": "반복 점/선무늬·그라데이션 견본 저장/재사용"
     }
   },
   "people": {

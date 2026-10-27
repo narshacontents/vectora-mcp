@@ -2,17 +2,19 @@
 
 ## 실제 프리셋에서 시작
 
-1. `vectora_list_presets({})`를 category 필터 없이 조회해 UND 메뉴와 같은 현재 사용자 카탈로그의 실제 ID·이름·설명에서 범위·경계·도법·상세도에 맞는 항목을 고른다. 없는 group 필드를 만들거나 category/source를 지리 binding으로 해석하지 않는다. 목록·소스·planner 목록은 서로 다를 수 있다.
-2. `vectora_map_plan({})`의 templates/capabilities와 대조한다. **선택한 기본 프리셋 ID = template.presetId**일 때만 그 `assetRef`로 plan을 조회해 defaultSpec·assetHash/sidecarHash·source/notes·registration·국가·roles·projection을 사용한다. 유사 이름/개인 프리셋을 임의 연결하거나 해시 오류를 우회하지 않는다.
+1. `vectora_map_plan({})`의 templates/capabilities에서 현재 등록 바탕과 공통 세계 원본을 조회한다. `library.newAuthoring`이 있으면 신규 제작 후보를 우선하고, `kind:master` 원본과 `kind:view`의 범위·도법 설정을 구별한다. `vectora_list_presets({})`는 UND 메뉴의 사용자·기본 프리셋 목록이며 두 목록은 같다고 가정하지 않는다.
+2. 선택한 등록 template의 `assetRef`로 plan을 조회해 defaultSpec·assetHash/sidecarHash·source/notes·registration·국가·roles·projection을 사용한다. 일반 프리셋을 production template에 연결할 때만 **프리셋 ID = template.presetId**를 확인한다. 공통 세계 template은 갤러리의 개별 지역 파일이 없어도 등록 응답에서 시작할 수 있다. 유사 이름/개인 프리셋을 임의 연결하거나 해시 오류를 우회하지 않는다.
 3. 등록 production 경로는 `vectora_new_document`의 새 격리 문서에 같은 바탕의 관리 map을 한 번 create한다. 대응/도구가 없으면 `vectora_create_preset({presetId:실제 ID,name?:작업명})`의 일반 벡터 문서를 편집한다. 이미 연 일반 프리셋 위에 관리 지도를 중복 생성하지 않는다. 기존 관리 map은 inspect의 실제 component ID로 update한다.
 
 현재 등록 지도와 legacy `world_continents`의 부분 매핑을 구별한다. 문서에 기록된 과거 프리셋 개수는 현재 설치 목록·지역 지원의 보증이나 선택 제한이 아니다. legacy는 unregistered·CHN/JPN/KOR 부분 매핑이며 새 프리셋의 국가 ID를 넣지 않는다. 지원 여부는 버전/소스가 아닌 **연결본의 실제 capability**로 판정한다. geographic 등록만 WGS84 배치/재투영을 허용하고 unregistered는 원도법·문서 좌표에 한정한다. partial 국가 coverage는 영토/섬 완전성 보증이 아니다. `parts:["unclassified"]`이면 `islandPolicy:"all"`만 사용한다.
 
-사용자 지정 별도 작업 파일은 우선한다. 그 외 제작은 현재 목록과 plan에서 정확히 대응된 프리셋으로 시작한다. 목록·plan·inspect에서 대상이나 근거를 확인할 수 없으면 다른 적합한 실제 프리셋을 찾고, 지원 한계를 남긴다. 검수용 기출·관찰 카탈로그·옛 측정표와 로컬 복사본을 생성 의존성으로 삼지 않는다.
+사용자 지정 별도 작업 파일은 우선한다. 그 외 제작은 현재 등록 바탕 또는 정확히 대응된 프리셋으로 시작한다. 목록·plan·inspect에서 대상이나 근거를 확인할 수 없으면 다른 적합한 등록 바탕을 찾고, 지원 한계를 남긴다. 검수용 기출·관찰 카탈로그·옛 측정표와 로컬 복사본을 생성 의존성으로 삼지 않는다.
 
 ## 범위에 맞는 세트 선택
 
 세계·반구·극·대륙·국가/세부 지역은 최종 크기에서 윤곽의 밀도가 어울리는 등록 바탕을 고른다. 같은 원자료 계열을 우선하되 전체 지도와 확대 지도에 같은 상세도를 강제하지 않는다. 서로 비교하는 패널은 경계 정책·선의 위계·바다색·비슷한 범위의 상세도를 맞춘다. 원자료 시점·도법·집계 단위가 다르면 외관만 같게 합치지 않는다.
+
+연결 앱이 공통 세계 원본과 `detail`을 지원하면 10m/50m/110m 중 필요한 상세도를 골라 같은 원본에서 범위·도법을 조정한다. `detail:{resolution,retainPercent,minimumIslandAreaMm2?}`의 보존율은 1–100이며 100은 원형 복원이다. 공통 원본 외 전용 자료에 이 설정을 억지로 넣지 않는다. 생략은 기존 자료 유지이며, 원본 해상도를 변경할 때 plan이 돌려준 정규화 spec·해시를 사용한다. 단순화·표시 생략은 원본에서 매번 재계산하고 작은 섬·경계·선택 국가를 실제 JPEG로 확인한다. 제작 시작값과 보호 대상은 지도 공통 원칙을 따른다.
 
 선택한 지역 프리셋의 지리 범위가 요청 범위를 덮는지 먼저 확인한다. 상세 권역 세트는 전체 세트의 세계 범위와 각 항목의 `partial` 국가 범위를 구별한다. 경계 부근이나 여러 권역에 걸친 요청은 필요한 섬·이웃 지역까지 해당 항목에 실제로 있는지 확인한다. 대륙 일부만 저장된 프리셋을 재투영해 주변국·바다 건너 지역까지 생긴 것으로 취급하지 않는다. 더 넓은 등록 바탕이나 적합한 별도 상세 지도로 전환한다. 하천·호수·국내 행정·지형·판 경계·빙상·역사 지도에는 해당 지물이 있는 전용 바탕을 유지하며 일반 세계지도 교체가 그 자료까지 제공한다고 가정하지 않는다.
 

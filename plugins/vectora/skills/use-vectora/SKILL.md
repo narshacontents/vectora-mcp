@@ -24,6 +24,8 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 
 ## 점 편집과 프리셋
 
+- 무늬 견본은 완성 그림 프리셋과 별도 보관함이다. 연결본에 `vectora_pattern_library`가 있으면 `vectora://pattern-library`에서 지원 설정을 확인해 list/get → save → apply한다. 점·빗금과 그라데이션의 형상 독립 설정을 저장하며, 안정 ID 갱신은 명시적 upsert로 한다. 관리 지도·그래프 자식을 직접 대체하지 말고 resolve한 설정 중 소유 생성기가 지원하는 필드를 사용한다. 사용자 견본 삭제가 기존 문서에 적용된 무늬를 지우지는 않는다.
+
 - 새 도형은 채우기 없음·검정 선 0.4pt가 기본이다. 문자 스타일 기능이 있는 연결본에서는 `vectora://capabilities`의 `textProfiles.catalog`에서 실제 등록 ID와 글꼴·pt·장평·자간·행간을 조회한다. 새 문자는 일러스트 라벨 프로필을 기본으로 하며, 본문·발언·표는 역할에 맞는 등록 스타일을 선택한다. 수치 기본값을 문서에서 다시 고정하거나 옛 95%/-60을 일괄 전달하지 않는다. 해당 기능이 없는 연결본은 실제 생성·측정 계약을 따른다. UND v3.1과 UND v3.1 Batang의 Regular·Bold·Italic·BoldItalic은 설치된 실제 면을 사용한다. 기존 문서의 명시된 서체·자간·장평은 요청 없이 변경하지 않고, 측정과 생성에는 같은 최종 서식을 쓴다. 평가원 작업의 선택 기준은 create-kice-illustration을 따른다.
 - `vectora_inspect(includeObjects:true)`의 `pathNodes`는 각 개체의 **문서 좌표 mm**와 0부터 시작하는 점 번호를 제공한다. `objects`의 원시 경로 px와 혼동하지 않는다.
 - 개별 점은 `vectora_apply`의 `{type:"pathPoint",id,index,point:{x,y}}`로 이동한다. `incoming`/`outgoing`은 곡률 핸들의 절대 좌표이며 `null`이면 그 핸들을 접는다. 점만 옮기면 연결된 핸들도 함께 움직인다. 사각형·타원 등의 한 꼭짓점을 수정하면 같은 ID를 유지한 편집 경로가 된다. 잠긴 대상은 먼저 해당 잠금을 해제한다.
