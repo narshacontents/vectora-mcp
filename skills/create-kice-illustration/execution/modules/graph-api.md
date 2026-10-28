@@ -14,13 +14,15 @@
 
 - series의 `fill`, `pattern:none|dots|hatch`, `line:solid|dash|dash-dot|dot`, `marker:none|circle|triangle|square|open-square|open-circle|open-triangle`를 대응시킨다. 연결 schema가 `dot`을 지원하면 순수 점선은 이 원자료 값으로 지정해 자료선·범례·값 수정에 함께 유지한다. `dash-dot`은 일점쇄선이므로 순수 점선 대신 사용한 뒤 개별 선분을 고치는 방식은 피한다. 표식 없는 선에 표식 무늬를 넣지 않는다. `grid:true,chartOptions:{gridStyle:"dash"}`; 실제 `valueLabels,xTitle,yTitle,unit`, `chartOptions.labelDecimals`(0–10)을 지정한다.
 
-- 단위와 축 제목을 구분한다. 숫자 눈금 옆의 `(월)`·`%`처럼 눈금과 같은 기준선에 놓을 단위는 지원되는 `xUnit` 경로를 사용한다. `xTitlePosition:"end"`는 축 제목의 가로 위치이며 눈금과 같은 높이를 뜻하지 않는다. 끝에 놓는 짧은 축 제목은 첫 조판에서 마지막 눈금·화살표·자료선과 함께 보고, 별도의 큰 아래 여백이 생기면 축 끝 주변의 빈 공간을 활용한다. 눈금 줄에 공간이 부족하면 축 위도 가능하되 실제 자료나 이름을 가리지 않는다. 지원되는 간격 설정과 네이티브 문자 배치로 조정하고 자료 수정 뒤에도 보존되는지 확인한다. 가운데 축 제목까지 일률적으로 위로 옮기지 않는다. 월별 자료의 범주/수치축 선택은 간격의 의미에 맞추고, 단위를 올리려고 축의 의미를 바꾸지 않는다.
+- 단위와 축 제목은 [수치 축 설정](axis-options.md)의 네이티브 조판으로 함께 배치한다. X 단위는 마지막 수치와 같은 기준선, 짧은 축 제목은 끝 아래, 가운데 제목은 축 아래를 출발점으로 하며 실제 배치는 자료의 의미·공간에 따라 선택한다. Y 제목/단위와 최상단 눈금은 별개 문자열의 위치를 따로 추측하지 말고 함께 측정한다. 생성 문자를 수동 이동하기 전에 source의 제목·단위·위치 설정을 수정하고 값 변경·재열기에서도 보존되는지 확인한다.
 
 - 어두운 누적 구간에서 생성기가 값 문자를 흰색으로 만들었는지 실제 속성을 확인한다. 이 자동 대비색을 공통 판독성 규칙의 검정 글자·흰 윤곽선과 혼동하지 않는다. 원자료 옵션에 없는 문자 외관은 해당 값 문자의 네이티브 스타일로 첫 조판에 보충하고, 자료를 갱신한 뒤에도 같은 역할의 문자 외관이 유지되는지 확인한다.
 
 - live graph 계약이 제공하면 가로 100% 띠의 구간 이름·시점 간 경계 연결은 `chartOptions.percentBarComparison:{segmentLabels:true,boundaryLinks:true}`로 만든다. `type:"bar",chartStyle:"percent-bar"`의 한 누적 묶음에서만 쓰며 필요 없는 항목은 생략하거나 false로 둔다. 이름은 첫 띠의 실제 구간 중심, 점선은 인접 띠의 내부 누적 경계를 따른다. 원자료의 계열 ID·순서를 유지해 값을 갱신하고 선 끝을 별도로 옮기지 않는다. 구간보다 넓은 이름은 이웃 글자와 전체 외곽 폭을 함께 확인한다. 미지원 연결본에서만 보충하며 값 수정 뒤 수동 갱신이 필요한 한계를 기록한다.
 
-- `legend:above|beneath|right|inside|none`; 아래는 beneath이고 bottom/below 별칭은 쓰지 않는다. inside의 `legendAnchor:top-left|top-right|bottom-left|bottom-right`, `legendReverse`, `legendStyle:swatch|label-fill` 중 견본 상자는 swatch 우선이다.
+- `legend:above|beneath|right|inside|none`; 아래는 `beneath`로 보낸다. `chartOptions.legendAnchor`는 내부 범례의 후보 우선순위이며 위치 잠금이 아니다. 네 모서리 `top-left|top-right|bottom-left|bottom-right` 외에, 지원되는 2D Cartesian의 연결 schema가 제공하면 `top-center|bottom-center|middle-left|middle-right|middle-center`도 선택한다. 같은 지원 계열의 `chartOptions.legendArrangement:auto|horizontal|vertical`로 배열을 별도 지정한다. `auto`는 폭에 맞는 배열과 충돌 없는 후보를 찾는 초안이므로 [범례 배치 원칙](../../components/data-surface.md)에 따라 AI가 최종 위치·배열을 선택한다. `legendPlacement`의 요청/실제 위치·배열·후보·fallback을 읽는다. 내부 배치가 어려우면 다른 내부 후보나 `beneath`로 바뀔 수 있다. `chartOptions.legendReverse`, `legendStyle:swatch|label-fill` 중 견본 상자는 `swatch` 우선이다.
+
+- 초안 JPEG를 본 뒤 source의 `legendAnchor`·`legendArrangement`를 명시해 `update,policy:"preserve"`로 갱신한다. 충돌 검사 뒤 보고된 실제 위치와 JPEG를 다시 확인하며 자료 연결을 해제하지 않는다. 현재 계약에는 범례 전체의 가장자리 간격·임의 높이 정렬용 source 설정이 없다. 보정이 필요하면 component inspect의 실제 role key로 `action:"override",spec:{key,mode:"fixed"|"offset"|"release",xMm?,yMm?}`를 사용한다. `fixed`는 현재 위치 보존, `offset`은 재생성 위치에 대한 mm 이동량이며 이 명령 자체는 즉시 이동하지 않는다. 다음 preserve update에서 확인하거나 즉시 이동용 native transform을 사용하되 같은 이동을 이중 적용하지 않는다. 상자·제목뿐 아니라 계열에 속한 견본·문자도 포함해 범례 전체를 보정한다. `graph.legend` 역할만으로 전체가 선택된다고 가정하지 않으며, 배열 변경을 개별 이동으로 흉내 내지 않는다. 값·문구 변경 후 저장·재열기와 JPEG로 대응·간격·충돌을 다시 확인하고, 필요한 자유도를 지원하지 않으면 앱 담당자에게 남긴다.
 
 - chartStyle을 생략하는 legacy는 별도 계약이다. `layout,panels,x,yDomain,labelOffsets`를 새 spec에 섞지 않는다. legacy는 새 그래프 UI 편집 지원을 약속하지 않는다. live 도구 spec이 open record여도 허용 옵션을 추측하지 않는다.
 
@@ -31,3 +33,5 @@ live graph 계약이 위치 갱신을 지원하면 독립 그래프의 이동도
 축 선·눈금 획·눈금 문자는 서로 다른 표시 설정일 수 있다. 축 없이 직접 값만 비교하는 가로 막대를 만들 때는 실제 schema의 `showXAxis/showYAxis`, `showXTicks/showYTicks`뿐 아니라 `showYLabels`도 확인해 남길 정보를 source에 명시한다. 축을 숨겼는데 고립된 0이나 단위가 남으면 생성된 문자만 삭제하기 전에 해당 지원 설정과 단위의 소속을 고친다. 자료 값 수정 뒤 같은 표시 정책이 유지되어야 한다.
 
 일반 `column/bar`에서는 선택한 정보 표시 방식을 `grid`·`valueLabels`에 반영한다. 값과 점선이 모두 필요하면 같은 기준 위치를 유지하고 문자에 작은 흰 배경을 적용한다. 지원 앱의 자동 처리와 실제 출력·재열기를 확인하며 임의 필드는 만들지 않는다. 하나만 필요한 자료에서는 수치 우선은 `valueLabels:true,grid:false`, 대소관계 우선은 `valueLabels:false,grid:true,chartOptions:{gridStyle:"dash"}`를 사용한다. 원자료 값은 삭제하지 않는다. 개별 값만 이동시키는 이전 자동 배치를 그대로 납품하지 말고, 실제 출력에서 같은 역할의 막대 끝과 값 라벨 간격을 확인한다. 점선 생략은 장식 격자에만 해당하며 축·자료선·실제 오차 막대를 지우지 않는다.
+
+별표 각주가 여러 개면 `chartOptions.note`에 줄바꿈 문자열만 넣어 끝내지 않는다. 해당 필드에 문단 접두부 정렬이 없으면 그래프 가까이에 별도의 편집 가능한 글상자를 만들고, typography의 반칸·공통 본문 시작 열과 native 문단 항목 고정을 적용한다. 출처는 각주와 구분하고 그래프 높이를 바꾼 뒤 보충 글상자 위치도 다시 확인한다.

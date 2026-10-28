@@ -1,5 +1,13 @@
 ## 수치 축 설정
 
+현재 graph schema가 제공하는 compact Cartesian에서는 `chartOptions.axisText.{x,y,secondaryY}`로 제목·단위를 함께 조판한다. 각 축의 `pairing`은 `same-line`(한 줄), `next-line`(단위를 다음 줄), `separate`(서로 다른 위치), `showTitle/showUnit`은 표시 여부다. X `placement`는 `end`(끝 아래)·`center`(가운데 아래)·`tip`(축 끝 옆), Y·secondaryY는 `outside`(바깥 위)·`vertical`(실제 세로쓰기)·`tip`(바깥쪽 축 끝 옆)이다. Y 단위만 있을 때는 숫자 눈금열의 기존 위치를 유지하고 가로쓰기 단위의 실제 글 획 중심을 그 선행 부호를 제외한 숫자 본체 잉크열 중심에 맞춘다. 단위를 축 바깥에 제한하기 위해 눈금열을 옮기지 않는다. 문구는 기존 `xTitle/yTitle/xUnit/yUnit/unit`, 보조축은 `secondaryTitle/secondaryUnit`에 보존한다. 표시 생략은 의미가 다른 곳에 충분히 있을 때만 선택하며, 겹침을 피하려고 필수 단위를 숨기지 않는다.
+
+`chartOptions.axisTextLayout:"end-reserved"`는 전체 폭과 수치 범위를 유지하면서 플롯을 줄여 축 끝 제목 공간을 확보한다. X제목·단위는 마지막 눈금 오른쪽 **연장부 아래**, Y제목·단위는 위 연장부 바깥에 둔다. `axisText`의 결합/표시 설정은 유지하며 개별 placement보다 이 배치가 우선한다. `"standard"`로 돌아가면 저장한 개별 placement를 사용한다. 세로형 Cartesian에서만 사용하며 가로막대·상자 프레임·숨긴 X/Y축과는 함께 쓰지 않는다.
+
+원본과 같은 물리 크기로 재현할 때는 `chartOptions.plotWidthMm`으로 **내부 자료 영역 너비**를 명시할 수 있다(4–200mm, 생략은 자동). `plotHeightMm`과 함께 사용하며 `widthMm`은 글자를 포함할 공간의 예산이다. 실제 저장 폭은 내용에 맞게 달라질 수 있으므로 별도로 검수한다. 글자·전체 그림을 늘려 맞추지 않는다. 일반 의뢰에는 원본 계측값이 없는 이 필드를 임의로 채울 필요가 없다.
+
+`chartOptions.axisTipExtensionMm:{x?,y?,secondaryY?}`는 자료 범위를 바꾸지 않고 축 끝에 여유를 둔다(각 0–20mm). 기출형 배치 선택은 [그래프 원칙](../../components/graph-style.md)을 따른다. `axisLabelLayout`의 실제 표시 영역과 JPEG에서 제목·단위·최상단/끝 눈금의 간격을 함께 검수한다. 지원하지 않는 chartStyle에는 새 필드를 보내지 않는다. 가로 막대(`bar/stacked-bar/percent-bar`)는 기존 `yUnit/unit`이 실제 가로 값 축에 대응하므로 `axisText` 묶음은 사용하지 않고 기존 제목·단위 필드를 유지한다. 범례 배열과 물리 축 끝 연장은 지원 여부를 따로 확인한다.
+
 - 공통 조판: `yTitleOrientation:"horizontal"|"vertical"`, `xTitlePosition:"end"|"center"`, `labelPolicy:"all"|"major"`, `labelRotation:-90..90`(degree), `zeroLineStyle:"solid"|"dash"|"dot"`.
 
 세로 Y축 제목은 `vertical`로 만든 뒤 실제 세로 텍스트박스인지 inspect로 확인한다. 원문 문자열의 강제 개행이나 회전으로 대신하지 않는다. 구형 생성기가 낱글자/개행 개체를 반환하면 이를 숨기고 지원되는 `verticalText` 한 개로 보충한다.
@@ -20,3 +28,5 @@
 - 목표·기준 수평선은 지원되는 `chartOptions.horizontalReferences:[{id,value,label?,line?:"solid"|"dash"|"dot"}]`를 우선한다. 안정된 id와 실제 기준값을 유지하며 전체 가시 X 범위의 0.3pt 선·라벨이 함께 갱신된다. 자료 계열/범례로 위장하지 않는다. 최대 20개이며 Y 생략 안의 값이나 해결되지 않는 라벨 배치는 오류를 확인한다.
 
 위 새 축·기준선 계약은 현재 라이브 graph schema에서 지원을 확인한 compact `column`, `stacked-column`, `percent-column`, `line`, `smooth-line`, `step-line`, `bar-scatter`에만 적용한다. 원점 정책에는 수치 X도 필요하다. 다른 compact 형식과 legacy에 옵션을 섞지 않는다(legacy line의 기존 xAxis는 별도 계약). 구형 연결본에 필드를 강제로 보내지 말고 실제 부족한 부분만 보충한다. 도구 버전 이름만으로 지원을 추정하지 않는다.
+
+축선 선택은 `chartOptions.frame:"none"|"box"`와 `axisArrows`로 분리한다. 상자 프레임은 `frame:"box",axisArrows:false`, 일반 축선은 `frame:"none",axisArrows:false`, 화살표 축은 `frame:"none",axisArrows:true`다. 지원 연결본에서는 `axisTicks.{x,y,secondaryY}`의 `direction:"in"|"out"|"cross"`, `lengthMm`으로 눈금 방향·길이를 선택한다. `showXTicks/showYTicks:false`가 표시 여부를 정하고 수치 라벨은 그대로 남길 수 있다. 라이브 계약이 없는 구형 연결본에는 새 필드를 보내지 않는다.

@@ -208,10 +208,13 @@ export function prepareTask(request, root=skillRoot){
   if(modules.has('artwork')||modules.has('photo')||selected.hasPeople)add('execute','execution/assets.md');
   resolved.push({id,recipe:unit.recipe,subtype:selected.subtype,type:selected.type,variant:selected.variant,features:selected.features,people:selected.hasPeople,textMode:mode,contains,modules:[...modules],...(unit.dataSource?{dataSource:unit.dataSource}:{}),...(inference?{inference:inference.provenance}:{}),...(specPath?{specPath}:{})});
  }
- if(request.units.length>1||nativeComposition){
-  add('design','core/composition.md');
-  add('execute',index.modules.composition);
- }
+ // Shared boards need composition design even when they are a single production unit.
+ // Native composition API is needed only for actual independent/composite production.
+ const composite=request.units.length>1||nativeComposition;
+ const sharedSceneTypes=new Set(['ITA-5_SoloBoard','ITA-6_GroupBoard','ITB-2_SoloImageBoard','ITB-3_GroupImageBoard']);
+ const multiPanel=request.units.some(unit=>Array.isArray(unit.spec?.panels)&&unit.spec.panels.length>1);
+ if(composite||multiPanel||resolved.some(unit=>sharedSceneTypes.has(unit.subtype)||unit.features.includes('composition')))add('design','core/composition.md');
+ if(composite)add('execute',index.modules.composition);
  add('deliver','core/review.md');add('deliver','execution/delivery.md');
  const warnings=resolved.flatMap(unit=>(unit.inference??[])
   .filter(entry=>entry.inferred==='uninspected-native-kind')
