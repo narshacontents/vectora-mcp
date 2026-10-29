@@ -1,0 +1,141 @@
+{
+  "styleID": "chart-age-population-sexratio.v1",
+  "family": "charts",
+  "groupID": "DUP006",
+  "type": "mixed",
+  "recipe": "bar",
+  "referencePair": [
+    "K0438",
+    "K0439"
+  ],
+  "widthMm": 84,
+  "plotHeightMm": 45,
+  "typography": {
+    "textProfile": "und-dotum-8-default-v1",
+    "fontPt": 8,
+    "leadingPercent": 130
+  },
+  "exampleProvenance": "Hypothetical values for template demonstration; source images supply the scaffold only. No measured statistical claim.",
+  "example": {
+    "panel": "(나)",
+    "population": [
+      5.7,
+      6.6,
+      4.5,
+      4.9,
+      4.7,
+      5,
+      6.2,
+      9.8,
+      9.8,
+      9.8,
+      8.6,
+      7.1,
+      6.6,
+      5.2,
+      3.5,
+      2.6,
+      1.9,
+      1,
+      0.6,
+      0.2,
+      0.1
+    ],
+    "sexRatio": [
+      110,
+      109,
+      120,
+      160,
+      133,
+      122,
+      120,
+      119,
+      117,
+      118,
+      99,
+      106,
+      101,
+      99,
+      64,
+      45,
+      28,
+      17,
+      17,
+      17,
+      16
+    ],
+    "year": "(2020)",
+    "source": "(통계청)",
+    "populationLabel": "인구",
+    "sexRatioLabel": "성비"
+  },
+  "plotWidthMm": 94,
+  "graphFontPt": 7,
+  "nativeOverrides": [
+    {
+      "target": "population-bars-and-legend-swatch",
+      "strokePt": 0.2
+    },
+    {
+      "target": "graph-origin",
+      "axisXmm": 8.9019307899,
+      "axisYmm": 13.52830823035
+    }
+  ],
+  "contentSlots": {
+    "panel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 6,
+      "requiresNativeWidthMeasurement": true
+    },
+    "population": {
+      "type": "array",
+      "length": 21,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "sexRatio": {
+      "type": "array",
+      "length": 21,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "year": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "source": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "populationLabel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "sexRatioLabel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    }
+  },
+  "geometryWidthMm": 108,
+  "defaultWidthMm": 84,
+  "minWidthMm": 80,
+  "maxWidthMm": 108,
+  "sizingEvidence": {
+    "kind": "text-relative-raster-estimate",
+    "referencePair": [
+      "K0438",
+      "K0439"
+    ],
+    "note": "No DPI metadata; proposed width from reference ink/text proportions with unchanged 8pt text (mixed graph 7pt). Not a recovered PDF placement measurement. Native measurement and rendered review remain required."
+  }
+}

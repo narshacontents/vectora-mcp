@@ -1,0 +1,267 @@
+{
+  "styleID": "judgment-2.v1",
+  "family": "judgment",
+  "counts": {
+    "decisions": 3,
+    "conclusions": 2,
+    "legend": 4
+  },
+  "widthMm": 108,
+  "heightMm": 59,
+  "nodes": [
+    {
+      "id": "start",
+      "shape": "rect",
+      "xMm": 1.6,
+      "yMm": 1.6,
+      "widthMm": 30.5,
+      "heightMm": 12.6,
+      "slot": "start",
+      "index": null
+    },
+    {
+      "id": "q1",
+      "shape": "diamond",
+      "xMm": 5.1,
+      "yMm": 21,
+      "widthMm": 23.5,
+      "heightMm": 7.4,
+      "slot": "decisions",
+      "index": 0
+    },
+    {
+      "id": "q2",
+      "shape": "diamond",
+      "xMm": 5.1,
+      "yMm": 35.4,
+      "widthMm": 23.5,
+      "heightMm": 7.4,
+      "slot": "decisions",
+      "index": 1
+    },
+    {
+      "id": "q3",
+      "shape": "diamond",
+      "xMm": 43.4,
+      "yMm": 35.4,
+      "widthMm": 23.5,
+      "heightMm": 7.4,
+      "slot": "decisions",
+      "index": 2
+    },
+    {
+      "id": "r1",
+      "shape": "document",
+      "xMm": 6.5,
+      "yMm": 49.4,
+      "widthMm": 20.4,
+      "heightMm": 8,
+      "slot": "conclusions",
+      "index": 0
+    },
+    {
+      "id": "r2",
+      "shape": "document",
+      "xMm": 44.9,
+      "yMm": 49.4,
+      "widthMm": 20.4,
+      "heightMm": 8,
+      "slot": "conclusions",
+      "index": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "start-q1",
+      "from": "start",
+      "to": "q1",
+      "direction": "none",
+      "routing": "straight",
+      "dashed": false,
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q1-q2",
+      "from": "q1",
+      "to": "q2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q1-q3",
+      "from": "q1",
+      "to": "q3",
+      "direction": "forward",
+      "routing": "orthogonal",
+      "dashed": true,
+      "labelSlot": "no",
+      "fromAnchor": "right",
+      "toAnchor": "top",
+      "via": [
+        {
+          "xMm": 50,
+          "yMm": 25
+        }
+      ],
+      "viaPolicy": "orthogonal-v1"
+    },
+    {
+      "id": "q2-r1",
+      "from": "q2",
+      "to": "r1",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q3-r2",
+      "from": "q3",
+      "to": "r2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    }
+  ],
+  "legendBox": [
+    76,
+    2,
+    32,
+    22
+  ],
+  "columns": [
+    [
+      0.5,
+      32.7
+    ],
+    [
+      33.5,
+      9
+    ],
+    [
+      43.4,
+      28
+    ]
+  ],
+  "arrows": [
+    {
+      "id": "start-q1",
+      "points": [
+        [
+          16.85,
+          14.2
+        ],
+        [
+          16.85,
+          21
+        ]
+      ],
+      "direction": "none",
+      "dashed": false,
+      "labelSlot": null,
+      "labelBox": null
+    },
+    {
+      "id": "q1-q2",
+      "points": [
+        [
+          16.85,
+          28.4
+        ],
+        [
+          16.85,
+          35.4
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        17.7,
+        29.2,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "q1-q3",
+      "points": [
+        [
+          28.6,
+          24.7
+        ],
+        [
+          55.15,
+          24.7
+        ],
+        [
+          55.15,
+          35.4
+        ]
+      ],
+      "direction": "forward",
+      "dashed": true,
+      "labelSlot": "no",
+      "labelBox": [
+        33.5,
+        20.2,
+        9,
+        4
+      ]
+    },
+    {
+      "id": "q2-r1",
+      "points": [
+        [
+          16.85,
+          42.8
+        ],
+        [
+          16.85,
+          49.4
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        17.7,
+        43.6,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "q3-r2",
+      "points": [
+        [
+          55.15,
+          42.8
+        ],
+        [
+          55.15,
+          49.4
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        56,
+        43.6,
+        6,
+        4
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 - contains는 실제 인물/원화/사진·prose·underline·inline-box·pattern·reserve 등 요청에 있는 요소다. 같은 기능의 features/people 입력은 기존 호출 호환으로 지원하나 새 요청은 contains를 우선한다.
 - textMode는 labels/prose/none. IT 계열 기본은 prose이고 명시된 글자 없는 원화만 none이다. 한국 시도/시군구 전용 바탕에만 korea를 선택하며 세계/동아시아에 한국이 보인다는 이유로 넣지 않는다. 단일 문단이 그림 옆에서 아래로 이어질 때만 text-flow다.
 - 외부 출제 의뢰는 최상위 caller:"exam-agent", Gemini CLI는 client:"gemini"다. 그 외는 생략한다.
+- 등록된 반복 양식과 구조가 일치할 때 `fixedStyle:{styleID,content,widthMm?}`를 선택한다. `fixed_styles.mjs --list / --example <styleID>`로 슬롯과 허용 폭을 확인하고, 폭 미지정 시 형식별 작은 기본값을 쓴다. recipe는 해당 계열을 유지하고 준비 결과 `fixedStyles[].spec`을 사용한다. spec을 함께 주면 컴파일 결과와 같아야 한다. native 사전 측정·저장 이미지 검수는 생략되지 않는다.
 
 ## spec 대조
 

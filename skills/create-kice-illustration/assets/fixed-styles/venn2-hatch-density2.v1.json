@@ -1,0 +1,120 @@
+{
+  "styleID": "venn2-hatch-density2.v1",
+  "sourceGroup": "DUP024",
+  "family": "venn",
+  "recipe": "D4-04_Venn",
+  "counts": {
+    "sets": 2,
+    "regions": 3,
+    "legend": 3
+  },
+  "regionKeys": [
+    "A",
+    "AB",
+    "B"
+  ],
+  "native": {
+    "kind": "schematic",
+    "layout": "venn",
+    "widthMm": 55,
+    "widthPolicy": "total-v1",
+    "sets": 2,
+    "setShape": {
+      "type": "ellipse",
+      "aspectRatio": 1.33
+    },
+    "regionPatterns": {}
+  },
+  "legendWidthMm": 43,
+  "gapMm": 10,
+  "supplementalHatches": [
+    {
+      "region": "A",
+      "anglesDeg": [
+        -64.5
+      ],
+      "spacingMm": [
+        1.82
+      ],
+      "strokePt": 0.2
+    },
+    {
+      "region": "AB",
+      "anglesDeg": [
+        -64.5,
+        64.5
+      ],
+      "spacingMm": [
+        1.82,
+        1.82
+      ],
+      "strokePt": 0.2
+    },
+    {
+      "region": "B",
+      "anglesDeg": [
+        64.5
+      ],
+      "spacingMm": [
+        1.82
+      ],
+      "strokePt": 0.2
+    }
+  ],
+  "nativePlane": {
+    "circles": {
+      "A": {
+        "xMm": 17.647200854700856,
+        "yMm": 14.8414014745048,
+        "rxMm": 17.594284188034187,
+        "ryMm": 13.2287851037851
+      },
+      "B": {
+        "xMm": 37.352799145299144,
+        "yMm": 14.8414014745048,
+        "rxMm": 17.594284188034187,
+        "ryMm": 13.2287851037851
+      }
+    },
+    "textExclusions": [
+      {
+        "key": "venn:set:A:label",
+        "xMm": 17.69155922053337,
+        "yMm": 1.6051039656003319,
+        "widthMm": 8,
+        "heightMm": 5
+      },
+      {
+        "key": "venn:set:B:label",
+        "xMm": 37.34638924861123,
+        "yMm": 1.5952324549357098,
+        "widthMm": 8,
+        "heightMm": 5
+      },
+      {
+        "key": "venn:region:A:label",
+        "xMm": 9.854695055590442,
+        "yMm": 14.847991587943934,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      },
+      {
+        "key": "venn:region:B:label",
+        "xMm": 45.14393788346181,
+        "yMm": 14.88324725352437,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      },
+      {
+        "key": "venn:region:AB:label",
+        "xMm": 27.499370230647013,
+        "yMm": 14.898759708530072,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      }
+    ],
+    "paintHeightMm": 28.12310324495657,
+    "paintWidthMm": 54.99999999999999
+  },
+  "widthMm": 108
+}

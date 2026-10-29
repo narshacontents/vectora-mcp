@@ -1,0 +1,117 @@
+{
+  "styleID": "chart-supply-demand-grid.v1",
+  "family": "charts",
+  "groupID": "DUP009",
+  "type": "supply-demand",
+  "recipe": "line",
+  "referencePair": [
+    "K0700",
+    "K0703"
+  ],
+  "widthMm": 72,
+  "plotHeightMm": 58,
+  "typography": {
+    "textProfile": "und-dotum-8-default-v1",
+    "fontPt": 8,
+    "leadingPercent": 130
+  },
+  "exampleProvenance": "Hypothetical values for template demonstration; source images supply the scaffold only. No measured statistical claim.",
+  "example": {
+    "yMax": 20,
+    "quantityUnit": "만 개",
+    "supplyLabel": "공급",
+    "demandLabel": "수요",
+    "supply": [
+      0,
+      20
+    ],
+    "demand": [
+      20,
+      0
+    ],
+    "priceTitle": "가격(달러)",
+    "quantityTitle": "수량"
+  },
+  "plotWidthMm": 58,
+  "nativeGuards": {
+    "plotWorldGeometry": "must equal approved baseline; reject differing label gutters, do not resize",
+    "yMax": {
+      "minimum": 1,
+      "maximum": 10000,
+      "divisions": 10
+    },
+    "lineEndpoints": "supply right=yMax/left<=yMax/4; demand right=0/left>=3*yMax/4"
+  },
+  "contentSlots": {
+    "yMax": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "quantityUnit": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "supplyLabel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "demandLabel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "supply": {
+      "type": "array",
+      "length": 2,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "demand": {
+      "type": "array",
+      "length": 2,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "priceTitle": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    },
+    "quantityTitle": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 24,
+      "requiresNativeWidthMeasurement": true
+    }
+  },
+  "nativeOverrides": [
+    {
+      "target": "fixed-x-axis-extension",
+      "lengthMm": 74.56756539949
+    },
+    {
+      "target": "graph-origin",
+      "axisXmm": 16.55493926428,
+      "axisYmm": 4.2279640292
+    }
+  ],
+  "geometryWidthMm": 108,
+  "defaultWidthMm": 72,
+  "minWidthMm": 72,
+  "maxWidthMm": 108,
+  "sizingEvidence": {
+    "kind": "physical-raster-dpi",
+    "referencePair": [
+      "K0700",
+      "K0703"
+    ],
+    "note": "K0700/K0703 metadata is 299.9994 dpi: 71.80/72.64mm outer widths."
+  }
+}

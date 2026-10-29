@@ -1,0 +1,85 @@
+{
+  "styleID": "chart-season-temperature.v1",
+  "family": "charts",
+  "groupID": "DUP008",
+  "type": "scatter",
+  "recipe": "dot",
+  "referencePair": [
+    "K0653",
+    "K0654"
+  ],
+  "widthMm": 48,
+  "plotHeightMm": 44,
+  "typography": {
+    "textProfile": "und-dotum-8-default-v1",
+    "fontPt": 8,
+    "leadingPercent": 130
+  },
+  "exampleProvenance": "Hypothetical values for template demonstration; source images supply the scaffold only. No measured statistical claim.",
+  "example": {
+    "panel": "(가)",
+    "values": [
+      27,
+      1,
+      13,
+      22
+    ],
+    "categories": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  "plotWidthMm": 42,
+  "rightSpine": {
+    "x": 47.2831764059,
+    "top": 10.5946164887,
+    "bottom": 54.5946164887,
+    "provenance": "native 2.0.10 fixed plot baseline measured in r1; native composition decoration; no data fitting"
+  },
+  "nativeOverrides": [
+    {
+      "target": "y-unit",
+      "gapToTopTickMm": 1.75,
+      "retainXCenter": true
+    },
+    {
+      "target": "graph-origin",
+      "axisXmm": 9.28317640585,
+      "axisYmm": 14.59461648872
+    }
+  ],
+  "contentSlots": {
+    "panel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 6,
+      "requiresNativeWidthMeasurement": true
+    },
+    "values": {
+      "type": "array",
+      "length": 4,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "categories": {
+      "type": "array",
+      "length": 4,
+      "items": "bounded-single-line-literal",
+      "requiresNativeWidthMeasurement": true
+    }
+  },
+  "geometryWidthMm": 56,
+  "defaultWidthMm": 48,
+  "minWidthMm": 44,
+  "maxWidthMm": 108,
+  "sizingEvidence": {
+    "kind": "text-relative-raster-estimate",
+    "referencePair": [
+      "K0653",
+      "K0654"
+    ],
+    "note": "No DPI metadata; proposed width from reference ink/text proportions with unchanged 8pt text (mixed graph 7pt). Not a recovered PDF placement measurement. Native measurement and rendered review remain required."
+  }
+}

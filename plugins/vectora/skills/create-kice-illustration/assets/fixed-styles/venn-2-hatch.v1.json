@@ -1,0 +1,45 @@
+{
+  "styleID": "venn-2-hatch.v1",
+  "family": "venn",
+  "counts": {
+    "sets": 2,
+    "regions": 3,
+    "legend": 3
+  },
+  "widthMm": 108,
+  "heightMm": 34,
+  "legendBox": [
+    70,
+    3,
+    38,
+    16
+  ],
+  "native": {
+    "kind": "schematic",
+    "layout": "venn",
+    "widthMm": 60,
+    "widthPolicy": "diagram-v1",
+    "sets": 2,
+    "setShape": {
+      "type": "ellipse",
+      "aspectRatio": 1.33
+    },
+    "regionPatterns": {
+      "A": {
+        "type": "rightDiagonal",
+        "spacingMm": 0.9,
+        "strokePt": 0.2
+      },
+      "AB": {
+        "type": "crossDiagonal",
+        "spacingMm": 0.9,
+        "strokePt": 0.2
+      },
+      "B": {
+        "type": "leftDiagonal",
+        "spacingMm": 0.9,
+        "strokePt": 0.2
+      }
+    }
+  }
+}

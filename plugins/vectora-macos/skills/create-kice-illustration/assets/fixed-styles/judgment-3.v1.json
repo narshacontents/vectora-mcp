@@ -1,0 +1,368 @@
+{
+  "styleID": "judgment-3.v1",
+  "family": "judgment",
+  "counts": {
+    "decisions": 4,
+    "conclusions": 3,
+    "legend": 4
+  },
+  "widthMm": 108,
+  "heightMm": 57,
+  "nodes": [
+    {
+      "id": "start",
+      "shape": "rect",
+      "xMm": 1.5,
+      "yMm": 1.5,
+      "widthMm": 27.8,
+      "heightMm": 10,
+      "slot": "start",
+      "index": null
+    },
+    {
+      "id": "q1",
+      "shape": "diamond",
+      "xMm": 4.5,
+      "yMm": 14.5,
+      "widthMm": 22,
+      "heightMm": 7.2,
+      "slot": "decisions",
+      "index": 0
+    },
+    {
+      "id": "q2",
+      "shape": "diamond",
+      "xMm": 32,
+      "yMm": 24,
+      "widthMm": 22,
+      "heightMm": 7.2,
+      "slot": "decisions",
+      "index": 1
+    },
+    {
+      "id": "q3",
+      "shape": "diamond",
+      "xMm": 32,
+      "yMm": 36,
+      "widthMm": 22,
+      "heightMm": 7.2,
+      "slot": "decisions",
+      "index": 2
+    },
+    {
+      "id": "q4",
+      "shape": "diamond",
+      "xMm": 60,
+      "yMm": 36,
+      "widthMm": 22,
+      "heightMm": 7.2,
+      "slot": "decisions",
+      "index": 3
+    },
+    {
+      "id": "r1",
+      "shape": "document",
+      "xMm": 5.8,
+      "yMm": 48,
+      "widthMm": 19.4,
+      "heightMm": 8,
+      "slot": "conclusions",
+      "index": 0
+    },
+    {
+      "id": "r2",
+      "shape": "document",
+      "xMm": 33.3,
+      "yMm": 48,
+      "widthMm": 19.4,
+      "heightMm": 8,
+      "slot": "conclusions",
+      "index": 1
+    },
+    {
+      "id": "r3",
+      "shape": "document",
+      "xMm": 61.3,
+      "yMm": 48,
+      "widthMm": 19.4,
+      "heightMm": 8,
+      "slot": "conclusions",
+      "index": 2
+    }
+  ],
+  "edges": [
+    {
+      "id": "start-q1",
+      "from": "start",
+      "to": "q1",
+      "direction": "none",
+      "routing": "straight",
+      "dashed": false,
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q1-r1",
+      "from": "q1",
+      "to": "r1",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q1-q2",
+      "from": "q1",
+      "to": "q2",
+      "direction": "forward",
+      "routing": "orthogonal",
+      "dashed": true,
+      "labelSlot": "no",
+      "fromAnchor": "right",
+      "toAnchor": "top",
+      "via": [
+        {
+          "xMm": 36,
+          "yMm": 25
+        }
+      ],
+      "viaPolicy": "orthogonal-v1"
+    },
+    {
+      "id": "q2-q3",
+      "from": "q2",
+      "to": "q3",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q2-q4",
+      "from": "q2",
+      "to": "q4",
+      "direction": "forward",
+      "routing": "orthogonal",
+      "dashed": true,
+      "labelSlot": "no",
+      "fromAnchor": "right",
+      "toAnchor": "top",
+      "via": [
+        {
+          "xMm": 59,
+          "yMm": 41
+        }
+      ],
+      "viaPolicy": "orthogonal-v1"
+    },
+    {
+      "id": "q3-r2",
+      "from": "q3",
+      "to": "r2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    },
+    {
+      "id": "q4-r3",
+      "from": "q4",
+      "to": "r3",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "labelSlot": "yes",
+      "fromAnchor": "bottom",
+      "toAnchor": "top"
+    }
+  ],
+  "legendBox": [
+    78,
+    2,
+    30,
+    22
+  ],
+  "columns": [
+    [
+      0.5,
+      29
+    ],
+    [
+      31,
+      24
+    ],
+    [
+      55.5,
+      9
+    ],
+    [
+      64.5,
+      13.5
+    ]
+  ],
+  "arrows": [
+    {
+      "id": "start-q1",
+      "points": [
+        [
+          15.5,
+          11.5
+        ],
+        [
+          15.5,
+          14.5
+        ]
+      ],
+      "direction": "none",
+      "dashed": false,
+      "labelSlot": null,
+      "labelBox": null
+    },
+    {
+      "id": "q1-r1",
+      "points": [
+        [
+          15.5,
+          21.7
+        ],
+        [
+          15.5,
+          48
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        17.5,
+        34,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "q1-q2",
+      "points": [
+        [
+          26.5,
+          18.1
+        ],
+        [
+          43,
+          18.1
+        ],
+        [
+          43,
+          24
+        ]
+      ],
+      "direction": "forward",
+      "dashed": true,
+      "labelSlot": "no",
+      "labelBox": [
+        31.5,
+        13.7,
+        9,
+        4
+      ]
+    },
+    {
+      "id": "q2-q3",
+      "points": [
+        [
+          43,
+          31.2
+        ],
+        [
+          43,
+          36
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        44,
+        31.3,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "q2-q4",
+      "points": [
+        [
+          54,
+          27.6
+        ],
+        [
+          71,
+          27.6
+        ],
+        [
+          71,
+          36
+        ]
+      ],
+      "direction": "forward",
+      "dashed": true,
+      "labelSlot": "no",
+      "labelBox": [
+        55.5,
+        23.2,
+        9,
+        4
+      ]
+    },
+    {
+      "id": "q3-r2",
+      "points": [
+        [
+          43,
+          43.2
+        ],
+        [
+          43,
+          48
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        44,
+        43.4,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "q4-r3",
+      "points": [
+        [
+          71,
+          43.2
+        ],
+        [
+          71,
+          48
+        ]
+      ],
+      "direction": "forward",
+      "dashed": false,
+      "labelSlot": "yes",
+      "labelBox": [
+        72,
+        43.4,
+        6,
+        4
+      ]
+    }
+  ]
+}

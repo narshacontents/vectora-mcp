@@ -1,0 +1,132 @@
+{
+  "styleID": "criticism-2.v1",
+  "family": "criticism",
+  "counts": {
+    "people": 2,
+    "relations": 2
+  },
+  "widthMm": 108,
+  "heightMm": 37,
+  "nodes": [
+    {
+      "id": "p1",
+      "shape": "circle",
+      "xMm": 1.5,
+      "yMm": 7.3,
+      "widthMm": 21.3,
+      "heightMm": 21.3,
+      "slot": "people",
+      "index": 0
+    },
+    {
+      "id": "p2",
+      "shape": "circle",
+      "xMm": 42.8,
+      "yMm": 7.3,
+      "widthMm": 21.3,
+      "heightMm": 21.3,
+      "slot": "people",
+      "index": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "relation1",
+      "from": "p1",
+      "to": "p2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 0,
+      "fromAnchor": "right",
+      "toAnchor": "left",
+      "fromAnchorFraction": 0.35,
+      "toAnchorFraction": 0.35
+    },
+    {
+      "id": "relation2",
+      "from": "p2",
+      "to": "p1",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 1,
+      "fromAnchor": "left",
+      "toAnchor": "right",
+      "fromAnchorFraction": 0.65,
+      "toAnchorFraction": 0.65
+    }
+  ],
+  "legendBox": [
+    72,
+    1,
+    36,
+    11.6
+  ],
+  "exampleBox": [
+    72,
+    16,
+    36,
+    19.6
+  ],
+  "arrows": [
+    {
+      "id": "relation1",
+      "points": [
+        [
+          26.6,
+          17.1
+        ],
+        [
+          38.9,
+          17.1
+        ]
+      ],
+      "slot": "relations",
+      "index": 0,
+      "labelBox": [
+        30.7,
+        12.5,
+        5,
+        4
+      ]
+    },
+    {
+      "id": "relation2",
+      "points": [
+        [
+          38.9,
+          20.4
+        ],
+        [
+          26.6,
+          20.4
+        ]
+      ],
+      "slot": "relations",
+      "index": 1,
+      "labelBox": [
+        30.7,
+        22.5,
+        5,
+        4
+      ]
+    }
+  ],
+  "columns": [
+    [
+      7.5,
+      9
+    ],
+    [
+      30.7,
+      5
+    ],
+    [
+      49,
+      9
+    ]
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "styleID": "chart-city-rank.v1",
+  "family": "charts",
+  "groupID": "DUP007",
+  "type": "column",
+  "recipe": "bar",
+  "referencePair": [
+    "K0448",
+    "K0449"
+  ],
+  "widthMm": 48,
+  "plotHeightMm": 52,
+  "typography": {
+    "textProfile": "und-dotum-8-default-v1",
+    "fontPt": 8,
+    "leadingPercent": 130
+  },
+  "exampleProvenance": "Hypothetical values for template demonstration; source images supply the scaffold only. No measured statistical claim.",
+  "example": {
+    "panel": "(가)",
+    "values": [
+      100,
+      79,
+      58,
+      25
+    ],
+    "categories": [
+      "1위",
+      "2위",
+      "3위",
+      "4위"
+    ]
+  },
+  "plotWidthMm": 40,
+  "contentSlots": {
+    "panel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 6,
+      "requiresNativeWidthMeasurement": true
+    },
+    "values": {
+      "type": "array",
+      "length": 4,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "categories": {
+      "type": "array",
+      "length": 4,
+      "items": "bounded-single-line-literal",
+      "requiresNativeWidthMeasurement": true
+    }
+  },
+  "geometryWidthMm": 56,
+  "defaultWidthMm": 48,
+  "minWidthMm": 44,
+  "maxWidthMm": 108,
+  "sizingEvidence": {
+    "kind": "text-relative-raster-estimate",
+    "referencePair": [
+      "K0448",
+      "K0449"
+    ],
+    "note": "No DPI metadata; proposed width from reference ink/text proportions with unchanged 8pt text (mixed graph 7pt). Not a recovered PDF placement measurement. Native measurement and rendered review remain required."
+  }
+}

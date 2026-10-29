@@ -1,0 +1,1538 @@
+{
+  "styleID": "form-phone-6line.v1",
+  "group": "DUP030",
+  "representative": "K1833",
+  "family": "misc",
+  "recipe": "screen",
+  "widthMm": 47,
+  "heightMm": 41.6,
+  "slots": [
+    {
+      "id": "marker",
+      "x": 4,
+      "y": 0,
+      "width": 39,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "center",
+      "maxChars": 5
+    },
+    {
+      "id": "time",
+      "x": 16.5,
+      "y": 9.6,
+      "width": 14,
+      "height": 1.5,
+      "lines": 1,
+      "fontPt": 2.8,
+      "align": "center",
+      "maxChars": 12,
+      "fill": "#FFFFFF"
+    },
+    {
+      "id": "body",
+      "x": 8.8,
+      "y": 15.6,
+      "width": 30.4,
+      "height": 23,
+      "lines": 6,
+      "fontPt": 8,
+      "align": "left",
+      "maxChars": 180
+    },
+    {
+      "id": "battery",
+      "x": 36,
+      "y": 9.6,
+      "width": 3.5,
+      "height": 1.4,
+      "lines": 1,
+      "fontPt": 2.8,
+      "align": "left",
+      "maxChars": 4,
+      "fill": "#FFFFFF"
+    }
+  ],
+  "fixedText": [
+    {
+      "id": "network",
+      "x": 7.4,
+      "y": 9.6,
+      "width": 2,
+      "height": 1.4,
+      "lines": 1,
+      "fontPt": 2.8,
+      "align": "left",
+      "maxChars": 200,
+      "text": "5G",
+      "fill": "#FFFFFF"
+    }
+  ],
+  "decorations": [
+    {
+      "id": "left-button-upper",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.2,
+      "fill": "#D6D6D6",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 2.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 20
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 20
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 24
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 2.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 24
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "left-button-lower",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.2,
+      "fill": "#D6D6D6",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 2.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 26
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 26
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 30
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 2.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 30
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "right-button",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.2,
+      "fill": "#D6D6D6",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 20
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 20
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 25
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 25
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "phone-outer",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#D6D6D6",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 44
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 8.8
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 44
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.8
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 44
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 40.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 40.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 40.6
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 3
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 40.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.8
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 8.8
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 3
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "phone-inner",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.6
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 43.4
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 6.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 43.4
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 43.4
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.6
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 43.4
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 40
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 40
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 40
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 3.6
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 40
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3.6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3.6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 3.6
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 6.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.6
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "speaker",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#777777",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 20.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.4
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 26.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.4
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 27
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 7.4
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 27
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.6000000000000005
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 27
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.65
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 27
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 7.8500000000000005
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 26.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.8500000000000005
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 20.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.8500000000000005
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 20
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 7.8500000000000005
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 20
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.65
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 20
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.6000000000000005
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 20
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 7.4
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 20.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 7.4
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "status-bar",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#666666",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3.9
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 43.1
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 43.1
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 11.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3.9
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 11.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 3.9
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9.5
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "bubble",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#EEEEEE",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 8.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 13.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 39.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 13.3
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 41
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 13.3
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 14.8
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 41
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.1
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 41
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 38.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 39.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 38.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 8.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 38.6
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 7
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 38.6
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 37.1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 14.8
+          }
+        },
+        {
+          "command": "Q",
+          "control": {
+            "x": {
+              "ratio": 0,
+              "offsetMm": 7
+            },
+            "y": {
+              "ratio": 0,
+              "offsetMm": 13.3
+            }
+          },
+          "x": {
+            "ratio": 0,
+            "offsetMm": 8.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 13.3
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "bubble-tail",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#EEEEEE",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7.05
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 17
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 4.9
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19.1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7.05
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 18.7
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "bubble-tail-cover",
+      "layer": "front",
+      "stroke": "#EEEEEE",
+      "strokePt": 0.45,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7.02
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 17
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7.02
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 18.7
+          }
+        }
+      ]
+    },
+    {
+      "id": "battery",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.15,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 40
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.8
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 40
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.8
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 40
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "battery-tip",
+      "layer": "front",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.6
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 42
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "signal-dot-0",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 4.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 4.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 4.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "signal-dot-1",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "signal-dot-2",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 5.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "signal-dot-3",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "signal-dot-4",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 6.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.2
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "wifi",
+      "layer": "back",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#FFFFFF",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 9.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.15
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 10.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9.95
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 10.9
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.15
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 10.3
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.65
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 9.7
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 10.15
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    }
+  ],
+  "example": {
+    "marker": "(나)",
+    "time": "2:16 PM",
+    "body": "△△ 주의보가\n발효되었습니다.\n위험한 곳에는\n접근하지 말고\n건강과 안전에\n유의하십시오.",
+    "battery": "100%"
+  },
+  "schema": "vectora.fixed-misc-style/v1",
+  "source": {
+    "group": "DUP030",
+    "representative": "K1833",
+    "index": "평가원_최근5개년_인덱스_20261029",
+    "reference": "previews/K1833.jpg"
+  }
+}

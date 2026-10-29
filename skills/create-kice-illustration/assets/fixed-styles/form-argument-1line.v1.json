@@ -1,0 +1,708 @@
+{
+  "styleID": "form-argument-1line.v1",
+  "group": "DUP011",
+  "representative": "K0720",
+  "family": "misc",
+  "recipe": "schematic",
+  "widthMm": 108,
+  "heightMm": 28.3,
+  "slots": [
+    {
+      "id": "major",
+      "x": 13,
+      "y": 3,
+      "width": 36,
+      "height": 8,
+      "lines": 2,
+      "fontPt": 8,
+      "align": "left",
+      "maxChars": 200
+    },
+    {
+      "id": "blank",
+      "x": 70.8,
+      "y": 4.5,
+      "width": 33.4,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "center",
+      "maxChars": 3
+    },
+    {
+      "id": "conclusion",
+      "x": 36,
+      "y": 21.2,
+      "width": 47,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "left",
+      "maxChars": 200
+    }
+  ],
+  "fixedText": [
+    {
+      "id": "major-heading",
+      "x": 1.4,
+      "y": 5,
+      "width": 9.6,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "center",
+      "maxChars": 200,
+      "text": "대전제"
+    },
+    {
+      "id": "minor-heading",
+      "x": 58,
+      "y": 5,
+      "width": 9.5,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "center",
+      "maxChars": 200,
+      "text": "소전제"
+    },
+    {
+      "id": "conclusion-heading",
+      "x": 23.5,
+      "y": 21.2,
+      "width": 10.5,
+      "height": 4,
+      "lines": 1,
+      "fontPt": 8,
+      "align": "center",
+      "maxChars": 200,
+      "text": "결론"
+    }
+  ],
+  "decorations": [
+    {
+      "id": "major-label",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#E7E7E7",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 1
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 11.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 11.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 1
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 1
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "major-body",
+      "layer": "front",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 11.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 50.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 50.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 11.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 11.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "minor-label",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#E7E7E7",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 57.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 68
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 68
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 57.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 57.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "minor-body",
+      "layer": "front",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 68
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 107
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 107
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 68
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 12.5
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 68
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclusion-label",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "#E7E7E7",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 23
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 34.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 34.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 27.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 23
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 27.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 23
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "conclusion-body",
+      "layer": "front",
+      "stroke": "#000000",
+      "strokePt": 0.3,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 34.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 85
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 85
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 27.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 34.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 27.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 34.5
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 19
+          }
+        }
+      ]
+    },
+    {
+      "id": "plus-horizontal",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.75,
+      "fill": "#000000",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 51.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.617708333333334
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 55.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.617708333333334
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 55.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.882291666666667
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 51.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 6.882291666666667
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "plus-vertical",
+      "layer": "back",
+      "stroke": "#000000",
+      "strokePt": 0.75,
+      "fill": "#000000",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.66770833333333
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 4.75
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.932291666666664
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 4.75
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.932291666666664
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 8.75
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.66770833333333
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 8.75
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "conclusion-arrow-stem",
+      "layer": "front",
+      "stroke": "#000000",
+      "strokePt": 1,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 13.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 16.8
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclusion-arrow-tip",
+      "layer": "front",
+      "stroke": "none",
+      "strokePt": 0.05,
+      "fill": "#000000",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 52.4
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 16.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 55.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 16.3
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 53.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 18.3
+          }
+        },
+        {
+          "command": "Z"
+        }
+      ]
+    },
+    {
+      "id": "blank-rule",
+      "layer": "front",
+      "stroke": "#000000",
+      "strokePt": 0.2,
+      "fill": "none",
+      "path": [
+        {
+          "command": "M",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 70.8
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9
+          }
+        },
+        {
+          "command": "L",
+          "x": {
+            "ratio": 0,
+            "offsetMm": 104.2
+          },
+          "y": {
+            "ratio": 0,
+            "offsetMm": 9
+          }
+        }
+      ]
+    }
+  ],
+  "example": {
+    "major": "모든 규칙에는\n일관된 기준이 필요하다.",
+    "blank": "㉡",
+    "conclusion": "이 규칙에도 기준이 필요하다."
+  },
+  "schema": "vectora.fixed-misc-style/v1",
+  "source": {
+    "group": "DUP011",
+    "representative": "K0720",
+    "index": "평가원_최근5개년_인덱스_20261029",
+    "reference": "previews/K0720.jpg"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "styleID": "venn3-only-three-ac.v1",
+  "sourceGroup": "DUP021",
+  "family": "venn",
+  "recipe": "D4-04_Venn",
+  "counts": {
+    "sets": 3,
+    "regions": 4,
+    "legend": 4
+  },
+  "regionKeys": [
+    "A",
+    "B",
+    "C",
+    "AC"
+  ],
+  "native": {
+    "kind": "schematic",
+    "layout": "venn",
+    "widthMm": 50,
+    "widthPolicy": "total-v1",
+    "sets": 3,
+    "setShape": {
+      "type": "circle"
+    },
+    "regionPatterns": {
+      "A": {
+        "type": "vertical",
+        "spacingMm": 1.2,
+        "strokePt": 0.2
+      },
+      "B": {
+        "type": "leftDiagonal",
+        "spacingMm": 0.9,
+        "strokePt": 0.2
+      },
+      "C": {
+        "type": "rightDiagonal",
+        "spacingMm": 0.9,
+        "strokePt": 0.2
+      }
+    }
+  },
+  "legendWidthMm": 46,
+  "gapMm": 12,
+  "supplementalHatches": [
+    {
+      "region": "AC",
+      "anglesDeg": [
+        90,
+        -45
+      ],
+      "spacingMm": [
+        1.2,
+        0.9
+      ],
+      "strokePt": 0.2
+    }
+  ],
+  "nativePlane": {
+    "circles": {
+      "A": {
+        "xMm": 25,
+        "yMm": 17.534107952627682,
+        "rxMm": 15.938414351851854,
+        "ryMm": 15.938414351851854
+      },
+      "B": {
+        "xMm": 15.99133101851852,
+        "yMm": 34.8584713785536,
+        "rxMm": 15.938414351851854,
+        "ryMm": 15.938414351851854
+      },
+      "C": {
+        "xMm": 34.00866898148148,
+        "yMm": 34.8584713785536,
+        "rxMm": 15.938414351851854,
+        "ryMm": 15.938414351851854
+      }
+    },
+    "textExclusions": [
+      {
+        "key": "venn:set:A:label",
+        "xMm": 25.044358365832515,
+        "yMm": 1.5881811956564587,
+        "widthMm": 8,
+        "heightMm": 5
+      },
+      {
+        "key": "venn:set:B:label",
+        "xMm": 3.0904730477928943,
+        "yMm": 44.20945236371483,
+        "widthMm": 8,
+        "heightMm": 5
+      },
+      {
+        "key": "venn:set:C:label",
+        "xMm": 46.91221964143592,
+        "yMm": 44.25881042169059,
+        "widthMm": 8,
+        "heightMm": 5
+      },
+      {
+        "key": "venn:region:A:label",
+        "xMm": 24.999248627019007,
+        "yMm": 11.658627058473737,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      },
+      {
+        "key": "venn:region:B:label",
+        "xMm": 8.961959516360599,
+        "yMm": 37.81904938084767,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      },
+      {
+        "key": "venn:region:C:label",
+        "xMm": 41.03679502631893,
+        "yMm": 37.803536925926764,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      },
+      {
+        "key": "venn:region:AC:label",
+        "xMm": 33.956418577999436,
+        "yMm": 23.654214950356558,
+        "widthMm": 4.4,
+        "heightMm": 4.4
+      }
+    ],
+    "paintHeightMm": 50.849802397072125,
+    "paintWidthMm": 50.00000000000001
+  },
+  "widthMm": 108
+}

@@ -8,6 +8,8 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {prepareRules, skillRoot, filterModuleBlocks} from './prepare_rules.mjs';
 import {readRecipeRegistry, resolveRecipe} from './recipe_registry.mjs';
+import {buildFixedStyle, listFixedStyles} from './fixed_styles.mjs';
+import {isDeepStrictEqual} from 'node:util';
 
 export const recipes = readRecipeRegistry(skillRoot).recipes;
 const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
@@ -106,7 +108,25 @@ export function prepareTask(request, root=skillRoot){
   }
   return {subtype:base.subtype,type};
  }
- const queue=request.units.map((unit,n)=>({unit,n}));
+ const fixedStyles=[];
+ const queue=request.units.map((original,n)=>{
+  if(!original?.fixedStyle)return {unit:original,n};
+  const built=buildFixedStyle(original.fixedStyle);
+  const definition=listFixedStyles().find(style=>style.styleID===built.styleID);
+  const expectedSubtype=recipeFor(definition.recipe)?.subtype;
+  if(!expectedSubtype)throw new Error(`fixedStyle ${built.styleID}: unregistered semantic recipe`);
+  if(recipeFor(original.recipe)?.subtype!==expectedSubtype)throw new Error(`units[${n}]: fixedStyle ${built.styleID} requires ${expectedSubtype}`);
+  if(original.spec!==undefined&&!isDeepStrictEqual(original.spec,built.spec))throw new Error(`units[${n}]: fixedStyle spec must be compiled from its content slots; geometry overrides are not allowed`);
+  const bindings={...original.specRecipes};
+  const bind=(spec,p)=>{
+   if(p!=='spec'&&(spec.kind==='schematic'||spec.kind==='graph'))bindings[p]=definition.recipe;
+   spec.children?.forEach((child,i)=>{if(child.spec)bind(child.spec,`${p}.children[${i}].spec`);});
+  };
+  bind(built.spec,'spec');
+  fixedStyles.push({unit:original.id||`unit-${n+1}`,styleID:built.styleID,widthMm:built.widthMm??built.spec.widthMm,geometrySignature:built.geometrySignature,content:built.content,spec:built.spec,requiresNativePreflight:true,requiresNativeFinalization:built.requiresNativeFinalization===true||Boolean(built.geometry?.nativeOverrides?.length),requiresNativeResolvedSpec:built.requiresResolvedSpec===true});
+  return {unit:{...original,spec:built.spec,specRecipes:bindings},n};
+ });
+ if(fixedStyles.length)add('design','references/fixed-styles.md');
  let hasInputReview=false;
  const inputReview={blocking:false,autoFixApplied:false,warnings:[],scope:{inspectedPaths:[],skippedPaths:[],offsetUnit:'zero-based UTF-16 code units',boundary:'Only inspectedPaths were checked for spacing; this is not native-spec validation and does not establish that uninspected fields are valid. Native dialogue specs are limited to speakers.label/labelRichText, turns.text/richText, screenText/screenRichText, and supported screenGraph and screenComponent display paths; sharedScene artwork/image text and other dialogue fields were not inspected. Native graph specs are limited to schema-defined visible display text: surface and chart titles, axis titles and units, visible category and series labels, and supported panel, point, legend, annotation, reference, and group labels. Native coordinate schematic specs are limited to nodes[i].text (the rendered literal; matching richText.text supplies formatting for this rule, and node.text takes precedence), node affiliations and edge labels in coordinate layouts without rowLayout, and edge labels when layout is relations with a supported rowLayout.version 2 configuration. Row-layout node affiliations, rowLayout title/caption, and other mode-specific display fields were not inspected. Native schematic formula specs remain limited to formula item text and fraction numerator/denominator text, including their richText.text aliases. The circled Hangul spacing rule only reads visible text with valid grapheme-index underlines[] ranges or styles[] ranges whose style.underline is true; malformed and legacy range layouts are outside this rule. Timeline v1 display paths are event labels and, in pin mode, timeLabel or string-time fallback (timeLabel takes precedence); band mode includes interval labels and timeLabel/string-time text only when showTimes is true. Periods v1 display paths are boundary labelAfter, row labels, and interval labels; boundary times are placement-only. Numeric times are not inferred as text. Malformed or unknown timeline/periods contracts, unsupported appearances, Venn, and other mode-specific schematic display fields are skipped. IDs, metadata, raw source/provenance, numeric data, arbitrary fields, hidden labels, and unsupported native kinds or nested paths were not inspected. Recognized URL tokens and explicitly marked code spans were excluded from spacing checks.'}};
  const reviewedPaths=new Set(),skippedPathKeys=new Set();
@@ -196,7 +216,7 @@ export function prepareTask(request, root=skillRoot){
   }
   if(selected.hasPeople)add('design',index.people.file,id,modules);
   if(modules.has('artwork')||modules.has('photo')||selected.hasPeople)add('execute','execution/assets.md');
-  resolved.push({id,recipe:unit.recipe,subtype:selected.subtype,type:selected.type,variant:selected.variant,features:selected.features,people:selected.hasPeople,textMode:mode,contains,modules:[...modules],...(unit.dataSource?{dataSource:unit.dataSource}:{}),...(inference?{inference:inference.provenance}:{}),...(specPath?{specPath}:{})});
+  resolved.push({id,recipe:unit.recipe,subtype:selected.subtype,type:selected.type,variant:selected.variant,features:selected.features,people:selected.hasPeople,textMode:mode,contains,modules:[...modules],...(unit.fixedStyle?{fixedStyle:unit.fixedStyle.styleID}:{}),...(unit.dataSource?{dataSource:unit.dataSource}:{}),...(inference?{inference:inference.provenance}:{}),...(specPath?{specPath}:{})});
  }
  // Shared boards need composition design even when they are a single production unit.
  // Native composition API is needed only for actual independent/composite production.
@@ -256,7 +276,7 @@ export function prepareTask(request, root=skillRoot){
  // Maintenance signal only: never truncate or omit required rules to meet a size target.
  const instructionSize={bytes:instructionBytes,totalBytes,warning:totalBytes>100000?'large-instruction-bundle':null};
  const signature=createHash('sha256').update(JSON.stringify({request,contents})).digest('hex').slice(0,16);
- return {signature,resolved,phaseSources,contents,onDemand,instructionSize,...(warnings.length?{warnings}:{}),...(hasInputReview?{inputReview}:{})};
+ return {signature,resolved,phaseSources,contents,onDemand,instructionSize,...(fixedStyles.length?{fixedStyles}:{}),...(warnings.length?{warnings}:{}),...(hasInputReview?{inputReview}:{})};
 }
 export function writeTask(request,out,root=skillRoot){
  if(!out)throw new Error('--out must be an internal temporary directory');
@@ -271,11 +291,11 @@ export function writeTask(request,out,root=skillRoot){
   try{fs.writeFileSync(file,result.contents[phase]+'\n',{flag:'wx'});}catch(e){if(e.code!=='EEXIST'||fs.readFileSync(file,'utf8')!==result.contents[phase]+'\n')throw e;}
   files[phase]=file;
  }
- return {signature:result.signature,selected:result.resolved,readNow:[files.design],beforeExecute:[files.execute],beforeDeliver:[files.deliver],sources:result.phaseSources,onDemand:result.onDemand.map(item=>({...item,path:path.resolve(root,item.path)})),instructionSize:result.instructionSize,characters:Object.fromEntries(Object.entries(result.contents).map(([k,v])=>[k,v.length])),...(result.warnings?{warnings:result.warnings}:{}),...(result.inputReview?{inputReview:result.inputReview}:{})};
+ return {signature:result.signature,selected:result.resolved,readNow:[files.design],beforeExecute:[files.execute],beforeDeliver:[files.deliver],sources:result.phaseSources,onDemand:result.onDemand.map(item=>({...item,path:path.resolve(root,item.path)})),instructionSize:result.instructionSize,characters:Object.fromEntries(Object.entries(result.contents).map(([k,v])=>[k,v.length])),...(result.fixedStyles?{fixedStyles:result.fixedStyles}:{}),...(result.warnings?{warnings:result.warnings}:{}),...(result.inputReview?{inputReview:result.inputReview}:{})};
 }
 function main(args){
- if(args.includes('--list')){const {index,recipes:recipeChoices}=readRecipeRegistry();console.log(JSON.stringify({recipes:recipeChoices,additionalRecipes:Object.keys(index.subtypes),components:['people','prose','underline','inline-box','footnotes','symbols',...Object.keys(index.features)],features:Object.fromEntries(Object.entries(index.features).map(([key,value])=>[key,value.description])),variants:Object.fromEntries(Object.entries(index.subtypes).filter(([,r])=>r.variants).map(([k,r])=>[k,Object.keys(r.variants)]))},null,2));return;}
- if(args.includes('--help')){console.log('node scripts/prepare_task.mjs --request <JSON file> --out <internal dir>\nJSON: {client?:"codex"|"claude"|"gemini", caller?:"exam-agent", units:[{id,recipe,variant?,contains?:[],features?:[],people?,textMode?:"none"|"labels"|"prose",dataSource?:"research"|"provided"|"hypothetical"|"qualitative",spec?:ProductionSpec,specRecipes?:{"spec.blocks[0].spec":"table"|{recipe,variant?,people?,dataSource?,textMode?,contains?,features?}}}]}\nPaper media aliases set the native paper shell plus one conditional rule: book/notebook/ring-card/album + bound-paper; postcard/letter + correspondence; brochure/poster/display-sign/film-frame + display-medium; email/social-feed/mobile-screen/video-screen + device-medium. projection-screen uses the native scroll shell. Add the same feature names to contains when an existing recipe needs that principle. These are preparation aliases, not native variants.\nUse --list for recipes, conditional features, native variants and components. Read the returned phase files when their phase starts.');return;}
+ if(args.includes('--list')){const {index,recipes:recipeChoices}=readRecipeRegistry();console.log(JSON.stringify({recipes:recipeChoices,fixedStyles:listFixedStyles(),additionalRecipes:Object.keys(index.subtypes),components:['people','prose','underline','inline-box','footnotes','symbols',...Object.keys(index.features)],features:Object.fromEntries(Object.entries(index.features).map(([key,value])=>[key,value.description])),variants:Object.fromEntries(Object.entries(index.subtypes).filter(([,r])=>r.variants).map(([k,r])=>[k,Object.keys(r.variants)]))},null,2));return;}
+ if(args.includes('--help')){console.log('node scripts/prepare_task.mjs --request <JSON file> --out <internal dir>\nJSON: {client?:"codex"|"claude"|"gemini", caller?:"exam-agent", units:[{id,recipe,variant?,fixedStyle?:{styleID,content,widthMm?},contains?:[],features?:[],people?,textMode?:"none"|"labels"|"prose",dataSource?:"research"|"provided"|"hypothetical"|"qualitative",spec?:ProductionSpec,specRecipes?:{"spec.blocks[0].spec":"table"|{recipe,variant?,people?,dataSource?,textMode?,contains?,features?}}}]}\nPaper media aliases set the native paper shell plus one conditional rule: book/notebook/ring-card/album + bound-paper; postcard/letter + correspondence; brochure/poster/display-sign/film-frame + display-medium; email/social-feed/mobile-screen/video-screen + device-medium. projection-screen uses the native scroll shell. Add the same feature names to contains when an existing recipe needs that principle. These are preparation aliases, not native variants.\nUse --list for recipes, conditional features, native variants and components. Read the returned phase files when their phase starts.');return;}
  let input,out;
  for(let j=0;j<args.length;j++){
   const key=args[j],val=args[++j];if(!val||val.startsWith('--'))throw new Error('Missing option value');

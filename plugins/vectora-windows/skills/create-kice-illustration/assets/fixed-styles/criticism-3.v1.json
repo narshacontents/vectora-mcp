@@ -1,0 +1,298 @@
+{
+  "styleID": "criticism-3.v1",
+  "family": "criticism",
+  "counts": {
+    "people": 3,
+    "relations": 6
+  },
+  "widthMm": 108,
+  "heightMm": 50,
+  "nodes": [
+    {
+      "id": "p1",
+      "shape": "circle",
+      "xMm": 19.6,
+      "yMm": 1.6,
+      "widthMm": 18.5,
+      "heightMm": 18.5,
+      "slot": "people",
+      "index": 0
+    },
+    {
+      "id": "p2",
+      "shape": "circle",
+      "xMm": 1.6,
+      "yMm": 29.6,
+      "widthMm": 18.5,
+      "heightMm": 18.5,
+      "slot": "people",
+      "index": 1
+    },
+    {
+      "id": "p3",
+      "shape": "circle",
+      "xMm": 37.6,
+      "yMm": 29.6,
+      "widthMm": 18.5,
+      "heightMm": 18.5,
+      "slot": "people",
+      "index": 2
+    }
+  ],
+  "edges": [
+    {
+      "id": "relation1",
+      "from": "p1",
+      "to": "p2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 0,
+      "fromAnchor": "bottom",
+      "toAnchor": "top",
+      "fromAnchorFraction": 0.2,
+      "toAnchorFraction": 0.7
+    },
+    {
+      "id": "relation2",
+      "from": "p2",
+      "to": "p1",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 1,
+      "fromAnchor": "top",
+      "toAnchor": "bottom",
+      "fromAnchorFraction": 0.95,
+      "toAnchorFraction": 0.4
+    },
+    {
+      "id": "relation3",
+      "from": "p3",
+      "to": "p2",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 2,
+      "fromAnchor": "left",
+      "toAnchor": "right",
+      "fromAnchorFraction": 0.35,
+      "toAnchorFraction": 0.35
+    },
+    {
+      "id": "relation4",
+      "from": "p2",
+      "to": "p3",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 3,
+      "fromAnchor": "right",
+      "toAnchor": "left",
+      "fromAnchorFraction": 0.65,
+      "toAnchorFraction": 0.65
+    },
+    {
+      "id": "relation5",
+      "from": "p3",
+      "to": "p1",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 4,
+      "fromAnchor": "top",
+      "toAnchor": "bottom",
+      "fromAnchorFraction": 0.3,
+      "toAnchorFraction": 0.8
+    },
+    {
+      "id": "relation6",
+      "from": "p1",
+      "to": "p3",
+      "direction": "forward",
+      "routing": "straight",
+      "dashed": false,
+      "slot": "relations",
+      "index": 5,
+      "fromAnchor": "bottom",
+      "toAnchor": "top",
+      "fromAnchorFraction": 0.6,
+      "toAnchorFraction": 0.05
+    }
+  ],
+  "legendBox": [
+    72,
+    1,
+    36,
+    11.6
+  ],
+  "exampleBox": [
+    72,
+    24,
+    36,
+    19.6
+  ],
+  "arrows": [
+    {
+      "id": "relation1",
+      "points": [
+        [
+          21.7,
+          20.5
+        ],
+        [
+          16.4,
+          28.5
+        ]
+      ],
+      "slot": "relations",
+      "index": 0,
+      "labelBox": [
+        14.3,
+        22.8,
+        4,
+        4
+      ]
+    },
+    {
+      "id": "relation2",
+      "points": [
+        [
+          18.3,
+          29.9
+        ],
+        [
+          23.5,
+          21.7
+        ]
+      ],
+      "slot": "relations",
+      "index": 1,
+      "labelBox": [
+        21,
+        27.5,
+        4,
+        4
+      ]
+    },
+    {
+      "id": "relation3",
+      "points": [
+        [
+          33.7,
+          37.5
+        ],
+        [
+          24,
+          37.5
+        ]
+      ],
+      "slot": "relations",
+      "index": 2,
+      "labelBox": [
+        26,
+        33,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "relation4",
+      "points": [
+        [
+          24,
+          39.9
+        ],
+        [
+          33.7,
+          39.9
+        ]
+      ],
+      "slot": "relations",
+      "index": 3,
+      "labelBox": [
+        26,
+        41,
+        6,
+        4
+      ]
+    },
+    {
+      "id": "relation5",
+      "points": [
+        [
+          41.4,
+          28.5
+        ],
+        [
+          36.1,
+          20.5
+        ]
+      ],
+      "slot": "relations",
+      "index": 4,
+      "labelBox": [
+        39.4,
+        22.8,
+        4,
+        4
+      ]
+    },
+    {
+      "id": "relation6",
+      "points": [
+        [
+          34.1,
+          21.7
+        ],
+        [
+          39.1,
+          29.6
+        ]
+      ],
+      "slot": "relations",
+      "index": 5,
+      "labelBox": [
+        32.9,
+        27.5,
+        4,
+        4
+      ]
+    }
+  ],
+  "columns": [
+    [
+      7.8,
+      6
+    ],
+    [
+      14.3,
+      4
+    ],
+    [
+      21,
+      4
+    ],
+    [
+      26,
+      6
+    ],
+    [
+      32.9,
+      4
+    ],
+    [
+      39.4,
+      4
+    ],
+    [
+      43.8,
+      6
+    ]
+  ]
+}

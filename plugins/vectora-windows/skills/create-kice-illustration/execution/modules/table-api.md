@@ -1,5 +1,7 @@
 # 표 도구 API 계약
 
+격자 두께를 지정할 때는 live schema의 `strokePt`를 표 원자료에 선언한다. 미지정 기본은 0.3pt이며, 등록 고정 표의 0.4pt처럼 명시한 값은 생성·편집·실측·검사에 함께 적용된다. 선 개체만 생성 후 고쳐 원자료와 검사 기준을 어긋나게 하지 않는다.
+
 라이브 계약이 kind:"table"을 제공하면 전용 표를 우선 사용한다. spec은 widthMm(기본108, 최대108),paddingMm(기본1.5),rows:[{id,minHeightMm?}],columns:[{id,widthMm?,align?,verticalAlign?}],cells:[{id,rowId,columnId,text,richText?:TextFrameSpec,content?:ProductionSpec,rowSpan?,colSpan?,role?,state?,align?,verticalAlign?,fill?}]이다. align은 left/center/right, verticalAlign은 top/middle/bottom, role은 header/body, state는 value/blank/zero/notApplicable/unknown이다. 세로 정렬은 셀 또는 열에 지정할 수 있다. 기본 행 제목은 짧은 한 줄을 세로 중앙에 두고 긴 본문은 위쪽 정렬한다. 행 최대100·열 최대50·셀 최대5000, 셀 문구 최대20000·전체250000자, paddingMm은 (0,20] 범위다. 모든 격자 칸을 정확히 한 번 덮으며 누락·중복·범위 밖 병합은 거부된다. blank의 text는 빈 문자열이고 zero는 원문의 0을 명시한다. state만으로 표시 문구를 생성하지 않는다. 명시 열 폭 합은 표 전체 외곽 폭이며 선폭 때문에 임의로 값을 줄이지 않는다. 108mm 경계에 맞출 때 열 폭을 재조정하더라도 값·행·셀별 선택 프로필의 글자 크기는 유지한다. 한글·Latin 혼합 문구는 선택한 문자 역할의 기본 자간과 실제 범위 서식으로 실측한다. 줄별 자간·어절 조판은 core/typography.md의 공통 규칙을 적용하며, 실측 없이 수동 자간 값으로 셀 폭을 맞추지 않는다. 허용 면은 #FFFFFF/#EEEEEE/#CCCCCC/#AAAAAA이고 검정 면 반전은 현재 지원하지 않는다. 임의 rich text runs API는 추측하지 않는다.
 
 live 셀 schema가 `diagonalHeader`를 제공하면 대각선 머리글은 `cells[].diagonalHeader:{upperRight:"열 제목",lowerLeft:"행 제목"}`와 `text:""`로 만든다. `richText/content`와 함께 보내지 않고 각 제목은 개행 없는 원문으로 둔다. 표의 글꼴·여백을 물려받으며 실제 삼각 영역에 맞춰 행 높이를 계산한다. 폭 부족 오류는 열 폭을 재배분해 해결하고 글자를 축소하거나 선·라벨을 따로 덧그리지 않는다. 문구·폭 수정도 같은 셀 ID와 원본 필드로 갱신하여 선과 두 제목이 함께 이동하는지 확인한다. 미지원 연결본에서만 편집 가능한 보충 요소를 사용하고 자동 연동되지 않는 범위를 밝힌다.

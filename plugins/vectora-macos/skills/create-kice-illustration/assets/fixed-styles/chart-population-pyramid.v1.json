@@ -1,0 +1,112 @@
+{
+  "styleID": "chart-population-pyramid.v1",
+  "family": "charts",
+  "groupID": "DUP005",
+  "type": "mirror",
+  "recipe": "bar",
+  "referencePair": [
+    "K0426",
+    "K0427"
+  ],
+  "widthMm": 80,
+  "plotHeightMm": 76,
+  "typography": {
+    "textProfile": "und-dotum-8-default-v1",
+    "fontPt": 8,
+    "leadingPercent": 130
+  },
+  "exampleProvenance": "Hypothetical values for template demonstration; source images supply the scaffold only. No measured statistical claim.",
+  "example": {
+    "panel": "(가)",
+    "male": [
+      0.3,
+      0.6,
+      1,
+      1.3,
+      2,
+      2.6,
+      3.3,
+      4.1,
+      4.8,
+      4.5,
+      4.4,
+      3.3,
+      3.4,
+      2.8,
+      2.8,
+      2.5,
+      2.7,
+      2.7
+    ],
+    "female": [
+      0.8,
+      1,
+      1.3,
+      1.6,
+      2.1,
+      2.6,
+      3.2,
+      3.8,
+      4.7,
+      4.2,
+      3.9,
+      2.9,
+      2.8,
+      2.6,
+      2.5,
+      2.5,
+      2.6,
+      2.4
+    ]
+  },
+  "nativeLimitation": {
+    "directMirror": "18 series rejected: maximum 8; see native-limits/mirror-18-response.json",
+    "implementation": "two native horizontal bar graphs; positive values, left graph flipped horizontally; only age labels/axes/ticks/captions supplemented"
+  },
+  "contentSlots": {
+    "panel": {
+      "type": "string",
+      "singleLine": true,
+      "maxCharacters": 6,
+      "requiresNativeWidthMeasurement": true
+    },
+    "male": {
+      "type": "array",
+      "length": 18,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    },
+    "female": {
+      "type": "array",
+      "length": 18,
+      "items": "finite-number",
+      "requiresNativeWidthMeasurement": false
+    }
+  },
+  "nativeOverrides": [
+    {
+      "target": "pyramid-horizontal-panel",
+      "leftBaselineXmm": 48.92944444444444,
+      "rightBaselineXmm": 67.07055555555556,
+      "topMm": 12,
+      "pitchMm": 3.4,
+      "barHeightMm": 3.39,
+      "captionYmm": 14,
+      "nativeBoundsInsetMm": 0.07055555555555555,
+      "maleCaptionXmm": 4,
+      "femaleCaptionXmm": 109
+    }
+  ],
+  "geometryWidthMm": 108,
+  "defaultWidthMm": 80,
+  "minWidthMm": 76,
+  "maxWidthMm": 108,
+  "sizingEvidence": {
+    "kind": "text-relative-raster-estimate",
+    "referencePair": [
+      "K0426",
+      "K0427"
+    ],
+    "note": "No DPI metadata; proposed width from reference ink/text proportions with unchanged 8pt text (mixed graph 7pt). Not a recovered PDF placement measurement. Native measurement and rendered review remain required."
+  }
+}

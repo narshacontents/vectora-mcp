@@ -1,0 +1,122 @@
+{
+  "form-ab-links.v1": {
+    "base": {
+      "left": "A",
+      "right": "B",
+      "top": "(가)",
+      "middle": "(나)",
+      "bottom": "(다)"
+    },
+    "variant": {
+      "left": "X",
+      "right": "Y",
+      "top": "조건 1",
+      "middle": "공통 조건",
+      "bottom": "조건 2"
+    }
+  },
+  "form-argument-1line.v1": {
+    "base": {
+      "major": "인간의 평등권을 침해하는\n행위를 허용해서는 안 된다.",
+      "blank": "㉠",
+      "conclusion": "우대 정책을 허용해서는 안 된다."
+    },
+    "variant": {
+      "major": "모든 규칙에는\n일관된 기준이 필요하다.",
+      "blank": "㉡",
+      "conclusion": "이 규칙에도 기준이 필요하다."
+    }
+  },
+  "form-argument-2line.v1": {
+    "base": {
+      "major": "인간의 일자리를 축소시키는\n기술은 법으로 규제해야 한다.",
+      "blank": "㉠",
+      "conclusion": "인공 지능 기술은 법으로 규제해야\n한다."
+    },
+    "variant": {
+      "major": "모든 규칙에는\n일관된 기준이 필요하다.",
+      "blank": "㉡",
+      "conclusion": "이 규칙에도 일관된\n기준이 필요하다."
+    }
+  },
+  "form-nested-rect.v1": {
+    "base": {
+      "outer": "A",
+      "inner": "자발적 결사체"
+    },
+    "variant": {
+      "outer": "자발적 결사체",
+      "inner": "B"
+    }
+  },
+  "form-phone-6line.v1": {
+    "base": {
+      "marker": "(가)",
+      "time": "11:30 AM",
+      "body": "○○ 주의보가 발효\n되었습니다. 야외 활동\n자제, 충분한 물 마시기,\n가벼운 옷차림, 양산\n지니기 등 건강에 유의\n바랍니다.",
+      "battery": "80%"
+    },
+    "variant": {
+      "marker": "(나)",
+      "time": "2:16 PM",
+      "body": "△△ 주의보가\n발효되었습니다.\n위험한 곳에는\n접근하지 말고\n건강과 안전에\n유의하십시오.",
+      "battery": "100%"
+    }
+  },
+  "form-question-2circle.v1": {
+    "base": {
+      "question": "문화 변동의 내재적\n요인에 해당하는가?",
+      "right": [
+        "A",
+        "C"
+      ],
+      "bottom": [
+        "B",
+        "D"
+      ],
+      "no": "아니요",
+      "yes": "예"
+    },
+    "variant": {
+      "question": "새로운 내용을\n만들어 낸 것인가?",
+      "right": [
+        "B",
+        "C"
+      ],
+      "bottom": [
+        "A",
+        "D"
+      ],
+      "no": "거짓",
+      "yes": "참"
+    }
+  },
+  "form-timeline-5.v1": {
+    "base": {
+      "interval1": "(가)",
+      "interval2": "(나)",
+      "interval3": "(다)",
+      "interval4": "(라)",
+      "interval5": "(마)",
+      "event1": "삼포(3포)\n왜란",
+      "event2": "나가시노\n전투",
+      "event3": "센고쿠 시대\n통일",
+      "event4": "에도 막부\n수립",
+      "event5": "사르후\n전투",
+      "event6": "정묘\n호란"
+    },
+    "variant": {
+      "interval1": "Ⅰ",
+      "interval2": "Ⅱ",
+      "interval3": "Ⅲ",
+      "interval4": "Ⅳ",
+      "interval5": "Ⅴ",
+      "event1": "첫 사건\n발생",
+      "event2": "새 기준\n도입",
+      "event3": "정책\n전환",
+      "event4": "합의\n성립",
+      "event5": "체제\n개편",
+      "event6": "질서\n안정"
+    }
+  }
+}

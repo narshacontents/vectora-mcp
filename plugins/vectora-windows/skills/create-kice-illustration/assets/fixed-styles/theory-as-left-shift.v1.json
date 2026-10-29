@@ -1,0 +1,223 @@
+{
+  "styleID": "theory-as-left-shift.v1",
+  "family": "theory",
+  "groupID": "R29-G03-revised",
+  "recipe": "D3-01_Curve",
+  "defaultWidthMm": 50.1,
+  "minWidthMm": 48,
+  "maxWidthMm": 108,
+  "plotWidthMm": 41.92211381955634,
+  "plotHeightMm": 32,
+  "source": {
+    "acceptanceID": "R29-G03-revised",
+    "sourcePath": "artifacts/review-fixed-20261029/theory/R29-G03-fixed.vectora",
+    "sha256": "46c0dd5412cf1ee843af8017b0c3f08bd46ce946f2901234bfbf1c1f13a63f9a",
+    "note": "Accepted qualitative topology and samples; coordinates are layout only, never statistics."
+  },
+  "example": {
+    "valueSymbols": [
+      "P₁",
+      "P₀"
+    ],
+    "curveNames": [
+      "총수요",
+      "총공급"
+    ],
+    "axisNames": [
+      "물가",
+      "실질 GDP"
+    ],
+    "originSymbol": "0"
+  },
+  "native": {
+    "kind": "graph",
+    "type": "line",
+    "chartStyle": "line",
+    "dataFidelity": "concept",
+    "widthMm": 50.1,
+    "plotHeightMm": 32,
+    "strokePt": 0.8,
+    "categories": [
+      "layout-0",
+      "layout-1",
+      "layout-2",
+      "layout-3",
+      "layout-4",
+      "layout-5",
+      "layout-6",
+      "layout-7",
+      "layout-8",
+      "layout-9",
+      "layout-10",
+      "layout-11",
+      "layout-12",
+      "layout-13",
+      "layout-14",
+      "layout-15",
+      "layout-16",
+      "layout-17",
+      "layout-18",
+      "layout-19",
+      "layout-20"
+    ],
+    "series": [
+      {
+        "id": "demand",
+        "label": "총수요",
+        "values": [
+          null,
+          null,
+          null,
+          null,
+          8.5,
+          7.75,
+          7,
+          6.25,
+          5.5,
+          4.75,
+          4,
+          3.25,
+          2.5,
+          1.75,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "line": "solid",
+        "marker": "none",
+        "fill": "#000000",
+        "pattern": "none"
+      },
+      {
+        "id": "supply",
+        "label": "총공급",
+        "values": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1.75,
+          2.5,
+          3.25,
+          4,
+          4.75,
+          5.5,
+          6.25,
+          7,
+          7.75,
+          8.5,
+          null,
+          null,
+          null,
+          null
+        ],
+        "line": "solid",
+        "marker": "none",
+        "fill": "#000000",
+        "pattern": "none"
+      },
+      {
+        "id": "shift",
+        "label": "S′",
+        "values": [
+          null,
+          null,
+          1,
+          1.75,
+          2.5,
+          3.25,
+          4,
+          4.75,
+          5.5,
+          6.25,
+          7,
+          7.75,
+          8.5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "line": "dash",
+        "marker": "none",
+        "fill": "#000000",
+        "pattern": "none"
+      }
+    ],
+    "legend": "none",
+    "grid": false,
+    "valueLabels": false,
+    "xTitle": "실질 GDP",
+    "yTitle": "물가",
+    "chartOptions": {
+      "mode": "concept",
+      "semanticLabels": "end",
+      "axisArrows": true,
+      "showXTicks": false,
+      "showYTicks": false,
+      "showCategoryLabels": false,
+      "showYLabels": false,
+      "axisStrokePt": 0.4,
+      "guideStrokePt": 0.2,
+      "projectionLines": [
+        {
+          "seriesId": "demand",
+          "indices": [
+            8,
+            10
+          ],
+          "axes": "y"
+        }
+      ],
+      "yTitleOrientation": "horizontal",
+      "xTitlePosition": "end",
+      "labelPolicy": "all",
+      "gridStyle": "dash",
+      "xTitleGapMm": 0.6
+    },
+    "source": "Qualitative theory. Internal layout samples only; no measured economic values.",
+    "styleProfile": "kice",
+    "textProfile": "und-dotum-8-default-v1",
+    "fontFamily": "UND v3.1",
+    "fontPt": 8,
+    "horizontalScale": 100,
+    "tracking": 0,
+    "leadingPercent": 130,
+    "domain": [
+      0,
+      10
+    ]
+  },
+  "slots": {
+    "valueSymbols": {
+      "count": 2,
+      "maxCharacters": 6,
+      "widthMm": 8
+    },
+    "curveNames": {
+      "count": 2,
+      "maxCharacters": 10,
+      "widthMm": 24
+    },
+    "axisNames": {
+      "count": 2,
+      "maxCharacters": 10,
+      "widthMm": 24
+    },
+    "originSymbol": {
+      "maxCharacters": 3,
+      "widthMm": 5
+    }
+  }
+}
