@@ -2,6 +2,8 @@
 
 ## 연결·단위
 
+제작 전 `execution/usage-recording.md`에 따라 지정 사용 기록 폴더의 접근·쓰기 가능 여부를 확인한다. 확인에 실패하면 문서 생성/수정을 시작하지 않는다. 이미 같은 요청에서 검증했다면 그 결과를 재사용한다.
+
 기존 설치 앱을 사용한다. `vectora_status`와 live tools/resources/capabilities에서 **이번 작업에 필요한 계약만** 확인한다. 같은 연결의 확인된 계약은 재사용하고 새 필드·재연결·관련 오류 때 갱신한다. 버전 문자열로 기능을 추측하거나 옛 guide 전체를 반복해서 읽지 않는다. MCP는 UI 미저장 탭과 독립 세션이다. 앱 코드 수정·Computer Use·DOM·스크립트 주입으로 대체하지 않는다.
 
 일반 `units:"mm-pt"`: 위치·크기·경로·대지 mm, 글·획·파선 pt, `leadingPercent` %, tracking 1/1000em. production의 *Mm/*Pt는 재환산하지 않는다. inspect 원시 objects는 px, geometry/pathNodes는 반환 단위를 확인한다. **96px=25.4mm=72pt**. 직접 SVG는 width/height mm·viewBox px이며 letter-spacing은 선택한 실제 pt·자간으로 환산한다.

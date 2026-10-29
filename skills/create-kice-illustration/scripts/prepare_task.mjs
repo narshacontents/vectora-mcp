@@ -255,7 +255,7 @@ export function prepareTask(request, root=skillRoot){
    {path:'core/prose.md',phase:'design',when:'라벨로 준비했지만 실제 여러 줄 산문/목록이 추가될 때'},
    {path:'execution/text-ranges.md',phase:'execute',when:'부분 서식·본문용 숫자/기호·제목 괄호를 적용할 때'},
    {path:'execution/paragraphs.md',phase:'execute',when:'문단·항목 고정·각주를 조판할 때'},
-   {path:'core/readability.md',phase:'design',when:'선·회색 면 위에 문자/지시선을 놓을 때'},
+   {path:'core/readability.md',phase:'design',when:'선·무늬·회색 면 위에 문자/지시선을 놓을 때'},
    {path:'execution/text-effects.md',phase:'execute',when:'작은 흰 받침·흰 윤곽을 적용할 때'},
   ]:[]),
   {path:'execution/inspection.md',phase:'execute',when:'큰 문서의 부분 조회·delta 또는 저장/재열기 보존을 검사할 때'},

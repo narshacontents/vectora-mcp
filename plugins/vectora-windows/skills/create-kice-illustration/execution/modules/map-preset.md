@@ -3,7 +3,7 @@
 ## 실제 프리셋에서 시작
 
 1. `vectora_map_plan({})`의 templates/capabilities에서 현재 등록 바탕과 공통 세계 원본을 조회한다. `library.newAuthoring`이 있으면 신규 제작 후보를 우선하고, `kind:master` 원본과 `kind:view`의 범위·도법 설정을 구별한다. `vectora_list_presets({})`는 UND 메뉴의 사용자·기본 프리셋 목록이며 두 목록은 같다고 가정하지 않는다.
-2. 선택한 등록 template의 `assetRef`로 plan을 조회해 defaultSpec·assetHash/sidecarHash·source/notes·registration·국가·roles·projection을 사용한다. 일반 프리셋을 production template에 연결할 때만 **프리셋 ID = template.presetId**를 확인한다. 공통 세계 template은 갤러리의 개별 지역 파일이 없어도 등록 응답에서 시작할 수 있다. 유사 이름/개인 프리셋을 임의 연결하거나 해시 오류를 우회하지 않는다.
+2. 선택한 등록 template의 `assetRef`로 plan을 조회해 defaultSpec·assetHash/sidecarHash·source/notes·registration·국가·roles·projection을 사용한다. 일반 프리셋을 production template에 연결할 때만 **프리셋 ID = template.presetId**를 확인한다. 공통 세계 template은 갤러리의 개별 지역 파일이 없어도 등록 응답에서 시작할 수 있다. 유사 이름/개인 프리셋을 임의 연결하거나 해시 오류를 우회하지 않는다. `defaultSpec.projection`은 원자료의 초기 설정이지 모든 새 그림의 추천 도법이 아니다. 지도 공통 지침으로 도법·중심·필요 범위를 선택한 뒤 프레임 높이를 계산하며, 미리 정한 납작한 프레임에 맞추려고 초기 도법을 그대로 채택하지 않는다. 투영의 `clipExtent`가 `cropDocumentMm`보다 안쪽이면 해안이 틀 앞에서 직각으로 끊길 수 있다. 의도된 여백이 아닌 경우 좌표를 환산해 실제 clip·crop·바다·틀을 맞추고 최종 종횡비를 다시 계산한다.
 3. 등록 production 경로는 `vectora_new_document`의 새 격리 문서에 같은 바탕의 관리 map을 한 번 create한다. 대응/도구가 없으면 `vectora_create_preset({presetId:실제 ID,name?:작업명})`의 일반 벡터 문서를 편집한다. 이미 연 일반 프리셋 위에 관리 지도를 중복 생성하지 않는다. 기존 관리 map은 inspect의 실제 component ID로 update한다.
 
 현재 등록 지도와 legacy `world_continents`의 부분 매핑을 구별한다. 문서에 기록된 과거 프리셋 개수는 현재 설치 목록·지역 지원의 보증이나 선택 제한이 아니다. legacy는 unregistered·CHN/JPN/KOR 부분 매핑이며 새 프리셋의 국가 ID를 넣지 않는다. 지원 여부는 버전/소스가 아닌 **연결본의 실제 capability**로 판정한다. geographic 등록만 WGS84 배치/재투영을 허용하고 unregistered는 원도법·문서 좌표에 한정한다. partial 국가 coverage는 영토/섬 완전성 보증이 아니다. `parts:["unclassified"]`이면 `islandPolicy:"all"`만 사용한다.
