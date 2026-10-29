@@ -17,7 +17,7 @@
 - 특정 건축물·유적·장소의 식별이 핵심인 장면은 `place`(ITC-3_Place)를 선택한다. 장면 위 독립 발언은 scene variant에 speech-solo 조건, 인물 옆 발표 배치는 presentation variant를 쓴다. 원화를 asset으로 구현하더라도 일반 scene으로 분류를 바꾸거나, 상단 발언에 인물 옆 발표의 폭을 적용하지 않는다.
 - **인물/사진/새 원화, 실자료 조사, 긴 산문, 밑줄, 문단 박스, 빈 공간 예약**이 있으면 각각 contains 또는 dataSource에 표시한다. 단일 편집 문단이 이미지나 지원되는 네이티브 지도 옆에서 흐른 뒤 아래에서 전체 폭으로 이어지는 조판을 요청한 경우에만 `contains:text-flow`를 지정한다. 치수/줄 수 예약은 reserve, 문장 속 박스는 inline-box이며 서로 다르다. 인물이 있는 일반 세로대화가 기본이고, 인물 없는 메시지 화면은 messenger다.
 - 모식도에도 산·식생·동물·지형의 생김새를 읽는 삽화가 포함되면 `contains:artwork`와 `organic`을 함께 지정한다. 기하 구조의 편집 가능한 경계·기호·수치와 새 원화를 구별하며, schematic이라는 이름만으로 자연물을 코드 도형으로 대체하지 않는다.
-- 독립적으로 완결된 자료를 여러 units로 나눈다. 같은 장면에 서로 다른 발언 배치가 공존할 때는 해당 발언군만 추가 unit으로 지침을 준비하고 한 장면으로 조판한다. 한 unit에 충돌하는 발언 배치 조건을 넣거나, 외피·교사·짧은 보조 발언 때문에 별도 완성 그림을 만들지 않는다. 보조 발언은 speech-horizontal / speech-vertical / speech-solo 조건이다. 분류가 애매할 때만 [분류 사전](references/taxonomy.md)을 해당 항목으로 검색한다. 이름이 명확한 comparison / site-plan 별칭 외에는 Others로 우회하지 않는다. 분류 ID는 MCP kind가 아니다.
+- 독립적으로 완결된 자료를 여러 units로 나눈다. 같은 장면에 서로 다른 발언 배치가 공존할 때는 해당 발언군만 추가 unit으로 지침을 준비하고 한 장면으로 조판한다. 한 unit에 충돌하는 발언 배치 조건을 넣거나, 외피·교사·짧은 보조 발언 때문에 별도 완성 그림을 만들지 않는다. 보조 발언은 speech-horizontal / speech-vertical / speech-solo 조건이다. 분류가 애매할 때만 [분류 사전](taxonomy.md)을 해당 항목으로 검색한다. 이름이 명확한 comparison / site-plan 별칭 외에는 Others로 우회하지 않는다. 분류 ID는 MCP kind가 아니다.
 
 
 - 새 지도에 문자가 있으면 경로도·영역도 등 세부 유형에 관계없이 위치/라벨 원칙을 자동 포함한다. 문자 없는 지도만 textMode:none으로 제외하며, 별도 위치 기호가 있으면 contains:points를 지정한다. 옛 지도 원본 사진은 이 자동 조판 대상이 아니다.

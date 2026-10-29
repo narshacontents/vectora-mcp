@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Legacy selection resolver. New production tasks use prepare_task.mjs.
+// Shared subtype/module resolver used by prepare_task.mjs; standalone CLI retained.
 // This script only reads installed skill data and writes an internal temporary file.
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
@@ -150,6 +150,8 @@ export function prepareRules(options, root = skillRoot) {
     modules.add('presentation-screen-native');
   }
   if (modules.has('map-natural')) modules.add('map-feature');
+  if (modules.has('map-native') && nativeSpec?.thematic) modules.add('map-thematic-native');
+  if (modules.has('map-native') && nativeSpec?.scalar) modules.add('map-scalar-native');
   if (modules.has('map-route')) modules.add('map-routes-native');
   if (selected.includes('korea')) {
     for (const [topic, module] of Object.entries(index.koreaOverlays)) {

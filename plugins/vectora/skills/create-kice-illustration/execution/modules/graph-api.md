@@ -14,6 +14,8 @@
 
 - series의 `fill`, `pattern:none|dots|hatch`, `line:solid|dash|dash-dot|dot`, `marker:none|circle|triangle|square|open-square|open-circle|open-triangle`를 대응시킨다. 연결 schema가 `dot`을 지원하면 순수 점선은 이 원자료 값으로 지정해 자료선·범례·값 수정에 함께 유지한다. `dash-dot`은 일점쇄선이므로 순수 점선 대신 사용한 뒤 개별 선분을 고치는 방식은 피한다. 표식 없는 선에 표식 무늬를 넣지 않는다. `grid:true,chartOptions:{gridStyle:"dash"}`; 실제 `valueLabels,xTitle,yTitle,unit`, `chartOptions.labelDecimals`(0–10)을 지정한다.
 
+- 연결 schema가 제공하는 사각 막대 계열의 무늬는 series의 `patternSpacingMm`(해치 간격/점 가로 간격), `patternRowSpacingMm`(점 세로 간격), `patternRowOffsetMm`(교대 행 이동), `patternDotDiameterMm`로 조절한다. `pattern:"hatch"`의 방향은 지원되는 해치 설정을 함께 사용한다. 같은 series 설정이 본체와 범례에 적용되므로 견본만 따로 고치지 않는다. 미지원 계열·범주별 스타일에 이 필드를 추측해 보내지 않는다.
+
 - 단위와 축 제목은 [수치 축 설정](axis-options.md)의 네이티브 조판으로 함께 배치한다. X 단위는 마지막 수치와 같은 기준선, 짧은 축 제목은 끝 아래, 가운데 제목은 축 아래를 출발점으로 하며 실제 배치는 자료의 의미·공간에 따라 선택한다. Y 제목/단위와 최상단 눈금은 별개 문자열의 위치를 따로 추측하지 말고 함께 측정한다. 생성 문자를 수동 이동하기 전에 source의 제목·단위·위치 설정을 수정하고 값 변경·재열기에서도 보존되는지 확인한다.
 
 - 어두운 누적 구간에서 생성기가 값 문자를 흰색으로 만들었는지 실제 속성을 확인한다. 이 자동 대비색을 공통 판독성 규칙의 검정 글자·흰 윤곽선과 혼동하지 않는다. 원자료 옵션에 없는 문자 외관은 해당 값 문자의 네이티브 스타일로 첫 조판에 보충하고, 자료를 갱신한 뒤에도 같은 역할의 문자 외관이 유지되는지 확인한다.
@@ -22,7 +24,9 @@
 
 - `legend:above|beneath|right|inside|none`; 아래는 `beneath`로 보낸다. `chartOptions.legendAnchor`는 내부 범례의 후보 우선순위이며 위치 잠금이 아니다. 네 모서리 `top-left|top-right|bottom-left|bottom-right` 외에, 지원되는 2D Cartesian의 연결 schema가 제공하면 `top-center|bottom-center|middle-left|middle-right|middle-center`도 선택한다. 같은 지원 계열의 `chartOptions.legendArrangement:auto|horizontal|vertical`로 배열을 별도 지정한다. `auto`는 폭에 맞는 배열과 충돌 없는 후보를 찾는 초안이므로 [범례 배치 원칙](../../components/data-surface.md)에 따라 AI가 최종 위치·배열을 선택한다. `legendPlacement`의 요청/실제 위치·배열·후보·fallback을 읽는다. 내부 배치가 어려우면 다른 내부 후보나 `beneath`로 바뀔 수 있다. `chartOptions.legendReverse`, `legendStyle:swatch|label-fill` 중 견본 상자는 `swatch` 우선이다.
 
-- 초안 JPEG를 본 뒤 source의 `legendAnchor`·`legendArrangement`를 명시해 `update,policy:"preserve"`로 갱신한다. 충돌 검사 뒤 보고된 실제 위치와 JPEG를 다시 확인하며 자료 연결을 해제하지 않는다. 현재 계약에는 범례 전체의 가장자리 간격·임의 높이 정렬용 source 설정이 없다. 보정이 필요하면 component inspect의 실제 role key로 `action:"override",spec:{key,mode:"fixed"|"offset"|"release",xMm?,yMm?}`를 사용한다. `fixed`는 현재 위치 보존, `offset`은 재생성 위치에 대한 mm 이동량이며 이 명령 자체는 즉시 이동하지 않는다. 다음 preserve update에서 확인하거나 즉시 이동용 native transform을 사용하되 같은 이동을 이중 적용하지 않는다. 상자·제목뿐 아니라 계열에 속한 견본·문자도 포함해 범례 전체를 보정한다. `graph.legend` 역할만으로 전체가 선택된다고 가정하지 않으며, 배열 변경을 개별 이동으로 흉내 내지 않는다. 값·문구 변경 후 저장·재열기와 JPEG로 대응·간격·충돌을 다시 확인하고, 필요한 자유도를 지원하지 않으면 앱 담당자에게 남긴다.
+- 사각 막대의 작은 면 채움 범례는 지원 앱에서 `chartOptions.legendSwatch:"square"`로 2.4mm 정사각 견본을 선택한다. 아래 범례의 좌우를 플롯에 맞출 때는 `legend:"beneath",chartOptions.legendBox:"plot"`을 함께 사용한다. 실측 문구가 맞지 않으면 배열·문구·전체 폭을 조정하고 글자를 축소하지 않는다. `legendBox:"content"`는 내용 폭이다. 선 자료의 범례에는 정사각 면 견본을 적용하지 않는다.
+
+- 초안 JPEG를 본 뒤 source의 `legendAnchor`·`legendArrangement`를 명시해 `update,policy:"preserve"`로 갱신한다. 충돌 검사 뒤 보고된 실제 위치와 JPEG를 다시 확인하며 자료 연결을 해제하지 않는다. 오른쪽 범례의 높이 정렬·간격은 지원되는 `rightLegend` 설정을 우선한다. 그 밖에 source 설정으로 표현할 수 없는 보정은 component inspect의 실제 role key로 `action:"override",spec:{key,mode:"fixed"|"offset"|"release",xMm?,yMm?}`를 사용한다. `fixed`는 현재 위치 보존, `offset`은 재생성 위치에 대한 mm 이동량이며 이 명령 자체는 즉시 이동하지 않는다. 다음 preserve update에서 확인하거나 즉시 이동용 native transform을 사용하되 같은 이동을 이중 적용하지 않는다. 상자·제목뿐 아니라 계열에 속한 견본·문자도 포함해 범례 전체를 보정한다. `graph.legend` 역할만으로 전체가 선택된다고 가정하지 않으며, 배열 변경을 개별 이동으로 흉내 내지 않는다. 값·문구 변경 후 저장·재열기와 JPEG로 대응·간격·충돌을 다시 확인하고, 필요한 자유도를 지원하지 않으면 앱 담당자에게 남긴다.
 
 - chartStyle을 생략하는 legacy는 별도 계약이다. `layout,panels,x,yDomain,labelOffsets`를 새 spec에 섞지 않는다. legacy는 새 그래프 UI 편집 지원을 약속하지 않는다. live 도구 spec이 open record여도 허용 옵션을 추측하지 않는다.
 

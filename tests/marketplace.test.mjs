@@ -20,7 +20,7 @@ const generated = [
   { id: 'vectora-macos', platform: 'macos', displayName: 'Vectora (macOS)', script: 'sh' },
   { id: 'vectora-windows', platform: 'windows', displayName: 'Vectora (Windows)', script: 'ps1' },
 ];
-const excludedSegments = new Set(['.git', 'node_modules', 'release', 'tests', '__pycache__']);
+const excludedSegments = new Set(['.git', '.obsidian', 'node_modules', 'release', 'tests', '__pycache__']);
 const windowsAdaptedHelpers = [
   'create-kice-illustration/scripts/audit_svg.py',
   'create-kice-illustration/scripts/build_graph.mjs',
@@ -160,7 +160,7 @@ test('generated trees contain the complete canonical skills and runtime allowlis
     }
     assert.equal(readFileSync(path.join(target, 'README.md'), 'utf8'), readFileSync(path.join(PLUGIN_ROOT, 'README.md'), 'utf8'));
     for (const file of actual) {
-      assert.doesNotMatch(file, /(?:^|\/)(?:apps?|fonts?|secrets?|tests?|node_modules|__pycache__)(?:\/|$)/i, `${id}: ${file}`);
+      assert.doesNotMatch(file, /(?:^|\/)(?:apps?|fonts?|secrets?|tests?|\.obsidian|node_modules|__pycache__)(?:\/|$)/i, `${id}: ${file}`);
       assert.doesNotMatch(file, /\.(?:node|so|dylib|dll|pyd|exe|o|a|lib|pyc|ttf|otf)$/i, `${id}: ${file}`);
     }
     assert.equal(actual.some((file) => file.startsWith('src/production/')),

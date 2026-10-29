@@ -11,3 +11,6 @@ __pycache__/
 
 # Local generation and verification evidence; never marketplace payloads.
 artifacts/
+
+# Personal note-editor state is never source or marketplace payload.
+skills/create-kice-illustration/.obsidian/

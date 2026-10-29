@@ -6,25 +6,10 @@ import {inspectDisplayText} from './inspect_display_text.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-import {prepareRules, readIndex, skillRoot, filterModuleBlocks} from './prepare_rules.mjs';
+import {prepareRules, skillRoot, filterModuleBlocks} from './prepare_rules.mjs';
+import {readRecipeRegistry, resolveRecipe} from './recipe_registry.mjs';
 
-export const recipes = {
- 'table': {subtype:'D1-01_Flat'}, 'cross-table':{subtype:'D1-03_Cross'},
- 'bar':{subtype:'D2-01_Bar'},'stacked-bar':{subtype:'D2-02_StackedBar'},'mosaic':{subtype:'D2-08_Others'},'ternary':{subtype:'D2-08_Others'},'pie':{subtype:'D2-03_Pie'},
- 'line':{subtype:'D2-04_Line'},'scatter':{subtype:'D2-05_Scatter'},'dot':{subtype:'D2-06_Dot'},'dumbbell':{subtype:'D2-06_Dot'},'radar':{subtype:'D2-07_Radar'},
- 'curve':{subtype:'D3-01_Curve'},'frontier':{subtype:'D3-02_Frontier'},'distribution':{subtype:'D3-03_Distribution'},
- 'tree':{subtype:'D4-01_Tree'},'network':{subtype:'D4-02_Network'},'flowchart':{subtype:'D4-03_Flowchart'},'venn':{subtype:'D4-04_Venn'},'timeline':{subtype:'D4-05_Timeline'},'schematic':{subtype:'D4-06_Schematic'},
- 'photo':{subtype:'photo-original'},'portrait':{subtype:'illustration-portrait'},'object':{subtype:'illustration-object'},'scene':{subtype:'illustration-scene'},
- 'locator-map':{subtype:'I3-11_Locator'},'topographic-map':{subtype:'I3-12_Topographic'},'old-map':{subtype:'I3-13_OldMap'},
- 'area-map':{subtype:'I3-21_Area'},'route-map':{subtype:'I3-22_Route'},'symbol-map':{subtype:'I3-23_Symbol'},'choropleth':{subtype:'I3-31_Choropleth'},'dot-map':{subtype:'I3-32_Dot'},'proportional-map':{subtype:'I3-33_Proportional'},'isoline-map':{subtype:'I3-34_Isoline'},'flow-map':{subtype:'I3-35_Flow'},
- 'vertical-dialogue':{subtype:'ITA-4_DialogueV',people:true},'horizontal-dialogue':{subtype:'ITA-3_DialogueH'},'presentation':{subtype:'ITA-2_Solo'},
- 'messenger':{subtype:'ITA-4_DialogueV',features:['messenger']},
- ...Object.fromEntries(['newspaper','screen','paper','scroll','board','worksheet'].map(variant=>[variant,{subtype:'ITA-1_TypeBoard',variant}])),
- 'webpage':{subtype:'ITA-1_TypeBoard',variant:'screen'},
- 'teacher-board':{subtype:'ITA-5_SoloBoard',variant:'board'},
- ...readIndex().recipeAliases,
- 'image-board':{subtype:'ITB-1_ImageBoard'},'figure':{subtype:'ITC-1_Figure'},'costume':{subtype:'ITC-4_Costume'},'original-person':{subtype:'ITC-2_RealPhoto'},
-};
+export const recipes = readRecipeRegistry(skillRoot).recipes;
 const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
 // Keep aligned with inferSpec's handled kinds; unknown future kinds stay visibly uninspected.
 const knownNativeKinds=new Set(['asset','composition','dialogue','graph','map','pathText','schematic','table','text','verticalText']);
@@ -74,11 +59,12 @@ const read=(root,rel)=>{
  if(!file.startsWith(base+path.sep))throw new Error('Rule outside installed skill: '+rel);
  return fs.readFileSync(file,'utf8').trim();
 };
-const textExtras={'prose':'core/prose.md','underline':'core/underline.md','inline-box':'core/inline-box.md','reserve':'core/reserve.md'};
+const textExtras={'prose':'core/prose.md','underline':'core/underline.md','inline-box':'core/inline-box.md','reserve':'core/reserve.md','footnotes':'core/footnotes.md','symbols':'core/symbols.md'};
 export function prepareTask(request, root=skillRoot){
  if(!request || !Array.isArray(request.units) || !request.units.length)throw new Error('units must contain at least one production unit');
  if(request.client && !['codex','claude','gemini'].includes(request.client))throw new Error('Unknown client');
- const index=readIndex(root),knownModules=new Set(Object.keys(index.modules));
+ const registry=readRecipeRegistry(root),{index}=registry,knownModules=new Set(Object.keys(index.modules));
+ const recipeFor=name=>resolveRecipe(name,registry);
  const phaseSources={design:[],execute:[],deliver:[]},sections={design:[],execute:[],deliver:[]},seen=new Set(),resolved=[],unitIds=new Set();
  function add(phase,relative,unit,enabled){
   let body=read(root,relative);
@@ -90,11 +76,12 @@ export function prepareTask(request, root=skillRoot){
   sections[phase].push(`<!-- source:${relative}${unit?'; unit:'+unit:''} -->\n${body}`);
  }
  add('design','core/style.md');
+ add('design','core/production-plan.md');
  add('execute','execution/base.md');
  if(request.client==='gemini')add('execute','execution/gemini.md');
  if(request.caller==='exam-agent')add('design','execution/caller.md');
  function checkBinding(unit,spec,where){
-  const base=own(recipes,unit.recipe)?recipes[unit.recipe]:own(index.subtypes,unit.recipe)?{subtype:unit.recipe}:null;
+  const base=recipeFor(unit.recipe);
   if(!base)throw new Error(`Unknown recipe: ${unit.recipe}`);
   if(unit.recipe==='formula'&&(spec.kind!=='schematic'||spec.layout!=='formula'))throw new Error(`${where}: recipe formula requires native schematic layout:formula`);
   if(spec.kind==='schematic'&&spec.layout==='formula'&&unit.recipe!=='formula')throw new Error(`${where}: native schematic layout:formula conflicts with recipe ${unit.recipe}; use recipe formula`);
@@ -144,7 +131,7 @@ export function prepareTask(request, root=skillRoot){
   const id=unit.id||`unit-${n+1}`;
   if(typeof id!=='string'||!id.trim()||unitIds.has(id))throw new Error('Unique nonempty unit IDs required');
   unitIds.add(id);
-  const base=own(recipes,unit.recipe)?recipes[unit.recipe]:own(index.subtypes,unit.recipe)?{subtype:unit.recipe}:null;
+  const base=recipeFor(unit.recipe);
   if(!base)throw new Error(`Unknown recipe: ${unit.recipe}; use --list`);
   const contains=unit.contains??[];
   if(!Array.isArray(contains)||contains.some(x=>typeof x!=='string'))throw new Error('contains must be an array of component names');
@@ -154,7 +141,7 @@ export function prepareTask(request, root=skillRoot){
    if(part==='people')people=true;
    else if(own(textExtras,part)){if(part==='reserve')features.add('reserve');}
    else if(own(index.features,part))features.add(part);
-   else if(own(recipes,part)||own(index.subtypes,part))throw new Error(`${part} is a recipe, not a contains component. Use recipe:"${part}" for the appropriate production unit, with a supported variant when required; see --list. The request was not changed.`);
+   else if(recipeFor(part))throw new Error(`${part} is a recipe, not a contains component. Use recipe:"${part}" for the appropriate production unit, with a supported variant when required; see --list. The request was not changed.`);
    else throw new Error(`Unknown component: ${part}`);
   }
   if(unit.dataSource==='research')features.add('real-data');
@@ -163,7 +150,7 @@ export function prepareTask(request, root=skillRoot){
   const row=index.subtypes[base.subtype];
   const mode=unit.textMode??(row.type.startsWith('IT')?'prose':'labels');
   if(!['none','labels','prose'].includes(mode))throw new Error('textMode must be none, labels or prose');
-  if(mode==='none' && contains.some(x=>['underline','inline-box','prose'].includes(x)))throw new Error('Text components require labels or prose mode');
+  if(mode==='none' && contains.some(x=>['underline','inline-box','prose','footnotes','symbols'].includes(x)))throw new Error('Text components require labels or prose mode');
   // Map labels need the same collision/anchor rules regardless of thematic subtype.
   // Original scanned maps retain the photo contract instead of fabricated overlays.
   if(row.type==='I3_Map' && base.subtype!=='I3-13_OldMap' && mode!=='none')features.add('points');
@@ -188,8 +175,11 @@ export function prepareTask(request, root=skillRoot){
   // Native map routes need supplied-data checks before constructing a spec or resampling its grid.
   if(row.type==='I3_Map' && unit.dataSource==='provided' && modules.has('map-native'))modules.add('real-data-map');
   if(mode!=='none'){
-   add('design','core/typography.md');add('execute','execution/text.md');
-   if(mode==='prose'||contains.includes('prose'))add('design','core/prose.md');
+   add('design','core/typography.md');add('design','core/display-text.md');add('execute','execution/text.md');
+   const prose=mode==='prose'||contains.includes('prose');
+   if(prose){add('design','core/prose.md');add('execute','execution/paragraphs.md');}
+   if(prose||contains.some(part=>['underline','inline-box','symbols'].includes(part)))add('execute','execution/text-ranges.md');
+   if(contains.includes('footnotes'))add('execute','execution/paragraphs.md');
   }
   if(row.type.startsWith('IT')||row.type==='D1_Table'||features.has('reserve'))add('design','core/content-layout.md');
   for(const [part,file] of Object.entries(textExtras))if(contains.includes(part)||features.has(part))add('design',file);
@@ -223,12 +213,50 @@ export function prepareTask(request, root=skillRoot){
  const header=`# 이번 그림의 작업 지침\n\n이 문서는 요청의 실제 구성에 따라 조립했다. 분류 코드는 메타데이터이며 읽기 순서나 MCP kind가 아니다. 명시 요청·의미 보존을 우선하고 기본값/조건/임시 우회책을 구별한다. 선택 목록이 원 요청의 인물·원화/사진·실자료·밑줄·문단 박스·예약 영역을 빠뜨리지 않았는지 먼저 대조한다.\n\n${resolved.map(u=>`- ${u.id}: ${u.recipe}; 분류 ${u.subtype}${u.variant?' / '+u.variant:''}; 인물 ${u.people?'있음':'없음'}; 문자 ${u.textMode}; 구성요소 ${u.contains.join(', ')||'기본'}; 조건 ${u.features.join(', ')||'기본'}`).join('\n')}\n`;
  const inputReviewSection=hasInputReview&&inputReview.warnings.length?renderInputReviewSection(inputReview.warnings):'';
  const contents={
-  design:header+'\n## 제작 순서\n\n원문·자료·최종 폭 확정 → 실제 내용/자산 측정 → 자료 좌표와 외피·인물 배치 → 이번 형식의 검수 항목 확인. 아래에는 해당 작업의 원칙만 포함된다.\n\n'+sections.design.join('\n\n'),
+  design:header+'\n## 제작 순서\n\n짧은 제작 계획 → 실제 내용/자산 측정과 계획 조정 → 제작 → 원 요청·계획과 이미지 대조. 아래에는 해당 작업의 원칙만 포함된다.\n\n'+sections.design.join('\n\n'),
   execute:inferenceWarningSection+inputReviewSection+'# 선택한 도구의 실행 계약\n\n실행 직전에 읽고 설치 앱의 실제 스키마로 확인한다. 응답 유실/리비전 오류가 있을 때만 execution/recovery.md를 읽는다. 임시 우회는 해당 증상이 재현된 경우에만 적용한다.\n\n'+sections.execute.join('\n\n'),
   deliver:'# 완성 검수와 납품\n\n원본·JPEG를 같은 최종 상태로 만들고 실제 JPEG를 직접 확인한다. 기술 검증만으로 시각 통과를 선언하지 않는다.\n\n'+sections.deliver.join('\n\n'),
  };
+ const hasText=resolved.some(unit=>unit.textMode!=='none');
+ const hasNativeMap=resolved.some(unit=>unit.modules.includes('map-native'));
+ const hasBar=resolved.some(unit=>unit.subtype==='D2-01_Bar');
+ const candidates=[
+  ...(hasNativeMap?[
+   {path:'execution/modules/map-thematic-native.md',phase:'execute',when:'국가·행정 단위별 등급 자료를 추가할 때'},
+   {path:'execution/modules/map-scalar-native.md',phase:'execute',when:'연속 통계 격자·등치선을 추가할 때'},
+  ]:[]),
+  ...(hasBar?[
+   {path:'execution/modules/bar-mirror.md',phase:'execute',when:'좌우 대칭 막대를 만들 때'},
+   {path:'execution/modules/bar-legacy.md',phase:'execute',when:'현행 막대 입력을 지원하지 않거나 저장된 legacy 막대를 수정할 때만'},
+  ]:[]),
+  ...(hasText?[
+   {path:'core/symbols.md',phase:'design',when:'괄호·(가)~(하)·제목 꺾쇠·특수 기호가 있거나 글리프 틈이 이상할 때'},
+   {path:'core/footnotes.md',phase:'design',when:'자료 아래 각주가 있을 때'},
+   {path:'core/prose.md',phase:'design',when:'라벨로 준비했지만 실제 여러 줄 산문/목록이 추가될 때'},
+   {path:'execution/text-ranges.md',phase:'execute',when:'부분 서식·본문용 숫자/기호·제목 괄호를 적용할 때'},
+   {path:'execution/paragraphs.md',phase:'execute',when:'문단·항목 고정·각주를 조판할 때'},
+   {path:'core/readability.md',phase:'design',when:'선·회색 면 위에 문자/지시선을 놓을 때'},
+   {path:'execution/text-effects.md',phase:'execute',when:'작은 흰 받침·흰 윤곽을 적용할 때'},
+  ]:[]),
+  {path:'execution/inspection.md',phase:'execute',when:'큰 문서의 부분 조회·delta 또는 저장/재열기 보존을 검사할 때'},
+  {path:'execution/recovery.md',phase:'execute',when:'응답 유실·리비전 오류가 발생했을 때'},
+  {path:'core/reference-review.md',phase:'deliver',when:'사용자가 이번 원본의 재현·대조를 명시한 때만'},
+  {path:'execution/delivery-manual.md',phase:'deliver',when:'KICE 프로필이 없거나 요청한 확장자/형식을 지원하지 않을 때만'},
+ ];
+ const selectedPaths=new Set(Object.values(phaseSources).flat().map(source=>source.path));
+ const onDemand=candidates.filter(item=>!selectedPaths.has(item.path));
+ // Resolve every optional dependency now, so broken/missing references fail before production.
+ for(const item of onDemand)read(root,item.path);
+ for(const phase of ['design','execute','deliver']){
+  const entries=onDemand.filter(item=>item.phase===phase);
+  if(entries.length)contents[phase]+='\n\n## 해당 조건에서만 추가로 읽기\n\n경로는 스킬 루트 기준이며 해당하지 않는 파일은 읽지 않는다.\n\n'+entries.map(item=>`- ${item.when}: \`${item.path}\``).join('\n')+'\n';
+ }
+ const instructionBytes=Object.fromEntries(Object.entries(contents).map(([phase,text])=>[phase,Buffer.byteLength(text)]));
+ const totalBytes=Object.values(instructionBytes).reduce((a,b)=>a+b,0);
+ // Maintenance signal only: never truncate or omit required rules to meet a size target.
+ const instructionSize={bytes:instructionBytes,totalBytes,warning:totalBytes>100000?'large-instruction-bundle':null};
  const signature=createHash('sha256').update(JSON.stringify({request,contents})).digest('hex').slice(0,16);
- return {signature,resolved,phaseSources,contents,...(warnings.length?{warnings}:{}),...(hasInputReview?{inputReview}:{})};
+ return {signature,resolved,phaseSources,contents,onDemand,instructionSize,...(warnings.length?{warnings}:{}),...(hasInputReview?{inputReview}:{})};
 }
 export function writeTask(request,out,root=skillRoot){
  if(!out)throw new Error('--out must be an internal temporary directory');
@@ -243,10 +271,10 @@ export function writeTask(request,out,root=skillRoot){
   try{fs.writeFileSync(file,result.contents[phase]+'\n',{flag:'wx'});}catch(e){if(e.code!=='EEXIST'||fs.readFileSync(file,'utf8')!==result.contents[phase]+'\n')throw e;}
   files[phase]=file;
  }
- return {signature:result.signature,selected:result.resolved,readNow:[files.design],beforeExecute:[files.execute],beforeDeliver:[files.deliver],sources:result.phaseSources,characters:Object.fromEntries(Object.entries(result.contents).map(([k,v])=>[k,v.length])),...(result.warnings?{warnings:result.warnings}:{}),...(result.inputReview?{inputReview:result.inputReview}:{})};
+ return {signature:result.signature,selected:result.resolved,readNow:[files.design],beforeExecute:[files.execute],beforeDeliver:[files.deliver],sources:result.phaseSources,onDemand:result.onDemand.map(item=>({...item,path:path.resolve(root,item.path)})),instructionSize:result.instructionSize,characters:Object.fromEntries(Object.entries(result.contents).map(([k,v])=>[k,v.length])),...(result.warnings?{warnings:result.warnings}:{}),...(result.inputReview?{inputReview:result.inputReview}:{})};
 }
 function main(args){
- if(args.includes('--list')){const i=readIndex();console.log(JSON.stringify({recipes,additionalRecipes:Object.keys(i.subtypes),components:['people','prose','underline','inline-box',...Object.keys(i.features)],features:Object.fromEntries(Object.entries(i.features).map(([key,value])=>[key,value.description])),variants:Object.fromEntries(Object.entries(i.subtypes).filter(([,r])=>r.variants).map(([k,r])=>[k,Object.keys(r.variants)]))},null,2));return;}
+ if(args.includes('--list')){const {index,recipes:recipeChoices}=readRecipeRegistry();console.log(JSON.stringify({recipes:recipeChoices,additionalRecipes:Object.keys(index.subtypes),components:['people','prose','underline','inline-box','footnotes','symbols',...Object.keys(index.features)],features:Object.fromEntries(Object.entries(index.features).map(([key,value])=>[key,value.description])),variants:Object.fromEntries(Object.entries(index.subtypes).filter(([,r])=>r.variants).map(([k,r])=>[k,Object.keys(r.variants)]))},null,2));return;}
  if(args.includes('--help')){console.log('node scripts/prepare_task.mjs --request <JSON file> --out <internal dir>\nJSON: {client?:"codex"|"claude"|"gemini", caller?:"exam-agent", units:[{id,recipe,variant?,contains?:[],features?:[],people?,textMode?:"none"|"labels"|"prose",dataSource?:"research"|"provided"|"hypothetical"|"qualitative",spec?:ProductionSpec,specRecipes?:{"spec.blocks[0].spec":"table"|{recipe,variant?,people?,dataSource?,textMode?,contains?,features?}}}]}\nPaper media aliases set the native paper shell plus one conditional rule: book/notebook/ring-card/album + bound-paper; postcard/letter + correspondence; brochure/poster/display-sign/film-frame + display-medium; email/social-feed/mobile-screen/video-screen + device-medium. projection-screen uses the native scroll shell. Add the same feature names to contains when an existing recipe needs that principle. These are preparation aliases, not native variants.\nUse --list for recipes, conditional features, native variants and components. Read the returned phase files when their phase starts.');return;}
  let input,out;
  for(let j=0;j<args.length;j++){

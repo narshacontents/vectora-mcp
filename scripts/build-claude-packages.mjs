@@ -36,7 +36,7 @@ function copySkillSource(name, targetRoot) {
       const segments = relative.split('/');
       const base = segments.at(-1) ?? '';
       return relative !== 'agents/openai.yaml' && !relative.startsWith('agents/openai.yaml/')
-        && !segments.includes('__pycache__') && base !== '.DS_Store' && !base.endsWith('.pyc');
+        && !segments.includes('.obsidian') && !segments.includes('__pycache__') && base !== '.DS_Store' && !base.endsWith('.pyc');
     },
   });
   return target;

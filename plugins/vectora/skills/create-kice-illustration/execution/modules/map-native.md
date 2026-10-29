@@ -14,7 +14,6 @@
 
 - widthMm 기본 108, 현재 지원 1–108mm. 완성 폭은 별도 설명이 없으면 지시 문자/기호까지 포함한다. 범위 밖 요구를 조용히 108로 바꾸지 않는다. `cropDocumentMm:{x,y,width,height}`는 원문서 mm의 유한한 양의 대지 내부 범위, `frameMm`은 결과 지도 창이다. `s=창 폭/crop 폭`, `창 높이=crop 높이×s`로 동일 X/Y 배율을 적용한다. 폭/crop 변경 때 frame도 갱신하거나 create/plan에서 생략해 재계산한다. update 생략은 유지이므로 새 frame을 명시한다.
 - 관리 지도의 폭은 native map update로 바꾸고 지리 anchor·투영·binding을 유지한다. 일반 그룹 확대/폭 맞춤으로 원경로를 변형하거나 invalid binding을 남기지 않는다. 따로 보충한 경로·라벨은 자동 연결 여부를 확인하고, 미연결이면 원 지리 좌표에서 새 창으로 다시 계산한다. 현재 점 위치를 눈대중으로 옮겨 맞추지 않는다.
-- 지도 아래에 별도 수치 면을 보충하는 기존 방식은 현재 연결 앱의 지도 스키마가 `TemplateMapSpec.scalar`를 지원하지 않는 구버전에서만 조건부로 쓴다. 이 경우에도 source의 sea 역할과 `map.ocean` 배경을 구별하고, 실제 계층을 확인한 뒤 필요한 배경 개체만 조정한다. native scalar 지도에서는 바다 투명화를 하지 않는다. scalar 면은 불투명 바탕·육지·수역 채움 뒤, 지리선·라벨 앞에 native로 그려지며 map viewport clip을 따른다.
 - 전용 대지에 완성 폭을 맞추면 `xMm:0,yMm:0` 등 실제 배치를 명시해 기본 오프셋 잘림을 막는다. 여백은 대지 치수에 포함하고 원점 포함 world bounds 네 변을 확인한다. 요청 종횡비는 **지도 창**에 적용하며 빈 대지 여백/비등방 왜곡으로 충족시키지 않는다. 도법/범위 때문에 불가능하면 미충족을 알린다.
 - `verifiedIds`는 현재 바탕의 조회 feature ID(countryId 필드: 국가 또는 등록 행정구역), islandPolicy는 all/mainOnly/excludeIslands, borderStyle은 none/solid/dashed다. `styleProfile:"kice"`의 경계는 검정, 단순 선택 음영은 `highlightFill:"#AAAAAA"`를 기본으로 한다. 선폭을 미지정한 앱의 자동값은 최종 판독을 보증하지 않는다. 지도 공통 원칙에서 역할별 시작값을 골라 생성하고, 작은 지도라는 이유만으로 해안·국경·틀을 모두 가늘게 만들지 않는다. 명시한 `boundaryStrokePt`는 크기를 바꿔도 보존된다. 새 지도의 바다색은 지도 공통 지침에서 선택한 값을 `oceanFill`로 명시하고, 기존 지도 수정에서는 원래 값을 유지한다. `viewportPolicy:"source"|"kice-world"`는 명시 crop을 보존한다. `graticulePolicy:"source"|"major"|"none"`은 현재 스키마에서 지원할 때만 쓴다. major는 바탕에 있는 주요 위경선을 활성화하지만 `layers.graticule:false`가 명시되면 숨김이 우선한다. 없는 위경선을 새로 만든다는 뜻은 아니다. `layers:{역할:true|false}`는 실제 roles에만 사용하고 생략은 원가시성 유지다. internal-border 가시성과 borderStyle을 구별한다. Source sidecar의 `stylePolicy[objectId]:"preserve"|"profile"`은 지정된 source object의 의미 있는 sea/coast/boundary 스타일을 프로필이 덮어쓸지 제어한다. `preserve`는 해당 원본의 프로필 재스타일을 막고, 명시적인 사용자 oceanFill/boundary 색·폭은 우선한다. River, plate-boundary, movement 및 thematic 주제 선폭은 이 경계 기본값으로 정규화하지 않는다. 하천의 개별 `riverStyle`은 live schema에 있을 때만 사용하며, 그 필드별 명시값과 source preserve 정책을 확인한다. 하천을 강조하려고 전체 경계선 폭을 바꾸지 않는다.
 - 해안선이 세밀한 작은 지도에서 시각 원칙에 따라 더 가는 폭을 선택했다면 그 값을 native map spec의 `boundaryStrokePt`에 명시해 갱신한다. 검정색은 유지하고 실제 출력 폭을 확인한다. 이 필드는 경계 공통 폭이므로 특정 역할만 다른 폭이 꼭 필요한 경우에만 미지원 부분을 보충한다. 관리 중인 원경로를 직접 스타일링해 지리 binding을 깨거나, 지원되는 전체 경계 폭 조절을 위해 지도 선 전체를 복제하지 않는다.
@@ -33,34 +32,6 @@ preserve는 수동 스타일·고정 위치·부분 detach를 존중하며 미�
 
 프로필은 요청값 → 저장된 명시값 → 기본값 순이며 저장 spec의 `styleProvenance`가 explicit/automatic을 구별한다.
 
-## 통계 scalar 등치면·단계 색칠과 공통 비교
-
-국가별 단계 구분도는 실제 `thematic` 스키마가 `labelContent`를 지원할 때 자료의 의미에 따라 `"none"`(등급·색만 읽히게 할 때 국가 라벨과 인출선 생략), `"label"`(지칭만), `"label-value"`(지칭과 값)를 선택한다. `"none"`도 records/값/등급색/범례/`displayNote`를 유지하며 기본값으로 강요하지 않는다. 생략은 기존 label+value/missing 표시를 보존한다. 원자료의 값·등급·단위를 지우지 않는다. `records[].labelOffsetMm:{x,y}`를 지원하면 지리 앵커에서 최종 출력 mm만큼 떨어진 문자 잉크 중심을 지정할 수 있다. 생략은 자동 배치다. 자동 지시선이 어색하면 해당 record의 오프셋을 source update로 고쳐 라벨과 선을 함께 재생성한다. overlay 라벨은 지원되는 `offsetMm`/`placement`를 사용한다. 관리 자식이나 선만 직접 이동하여 자료 갱신을 막지 않는다. 현재 명시 오프셋은 해안 밖 빈 면을 검사하며, 지형·다른 문자와 충돌하면 오류를 무시하지 말고 위치를 다시 정한다. 다른 국가를 관통하는 인출선 여부는 AI가 이미지로 판단한다. 폭 변경 후에도 물리 오프셋·글자 크기와 지리 연결을 확인한다.
-
-실제 schema가 `thematic.legend.positionMm:{x,y}`를 지원하면 범례의 왼쪽 위를 **지도 창 원점 기준 출력 mm**로 지정한다(+x 오른쪽, +y 아래). `placement:"below"`·`gapMm`은 기본 위치용으로 유지하며 명시 위치가 우선한다. 생략하면 기존 아래 배치다. 우측 보조 칸 등 적절한 위치는 AI가 지도·삽입 지도·문자의 실제 외곽을 보고 정한다. 지도 폭을 바꿔도 이 물리 좌표는 자동 비례 확대되지 않으므로 다시 검수한다. 범례 그룹을 수동 이동하는 대신 이 source 필드를 사용하고, 값·범례 문구를 바꿔도 연결·배치가 유지되는지 확인한다. 다른 종류의 범례에 같은 필드를 추정해 보내지 않는다.
-
-연결 앱의 실제 `vectora://production/map/schema`가 `TemplateMapSpec.scalar`를 노출할 때만 native scalar를 사용한다. `scalar`는 `schema`, `id`, `grid`, `scale`, `interpolation`, `missing`, `legend`를 보존한다. `grid`의 `crs`, `registration`, `longitudes`, `latitudes`, `rowOrder`, 2차원 숫자/null `values`, `quantity`, `unit`, `provenance`를 그대로 전달한다. 좌표·행·값을 자동 정렬, 역전, 재표본화, 변환하지 않는다. `provenance.kind`의 `provided`와 `hypothetical`은 같은 이름의 task `dataSource`로 자동 연결한다.
-
-live schema가 `scalar.paintDomain`을 지원하면 바다까지 관측값을 나타낼 때 `"all"`(생략 기본), 육지에만 채색하고 바다는 비워둘 때 `"land"`를 선택한다. `land`는 검증된 지도 육지·수역 면으로 등치면 채색만 잘라 내며 격자의 바다 노드·null·보간·척도는 바꾸지 않는다. 같은 map source의 값·범위·크기 변경으로 함께 재계산하게 하고 흰 바다 덮개를 별도 배치하지 않는다. 검증된 면 기하가 없는 양식이나 빈 육지 범위가 거절되면 적합한 등록 양식을 선택하며, `all`로 조용히 바꾸거나 누락 자료를 만들지 않는다. 미지원 앱에서는 필요한 보충과 이후 범위 편집 시 재생성 한계를 명시한다.
-
-연속 분포의 육지에서 격자·해안 불일치로 생긴 작은 흰 틈을 없애야 하고 실제 결측 자체가 문제 단서가 아니면, live schema의 `scalar.missingPaint:"nearest-band"`를 사용한다. `paintDomain:"land"` 또는 `renderDomain:"selected"`의 검증된 육지에만 가까운 유효 구간의 색을 연장하며 원격자·null·수치·등치선은 그대로다. 바다·호수까지 채우거나 격자값을 복원한 것으로 해석하지 않는다. 생략/`"skip-cell"`은 기존 결측 표시다. 보완 범위를 제작 기록에 남기고 실제 JPEG의 해안·섬·빈틈을 확인한다. 유효 표본이나 검증된 면이 없어 거절되면 임의 사각형으로 덮지 않는다.
-
-제공된 `scale.thresholds`와 `bands`의 순서·ID·색·라벨을 유지한다. `interpolation`은 `linear-triangles-sw-ne`, `missing`은 `skip-cell`이며 null은 0이 아니다. 고도/DEM, 임의 CRS, 자동 구간 추정과 다른 정량 지도층을 섞지 않는다. cell-centered raster를 node grid인 척 그대로 넘기지 않는다. 변환이 필요하면 원자료 geotransform의 각 픽셀 중심 위경도를 명시 노드로 추출하고 값·결측을 보존하며, 새 노드 사이 보간이라는 해석과 원 해상도를 기록한다. 시점은 사용자가 준 패널 라벨·캡션에 두고 grid에 없는 시점 필드를 만들지 않는다.
-
-live schema가 `scalar.contours`를 지원하면 `mode:"lines"`는 선만, `"both"`는 기존 등치면과 선을 함께 만든다. 생략은 기존 등치면이다. 선은 같은 `scale.thresholds`·보간·결측 정책을 사용하므로 별도 임계값이나 DEM을 만들지 않는다. `domain:"all"`은 바다 포함, `"land"`는 검증된 전체 육지, `"selected"`는 `featureObjectIds`로 선택한 육지다. 회색 강조 국가 목록인 `verifiedIds`를 선택 영역으로 오인하지 않는다. `featureObjectIds`나 등치선 domain만으로 주변국의 공유 해안까지 제거되지는 않는다. 한 국가만 남기는 경우 live 계약에 `renderDomain:"selected"`가 있으면 등록 육지 ID를 `featureObjectIds`에 주고 이 모드를 사용한다. 바탕·외곽·등치면·등치선을 같은 선택 영역으로 제한하며 섬과 내부 수역은 보존한다. 미지원 앱에서 주변국 선이 남으면 적합한 바탕을 선택하거나 미충족으로 알리고 흰 사각형으로 덮어 성공 처리하지 않는다. 선의 domain과 면의 `paintDomain`은 별개이므로 둘을 함께 확인한다. 미지원 앱에서는 필요한 선·라벨만 보충하고 이후 재조판 한계를 밝힌다.
-
-등치선의 `strokePt`는 해안·보조선과 읽기 위계를 보고 정한다. live schema가 `scalar.contours.stroke`를 지원하면 명시한 회색 `#RRGGBB`로 외곽과 구분할 수 있고, 생략하면 기존 검정이다. `labels.show` 기본은 숫자 표시이며 원 단위를 별도로 읽히게 한다. 생성기가 실제 문자와 작은 흰 받침을 함께 배치한다. 숫자가 겹치거나 해안에 너무 붙으면 `labels.positions:[{value,ratio}]`로 해당 값의 가장 긴 가시 선 위 위치만 조정한다(ratio0~1). 관리 자식 숫자를 직접 끌어 연동을 끊거나 값·격자를 바꾸지 않는다. 라벨 공간 부족 경고가 있으면 폭·범위·숫자 위치를 검토하며 필요한 숫자를 조용히 생략하지 않는다. 폭·범위·원자료를 수정한 뒤 선과 숫자가 함께 갱신되고 서로 가리지 않는지 실제 JPEG로 확인한다.
-
-작은 등치선에 숫자를 넣기 어려우면 live schema의 `labels.callouts:[{id,value,positionMm:{x,y},anchor:{fragmentIndex,ratio}}]`를 사용할 수 있다. `positionMm`는 frameMm과 같은 지도 로컬 mm 좌표의 **실제 숫자 획 중심**이며 위경도나 프레임 비율이 아니다. `fragmentIndex`는 현재 가시 조각의 길이순 0부터, `ratio`는 그 조각을 따른 0~1 위치다(생략하면 가장 긴 조각의 가운데). 같은 값의 inline 숫자는 대체되며 `labels.positions`와 중복 지정하지 않는다. 격자·범위·투영 변경 후 실제 선에서 연결점을 다시 계산하지만, 고정한 숫자 위치와 조각 순위는 새 지리 형태에 적합한지 AI가 재검수한다. 사라진 등치값/조각의 unresolved 경고와 숨겨진 라벨을 성공으로 처리하지 않는다. 물리 8pt 숫자·작은 흰 받침·지시선 흰 테두리는 관리 개체에 유지하고 직접 자식 개체를 옮기지 않는다.
-
-광역 분포의 명시적 일반화가 적절할 때만 `scripts/generalize_scalar_grid.py 원격자.json 표시격자.json --sigma-km 값`을 선택해 쓴다. 이 도구는 지역의 규칙적인 위경도 격자에서 거리·면적을 반영한 가중 평균을 만들며 원본·좌표·원래 결측을 보존한다. 출력 JSON과 변환 기록을 함께 보존하고, 표시격자를 선과 면의 공통 입력으로 사용한다. 강도는 고정하지 않고 최종 인쇄상 약0.5–1.5mm에 해당하는 거리부터 비교하되 작은 극값이 문제 단서이면 사용하지 않는다. 표시 값이 원시 값과 같다고 보고하거나 새 등치선에 예전 지시선 앵커를 재사용하지 않는다.
-
-범례는 native 편집 가능한 UND 8pt다. `legend.maxWidthMm`가 있으면 실측 줄바꿈만 허용하고 글자 축소·절단은 하지 않는다. `highLabel`/`lowLabel`과 제목·구간 라벨을 보존한다. `widthMm`/`frameMm`은 계속 지도 viewport 치수이며, 오른쪽 범례의 실측 전체 경계는 별도로 계산한다.
-
-지도 아래의 짧은 가로 범례는 live 계약이 지원하면 `scalar.legend.orientation:"horizontal"`을 쓴다. 낮은 값부터의 band 순서와 원자료 연결을 유지하며 항목 단위 줄바꿈·실제 잉크 중심 정렬을 이용한다. `maxWidthMm`는 지도 창 폭 안에서 정하고 제목·범례 문구를 바꾼 뒤에도 실제 가로 중심과 전체 폭을 확인한다. 생략은 기존 세로 목록이다. 이 항목형 범례를 구간 경계에 숫자가 붙은 연속 색띠와 혼동하지 않으며, 연속 색띠가 요구되면 해당 지원 여부를 따로 확인한다.
-
-같은 척도를 쓰는 비교는 새 recipe를 만들지 않고 기존 isoline-map 자식들을 composition으로 묶는다. owner의 `composition.sharedScalar`가 quantity·unit·scale·legend의 유일한 편집 원본이며, `bindings[].target.childIds`는 stable composition child ID 경로다. 각 대상 map의 `scalar.scale`, `grid.quantity`, `grid.unit`은 owner와 일치하는 캐시이고 local `scalar.legend.placement`는 `none`이다. 격자와 값은 패널별로 독립 유지하며 척도·단위·범례를 자식별로 다시 편집하거나 복사하지 않는다.
-
-native `composition.sharedScalar`가 공통 범례의 단일 소유자다. `production_plan`으로 범례를 한 번 측정하고, 사용자가 요청한 row/column 배치에서 지도 viewport·실제 8pt 라벨·지리 라벨·범례와 간격·패널 간격·캡션을 포함한 전체 bounds가 폭 예산에 들어가는지 확인한다. 패널 지도 viewport는 같은 물리 크기와 aspect ratio를 유지한다. `legend.maxWidthMm`는 측정된 줄바꿈 폭만 제한하며, UND 8pt는 고정한다. `widthMm`/`frameMm`은 지도 viewport 치수로 유지한다.
-
 - live map schema가 `overlays[].leaderHaloPt`를 제공하면 색칠된 바탕 위 자동 지시선의 흰 테두리를 그 속성으로 조정한다(한쪽 추가 폭, pt). KICE 미지정은 가시 회색 면을 지나는 선에0.25pt씩, 0은 해제, 양수는 명시 적용이다. 검정 본선과 같은 경로·소유 관계를 유지하므로 별도 어긋난 흰 선을 만들지 않는다. 지명 이동·자료 갱신·재열기 뒤 연결 끝점과 실제 겹침을 확인한다.
+
+국가/행정구역별 등급 자료는 `execution/modules/map-thematic-native.md`, 연속 통계 격자·등치선은 `execution/modules/map-scalar-native.md`의 해당 실행 계약을 따른다. 일반 경로/위치 지도에는 그 자료층을 추가하지 않는다.

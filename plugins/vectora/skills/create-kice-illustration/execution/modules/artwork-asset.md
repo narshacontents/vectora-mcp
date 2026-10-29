@@ -2,7 +2,7 @@
 
 아래 등록 예시는 인물 자산용이다. 장면(`scene`)에는 `execution/assets.md`의 장면 계약을 적용하고 자산 자체의 `headBounds`·`svg`를 넣지 않는다.
 
-현재 계약이 제공하면 vectora_production_plan({documentId,spec:{kind:"dialogue",...실제 지원 필드}})의 awaiting-approved-artwork 계획으로 발언 측정과 화자별 인물 크기, crop/facing/allowedAreaMm·이름·꼬리 목표를 확인한다. 선택 구도의 크기 기준이 머리인지 흉상 전체인지 구별하여 각각 headBounds 또는 실제 인물 visibleBounds를 사용한다. 특히 세로대화의 두 줄 기준은 흉상 전체 높이이며 headHeightMm로 대신하지 않는다. 과거 예제의 headWidthMm를 덧씌워 올바른 기본 계산을 무효화하지 않는다. 계획은 실제 화자 원화의 승인/생성을 대신하지 않는다.
+현재 계약이 제공하면 vectora_production_plan({documentId,spec:{kind:"dialogue",...실제 지원 필드}})의 awaiting-approved-artwork 계획으로 발언 측정과 화자별 인물 크기, crop/facing/allowedAreaMm·이름·꼬리 목표를 확인한다. 선택 구도의 크기 기준이 머리인지 흉상 전체인지 구별하여 각각 headBounds 또는 실제 인물 visibleBounds를 사용한다. 특히 세로대화의 두 줄 기준은 흉상 전체 높이이며 headHeightMm로 대신하지 않는다. 임의 headWidthMm를 덧씌워 올바른 기본 계산을 무효화하지 않는다. 계획은 실제 화자 원화의 승인/생성을 대신하지 않는다.
 
 승인 원화 등록은 현재 MCP가 제공하는 `vectora_production({documentId,expectedRevision,requestId,action:"registerAsset",asset:{id,name,rasterPath:"/absolute/path/person.png",reviewed:true,headBounds:{x,y,width,height},crop:"face"|"bust"|"full"|"prop",facing:"left"|"right"|"front"}})`를 우선 사용한다. rasterPath는 Vectora가 실행되는 머신의 실제 PNG/JPEG 파일이며 raster 또는 비어 있지 않은 svg와 함께 보내지 않는다. MCP가 안전한 파일 읽기로 크기/헤더를 확인하고 앱이 실제 dimension/alpha visibleBounds를 계산하므로 AI는 base64·width/height·visibleBounds를 직접 보내지 않는다. reviewed:true와 실제 픽셀 headBounds/crop/facing은 직접 눈으로 검수해야 하며 자동 alpha 측정은 원화 승인이 아니다. 원본 픽셀은 문서에 포함되어 이후 저장·수정이 임시 원화 경로에 의존하지 않는다. 같은 requestId의 원화 파일이 바뀌면 충돌이므로 실제 재요청의 새 requestId를 사용한다.
 

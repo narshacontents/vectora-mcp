@@ -110,7 +110,7 @@ export function copyCodexPlugin(targetRoot, platform, { id, displayName }) {
         const relative = path.relative(PLUGIN_ROOT, sourcePath).split(path.sep).join('/');
         const segments = relative.split('/');
         const base = segments.at(-1) ?? '';
-        return !segments.some((segment) => ['.git', 'node_modules', 'release', 'tests', '__pycache__'].includes(segment))
+        return !segments.some((segment) => ['.git', '.obsidian', 'node_modules', 'release', 'tests', '__pycache__'].includes(segment))
           && base !== '.DS_Store'
           && !base.endsWith('.pyc');
       },

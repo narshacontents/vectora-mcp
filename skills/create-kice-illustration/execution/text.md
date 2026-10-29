@@ -1,25 +1,28 @@
-# 문자·서체 측정과 네이티브 편집
+# 문자 측정·생성의 공통 계약
 
+1. `vectora_fonts`와 노출된 `vectora_check_font`로 실제 family/style/weight, supportsText/missingGlyphs, 부분 서식 지원을 확인한다. 누락된 UND는 임의 대체하지 않는다. colorMode가 있으면 기본 cmyk, 사용자 RGB는 rgb다. 가져오기 MISSING_FONTS이면 실제 지원되는 fontReplacements와 사용자 지정 매핑을 확인한다.
+2. `vectora_measure_text`에 최종 text·widthMm·textProfile과 필요한 명시값/범위 서식을 보내고 **생성에도 같은 선언**을 쓴다. frame·ink·baseline을 구별한다. 범위 서식 측정 미지원이면 실제 Editor에서 완성 서식을 측정한다. 옛 폰트 측정치·프레임 높이를 재사용하지 않는다.
+3. 프레임 크기 변경은 `resizeTextFrame`/생성기의 재조판으로 한다. transform.width·전체 Scale로 문자 폭을 늘이지 않는다. import 맞춤/상위 배율로 실제 pt·장평·획 규격이 달라졌다면 조판 속성을 고친다.
 
+## 스타일 API
 
-- vectora_fonts와 노출된 vectora_check_font로 위 물리 규격의 실제 family/style/weight/supportsText·missingGlyphs·문자 범위별 서식 지원을 확인한다. 스키마에 있는 인자만 전송한다. colorMode가 있으면 기본 cmyk, 사용자 RGB면 rgb. 열기/가져오기에서 MISSING_FONTS면 목록과 설치 폰트를 확인하고 실제 fontReplacements 지원 시 명시 선택 매핑으로 재시도한다. UND 대체에는 사용자 지시가 필요하다.
+등록 ID·실제 수치는 `vectora://capabilities`의 `textProfiles.catalog`에서 읽는다. 실제 스키마가 지원하는 아래 경로만 쓴다.
 
-- vectora_measure_text는 라이브 스키마를 확인한 뒤 실제 text,widthMm, 선택한 textProfile과 명시적 덮어쓰기(fontPt·tracking·leadingPercent·horizontalScale), 지원되는 글꼴 범위 서식을 보낸다. 생성에도 같은 값을 명시해 도구 기본값으로 돌아가지 않게 한다. horizontalScale은 mm/px 단위 모드와 무관한 백분율이며 0.95가 아니다. 명시적인 부분 크기나 허용된 장식 문자 예외가 있으면 그 실제 fontPt로 따로 측정한다. 실제 선택한 UND 계열 혼합 서식의 측정 결과로 frame/ink/baseline을 구분한다. 도구가 범위별 서식을 측정하지 못하면 실제 Editor에서 완성 서식을 재측정한다. 이전 폰트의 측정치나 프레임 높이는 재사용하지 않는다. 프레임 변경은 resizeTextFrame/실제 재조판; transform.width나 전체 Scale로 글자를 늘이지 않는다. 획 하한/자동 import 맞춤/상위 배율로 규격이 바뀌면 실제 속성을 교정한다.
+| 경로 | 스타일·크기·자간 |
+|---|---|
+| 일반 add/style/textRange | `values.textProfile`, `fontSize`, `charSpacing` |
+| production rich text / measure spec | `textProfile`, `fontPt`, `tracking` |
 
-- 프로필이 지원되는 앱에서는 `vectora://capabilities`의 `textProfiles.catalog`에서 등록 ID·실제 수치·검증 상태를 확인한 뒤 일반 `style`·`textRange`·`add`의 `values.textProfile`, production의 rich text와 measure의 `spec.textProfile`로 선택한다. 해당 API의 실제 스키마를 확인한다. 일반 add/style의 물리 크기는 `fontSize`, 자간은 `charSpacing`이고, production/measure는 `fontPt`·`tracking`이다. 행간은 두 경로 모두 `leadingPercent:130`처럼 백분율로 전달하며 `1.3`이나 pt 값을 보내지 않는다. 이름이 비슷해도 서로 바꿔 보내지 않는다. 명시 fontPt·장평·자간·범위 서식은 프로필 기본값보다 우선한다. 기존 값을 함께 보내면 새 프로필을 덮을 수 있으므로, 변경하려는 자동 기본값까지 옛 수치로 복사하지 않는다. 새 프리셋을 적용하면 저장된 행간 비율을 사용하고, 크기만 바꾸면 현재 비율을 보존한다. 이전 크기에서 계산한 pt 행간을 함께 보내지 않는다. 부분 범위에 프로필을 적용할 때는 글자 속성만 바꾸고 문단 행간을 일괄 교체하지 않는다. 셀은 독립 글상자이므로 셀별 프로필·행간을 지정한다. 측정과 생성에 같은 선언을 보내며 이후 감사·재열기에서 실제 물리 크기와 대조한다.
+- 양쪽 모두 행간은 `leadingPercent:130`처럼 **백분율**이다(1.3이나 pt 아님). horizontalScale도 백분율이며 0.95가 아니다. 명시값은 프로필보다 우선하므로 새 프로필로 바꿀 때 옛 자동값을 덮어쓰기 값으로 복사하지 않는다.
+- 프리셋을 바꾸면 저장된 비율, 크기만 바꾸면 현재 비율을 유지한다. 부분 프로필은 글자 속성만 변경하며 다른 범위의 문단 행간을 바꾸지 않는다. 셀은 독립 글상자라 셀별 행간을 지정한다.
+- 두 줄 이상이면 lineMetrics의 기준선 간격이 `fontPt × leadingPercent / 100`인지 확인한다. 부분 큰 글자에도 문단 기준 크기는 유지된다. 큰 기호/박스의 TEXT_LEADING_REVIEW·TEXT_LEADING_OVERFLOW는 실제 ink bounds와 함께 해결한다. 기존 lineHeight 배수는 같은 계산이라고 가정하지 말고 측정한다. 세로쓰기·기존 문서 방식을 요청 없이 바꾸지 않는다.
+- 세로 글상자는 실제 글 크기·잉크를 반영한 기본 셀 간격, 행간은 열 간격이다. 글자 사이를 줄이려고 음수 자간으로 띄어쓰기까지 줄이지 않는다. 공백·반칸·세로 단위 묶음을 유지한다.
 
-- Fabric 직렬화형 `styles` 배열의 `start/end`는 grapheme 인덱스이며 개행 문자는 세지 않는다. 배열 항목은 `{start:0,end:N,style:{glyphRole:"kice-main-prose-v1"}}`처럼 서식을 `style` 안에 둔다. `glyphRole`·`fontSize` 등을 `start/end`와 같은 층에 놓지 않는다. 다른 부분 서식과 겹치면 범위를 분할하고 각 `style` 속성을 합친다. 범위는 오름차순·비중첩이어야 한다. `underlines`와 `textRange`는 논리 grapheme 인덱스를 사용하므로 계약을 섞지 않는다. production `underlines` 범위는 강제 개행을 넘지 않는다. 일반 `textRange` 부분 서식은 해당 경로의 인덱스 계약에 따라 여러 문단에 적용할 수 있다.
-- `leadingPercent`로 지정한 행간이 `fontPt × leadingPercent / 100`의 실제 기준선 간격인지 두 줄 이상의 `lineMetrics`로 확인한다. 가로 프레임의 부분 글자 크기를 바꿔도 문단 비율과 기준 크기는 유지한다. 큰 기호·인라인 박스가 겹치면 `TEXT_LEADING_REVIEW`/`TEXT_LEADING_OVERFLOW`·실제 ink bounds를 확인해 공간 또는 명시 행간을 조정하고 경고를 숨기지 않는다. 기존 배수 방식의 `lineHeight`는 `fontPt × lineHeight`가 실제 간격이라고 가정하지 않고, 실측 간격의 비율로 조정·재측정한다. 세로쓰기나 기존 문서의 방식은 요청 없이 바꾸지 않는다.
-- 새 세로 글상자는 글자 크기와 실제 잉크 높이를 반영한 기본 셀 간격을 사용하고, 행간은 열 사이 간격으로 유지한다. 글자 사이가 넓다는 이유로 전체 자간을 음수로 낮춰 띄어쓰기까지 줄이지 않는다. 일반 공백·반칸 공백·세로 단위 묶음을 원문대로 유지하며 실제 출력에서 글자와 공백을 따로 확인한다.
-- 문자 모양은 라이브 스키마가 지원할 때 `textRange.values.glyphRole` 또는 native rich-text의 해당 문자 `styles`에 지정한다. 돋움·바탕 제목의 ASCII `< >`에는 `"kice-title-brackets-v1"`을 해당 괄호 범위에만 사용한다. 양쪽 서체의 실제 4개 면에 적용되며 수학 부등호에는 사용하지 않는다. 기존 Main Regular의 `"kice-main-symbols-v1"` 서식은 해당 범위에서 보존한다. 돋움 연속 본문에는 `"kice-main-prose-v1"`(본문용 숫자·기호)을 해당 본문 범위에 지정한다. 대화의 발언은 `turns[].richText.styles`에 적용하며 발언의 `text` 문자열만 넣으면 이 서식이 자동 지정된다고 가정하지 않는다. 본문을 추가·교체할 때 범위 끝도 최종 원문에 맞춘다. 돋움의 실제 4개 면에서 숫자와 기호 모양을 유지하며 바탕에는 적용하지 않는다. 수식·자료 라벨과 한 범위로 묶지 않는다. 해제는 `"default"`이며 UI의 **문자 모양**과 같다. 같은 범위 서식을 측정·생성·저장에 유지한다. 기본 표·축 숫자와 ABC를 본문 역할로 일괄 바꾸지 않는다. 미지원 앱에서는 role 값을 추측하거나 전각/CJK/PUA로 원문을 치환하지 않는다.
-- 생성기의 제목·범례처럼 **문자열만 받는 필드도 문자 모양 적용 대상**이다. rich-text 범위를 함께 전달할 수 없으면 생성된 제목/본문의 실제 ID를 확인해 위의 필요한 역할 서식을 첫 조판에 포함한다. 생성기가 자동 적용한다고 가정하거나 JPEG 검수 후의 반복 보정으로 미루지 않는다. 자료 수정 뒤에도 원문과 해당 범위 서식이 보존되는지 확인한다.
-- `scripts/prepare_prose.mjs`는 Fabric 직렬화 서식 배열을 line/character map으로 변환해야 할 때만 선택적으로 쓴다. 매 산문 제작의 필수 단계가 아니며 글꼴을 자동 지정하지 않는다. 원문을 수정하면 새 문자열에 맞춰 범위를 갱신하고 예전 위치 인덱스를 복사하지 않는다.
-- 커서 기준 문단 들여쓰기가 필요한 경우, 라이브 `vectora_apply`에 `paragraphIndent`가 노출되면 `{type:"paragraphIndent",id:<글상자 ID>,at:<논리 grapheme 커서 위치>,action:"set"}`를 쓴다. `at`은 화면 줄의 번호나 UTF-16 코드 단위 위치가 아니라 실제 저장 문자열의 커서 인덱스다. 고정 공백·인라인 박스 조판 이후의 실제 문자열로 계산하고, 선택한 장평·자간·부분 서식을 포함한 커서 x는 앱이 측정한다. 해제는 같은 문단의 `at`에 `action:"clear"`다. 지원되는 가로 왼쪽/양쪽 정렬에서 사용하며 다른 정렬을 몰래 바꾸지 않는다. production 소유 글상자에서도 후속 본문 수정·저장·재열기에 들여쓰기가 유지되는지 확인한다. 미지원 앱에서는 공백으로 흉내 내거나 필드 이름을 추측하지 않는다.
-- 첫 줄 들여쓰기·고정 본문 열은 라이브 스키마의 `paragraphLayout` 지원을 확인한 뒤 `{type:"paragraphLayout",id,at,firstLineIndentMm}` 또는 `prefix:{end,bodyStartMm}`로 지정한다. `at`과 `end`는 원문 논리 grapheme 위치이며 `end`는 접두부·뒤 공백 다음 본문 첫 글자다. 치수는 **글상자 로컬 mm**로, 첫 줄 0–100mm·본문 열 0 초과–100mm이고 음수는 지원하지 않는다. 접두부와 본문 첫 글자가 실제로 들어가는 열을 측정해 선택한다. 생성·측정용 rich text는 `paragraphLayouts:[{paragraphStart,firstLineIndentMm?,spaceAfterPt?,prefix?}]`를 함께 보내며, 현재 공개 스키마에 없는 경로에는 전송하지 않는다. `prefix:null`은 접두부 고정만, `action:"clear"`는 이 문단 배치를 해제한다. 기존 커서 들여쓰기가 함께 있으면 후속 행은 그 커서 앵커가 우선하므로 의도하지 않은 중복 설정을 남기지 않는다.
+## 필요한 경우에만 읽을 계약
 
-- 문단 간격은 live `paragraphLayout.spaceAfterPt` 지원 시 원문 문단 시작 위치 `at`에 지정한다. 값은 단위 모드와 무관한 pt이며 기본0, 음수는 쓰지 않는다. 해당 문단의 마지막 표시 줄과 바로 다음 비어 있지 않은 문단의 첫 줄 사이에만 더해지며 자동 줄바꿈 내부·빈 문단·마지막 문단 뒤에는 더하지 않는다. 생성·측정에는 같은 `paragraphLayouts`를 전달하고, 기준선 차이·본문 편집·저장/재열기로 보존을 확인한다. 전체 문단 배치를 지우는 clear 대신 간격만 없앨 때는 `spaceAfterPt:0`을 지정해 들여쓰기·접두부를 유지한다.
+- 부분 서식·본문용 글리프·제목 괄호: `execution/text-ranges.md`. 문자열만 받는 제목/범례도 필요하면 생성된 실제 문자 ID에 적용한다.
+- 문단 들여쓰기·항목 고정·문단 뒤 간격·각주: `execution/paragraphs.md`.
+- 회색 면의 흰 윤곽·선 위 흰 받침: `execution/text-effects.md`.
+- SVG 문자 가져오기: 실제 한 글상자인지 검사하고 분리됐으면 전체 원문·개행·범위 서식으로 네이티브 글상자를 재구성한다. 줄별 text/tspan 그룹·별도 밑줄 선을 완성본으로 남기지 않는다. pattern/textPath/filter/mask 보존도 실제로 확인하며, 필요한 그래픽만 선·원·clip으로 보충하고 본문/밑줄을 도형화하지 않는다. 화살촉은 실제 끝과 스키마 허용값을 확인한다.
 
-- 여러 줄 텍스트는 Vectora의 **한 글상자 안에서 개행·자동 줄바꿈**으로 제작한다. SVG의 줄별 `<text>` 생성·그룹화는 금지하며, 단일 `<text>`/`tspan`도 가져온 뒤 실제로 하나의 글상자인지 확인한다. 분리되면 전체 원문·개행·범위 서식을 한 네이티브 글상자로 재구성한다. production 결과도 같은 기준으로 검사하며 줄 수만큼의 글상자나 별도 밑줄 선을 완성본으로 남기지 않는다. SVG pattern/textPath/filter/mask 보존을 가정하지 않고 실제 선·원+clip 등 편집 구조로 구현하되 본문이나 밑줄을 도형으로 대체하지 않는다. 화살촉은 실제 끝, `arrow-3` 등은 현재 스키마 허용값 확인. 단순 자동 audit가 시각 품질·의미를 인증하지 않는다.
-
-- 회색 바탕의 문자 윤곽은 live style의 `vectoraTextHaloWidth`를 사용한다. mm-pt 모드에서 **실제로 보이는 바깥 흰 폭**을 pt로 받으므로 기본0.7를 그대로 지정하고 2배로 보내지 않는다. 지도 `haloMm`은 전체 stroke 폭이므로 같은 효과에는 약0.49mm가 대응한다. 배경이 없는 글에는 일괄 적용하지 않는다.
-- 선 위 문자에는 live add/style schema가 제공하는 `values.vectoraTextBackingPadding`을 우선한다. 기본 mm-pt 단위 모드에서 pt로 전달하며 0은 해제다. 약0.5pt부터 실제 글 획 주변의 작은 흰 배경을 확인한다. 이는 글자 사이까지 덮는 객체 연결 효과이며 글상자 전체 채움이나 `vectoraTextHaloWidth`(글자 윤곽)와 다르다. 생성기로 만든 문자도 실제 id에 적용하고, 내용 변경·재조판·재열기 뒤 유지되는지 확인한다. production spec에 없는 속성을 추측해 넣지 않는다. 미지원 앱에서만 실제 잉크를 측정한 별도 흰 받침을 보충하고, 편집 후 받침도 맞춘다.
+스키마에 없는 기능은 추측 호출하지 않는다. 기술 검사 성공은 시각 합격이 아니다.

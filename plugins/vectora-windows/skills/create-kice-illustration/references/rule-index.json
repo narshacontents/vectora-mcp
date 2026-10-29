@@ -13,6 +13,162 @@
     "ITC_Fixed": "references/families/ITC_Fixed.md"
   },
   "recipeAliases": {
+    "table": {
+      "subtype": "D1-01_Flat"
+    },
+    "cross-table": {
+      "subtype": "D1-03_Cross"
+    },
+    "bar": {
+      "subtype": "D2-01_Bar"
+    },
+    "stacked-bar": {
+      "subtype": "D2-02_StackedBar"
+    },
+    "mosaic": {
+      "subtype": "D2-08_Others"
+    },
+    "ternary": {
+      "subtype": "D2-08_Others"
+    },
+    "pie": {
+      "subtype": "D2-03_Pie"
+    },
+    "line": {
+      "subtype": "D2-04_Line"
+    },
+    "scatter": {
+      "subtype": "D2-05_Scatter"
+    },
+    "dot": {
+      "subtype": "D2-06_Dot"
+    },
+    "dumbbell": {
+      "subtype": "D2-06_Dot"
+    },
+    "radar": {
+      "subtype": "D2-07_Radar"
+    },
+    "curve": {
+      "subtype": "D3-01_Curve"
+    },
+    "frontier": {
+      "subtype": "D3-02_Frontier"
+    },
+    "distribution": {
+      "subtype": "D3-03_Distribution"
+    },
+    "tree": {
+      "subtype": "D4-01_Tree"
+    },
+    "network": {
+      "subtype": "D4-02_Network"
+    },
+    "flowchart": {
+      "subtype": "D4-03_Flowchart"
+    },
+    "venn": {
+      "subtype": "D4-04_Venn"
+    },
+    "timeline": {
+      "subtype": "D4-05_Timeline"
+    },
+    "schematic": {
+      "subtype": "D4-06_Schematic"
+    },
+    "photo": {
+      "subtype": "photo-original"
+    },
+    "portrait": {
+      "subtype": "illustration-portrait"
+    },
+    "object": {
+      "subtype": "illustration-object"
+    },
+    "scene": {
+      "subtype": "illustration-scene"
+    },
+    "locator-map": {
+      "subtype": "I3-11_Locator"
+    },
+    "topographic-map": {
+      "subtype": "I3-12_Topographic"
+    },
+    "old-map": {
+      "subtype": "I3-13_OldMap"
+    },
+    "area-map": {
+      "subtype": "I3-21_Area"
+    },
+    "route-map": {
+      "subtype": "I3-22_Route"
+    },
+    "symbol-map": {
+      "subtype": "I3-23_Symbol"
+    },
+    "choropleth": {
+      "subtype": "I3-31_Choropleth"
+    },
+    "dot-map": {
+      "subtype": "I3-32_Dot"
+    },
+    "proportional-map": {
+      "subtype": "I3-33_Proportional"
+    },
+    "isoline-map": {
+      "subtype": "I3-34_Isoline"
+    },
+    "flow-map": {
+      "subtype": "I3-35_Flow"
+    },
+    "vertical-dialogue": {
+      "subtype": "ITA-4_DialogueV",
+      "people": true
+    },
+    "horizontal-dialogue": {
+      "subtype": "ITA-3_DialogueH"
+    },
+    "presentation": {
+      "subtype": "ITA-2_Solo"
+    },
+    "messenger": {
+      "subtype": "ITA-4_DialogueV",
+      "features": [
+        "messenger"
+      ]
+    },
+    "newspaper": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "newspaper"
+    },
+    "screen": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "screen"
+    },
+    "paper": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "paper"
+    },
+    "scroll": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "scroll"
+    },
+    "board": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "board"
+    },
+    "worksheet": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "worksheet"
+    },
+    "webpage": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "screen"
+    },
+    "teacher-board": {
+      "subtype": "ITA-5_SoloBoard",
+      "variant": "board"
+    },
     "place": {
       "subtype": "ITC-3_Place"
     },
@@ -169,6 +325,18 @@
     "projection-screen": {
       "subtype": "ITA-1_TypeBoard",
       "variant": "scroll"
+    },
+    "image-board": {
+      "subtype": "ITB-1_ImageBoard"
+    },
+    "figure": {
+      "subtype": "ITC-1_Figure"
+    },
+    "costume": {
+      "subtype": "ITC-4_Costume"
+    },
+    "original-person": {
+      "subtype": "ITC-2_RealPhoto"
     }
   },
   "modules": {
@@ -264,7 +432,9 @@
     "continuous-graph-api": "execution/modules/continuous-graph-api.md",
     "surface-graph-api": "execution/modules/surface-graph-api.md",
     "frame-decoration-native": "execution/modules/frame-decoration-native.md",
-    "pattern-library": "components/pattern-library.md"
+    "pattern-library": "components/pattern-library.md",
+    "map-thematic-native": "execution/modules/map-thematic-native.md",
+    "map-scalar-native": "execution/modules/map-scalar-native.md"
   },
   "subtypes": {
     "D1-01_Flat": {
@@ -593,7 +763,8 @@
         "map-statistics",
         "map-area",
         "map-runtime",
-        "map-review"
+        "map-review",
+        "map-thematic-native"
       ]
     },
     "I3-32_Dot": {
@@ -633,7 +804,8 @@
         "map-natural",
         "map-statistics",
         "map-runtime",
-        "map-review"
+        "map-review",
+        "map-scalar-native"
       ]
     },
     "I3-35_Flow": {

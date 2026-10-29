@@ -44,7 +44,10 @@ test('vertical characters, messenger and original photographs select different d
 });
 test('text conditions and native half spaces are selected for the actual material',()=>{
  const r=prepareTask({units:[{recipe:'newspaper',contains:['underline','inline-box']}]});
- for(const s of ['inlineTextBox','textRange','U+2002','U+0020','ASCII','『』','UND v3.0 Body'])assert.ok(all(r).includes(s),s);
+ for(const s of ['inlineTextBox','textRange','U+2002','U+0020','UND v3.0 Body'])assert.ok(all(r).includes(s),s);
+ assert.ok(r.onDemand.some(item=>item.path==='core/symbols.md'));
+ const symbols=fs.readFileSync(path.join(skillRoot,'core/symbols.md'),'utf8');
+ for(const text of ['ASCII','『』'])assert.ok(symbols.includes(text),text);
  assert.ok(!all(r).includes('원본 인물 사진'));
  assert.throws(()=>prepareTask({units:[{recipe:'newspaper',textMode:'none',contains:['inline-box']}]}),/Text components/);
 });

@@ -1,6 +1,6 @@
 # Native 3D 곡면 실행 계약
 
-실제 실행 직전에 현재 연결된 Vectora의 `vectora://production/graph/schema`와 `vectora_production` 입력 schema를 읽어 `kind:"graph", type:"surface"` 및 이번 요청의 필드가 지원되는지 확인한다. 이 저장소의 C22 source 계약이나 예시는 설치 기능의 증거가 아니다. live schema에 surface branch가 없거나 확인할 수 없으면 native surface를 호출하지 말고 기존 편집 가능한 path/면 경로로 전환한다.
+실제 실행 직전에 현재 연결된 Vectora의 `vectora://production/graph/schema`와 `vectora_production` 입력 schema를 읽어 `kind:"graph", type:"surface"` 및 이번 요청의 필드가 지원되는지 확인한다. 저장소의 정적 계약이나 예시만으로 설치 기능을 판단하지 않는다. live schema에 surface branch가 없거나 확인할 수 없으면 native surface를 호출하지 말고 기존 편집 가능한 path/면 경로로 전환한다.
 
 ## 입력과 충실도
 
