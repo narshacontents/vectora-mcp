@@ -1,0 +1,25 @@
+{
+  "styleID": "dialogue-horizontal-2.v1",
+  "family": "dialogue",
+  "recipe": "ITA-3_DialogueH",
+  "counts": {
+    "speakers": 2,
+    "turns": 2
+  },
+  "defaultWidthMm": 96,
+  "minWidthMm": 72,
+  "maxWidthMm": 108,
+  "native": {
+    "kind": "dialogue",
+    "layout": "horizontal",
+    "horizontalOptions": {
+      "layoutVersion": 2,
+      "arrangement": "shared-row"
+    }
+  },
+  "namePlacement": "outer",
+  "speakerDefaults": {
+    "crop": "bust",
+    "portraitHeightMm": 20
+  }
+}

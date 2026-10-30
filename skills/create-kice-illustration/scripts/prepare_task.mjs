@@ -112,6 +112,7 @@ export function prepareTask(request, root=skillRoot){
  const queue=request.units.map((original,n)=>{
   if(!original?.fixedStyle)return {unit:original,n};
   const built=buildFixedStyle(original.fixedStyle);
+  if(built.requiresApprovedAssets&&(original.people===false||original.recipe==='messenger'||(original.features??[]).includes('messenger')))throw new Error(`units[${n}]: illustrated dialogue preset requires people; use the messenger recipe for text-only speakers`);
   const definition=listFixedStyles().find(style=>style.styleID===built.styleID);
   const expectedSubtype=recipeFor(definition.recipe)?.subtype;
   if(!expectedSubtype)throw new Error(`fixedStyle ${built.styleID}: unregistered semantic recipe`);
@@ -123,8 +124,8 @@ export function prepareTask(request, root=skillRoot){
    spec.children?.forEach((child,i)=>{if(child.spec)bind(child.spec,`${p}.children[${i}].spec`);});
   };
   bind(built.spec,'spec');
-  fixedStyles.push({unit:original.id||`unit-${n+1}`,styleID:built.styleID,widthMm:built.widthMm??built.spec.widthMm,geometrySignature:built.geometrySignature,content:built.content,spec:built.spec,requiresNativePreflight:true,requiresNativeFinalization:built.requiresNativeFinalization===true||Boolean(built.geometry?.nativeOverrides?.length),requiresNativeResolvedSpec:built.requiresResolvedSpec===true});
-  return {unit:{...original,spec:built.spec,specRecipes:bindings},n};
+  fixedStyles.push({unit:original.id||`unit-${n+1}`,styleID:built.styleID,widthMm:built.widthMm??built.spec.widthMm,geometrySignature:built.geometrySignature,content:built.content,spec:built.spec,requiresNativePreflight:true,requiresNativeFinalization:built.requiresNativeFinalization===true||Boolean(built.geometry?.nativeOverrides?.length),requiresNativeResolvedSpec:built.requiresResolvedSpec===true,...(built.requiresApprovedAssets?{requiresApprovedAssets:true,assetBindings:built.assetBindings}:{})});
+  return {unit:{...original,...(built.requiresApprovedAssets?{people:true}:{}),spec:built.spec,specRecipes:bindings},n};
  });
  if(fixedStyles.length)add('design','references/fixed-styles.md');
  let hasInputReview=false;

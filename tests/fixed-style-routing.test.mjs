@@ -33,7 +33,20 @@ test('content substitution preserves geometry signature and separate composite r
 });
 
 test('every registered fixed scaffold resolves through ordinary preparation without extra caller bindings',()=>{
- const catalog=listFixedStyles();assert.equal(catalog.length,28);
+ const expectedIDs=[
+  'criticism-2.v1','criticism-3.v1','judgment-2.v1','judgment-3.v1','venn-2-hatch.v1',
+  'table-2x6.v1','table-2x7.v1','table-3x3.v1','table-3x4.v1',
+  'chart-population-pyramid.v1','chart-age-population-sexratio.v1','chart-city-rank.v1','chart-season-temperature.v1','chart-supply-demand-grid.v1',
+  'form-argument-2line.v1','form-argument-1line.v1','form-ab-links.v1','form-question-2circle.v1','form-nested-rect.v1','form-timeline-5.v1','form-phone-6line.v1',
+  'venn3-only-three-bc.v1','venn3-only-two-ab-ac.v1','venn3-only-three-ac.v1','venn3-chain-triple.v1','venn2-hatch-density2.v1','venn2-hatch-density3.v1',
+  'theory-as-left-shift.v1',
+  'dialogue-horizontal-2.v1','dialogue-horizontal-3.v1','dialogue-vertical-2.v1','dialogue-vertical-3.v1',
+  'component-caption.v1','component-legend.v1','component-example.v1',
+ ];
+ const catalog=listFixedStyles(),actualIDs=catalog.map(item=>item.styleID);
+ assert.equal(expectedIDs.length,35);
+ assert.equal(new Set(actualIDs).size,actualIDs.length,'catalog IDs must not repeat');
+ assert.deepEqual([...actualIDs].sort(),[...expectedIDs].sort(),'exact catalog IDs: no missing, substituted or extra styles');
  for(const item of catalog){
   const result=prepareTask({units:[{id:item.styleID,recipe:item.recipe,fixedStyle:{styleID:item.styleID,content:exampleContent(item.styleID)}}]});
   assert.equal(result.fixedStyles[0].styleID,item.styleID);

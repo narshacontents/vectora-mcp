@@ -10,8 +10,10 @@ import {readRecipeRegistry} from '../skills/create-kice-illustration/scripts/rec
 import {skillRoot} from '../skills/create-kice-illustration/scripts/prepare_rules.mjs';
 
 test('registry preserves every pre-refactor route and representative alias contracts',()=>{
- assert.equal(Object.keys(recipes).length,72);
- assert.equal(createHash('sha256').update(JSON.stringify(recipes)).digest('hex'),'04b67ab7828b03ef0671a685829e56d6ebc1ddfadbb187ac333c65c1c7de8fce');
+ assert.equal(Object.keys(recipes).length,73);
+ assert.deepEqual(recipes['caption-frame'],{subtype:'ITA-1_TypeBoard',variant:'caption',nativeKinds:['composition']});
+ const previousRecipes=Object.fromEntries(Object.entries(recipes).filter(([name])=>name!=='caption-frame'));
+ assert.equal(createHash('sha256').update(JSON.stringify(previousRecipes)).digest('hex'),'04b67ab7828b03ef0671a685829e56d6ebc1ddfadbb187ac333c65c1c7de8fce');
  assert.deepEqual(recipes.comparison,{subtype:'D4-07_Others',features:['node']});
  assert.deepEqual(recipes['site-plan'].nativeKinds,['schematic','map']);
  assert.deepEqual(recipes.place,{subtype:'ITC-3_Place'});

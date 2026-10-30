@@ -26,7 +26,7 @@ node scripts/prepare_task.mjs --request <내부 작업조건.json> --out <내부
 ```
 
 - 기본 입력은 `recipe`, 실제 추가 요소 `contains`, 필요한 `variant`다. 독립 표·그래프·지도는 각각 unit으로 준비해 결합하고 공유 장면의 외피·인물·발언을 독립 완성 그림으로 쪼개지 않는다.
-- 표·그래프·관계도·벤 도식 등의 반복 양식에 해당하면 `node scripts/fixed_styles.mjs --list`로 등록 구조를 확인한다. 일치할 때만 unit의 `fixedStyle:{styleID,content,widthMm?}`로 선택한다. 준비 결과의 `fixedStyles[].spec`과 native preflight를 사용한다. 폭은 같은 ID의 허용 범위에서 바꿀 수 있고, 범례는 내용에 맞춰 크기가 변한다. 핵심 도형·연결은 보존하며 다른 요소 수·연결이 필요하면 일반 제작으로 명시적으로 전환한다.
+- 표·그래프·관계도·벤 도식·2/3인 대화 구도·작은 제목 상자 등의 반복 양식에 해당하면 `node scripts/fixed_styles.mjs --list`로 등록 구조를 확인한다. 일치할 때만 unit의 `fixedStyle:{styleID,content,widthMm?}`로 선택한다. 준비 결과의 `fixedStyles[].spec`과 native preflight를 사용한다. 폭은 같은 ID의 허용 범위에서 바꿀 수 있고, 말풍선과 작은 상자는 내용에 맞춰 크기가 변한다. 대화 프리셋은 인물 없는 실측 계획부터 만들고, 서로 구분되는 원화를 화자 ID로 연결한다. 핵심 도형·연결은 보존하며 다른 요소 수·연결이 필요하면 일반 제작으로 명시적으로 전환한다.
 - 실자료 검색 요청은 `dataSource:"research"`, 제공/가상/정성 자료는 각각 provided/hypothetical/qualitative로 구분한다. 인물·사진·새 원화·산문·밑줄·문단 박스·예약 등 요청 조건을 포함한다. 작은 평면 조작 아이콘만으로 artwork를 선택하지 않는다.
 - 분류가 애매할 때만 [경로 판별](references/routing.md)의 해당 항목을 읽는다. 공유 칠판/독립 대화, 비교판/절차 분기, 관측선/이론곡선, 질적 기호/비례 지도는 이름보다 자료 의미로 나눈다. 한 장면의 발언도 실제 방향의 speech-horizontal/vertical/solo를 포함한다.
 - 실제 native spec을 마련했으면 같은 unit의 `spec`으로 다시 준비해 추론된 자식·서식·미검사 경고를 대조한다. 세부 입력/충돌 해결은 [작업조건](references/task-input.md)을 필요한 경우만 읽는다. spec은 자동 변경되지 않는다.
@@ -49,10 +49,12 @@ node scripts/prepare_task.mjs --request <내부 작업조건.json> --out <내부
 
 검수한 최종본과 요청 이력 JSON을 지정 Dropbox에 저장한다. **그림별 요청/수정 1회마다 .vectora·.jpeg·.json 세 파일**을 새 기록으로 남기고 이전 기록을 덮지 않는다. 기록 실패를 납품 완료로 보고하지 않는다. 단순 로컬 쓰기와 Dropbox 원격 확인 상태를 구별한다.
 
+Vectora 앱 내 AI 채팅에서 받은 요청은 앱의 지시가 이 절의 납품·기록을 대신한다. 검수는 vectora_preview로 하고 작업 복사본에 한 번 저장하면 앱이 창에 띄우고 사용 기록을 남긴다.
+
 ## 범위
 
 앱은 측정·편집 의미·자료 연동·저장 복원, AI는 구도·우선순위·여백·다양성을 맡는다. 인간의 짧은 글/수치 편집까지 보존하되 인간의 반복 위치·폭 보정을 전제로 납품하지 않는다. 일반 제작 중 앱 코드를 고치지 않는다. 기능 오류는 재현 입력·기대/실제·위치·완료 조건을 정리해 전송 권한이 있는 지정 앱 담당 채팅에 전달하거나 사용자에게 남긴다. 오류 우회를 영구 화풍 규칙으로 만들지 않는다.
 
-외부 출제 에이전트에는 [의뢰 가이드](references/caller/exam-agent-guide.md)를 전달한다. 내부 분류는 검색/기록용이며 고정 읽기 위계나 파일 수를 요구하지 않는다.
+외부 출제 에이전트에는 유형별 내용·대응·복합 구도를 전달하는 [에이전트 의뢰 가이드](references/caller/exam-agent-guide.md)를, 사람에게 요청 방법을 안내할 때는 [사람용 요청 안내](references/caller/human-prompt-guide.md)를 사용한다. 두 문서는 호출자를 위한 것으로 일반 제작의 필수 읽기가 아니다. 내부 분류는 검색/기록용이며 고정 읽기 위계나 파일 수를 요구하지 않는다.
 
 <!-- VECTORA_CLIENT_BOUNDARY -->

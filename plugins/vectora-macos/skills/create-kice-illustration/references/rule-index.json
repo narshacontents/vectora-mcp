@@ -337,6 +337,13 @@
     },
     "original-person": {
       "subtype": "ITC-2_RealPhoto"
+    },
+    "caption-frame": {
+      "subtype": "ITA-1_TypeBoard",
+      "variant": "caption",
+      "nativeKinds": [
+        "composition"
+      ]
     }
   },
   "modules": {
@@ -434,7 +441,8 @@
     "frame-decoration-native": "execution/modules/frame-decoration-native.md",
     "pattern-library": "components/pattern-library.md",
     "map-thematic-native": "execution/modules/map-thematic-native.md",
-    "map-scalar-native": "execution/modules/map-scalar-native.md"
+    "map-scalar-native": "execution/modules/map-scalar-native.md",
+    "caption-frame": "components/caption-frame.md"
   },
   "subtypes": {
     "D1-01_Flat": {
@@ -864,6 +872,9 @@
           "activity",
           "worksheet",
           "frame-decoration-native"
+        ],
+        "caption": [
+          "caption-frame"
         ]
       }
     },

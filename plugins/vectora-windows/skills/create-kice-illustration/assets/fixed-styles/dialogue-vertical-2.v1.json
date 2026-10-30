@@ -1,0 +1,25 @@
+{
+  "styleID": "dialogue-vertical-2.v1",
+  "family": "dialogue",
+  "recipe": "ITA-4_DialogueV",
+  "counts": {
+    "speakers": 2,
+    "turns": 2
+  },
+  "defaultWidthMm": 96,
+  "minWidthMm": 48,
+  "maxWidthMm": 108,
+  "native": {
+    "kind": "dialogue",
+    "layout": "vertical",
+    "verticalOptions": {
+      "layoutVersion": 2,
+      "widthPolicy": "painted-v1",
+      "columnAlignment": "shared-v1",
+      "portraitSizing": "two-line-body-v1",
+      "portraitAlignment": "top-ink-v1",
+      "tailPlacement": "reviewed-head-v1"
+    }
+  },
+  "namePlacement": "outer"
+}

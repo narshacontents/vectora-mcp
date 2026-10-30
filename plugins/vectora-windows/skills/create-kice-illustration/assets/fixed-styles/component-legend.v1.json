@@ -1,0 +1,21 @@
+{
+  "styleID": "component-legend.v1",
+  "family": "components",
+  "recipe": "caption-frame",
+  "role": "legend",
+  "defaultWidthMm": 36,
+  "minWidthMm": 16,
+  "maxWidthMm": 108,
+  "minItems": 1,
+  "maxItems": 8,
+  "native": {
+    "kind": "composition",
+    "layout": "column",
+    "gapMm": 1.1,
+    "legendFrame": {
+      "paddingMm": 1.2,
+      "titlePaddingMm": 0.25,
+      "strokePt": 0.3
+    }
+  }
+}

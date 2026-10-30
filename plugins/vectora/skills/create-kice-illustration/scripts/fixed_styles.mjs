@@ -6,8 +6,10 @@ import * as charts from './fixed-style-families/charts.mjs';
 import * as misc from './fixed-style-families/misc.mjs';
 import * as venn from './fixed-style-families/venn.mjs';
 import * as theory from './fixed-style-families/theory.mjs';
+import * as dialogue from './fixed-style-families/dialogue.mjs';
+import * as components from './fixed-style-families/components.mjs';
 
-const externalFamilies=[tables,charts,misc,venn,theory];
+const externalFamilies=[tables,charts,misc,venn,theory,dialogue,components];
 const externalFamily=id=>externalFamilies.find(f=>f.listStyles().some(s=>s.styleID===id));
 
 const ids = ['criticism-2.v1', 'criticism-3.v1', 'judgment-2.v1', 'judgment-3.v1', 'venn-2-hatch.v1'];
@@ -47,6 +49,10 @@ function array(value, count, name, max) {
 }
 export function listFixedStyles() {
   return freeze([...ids.map(id => { const t = template(id); return {styleID:id, family:t.family, recipe:{criticism:'D4-02_Network',judgment:'D4-03_Flowchart',venn:'D4-04_Venn'}[t.family], counts:clone(t.counts),...sizePolicy(t)}; }),...externalFamilies.flatMap(f=>f.listStyles())]);
+}
+export function bindFixedStyleSpeakerAssets(bundle, bindings) {
+  if(externalFamily(bundle?.styleID)!==dialogue)fail('speaker asset binding requires a dialogue preset');
+  return dialogue.bindSpeakerAssets(bundle,bindings);
 }
 export function exampleContent(styleID) {
   const external=externalFamily(styleID);if(external)return external.exampleContent(styleID);

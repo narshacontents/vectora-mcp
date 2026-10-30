@@ -26,16 +26,7 @@ test('table and dialogue contracts retain source values and approved embedded ar
  assert.doesNotMatch(read('references/families/D1_Table.md'),/spec은 widthMm|cells:\[/);
  for(const token of ['awaiting-approved-artwork','reviewed:true','headBounds','visibleBounds','dataUrl','rasterPath','base64·width/height·visibleBounds를 직접 보내지 않는다','8MiB','재추적하지 않고'])assert.ok(dialogue.includes(token),token);
 });
-test('exam-agent caller keeps semantic guidance and receives native execution and delivery contracts',()=>{
- const guide=read('references/caller/exam-agent-guide.md');
- assert.match(guide,/저장본 재열기와 저장된 JPEG 직접 검수/);
- assert.match(guide,/미실행·접근 불가·미지원은 완료로 보고하지 않으며/);
- assert.match(guide,/폴더·파일명·형식·덮어쓰기 범위/);
- assert.match(guide,/지정 형식·위치가 우선/);
- assert.match(guide,/필요한 Vectora 도구가 연결되어 있는지 확인/);
- assert.match(guide,/내부 recipe ID·도구 인자·요소별 좌표·간격·스타일 수치는 제작자가 정한다/);
- assert.doesNotMatch(guide,/visualReview\.|vectora_export_package/);
-
+test('exam-agent receives internal execution and delivery contracts without loading caller handbooks',()=>{
  const units=[{recipe:'newspaper'}];
  const task=prepareTask({caller:'exam-agent',units});
  for(const [phase,file] of [['design','execution/caller.md'],['execute','execution/base.md'],['deliver','execution/delivery.md']]){
@@ -44,6 +35,9 @@ test('exam-agent caller keeps semantic guidance and receives native execution an
  }
  const ordinary=prepareTask({units});
  assert.ok(!Object.values(ordinary.phaseSources).flat().some(source=>source.path==='execution/caller.md'));
+ for(const handbook of ['references/caller/exam-agent-guide.md','references/caller/human-prompt-guide.md']){
+  for(const prepared of [task,ordinary])assert.ok(!Object.values(prepared.phaseSources).flat().some(source=>source.path===handbook));
+ }
  for(const token of ['vectora://capabilities','이번 작업에 필요한 계약만'])assert.ok(task.contents.execute.includes(token),token);
  assert.match(task.contents.deliver,/기술 결과[\s\S]*deliveryReady:false\/visualReview.pending[\s\S]*직접 검수 전 상태/);
  assert.match(task.contents.deliver,/저장된 실제 JPEG를 직접 열어[\s\S]*검수한다/);

@@ -18,7 +18,7 @@ test('all existing classification routes remain executable without a fixed read 
   assert.ok(!all(r).includes('<!-- when-module'));
   count++;
  }
- assert.equal(count,124);
+ assert.equal(count,125);
 });
 test('simple requests omit unrelated layouts and conditional typography',()=>{
  const bar=prepareTask({units:[{recipe:'bar'}]});
