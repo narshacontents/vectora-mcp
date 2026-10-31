@@ -213,7 +213,7 @@ test('migrated rules preserve key behavior, allowed selection scope and selected
  const bar01=make('D2-01_Bar'),bar02=make('D2-02_StackedBar');
  for(const result of [bar01,bar02]){
   const aggregate=combinedRules(result);
-  assert.match(aggregate,/- 막대: `barWidthMm`와 `groupGapMm`/);
+  assert.match(aggregate,/- `barWidthMm`는 막대 하나\(또는 누적 묶음 하나\)의 폭, `groupGapMm`는/);
   assert.match(aggregate,/`barGapRatio`는 0–3이다/);
   assert.ok(aggregate.includes(read('core/style.md').trim()));
  }
@@ -224,7 +224,7 @@ test('migrated rules preserve key behavior, allowed selection scope and selected
   assert.doesNotMatch(read(index.subtypes[subtype].file),/barWidthMm|barGapRatio/);
  }
  assert.match(read(index.modules['bar-sizing']),/`barGapRatio`는 0–3이다/);
- assert.equal(combinedRules(make('D2-03_Pie')).includes('- 막대: `barWidthMm`'),false,'pie charts exclude bar options');
+ assert.equal(combinedRules(make('D2-03_Pie')).includes('- `barWidthMm`는 막대 하나'),false,'pie charts exclude bar options');
 
  const dot=combinedRules(make('D2-06_Dot'));
  assert.match(dot,/덤벨 방향: `orientation:"horizontal"\|"vertical"`은 dumbbell에서만 사용한다/);

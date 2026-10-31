@@ -12,7 +12,8 @@
 
 - `strokePt`는 자료선이다. 연결 schema가 제공하면 축은 `chartOptions.axisStrokePt`, 격자·투영 보조선은 `chartOptions.guideStrokePt`로 따로 지정한다. 역할별 지침의 출발값을 쓰고 이미 저장된 명시 스타일은 보존한다. 레이더의 기존 `radarGuideStrokePt` 명시값이 있으면 그 우선순위를 확인한다. 연결 schema가 수치 레이더의 `series[].strokePt`를 제공하면 강조할 계열만 명시해 자료선과 범례 견본을 함께 바꾼다. 미지정 계열은 공통 굵기를 따르며, 같은 필드가 다른 차트에도 지원된다고 추정하지 않는다. 굵기 변경 뒤 범례 견본·자료선·실제 물리 선폭을 함께 확인하며, 생성된 선 몇 개만 수동으로 굵게 만들어 원자료 설정과 어긋나게 하지 않는다.
 
-- series의 `fill`, `pattern:none|dots|hatch`, `line:solid|dash|dash-dot|dot`, `marker:none|circle|triangle|square|open-square|open-circle|open-triangle`를 대응시킨다. 연결 schema가 `dot`을 지원하면 순수 점선은 이 원자료 값으로 지정해 자료선·범례·값 수정에 함께 유지한다. `dash-dot`은 일점쇄선이므로 순수 점선 대신 사용한 뒤 개별 선분을 고치는 방식은 피한다. 표식 없는 선에 표식 무늬를 넣지 않는다. `grid:true,chartOptions:{gridStyle:"dash"}`; 실제 `valueLabels,xTitle,yTitle,unit`, `chartOptions.labelDecimals`(0–10)을 지정한다.
+- 의뢰의 ‘점선 격자·점선 보조선’은 `gridStyle:"dash"`(짧은 선분 반복)로 만든다. `gridStyle:"dot"`의 잔점은 ‘작은 점’ 격자를 명시했을 때만 쓴다.
+- series의 `fill`, `pattern:none|dots|hatch`, `line:solid|dash|dash-dot|dot`, `marker:none|circle|triangle|square|open-square|open-circle|open-triangle`(연결 schema가 지원하면 `diamond|open-diamond`)를 대응시킨다. 회색 실선 계열처럼 선 색이 다른 계열은 지원되면 계열 `stroke`(hex)로 지정하고, 생략하면 검정이다. 연결 schema가 `dot`을 지원하면 순수 점선은 이 원자료 값으로 지정해 자료선·범례·값 수정에 함께 유지한다. `dash-dot`은 일점쇄선이므로 순수 점선 대신 사용한 뒤 개별 선분을 고치는 방식은 피한다. 표식 없는 선에 표식 무늬를 넣지 않는다. `grid:true,chartOptions:{gridStyle:"dash"}`(가로 격자). 세로 격자도 필요하면 `chartOptions.xGrid:true`를 함께 켠다. 격자선을 수동 선으로 보충하면 값·축 변경에 연동되지 않고, 축 생략 구간을 격자 한 칸으로 맞추는 앱 기본값도 적용되지 않는다. 실제 `valueLabels,xTitle,yTitle,unit`, `chartOptions.labelDecimals`(0–10)을 지정한다.
 
 - 연결 schema가 제공하는 사각 막대 계열의 무늬는 series의 `patternSpacingMm`(해치 간격/점 가로 간격), `patternRowSpacingMm`(점 세로 간격), `patternRowOffsetMm`(교대 행 이동), `patternDotDiameterMm`로 조절한다. `pattern:"hatch"`의 방향은 지원되는 해치 설정을 함께 사용한다. 같은 series 설정이 본체와 범례에 적용되므로 견본만 따로 고치지 않는다. 미지원 계열·범주별 스타일에 이 필드를 추측해 보내지 않는다.
 

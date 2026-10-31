@@ -1,6 +1,8 @@
 ## 수치 축 설정
 
-현재 graph schema가 제공하는 compact Cartesian에서는 `chartOptions.axisText.{x,y,secondaryY}`로 제목·단위를 함께 조판한다. 각 축의 `pairing`은 `same-line`(제목·단위 사이 공백 없이 한 줄), `next-line`(단위를 다음 줄), `separate`(서로 다른 위치), `showTitle/showUnit`은 표시 여부다. X `placement`는 `end`(끝 아래)·`center`(가운데 아래)·`tip`(축 끝 옆), Y·secondaryY는 `outside`(바깥 위)·`vertical`(실제 세로쓰기)·`tip`(바깥쪽 축 끝 옆)이다. Y 단위만 있을 때는 숫자 눈금열의 기존 위치를 유지하고 가로쓰기 단위의 실제 글 획 중심을 그 선행 부호를 제외한 숫자 본체 잉크열 중심에 맞춘다. 단위를 축 바깥에 제한하기 위해 눈금열을 옮기지 않는다. 문구는 기존 `xTitle/yTitle/xUnit/yUnit/unit`, 보조축은 `secondaryTitle/secondaryUnit`에 보존한다. 표시 생략은 의미가 다른 곳에 충분히 있을 때만 선택하며, 겹침을 피하려고 필수 단위를 숨기지 않는다.
+현재 graph schema가 제공하는 compact Cartesian에서는 `chartOptions.axisText.{x,y,secondaryY}`로 제목·단위를 함께 조판한다. 각 축의 `pairing`은 `same-line`(제목·단위 사이 공백 없이 한 줄), `next-line`(단위를 다음 줄), `separate`(서로 다른 위치), `showTitle/showUnit`은 표시 여부다. X `placement`는 `end`(끝 아래)·`center`(가운데 아래)·`tip`(축 끝 옆), Y·secondaryY는 `outside`(바깥 위)·`vertical`(실제 세로쓰기)·`tip`(바깥쪽 축 끝 옆)이다. 개념 좌표도·눈금 없는 선그래프처럼 "Y축 끝 왼쪽 제목"이면 `tip`을 쓴다. 제목과 단위를 함께 쓴 `tip`은 실제 JPEG에서 글자 윗선이 화살촉 끝과 같은 높이인지 확인한다. 넘거나 아래로 떨어지면 블록 위치를 맞춘다. **제목과 단위를 함께 쓰는 축은 글자가 화살촉 끝 안쪽에 있어야 한다.** Y는 축 왼쪽에서 글자 윗선을 화살촉 끝에 맞추고, X는 축 바로 아래에서 오른쪽 끝을 화살촉 끝에 맞춘다(필요하면 축 끝 연장). X `tip`처럼 화살촉 밖으로 나가는 배치는 단위만 있는 축에만 쓴다. 두 축의 제목·단위 표시 여부가 같으면 배치도 같게 한다. 둘 다 화살촉 끝에 붙이거나(Y `tip`+X `end`), 둘 다 단위는 축 끝 옆·제목은 축 가운데(Y `vertical`+X `center`)로 둔다. 지원 앱은 미지정 시 화살촉 끝 방식을 기본으로 하고 섞인 명시값을 그 방식으로 맞춘다. `outside`는 제목 블록이 축 끝보다 위에 떠서 축과 분리돼 보이므로, 맨 위 숫자 눈금이 축 끝에 붙어 `tip`과 겹칠 때만 고른다. Y 단위만 있을 때는 숫자 눈금열의 기존 위치를 유지하고 가로쓰기 단위의 실제 글 획 중심을 그 선행 부호를 제외한 숫자 본체 잉크열 중심에 맞춘다. 단위를 축 바깥에 제한하기 위해 눈금열을 옮기지 않는다. 문구는 기존 `xTitle/yTitle/xUnit/yUnit/unit`, 보조축은 `secondaryTitle/secondaryUnit`에 보존한다. 표시 생략은 의미가 다른 곳에 충분히 있을 때만 선택하며, 겹침을 피하려고 필수 단위를 숨기지 않는다.
+
+**`pairing`은 `same-line`이 기본이다.** `가격(달러)`, `수량(개)`처럼 제목+단위가 약 7자 이하이면 폭이 좁아도 한 줄로 두고, `next-line`은 제목이 길어 그림 폭을 넘거나 자료 영역을 크게 줄일 때만 쓴다. X·Y는 같은 방식으로 맞춘다.
 
 `chartOptions.axisTextLayout:"end-reserved"`는 전체 폭과 수치 범위를 유지하면서 플롯을 줄여 축 끝 제목 공간을 확보한다. X제목·단위는 마지막 눈금 오른쪽 **연장부 아래**, Y제목·단위는 위 연장부 바깥에 둔다. `axisText`의 결합/표시 설정은 유지하며 개별 placement보다 이 배치가 우선한다. `"standard"`로 돌아가면 저장한 개별 placement를 사용한다. 세로형 Cartesian에서만 사용하며 가로막대·상자 프레임·숨긴 X/Y축과는 함께 쓰지 않는다.
 
@@ -23,6 +25,8 @@
 `domain,ticks`는 값 축, `xDomain,xTicks`는 독립축. 막대 값 축은 0을 포함하고 수동 축은 모든 표시값을 포함한다. 기본 선 수치 X에는 `chartOptions:{xNumeric:true},xValues`를 범주 수와 같은 엄격 증가 배열로 준다.
 
 라이브 compact 계약이 단일 눈금을 지원하면 원점만 필요한 수치 개형은 증가 `domain`/`xDomain`을 주고 `ticks:[0]`, `xTicks:[0]`으로 범위를 따로 확정한다. **공유 원점의 0은 한 축에서만 표시**한다. 다른 X 눈금이 없는 이 경우 `chartOptions:{showCategoryLabels:false,showXTicks:false}`로 X쪽 숫자·눈금만 숨기고 Y쪽 0을 쓴다. 반대 배치가 필요하면 Y쪽 표시 설정을 사용한다. 서로 다른 단위의 좌우 Y축은 각각의 0을 남길 수 있다. 지원되는 보조축은 명시 `chartOptions.secondaryDomain`과 `secondaryTicks:[0]`으로 만들며, 불필요한 두 번째 눈금을 생성한 뒤 숨기지 않는다. 하나의 눈금으로 축 범위를 추정하거나 빈 배열·별도 0 문자로 대신하지 않는다. legacy의 계약은 따로 확인한다.
+
+경제 좌표도처럼 축에 몇 개의 지정 눈금만 두고 원점 `0`이 필요하면 지원 앱의 `chartOptions:{xNumeric:true,originLabel:true}`를 쓴다. 앱이 X 눈금 기준선·Y 눈금 오른쪽 열에 `0` 하나를 놓으므로 별도 문자로 만들지 않는다. 연도 X축의 마지막 두 눈금이 가까우면 앱이 마지막 라벨만 같은 줄에서 오른쪽으로 밀어 준다. 아래 줄로 따로 빼지 않는다.
 
 `chartOptions.originLabelPolicy:"auto"`는 수치 X의 공유 원점에서 **자동 생성 눈금만** 합친다. 명시한 `ticks`/`xTicks`의 0까지 제거해 주는 옵션이 아니다. 다른 눈금도 필요한 경우 한쪽 명시 목록에서만 0을 빼고 나머지 눈금은 유지한다. 사용자가 두 0을 명시하거나 `"both"`를 요청한 경우는 따른다. 생성된 글자만 지우거나 domain·실제 원점까지 바꾸지 않는다.
 
