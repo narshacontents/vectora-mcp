@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 export function createLaunchSpec(platform, root, systemRoot = process.env.SystemRoot) {
   const scriptRoot = path.join(root, 'scripts');
-  if (platform === 'darwin') {
+  if (platform === 'darwin' || platform === 'linux') {
     return {
       command: '/bin/sh',
       args: [path.join(scriptRoot, 'start-mcp.sh')],
@@ -21,7 +21,7 @@ export function createLaunchSpec(platform, root, systemRoot = process.env.System
       args: ['-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(scriptRoot, 'start-mcp.ps1')],
     };
   }
-  throw new Error(`Vectora MCP supports Claude Desktop and Claude Code on macOS and Windows; unsupported platform: ${platform}`);
+  throw new Error(`Vectora MCP supports Claude Desktop and Claude Code on macOS, Windows and Linux (Claude Code); unsupported platform: ${platform}`);
 }
 
 export function launchVectoraMcp({ platform = process.platform, root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'), env = process.env, spawnProcess = spawn } = {}) {

@@ -60,7 +60,7 @@
     ]
   },
   "nativeLimitation": {
-    "directMirror": "18 series rejected: maximum 8; see native-limits/mirror-18-response.json",
+    "directMirror": "Measured native mirrorOptions:{version:1} supports up to 21 categories; this registered scaffold retains its two horizontal native panels.",
     "implementation": "two native horizontal bar graphs; positive values, left graph flipped horizontally; only age labels/axes/ticks/captions supplemented"
   },
   "contentSlots": {
@@ -72,15 +72,27 @@
     },
     "male": {
       "type": "array",
-      "length": 18,
       "items": "finite-number",
-      "requiresNativeWidthMeasurement": false
+      "requiresNativeWidthMeasurement": false,
+      "minItems": 18,
+      "maxItems": 21,
+      "order": "oldest first; consecutive five-year bins, youngest 0~4"
     },
     "female": {
       "type": "array",
-      "length": 18,
       "items": "finite-number",
-      "requiresNativeWidthMeasurement": false
+      "requiresNativeWidthMeasurement": false,
+      "minItems": 18,
+      "maxItems": 21,
+      "order": "oldest first; consecutive five-year bins, youngest 0~4"
+    },
+    "ageTickInterval": {
+      "type": "integer",
+      "optional": true,
+      "minimum": 5,
+      "maximum": 100,
+      "multipleOf": 5,
+      "description": "Show only numeric ages at this interval plus (세); omission preserves alternating age-range labels. Values/bars retain every category."
     }
   },
   "nativeOverrides": [

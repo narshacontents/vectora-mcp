@@ -100,7 +100,7 @@ function validateMarketplace(root) {
   assert.deepEqual(
     codexCatalog.plugins.map((plugin) => plugin?.name).sort(),
     [...CODEX_PLUGINS].sort(),
-    'Codex marketplace must contain exactly the macOS and Windows Vectora plugins.',
+    'Codex marketplace must contain the Unix (macOS/Linux) and Windows Vectora plugins.',
   );
 
   const codexPlugins = CODEX_PLUGINS.map((name) => {

@@ -49,7 +49,7 @@ test('Claude Windows launcher passes PowerShell script path as one literal argum
 });
 
 test('Claude launcher rejects platforms without a packaged app runner', () => {
-  assert.throws(() => createLaunchSpec('linux', '/tmp/vectora'), /unsupported platform: linux/);
+  assert.throws(() => createLaunchSpec('freebsd', '/tmp/vectora'), /unsupported platform: freebsd/);
 });
 
 test('checked-in Claude marketplace config resolves to a complete plugin and its colocated launcher', () => {

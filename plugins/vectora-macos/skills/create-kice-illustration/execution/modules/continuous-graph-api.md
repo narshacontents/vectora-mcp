@@ -4,6 +4,9 @@
 
 - 연속 개념 개형: line 계열은 `chartOptions:{mode:"concept",semanticLabels:"end"|"legend"|"none",specialPoints:[...]}`를 지원한다. spec의 `series.values`는 경로 모양을 놓기 위한 내부 좌표로만 입력하며 관측값으로 설명하거나 숫자 축·눈금으로 표시하지 않는다. `domain`, `ticks`, `xDomain`, `xTicks`는 실제 정량 축이 필요할 때만 준다. 곡선 이름을 유지할 때 `semanticLabels:"none"`으로 지우지 말고 end label 또는 legend를 고른다.
 
+- 정량 수요·공급 직선은 숫자 X축의 `line`/`smooth-line` 또는 `bar-scatter`의 `renderRole:"line"` 계열에 `extend:"axes"`를 기본으로 쓴다. 일직선인 점들을 축·자료 영역 경계까지 연장하고 절편에 필요한 `xDomain`을 자동 확장하되 지정 `xTicks`와 원자료는 보존한다. 예: `{id:"d",label:"수요",values:[6,2],extend:"axes",marker:"none"}` + `xValues:[0,400]`, `domain:[0,6]`, `xDomain:[0,450]`, `xTicks:[0,200,400]`, `chartOptions:{xNumeric:true,semanticLabels:"end"}`는 (600,0)까지 그린다. 비직선·결측 구간은 연장하지 않으며 정성 개형은 `extend:"none"`이다.
+- 관측 꺾은선도 `chartOptions.semanticLabels:"end"`(또는 `lineEndLabels:true`, `labelMode:"end"`)로 끝 이름을 붙인다. 연장한 선은 새 끝점 오른쪽 1mm에 잉크 중심을 맞추며, 가까운 이름은 위아래로 벌리고 짧은 지시선을 둔다.
+
 ## 사용할 수 있는 생성 경로
 
 legacy 연속 선은 폭 40–108mm, `dataFidelity:"exact"|"approximate"|"relative"`, `type:"line"`, `x` 라벨과 계열 `values`를 사용한다. compact의 전용 필드와 섞지 않는다. legacy `labelOffsets`는 문서 px다.

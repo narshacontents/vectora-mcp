@@ -21,5 +21,5 @@
       "tailPlacement": "reviewed-head-v1"
     }
   },
-  "namePlacement": "outer"
+  "namePlacement": "auto"
 }

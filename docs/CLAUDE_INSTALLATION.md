@@ -1,5 +1,14 @@
 # Vectora Claude 마켓플레이스 설치
 
+## Linux x64 설치 (앱 2.2.2부터)
+
+Release의 `Vectora-버전-linux-x64.AppImage` 하나를 `~/Applications`에 저장하고 `chmod +x ~/Applications/Vectora-버전-linux-x64.AppImage`로 실행 권한을 줍니다. FUSE를 사용할 수 없는 배포판은 해당 배포판의 AppImage/FUSE 안내를 확인하세요. 자동 교체는 하지 않으며, 업데이트 안내의 릴리스 링크에서 새 AppImage를 받은 뒤 앱을 종료하고 직접 교체합니다.
+
+UND v3.1 돋움·바탕 8개는 별도로 받아 `~/.local/share/fonts`(또는 `$XDG_DATA_HOME/fonts`)에 직접 설치한 뒤 `fc-cache -f`를 실행하고 앱을 다시 엽니다. 시스템 공용 경로는 `/usr/share/fonts`이며 `fc-list`로 인식 여부를 확인할 수 있습니다. 앱·저장소·Release·Actions artifact에는 글꼴 바이너리를 포함하지 않습니다.
+
+Linux Codex에서는 **Vectora (macOS / Linux)**를 선택합니다(호환성을 위해 플러그인 ID `vectora-macos` 유지). Claude Code와 Gemini CLI도 Linux 런처를 사용합니다. Claude Desktop의 Linux 지원을 의미하지 않습니다. `~/Applications`, `~/.local/bin`, `/opt/Vectora`의 실행 가능한 AppImage를 탐색하며, 여러 버전이 있으면 `VECTORA_APP_PATH=/절대/경로/Vectora.AppImage`로 사용할 버전을 지정하세요. 경로를 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 한 줄로 저장할 수도 있습니다. Linux의 QuickLook/Explorer 미리보기와 AppImage의 자동 데스크톱·파일 연결 등록은 제공하지 않습니다. 파일 연결 메타데이터는 `application/x-vectora`이며 필요하면 데스크톱 환경에서 수동 등록합니다.
+
+
 Claude용 MCP와 세 스킬은 **GitHub 마켓플레이스의 Vectora 플러그인 하나로 설치**합니다. ZIP을 풀거나 MCPB·스킬 ZIP을 따로 등록하지 않습니다.
 
 ## 데스크톱 Claude / Cowork
@@ -15,7 +24,7 @@ Claude용 MCP와 세 스킬은 **GitHub 마켓플레이스의 Vectora 플러그�
 
 ## Claude Code
 
-Node.js 18 이상이 PATH에 있는 로컬 macOS/Windows에서 실행합니다.
+Node.js 18 이상이 PATH에 있는 로컬 macOS/Windows/Linux에서 실행합니다.
 
 ```sh
 claude plugin marketplace add narshacontents/vectora-mcp

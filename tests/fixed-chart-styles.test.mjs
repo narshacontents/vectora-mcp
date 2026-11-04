@@ -5,7 +5,7 @@ function changed(id){const c=exampleContent(id);if(c.panel)c.panel=c.panel==='(ê
 test('exact five opt-in chart catalog entries and public contract',()=>{assert.equal(list.length,5);assert.deepEqual(list.map(x=>x.groupID),['DUP005','DUP006','DUP007','DUP008','DUP009']);for(const {styleID}of list){assert.match(styleID,/^chart-/);assert.equal(build(styleID).requiresNativePreflight,true);assert.equal(typeof build(styleID).recipe,'string');}for(const id of ['bar','DUP005','chart-any.v1'])assert.throws(()=>build(id),/unknown styleID/);});
 for(const {styleID}of list){test(styleID+': declared slot changes retain scaffold and immutable caller isolation',()=>{const before=build(styleID),content=changed(styleID),after=buildStyle({styleID,content});assert.notDeepEqual(after.spec,before.spec);assert.deepEqual(after.geometry,before.geometry);assert.equal(after.geometrySignature,before.geometrySignature);assert.equal(assertGeometry(after),true);assert.throws(()=>after.geometry.spec.widthMm=50,TypeError);assert.throws(()=>after.parts.push({}),TypeError);if(content.values){content.values[0]=999;assert.notEqual(after.content.values[0],999);}});
  test(styleID+': reject undeclared fields and geometry/style/part tampering',()=>{const b=build(styleID);assert.throws(()=>buildStyle({styleID,content:{...b.content,widthMm:90}}),/exactly keys/);assert.throws(()=>buildStyle({styleID,content:b.content,unexpected:90}),/exactly keys/);for(const alter of [x=>x.spec.widthMm=20,x=>x.geometrySignature='fake',x=>x.parts[0].maxHeightMm=100,x=>x.spec.extra=true,x=>x.requiresNativePreflight=false,x=>x.recipe='photo']){const copy=structuredClone(b);alter(copy);assert.throws(()=>assertGeometry(copy),/override detected/);}});
- test(styleID+': finite bounded values and cardinality; no empty or oversized labels',()=>{const c=exampleContent(styleID),field=['male','values','population','supply'].find(k=>c[k]);for(const bad of [[],c[field].slice(1),c[field].map(()=>NaN),c[field].map(()=>Infinity),c[field].map(()=>-1),c[field].map(()=>999999)])assert.throws(()=>buildStyle({styleID,content:{...c,[field]:bad}}),/finite values/);const label=c.panel?'panel':'supplyLabel';for(const bad of ['', 'long\nlabel','A'.repeat(100),'\u0000'])assert.throws(()=>buildStyle({styleID,content:{...c,[label]:bad}}),/allowed|literal/);});
+ test(styleID+': finite bounded values and cardinality; no empty or oversized labels',()=>{const c=exampleContent(styleID),field=['male','values','population','supply'].find(k=>c[k]);for(const bad of [[],c[field].slice(1),c[field].map(()=>NaN),c[field].map(()=>Infinity),c[field].map(()=>styleID==='chart-season-temperature.v1'?-999999:-1),c[field].map(()=>999999)])assert.throws(()=>buildStyle({styleID,content:{...c,[field]:bad}}),/finite values/);const label=c.panel?'panel':'supplyLabel';for(const bad of ['', 'long\nlabel','A'.repeat(100),'\u0000'])assert.throws(()=>buildStyle({styleID,content:{...c,[label]:bad}}),/allowed|literal/);});
  test(styleID+': actual measurement required, rejects overflow/warnings without resizing',async()=>{const b=build(styleID),before=JSON.stringify(b);await assert.rejects(preflight(b,async()=>({})),/measurement unavailable/);await assert.rejects(preflight(b,async()=>({widthMm:999,heightMm:3})),/exceeds fixed slot/);await assert.rejects(preflight(b,async()=>({widthMm:8,heightMm:30})),/exceeds fixed slot/);await assert.rejects(preflight(b,async()=>({widthMm:8,heightMm:3,warnings:['overflow']})),/exceeds fixed slot/);const measured=[];const r=await preflight(b,async s=>{measured.push(s);return{widthMm:s.widthMm,heightMm:3.189111111111111,warnings:[]};});assert.equal(r.status,'passed');assert.equal(measured.length,b.parts.length);assert.ok(measured.every(s=>s.kind==='composition'));assert.equal(r.requiresNativeGenerationReview,true);assert.equal(JSON.stringify(b),before);});}
 test('pyramid: two native positive-data horizontal graphs own 36 marks; only labels/ticks supplemented',()=>{
  const b=build(list[0].styleID),s=b.spec;
@@ -53,8 +53,10 @@ test('pyramid: requested width updates two native panels, central gap and world 
 });
 test('season: requested plot width and translated native origin share right decoration coordinates',()=>{
  for(const widthMm of [44,48,56,108]){
-  const b=buildStyle({styleID:list[3].styleID,content:exampleContent(list[3].styleID),widthMm}),g=b.spec.children[0].spec,origin=b.geometry.nativeOverrides.find(r=>r.target==='graph-origin'),right=b.spec.frameDecorations[0].path;
-  assert.ok(Math.abs(right[0].x.offsetMm-(origin.axisXmm-4+g.chartOptions.plotWidthMm))<1e-8);assert.ok(Math.abs(right[1].y.offsetMm-right[0].y.offsetMm-g.plotHeightMm)<1e-8);
+  const b=buildStyle({styleID:list[3].styleID,content:exampleContent(list[3].styleID),widthMm}),g=b.spec.children[0].spec,origin=b.geometry.nativeOverrides.find(r=>r.target==='graph-origin');
+  assert.equal(g.chartOptions.frame,'box');assert.equal(b.spec.frameDecorations.length,3);
+  for(const [i,decoration]of b.spec.frameDecorations.entries()){const p=decoration.path;assert.ok(Math.abs(p[0].x.offsetMm-(origin.axisXmm-4+(i+1)*g.chartOptions.plotWidthMm/4))<1e-8);assert.ok(Math.abs(p[0].y.offsetMm-(origin.axisYmm-4+g.plotHeightMm))<1e-8);}
+  assert.ok(b.geometry.nativeOverrides.every(r=>r.target!=='y-unit'));
  }
 });
 
@@ -74,4 +76,15 @@ test('pyramid legal widths 76/80/100/108: reservations stay native-valid and bla
   assert.equal(walk(s).filter(c=>c.kind==='graph').length,2);assert.equal(assertGeometry(b),true);
   if(widthMm===100){assert.ok(!ages.children.some(c=>c.id==='tail'));assert.ok(Math.abs(clearance-1.0595185185185159)<1e-9);}
  }
+});
+
+// Signed scales change axis geometry without changing the registered point scaffold.
+test('season: optional signed domain/ticks preserve values and reject invalid scales',()=>{
+ const styleID='chart-season-temperature.v1',content={...exampleContent(styleID),values:[-12,-4,0,12],domain:[-12,12],ticks:[-12,-8,-4,0,4,8,12]},b=buildStyle({styleID,content});
+ const g=b.spec.children[0].spec;assert.deepEqual(g.domain,content.domain);assert.deepEqual(g.ticks,content.ticks);assert.deepEqual(g.series[0].values,content.values);assert.equal(g.chartOptions.zeroLineStyle,'solid');assert.equal(assertGeometry(b),true);
+ assert.notEqual(b.geometrySignature,build(styleID).geometrySignature);
+ assert.equal(b.geometrySignature,buildStyle({styleID,content:{...content,values:[-8,0,4,8]}}).geometrySignature);
+ const automatic=buildStyle({styleID,content:{...exampleContent(styleID),values:[-12,-4,0,12]}});assert.deepEqual(automatic.spec.children[0].spec.domain,[-30,30]);
+ for(const patch of [{domain:[12,-12]},{domain:[0,0]},{domain:[NaN,12]},{domain:[-Infinity,12]},{ticks:[0,-4]},{ticks:[-16,0,12]},{ticks:[0,0]},{ticks:[NaN,12]},{values:[-13,0,0,12]}])assert.throws(()=>buildStyle({styleID,content:{...content,...patch}}),/domain|ticks|finite values/);
+ const copy=structuredClone(b);copy.spec.children[0].spec.domain=[0,30];assert.throws(()=>assertGeometry(copy),/override detected/);
 });

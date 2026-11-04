@@ -63,7 +63,9 @@ export function buildStyle(request) {
   const t = template(request.styleID), widthMm = request.widthMm === undefined ? t.defaultWidthMm : request.widthMm;
   if (!Number.isFinite(widthMm) || widthMm < t.minWidthMm || widthMm > t.maxWidthMm) fail(`widthMm must be ${t.minWidthMm}..${t.maxWidthMm}`);
   const content = contentFor(t, request.content);
-  const spec = {...clone(t.native), widthMm, speakers:content.speakers.map(s => ({...clone(t.speakerDefaults??{}), ...clone(s), namePlacement:t.namePlacement})), turns:content.turns.map(turn => ({...clone(turn), text:turn.text ?? turn.richText.text}))};
+  // Vertical presets leave names on "auto": the app compares lines per run and
+  // may keep a final one-line turn's name below instead of wrapping it.
+  const spec = {...clone(t.native), widthMm, speakers:content.speakers.map(s => ({...clone(t.speakerDefaults??{}), ...clone(s), ...(t.namePlacement === 'auto' ? {} : {namePlacement:t.namePlacement})})), turns:content.turns.map(turn => ({...clone(turn), text:turn.text ?? turn.richText.text}))};
   // This signature fixes the reusable layout policy, NOT measured bubble geometry.
   // Text, speaker identity, crop/side and registered artwork remain native inputs.
   const geometry = {native:clone(t.native), widthMm, counts:clone(t.counts), speakerDefaults:clone(t.speakerDefaults??{}), namePlacement:t.namePlacement, heightPolicy:'native-content'};

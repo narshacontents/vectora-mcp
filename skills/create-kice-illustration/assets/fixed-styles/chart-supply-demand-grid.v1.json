@@ -34,7 +34,7 @@
   },
   "plotWidthMm": 58,
   "nativeGuards": {
-    "plotWorldGeometry": "must equal approved baseline; reject differing label gutters, do not resize",
+    "plotWorldGeometry": "square plot scales with requested width; keep 8pt text and reject measured overlaps",
     "yMax": {
       "minimum": 1,
       "maximum": 10000,
@@ -104,7 +104,7 @@
   ],
   "geometryWidthMm": 108,
   "defaultWidthMm": 72,
-  "minWidthMm": 72,
+  "minWidthMm": 48,
   "maxWidthMm": 108,
   "sizingEvidence": {
     "kind": "physical-raster-dpi",
@@ -113,5 +113,6 @@
       "K0703"
     ],
     "note": "K0700/K0703 metadata is 299.9994 dpi: 71.80/72.64mm outer widths."
-  }
+  },
+  "compactLayoutBelowWidthMm": 84
 }

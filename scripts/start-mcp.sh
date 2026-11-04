@@ -2,6 +2,36 @@
 # The packaged MCP config embeds this script. Keep stdout exclusively for MCP JSON-RPC.
 set -eu
 
+# AppImages must already be executable; never change permissions or disable sandboxing here.
+if [ "$(uname -s)" = Linux ]; then
+  vectora_config="${XDG_CONFIG_HOME:-$HOME/.config}/Vectora/mcp-app-path"
+  vectora_app=${VECTORA_APP_PATH:-}
+  vectora_override=${vectora_app:+yes}
+  if [ -z "$vectora_app" ] && [ -f "$vectora_config" ]; then
+    IFS= read -r vectora_app < "$vectora_config" || true
+  fi
+  if [ -n "$vectora_app" ] && [ -f "$vectora_app" ] && [ -x "$vectora_app" ]; then
+    :
+  elif [ -n "$vectora_override" ]; then
+    printf '%s\n' 'Vectora MCP: VECTORA_APP_PATH must be an executable Linux AppImage or Vectora binary.' >&2
+    exit 69
+  else
+    vectora_app=
+    for vectora_candidate in "$HOME/Applications/Vectora.AppImage" "$HOME/Applications"/Vectora-*-linux-x64.AppImage "$HOME/.local/bin/Vectora.AppImage" "$HOME/.local/bin"/Vectora-*-linux-x64.AppImage "$HOME/.local/bin/vectora" /opt/Vectora/Vectora.AppImage /opt/Vectora/Vectora-*-linux-x64.AppImage /opt/Vectora/vectora-studio /usr/local/bin/vectora /usr/bin/vectora-studio; do
+      if [ -f "$vectora_candidate" ] && [ -x "$vectora_candidate" ]; then
+        vectora_app=$vectora_candidate
+        break
+      fi
+    done
+  fi
+  if [ -z "$vectora_app" ]; then
+    printf '%s\n' 'Vectora MCP: Linux Vectora AppImage not found. Install Vectora 2.2.2 or later, chmod +x the AppImage, then set VECTORA_APP_PATH or ~/.config/Vectora/mcp-app-path.' >&2
+    exit 69
+  fi
+  unset ELECTRON_RUN_AS_NODE
+  exec "$vectora_app" --mcp-stdio
+fi
+
 vectora_config="$HOME/Library/Application Support/Vectora/mcp-app-path"
 vectora_app=${VECTORA_APP_PATH:-}
 vectora_override=${vectora_app:+yes}

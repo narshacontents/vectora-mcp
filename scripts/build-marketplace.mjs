@@ -12,7 +12,7 @@ const PLUGINS_ROOT = path.join(PLUGIN_ROOT, 'plugins');
 const CODEX_CATALOG = path.join(PLUGIN_ROOT, '.agents', 'plugins', 'marketplace.json');
 const CLAUDE_CATALOG = path.join(PLUGIN_ROOT, '.claude-plugin', 'marketplace.json');
 const CODEX_PLUGINS = [
-  { id: 'vectora-macos', platform: 'macos', displayName: 'Vectora (macOS)' },
+  { id: 'vectora-macos', platform: 'macos', displayName: 'Vectora (macOS / Linux)' },
   { id: 'vectora-windows', platform: 'windows', displayName: 'Vectora (Windows)' },
 ];
 const CLAUDE_PLUGIN = { id: 'vectora' };

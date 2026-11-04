@@ -175,6 +175,7 @@ export function prepareTask(request, root=skillRoot){
   // Map labels need the same collision/anchor rules regardless of thematic subtype.
   // Original scanned maps retain the photo contract instead of fabricated overlays.
   if(row.type==='I3_Map' && base.subtype!=='I3-13_OldMap' && mode!=='none')features.add('points');
+  if(row.type==='I3_Map' && /korea/i.test(String(unit.spec?.assetRef??''))&&own(index.features,'korea'))features.add('korea');
   const selection={subtype:base.subtype,variant:unit.variant??base.variant,features:[...features],people};
   const selected=prepareRules({...selection,nativeSpec:unit.spec},root);
   const modules=new Set(selected.modules);

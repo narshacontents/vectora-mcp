@@ -6,8 +6,8 @@ import { isDirectInvocation } from './process-utils.mjs';
 const PLUGIN_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 export async function launchVectoraMcp({ platform = process.platform, root = PLUGIN_ROOT, ...options } = {}) {
-  if (platform !== 'darwin' && platform !== 'win32') {
-    throw new Error(`Vectora MCP for Gemini CLI supports macOS and Windows; unsupported platform: ${platform}`);
+  if (!['darwin', 'win32', 'linux'].includes(platform)) {
+    throw new Error(`Vectora MCP for Gemini CLI supports macOS, Windows and Linux; unsupported platform: ${platform}`);
   }
   // Load only when launching: the shared executable also has its own CLI guard.
   // Retain its tested Windows process flags and pass this extension's root explicitly.

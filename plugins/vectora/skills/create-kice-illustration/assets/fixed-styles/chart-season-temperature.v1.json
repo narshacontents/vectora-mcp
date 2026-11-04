@@ -40,11 +40,6 @@
   },
   "nativeOverrides": [
     {
-      "target": "y-unit",
-      "gapToTopTickMm": 1.75,
-      "retainXCenter": true
-    },
-    {
       "target": "graph-origin",
       "axisXmm": 9.28317640585,
       "axisYmm": 14.59461648872
@@ -68,6 +63,19 @@
       "length": 4,
       "items": "bounded-single-line-literal",
       "requiresNativeWidthMeasurement": true
+    },
+    "domain": {
+      "type": "array",
+      "length": 2,
+      "items": "finite-number",
+      "optional": true,
+      "description": "Increasing Y bounds; defaults to 0..30, or -30..30 for negative observations."
+    },
+    "ticks": {
+      "type": "array",
+      "items": "finite-number",
+      "optional": true,
+      "description": "Strictly increasing Y ticks inside domain; defaults to six equal divisions including zero when visible."
     }
   },
   "geometryWidthMm": 56,

@@ -24,7 +24,7 @@ test('four source-free native presets have distinct counts, layouts and no stati
     assert.equal(b.spec.frameDecorations, undefined);
     assert.equal(b.spec.sharedScene, undefined);
     assert.equal(b.spec.children, undefined);
-    assert.ok(b.spec.speakers.every(s => s.namePlacement === 'outer' && !('assetId' in s) && !('headWidthMm' in s)));
+    assert.ok(b.spec.speakers.every(s => (b.spec.layout === 'vertical' ? !('namePlacement' in s) : s.namePlacement === 'outer') && !('assetId' in s) && !('headWidthMm' in s)));
     assert.ok(Object.isFrozen(b.spec.turns));
     const options = b.spec[b.spec.layout + 'Options'];
     assert.equal(options.layoutVersion, 2);

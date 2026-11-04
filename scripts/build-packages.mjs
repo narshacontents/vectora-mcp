@@ -8,7 +8,7 @@ export const PLUGIN_VERSION = JSON.parse(
 ).version;
 
 export function createMcpConfig(platform) {
-  if (platform === 'macos') {
+  if (platform === 'macos' || platform === 'linux') {
     const command = readFileSync(path.join(PLUGIN_ROOT, 'scripts', 'start-mcp.sh'), 'utf8').trimEnd();
     return {
       mcpServers: {
@@ -87,7 +87,7 @@ export function patchWindowsAuditFontLookup(targetRoot) {
 
 export function copyCodexPlugin(targetRoot, platform, { id, displayName }) {
   mkdirSync(targetRoot, { recursive: true });
-  const extension = platform === 'macos' ? 'sh' : 'ps1';
+  const extension = platform === 'macos' || platform === 'linux' ? 'sh' : 'ps1';
   const entries = [
     '.codex-plugin/plugin.json',
     'README.md',

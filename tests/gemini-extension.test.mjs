@@ -173,7 +173,7 @@ test('importing copied Gemini entrypoints is safe without a real invocation path
 
 test('Gemini launcher retains literal Unicode/spaced paths and established Windows process flags', async () => {
   const root = path.join(path.parse(repositoryRoot).root, 'Gemini 한글 space $() & path');
-  for (const platform of ['darwin', 'win32']) {
+  for (const platform of ['darwin', 'win32', 'linux']) {
     for (const systemRoot of ['', path.join(path.parse(root).root, 'Windows 경로')]) {
       const env = { SystemRoot: systemRoot, ELECTRON_RUN_AS_NODE: '1', PATH: 'keep-this' };
       const child = new EventEmitter();
@@ -187,9 +187,9 @@ test('Gemini launcher retains literal Unicode/spaced paths and established Windo
       assert.equal(launched, child);
       assert.equal(calls.length, 1);
       const { command, args, options } = calls[0];
-      assert.equal(command, platform === 'darwin' ? '/bin/sh' : systemRoot
+      assert.equal(command, platform !== 'win32' ? '/bin/sh' : systemRoot
         ? path.join(systemRoot, 'System32/WindowsPowerShell/v1.0/powershell.exe') : 'powershell.exe');
-      assert.deepEqual(args, platform === 'darwin' ? [path.join(root, 'scripts/start-mcp.sh')] : [
+      assert.deepEqual(args, platform !== 'win32' ? [path.join(root, 'scripts/start-mcp.sh')] : [
         '-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'scripts/start-mcp.ps1'),
       ]);
       assert.deepEqual(options.env, { SystemRoot: systemRoot, PATH: 'keep-this' });
@@ -202,7 +202,7 @@ test('Gemini launcher retains literal Unicode/spaced paths and established Windo
 });
 
 test('Gemini launcher rejects unsupported platforms before spawning with accurate client diagnostics', async () => {
-  for (const platform of ['linux', 'freebsd']) {
+  for (const platform of ['freebsd', 'openbsd']) {
     await assert.rejects(launchVectoraMcp({ platform, spawnProcess() { assert.fail('must not launch'); } }), (error) => {
       assert.match(error.message, new RegExp(`Gemini CLI.*unsupported platform: ${platform}`));
       assert.doesNotMatch(error.message, /Claude/);
@@ -215,13 +215,13 @@ test('copied launcher CLI reports an unsupported OS without stdout or an import 
   const root = temporary(t);
   copyBridge(root);
   const launcher = path.join(root, 'scripts/gemini/gemini-mcp-launcher.mjs');
-  const source = `Object.defineProperty(process, 'platform', {value: 'linux'});
+  const source = `Object.defineProperty(process, 'platform', {value: 'freebsd'});
     process.argv[1] = ${JSON.stringify(launcher)};
     await import(${JSON.stringify(pathToFileURL(launcher).href)});`;
   const result = run(process.execPath, ['--input-type=module', '-e', source]);
   assert.equal(result.status, 69);
   assert.equal(result.stdout, '');
-  assert.equal(result.stderr, 'Vectora Gemini MCP launcher: Vectora MCP for Gemini CLI supports macOS and Windows; unsupported platform: linux\n');
+  assert.equal(result.stderr, 'Vectora Gemini MCP launcher: Vectora MCP for Gemini CLI supports macOS, Windows and Linux; unsupported platform: freebsd\n');
 });
 
 test('copied launcher and symlink reach a stub app through the persisted path with exact stdio and exit status', {
@@ -264,7 +264,7 @@ test('Gemini helper dispatcher is bounded and uses Python only for audit', () =>
   }
   const args = ['--spec', '한글 input ; $().json', '--output', 'space output.svg', '', '--force'];
   for (const name of ['build_graph.mjs', 'build_text_frame.mjs', 'trace_artwork.mjs', 'audit_svg.py']) {
-    for (const platform of ['darwin', 'win32']) {
+    for (const platform of ['darwin', 'win32', 'linux']) {
       const spec = createHelperSpec(name, args, platform);
       const helper = path.join(repositoryRoot, helperRelative, 'scripts', name);
       assert.equal(spec.command, name === 'audit_svg.py' ? platform === 'win32' ? 'py' : 'python3' : process.execPath);

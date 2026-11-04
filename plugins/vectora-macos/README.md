@@ -1,4 +1,13 @@
-# Vectora MCP + 평가원 스타일 스킬 2.2.1
+# Vectora MCP + 평가원 스타일 스킬 2.2.2
+
+## Linux x64 설치 (앱 2.2.2부터)
+
+Release의 `Vectora-버전-linux-x64.AppImage` 하나를 `~/Applications`에 저장하고 `chmod +x ~/Applications/Vectora-버전-linux-x64.AppImage`로 실행 권한을 줍니다. FUSE를 사용할 수 없는 배포판은 해당 배포판의 AppImage/FUSE 안내를 확인하세요. 자동 교체는 하지 않으며, 업데이트 안내의 릴리스 링크에서 새 AppImage를 받은 뒤 앱을 종료하고 직접 교체합니다.
+
+UND v3.1 돋움·바탕 8개는 별도로 받아 `~/.local/share/fonts`(또는 `$XDG_DATA_HOME/fonts`)에 직접 설치한 뒤 `fc-cache -f`를 실행하고 앱을 다시 엽니다. 시스템 공용 경로는 `/usr/share/fonts`이며 `fc-list`로 인식 여부를 확인할 수 있습니다. 앱·저장소·Release·Actions artifact에는 글꼴 바이너리를 포함하지 않습니다.
+
+Linux Codex에서는 **Vectora (macOS / Linux)**를 선택합니다(호환성을 위해 플러그인 ID `vectora-macos` 유지). Claude Code와 Gemini CLI도 Linux 런처를 사용합니다. Claude Desktop의 Linux 지원을 의미하지 않습니다. `~/Applications`, `~/.local/bin`, `/opt/Vectora`의 실행 가능한 AppImage를 탐색하며, 여러 버전이 있으면 `VECTORA_APP_PATH=/절대/경로/Vectora.AppImage`로 사용할 버전을 지정하세요. 경로를 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 한 줄로 저장할 수도 있습니다. Linux의 QuickLook/Explorer 미리보기와 AppImage의 자동 데스크톱·파일 연결 등록은 제공하지 않습니다. 파일 연결 메타데이터는 `application/x-vectora`이며 필요하면 데스크톱 환경에서 수동 등록합니다.
+
 
 Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소의 **Git 확장**으로 설치합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
 
@@ -10,7 +19,7 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-2.2.1은 그래프 축 제목·단위의 화살촉 안쪽 배치, 각주 시작 열, 가로 막대의 단위·범례 위치, 축 생략 구간 격자 지침을 보강합니다. Vectora 2.2.1 앱의 그래프 기본값과 MCP 진행 알림 순서 수정과 함께 사용하세요. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
+2.2.2는 그래프 축 라벨·계열 끝 이름, 제목 없는 legendFrame 범례, 지형도 등고선 밀도, 경제 순환 관계도와 지도 위치도·판 경계 지침을 보강하고 Linux AppImage 실행기를 추가합니다. 새 그래프·범례 기능은 Vectora 2.2.2 앱과 함께 사용하세요. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
 
 평가원 그림 제작에는 **지정 공유 Dropbox 사용 기록 폴더 접근이 필수**입니다. 제작 전에 이를 알리고 기존 폴더의 접근·쓰기 가능 여부를 확인합니다. 그림별 요청/수정마다 관련 요청 원문·수정 이력 JSON과 검수한 `.vectora`·`.jpeg`를 기록하며, 폴더에 접근할 수 없으면 제작을 시작하지 않습니다. 로컬 동기화 폴더 쓰기와 원격 업로드 검증은 구별합니다. [사용 기록 절차](skills/create-kice-illustration/execution/usage-recording.md)를 확인하세요.
 
@@ -26,10 +35,10 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 | 사용할 환경 | 설치할 항목 |
 |---|---|
-| Codex macOS | Vectora (macOS) · `vectora-macos@vectora` |
+| Codex macOS / Linux | Vectora (macOS / Linux) · `vectora-macos@vectora` |
 | Codex Windows | Vectora (Windows) · `vectora-windows@vectora` |
 | Claude Code / 데스크톱 Cowork | Vectora · `vectora@vectora` |
-| Gemini CLI (macOS / Windows) | Vectora · `vectora` 확장 |
+| Gemini CLI (macOS / Windows / Linux) | Vectora · `vectora` 확장 |
 
 ## Codex 설치
 
@@ -93,7 +102,7 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.2.1`를 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.2.2`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 

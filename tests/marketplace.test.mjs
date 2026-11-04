@@ -17,7 +17,7 @@ const marketplacePath = path.join(PLUGIN_ROOT, '.agents', 'plugins', 'marketplac
 const marketplace = JSON.parse(readFileSync(marketplacePath, 'utf8'));
 const sourceManifest = JSON.parse(readFileSync(path.join(PLUGIN_ROOT, '.codex-plugin', 'plugin.json'), 'utf8'));
 const generated = [
-  { id: 'vectora-macos', platform: 'macos', displayName: 'Vectora (macOS)', script: 'sh' },
+  { id: 'vectora-macos', platform: 'macos', displayName: 'Vectora (macOS / Linux)', script: 'sh' },
   { id: 'vectora-windows', platform: 'windows', displayName: 'Vectora (Windows)', script: 'ps1' },
 ];
 const excludedSegments = new Set(['.git', '.obsidian', 'node_modules', 'release', 'tests', '__pycache__']);
