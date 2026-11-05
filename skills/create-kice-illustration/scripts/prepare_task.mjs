@@ -233,11 +233,30 @@ export function prepareTask(request, root=skillRoot){
   .map(entry=>({code:'uninspected-native-kind',unit:unit.id,path:entry.path,kind:entry.evidence?.kind,message:'현재 선택 추론 범위 밖입니다. native 유효성은 검증되지 않았습니다.'})));
  const inferenceWarningSection=renderInferenceWarningSection(warnings);
  const header=`# 이번 그림의 작업 지침\n\n이 문서는 요청의 실제 구성에 따라 조립했다. 분류 코드는 메타데이터이며 읽기 순서나 MCP kind가 아니다. 명시 요청·의미 보존을 우선하고 기본값/조건/임시 우회책을 구별한다. 선택 목록이 원 요청의 인물·원화/사진·실자료·밑줄·문단 박스·예약 영역을 빠뜨리지 않았는지 먼저 대조한다.\n\n${resolved.map(u=>`- ${u.id}: ${u.recipe}; 분류 ${u.subtype}${u.variant?' / '+u.variant:''}; 인물 ${u.people?'있음':'없음'}; 문자 ${u.textMode}; 구성요소 ${u.contains.join(', ')||'기본'}; 조건 ${u.features.join(', ')||'기본'}`).join('\n')}\n`;
+
+ const keyRules=(()=>{
+  const out=[],seenRule=new Set(),ranked=[];
+  phaseSources.design.forEach((src,i)=>{if(!src.unit||src.path.startsWith('core/'))return;ranked.push({rank:src.path.startsWith('recipes/')?0:1,body:sections.design[i]});});
+  ranked.sort((a,b)=>a.rank-b.rank);
+  for(const {body} of ranked){let perFile=0;for(const raw of body.split('\n')){
+   if(perFile>=3||out.length>=16)break;
+   const line=raw.replace(/^\s*(?:[-*]|\d+\.)\s+/,'').trim();
+   if(!line.includes('**')||/^[|#>]/.test(line)||line.startsWith('<!--'))continue;
+   for(const sentence of line.split(/(?<=[.!?])\s+/)){
+    if(!sentence.includes('**'))continue;
+    let t=sentence.replace(/\*\*/g,'').trim();if(t.length<8)continue;
+    if(t.length>240)t=t.slice(0,238)+'…';
+    if(seenRule.has(t)||perFile>=3)continue;seenRule.add(t);out.push(t);perFile++;
+   }
+  }}
+  return out.slice(0,16);
+ })();
+ const keyRuleSection=keyRules.length?'\n## 이번 유형의 핵심 규칙\n\n아래 문장은 선택된 유형 문서에서 뽑은 필수 규칙이다. 계획 단계에서 먼저 반영하고, 최종 JPEG에서 하나씩 대조한다. 의뢰가 명시적으로 다르게 요구한 항목만 예외다.\n\n'+keyRules.map(r=>'- '+r).join('\n')+'\n':'';
  const inputReviewSection=hasInputReview&&inputReview.warnings.length?renderInputReviewSection(inputReview.warnings):'';
  const contents={
-  design:header+'\n## 제작 순서\n\n짧은 제작 계획 → 실제 내용/자산 측정과 계획 조정 → 제작 → 원 요청·계획과 이미지 대조. 아래에는 해당 작업의 원칙만 포함된다.\n\n'+sections.design.join('\n\n'),
+  design:header+keyRuleSection+'\n## 제작 순서\n\n짧은 제작 계획 → 실제 내용/자산 측정과 계획 조정 → 제작 → 원 요청·계획과 이미지 대조. 아래에는 해당 작업의 원칙만 포함된다.\n\n'+sections.design.join('\n\n'),
   execute:inferenceWarningSection+inputReviewSection+'# 선택한 도구의 실행 계약\n\n실행 직전에 읽고 설치 앱의 실제 스키마로 확인한다. 응답 유실/리비전 오류가 있을 때만 execution/recovery.md를 읽는다. 임시 우회는 해당 증상이 재현된 경우에만 적용한다.\n\n'+sections.execute.join('\n\n'),
-  deliver:'# 완성 검수와 납품\n\n원본·JPEG를 같은 최종 상태로 만들고 실제 JPEG를 직접 확인한다. 기술 검증만으로 시각 통과를 선언하지 않는다.\n\n'+sections.deliver.join('\n\n'),
+  deliver:'# 완성 검수와 납품\n\n원본·JPEG를 같은 최종 상태로 만들고 실제 JPEG를 직접 확인한다. 기술 검증만으로 시각 통과를 선언하지 않는다.\n\n'+(keyRules.length?'## 이번 유형 핵심 규칙 대조\n\n최종 JPEG에서 아래 항목을 하나씩 확인하고, 어긋나면 고친 뒤 다시 내보낸다.\n\n'+keyRules.map(r=>'- '+r).join('\n')+'\n\n':'')+sections.deliver.join('\n\n'),
  };
  const hasText=resolved.some(unit=>unit.textMode!=='none');
  const hasNativeMap=resolved.some(unit=>unit.modules.includes('map-native'));

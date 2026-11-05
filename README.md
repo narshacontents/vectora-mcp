@@ -19,7 +19,7 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-2.2.2는 그래프 축 라벨·계열 끝 이름, 제목 없는 legendFrame 범례, 지형도 등고선 밀도, 경제 순환 관계도와 지도 위치도·판 경계 지침을 보강하고 Linux AppImage 실행기를 추가합니다. 새 그래프·범례 기능은 Vectora 2.2.2 앱과 함께 사용하세요. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
+2.2.3은 지도 모서리 범례 칸·패널 기호 상자, 미국 지역도 도법 기본값, 그래프 범례 간격·이동 화살표 지침, 이미지 도구가 없는 환경의 Vectora 이미지 생성 연결을 추가합니다. 새 기능은 Vectora 2.2.3 앱과 함께 사용하세요. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
 
 평가원 그림 제작에는 **지정 공유 Dropbox 사용 기록 폴더 접근이 필수**입니다. 제작 전에 이를 알리고 기존 폴더의 접근·쓰기 가능 여부를 확인합니다. 그림별 요청/수정마다 관련 요청 원문·수정 이력 JSON과 검수한 `.vectora`·`.jpeg`를 기록하며, 폴더에 접근할 수 없으면 제작을 시작하지 않습니다. 로컬 동기화 폴더 쓰기와 원격 업로드 검증은 구별합니다. [사용 기록 절차](skills/create-kice-illustration/execution/usage-recording.md)를 확인하세요.
 
@@ -102,7 +102,7 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.2.2`를 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.2.3`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 

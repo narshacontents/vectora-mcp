@@ -93,6 +93,22 @@
       "maximum": 100,
       "multipleOf": 5,
       "description": "Show only numeric ages at this interval plus (세); omission preserves alternating age-range labels. Values/bars retain every category."
+    },
+    "ageLabelPosition": {
+      "type": "string",
+      "optional": true,
+      "enum": [
+        "center",
+        "left"
+      ],
+      "description": "Omit/center preserves the center age column. left uses one editable native mirror graph, a shared zero, 0/4/8/12 ticks, captions 1mm below tick ink, and final (%) at right."
+    },
+    "barGap": {
+      "type": "number",
+      "optional": true,
+      "minimum": 0,
+      "maximum": 0.8,
+      "description": "Left age-axis variant only: fraction of each age row reserved as gap; omitted/0 joins adjacent classes. ageTickInterval defaults to 20 in this variant."
     }
   },
   "nativeOverrides": [

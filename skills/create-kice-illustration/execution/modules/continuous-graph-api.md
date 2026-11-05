@@ -2,7 +2,7 @@
 
 ## 생성 옵션
 
-- 연속 개념 개형: line 계열은 `chartOptions:{mode:"concept",semanticLabels:"end"|"legend"|"none",specialPoints:[...]}`를 지원한다. spec의 `series.values`는 경로 모양을 놓기 위한 내부 좌표로만 입력하며 관측값으로 설명하거나 숫자 축·눈금으로 표시하지 않는다. `domain`, `ticks`, `xDomain`, `xTicks`는 실제 정량 축이 필요할 때만 준다. 곡선 이름을 유지할 때 `semanticLabels:"none"`으로 지우지 말고 end label 또는 legend를 고른다.
+- 연속 개념 개형: line 계열은 `chartOptions:{mode:"concept",semanticLabels:"end"|"legend"|"none",specialPoints:[...]}`를 지원한다. spec의 `series.values`는 경로 모양을 놓기 위한 내부 좌표로만 입력하며 관측값으로 설명하거나 숫자 축·눈금으로 표시하지 않는다. `domain`, `ticks`, `xDomain`, `xTicks`는 실제 정량 축이 필요할 때만 준다. 곡선 이름을 유지할 때 `semanticLabels:"none"`으로 지우지 말고 end label 또는 legend를 고른다. 선 끝을 축에서 띄워야 하는 정성 개형(수요·공급 이동 등)은 `categories`로 두지 않는다. 첫·끝 범주가 자료창 끝에 붙어 선이 축에 닿는다. `chartOptions.xNumeric:true` + `xValues`(예 [1,9]) + `xDomain:[0,10]`·`domain:[0,10]`처럼 내부 좌표에 양끝 여유를 주고 값도 그 안(약 1–9)에 두어 이동 전후 선 모두 축에 닿지 않게 한다. 숫자 눈금은 개념 모드 기본대로 숨는다.
 
 - 정량 수요·공급 직선은 숫자 X축의 `line`/`smooth-line` 또는 `bar-scatter`의 `renderRole:"line"` 계열에 `extend:"axes"`를 기본으로 쓴다. 일직선인 점들을 축·자료 영역 경계까지 연장하고 절편에 필요한 `xDomain`을 자동 확장하되 지정 `xTicks`와 원자료는 보존한다. 예: `{id:"d",label:"수요",values:[6,2],extend:"axes",marker:"none"}` + `xValues:[0,400]`, `domain:[0,6]`, `xDomain:[0,450]`, `xTicks:[0,200,400]`, `chartOptions:{xNumeric:true,semanticLabels:"end"}`는 (600,0)까지 그린다. 비직선·결측 구간은 연장하지 않으며 정성 개형은 `extend:"none"`이다.
 - 관측 꺾은선도 `chartOptions.semanticLabels:"end"`(또는 `lineEndLabels:true`, `labelMode:"end"`)로 끝 이름을 붙인다. 연장한 선은 새 끝점 오른쪽 1mm에 잉크 중심을 맞추며, 가까운 이름은 위아래로 벌리고 짧은 지시선을 둔다.

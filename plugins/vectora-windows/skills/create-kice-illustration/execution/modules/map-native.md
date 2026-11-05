@@ -12,6 +12,7 @@
 
 기존 문서 편집·명시적 원본 재현에서는 경계 변경 요청이 없으면 해당 해안·국경·행정경계 정책을 보존한다. **새 제작에서는 프리셋의 초기 가시성을 그대로 강제하지 않고**, 지도 공통 지침에 따라 필요한 경계를 선택한다. 해안만 필요한 지도는 실제 등록 roles를 확인해 `layers:{"coast":true,"internal-border":false,"admin-border":false}`처럼 불필요한 경계 역할만 숨긴다. 해당 역할이 없는 바탕에는 필드를 추정하지 않는다. 국가 경계는 `internal-border`, 내부 행정 경계는 `admin-border`이며 `adminBorderStyle`만 바꿔 국경 전체를 숨겼다고 판단하지 않는다. 역할별 `boundaryStyles`를 지원하면 필요한 국경에만 dashed를 지정한다. 단순 국가 강조 때문에 모든 선에 `borderStyle:"solid"`를 강제하지 않으며, plan과 실제 출력에서 해안 보존·불필요한 경계 제거를 확인한다.
 
+- 표시 범위가 위경도로 정해지면(의뢰의 "북위 45°~남위 45°, 동경 60°~180°" 등) live schema의 `geoCrop:{west,south,east,north}`를 쓴다. 앱이 현재 도법으로 경계를 투영해 crop과 창 높이를 계산하므로 문서 mm로 손 환산하지 않는다. 태평양 중심은 경도 180 초과값(예 east:200)을 쓸 수 있고, `cropDocumentMm`와 함께 넣지 않는다. 제작 후 report의 실제 표시 위경도 범위가 의뢰와 맞는지 확인한다.
 - widthMm 기본 108, 현재 지원 1–108mm. 완성 폭은 별도 설명이 없으면 지시 문자/기호까지 포함한다. 범위 밖 요구를 조용히 108로 바꾸지 않는다. `cropDocumentMm:{x,y,width,height}`는 원문서 mm의 유한한 양의 대지 내부 범위, `frameMm`은 결과 지도 창이다. `s=창 폭/crop 폭`, `창 높이=crop 높이×s`로 동일 X/Y 배율을 적용한다. 폭/crop 변경 때 frame도 갱신하거나 create/plan에서 생략해 재계산한다. update 생략은 유지이므로 새 frame을 명시한다.
 - 관리 지도의 폭은 native map update로 바꾸고 지리 anchor·투영·binding을 유지한다. 일반 그룹 확대/폭 맞춤으로 원경로를 변형하거나 invalid binding을 남기지 않는다. 따로 보충한 경로·라벨은 자동 연결 여부를 확인하고, 미연결이면 원 지리 좌표에서 새 창으로 다시 계산한다. 현재 점 위치를 눈대중으로 옮겨 맞추지 않는다.
 - 전용 대지에 완성 폭을 맞추면 `xMm:0,yMm:0` 등 실제 배치를 명시해 기본 오프셋 잘림을 막는다. 보충 경로·틀은 선언 원점이 아닌 **생성/갱신 후 실제 지도 창·점 좌표**에 맞춘다. preserve 갱신 뒤에도 선언 위치와 실제 위치가 같다고 가정하지 않는다. 여백은 대지 치수에 포함하고 원점 포함 world bounds 네 변을 확인한다. 요청 종횡비는 **지도 창**에 적용하며 빈 대지 여백/비등방 왜곡으로 충족시키지 않는다. 도법/범위 때문에 불가능하면 미충족을 알린다.
@@ -37,3 +38,6 @@ preserve는 수동 스타일·고정 위치·부분 detach를 존중하며 미�
 - 자동 지시선은 초기 배치다. 최종 JPEG에서 선이 글자의 아래쪽이나 획에 걸리면 지리 anchor를 유지하고 라벨의 지원 offset을 미세 조정한다. 선 끝은 글의 실제 잉크 외곽 가까이에서 끝나게 하고, 좌우로 연결할 때에는 글의 시각적 중앙 높이와 주변 여백도 함께 맞춘다. 단순히 선과 글을 붙이는 것만으로 검수를 마치지 않는다.
 
 국가/행정구역별 등급 자료는 `execution/modules/map-thematic-native.md`, 연속 통계 격자·등치선은 `execution/modules/map-scalar-native.md`의 해당 실행 계약을 따른다. 일반 경로/위치 지도에는 그 자료층을 추가하지 않는다.
+- live schema가 `fitFrame:"selected"`를 지원하면 `renderDomain:"selected"`로 일부 행정구역·국가만 그리는 지도는 이 옵션으로 지도 창을 선택 지역의 실제 외곽에 맞춘다. 패널 제목·축척·범례는 맞춘 창(지도 잉크) 기준으로 붙인다.
+- 대상 대륙·국가만 흰색이고 주변 육지가 회색이면 live schema의 `selectRegions:["Africa"]`(또는 verifiedIds)+`highlightFill:"#FFFFFF"`+`unselectedLandFill`로 만든다. 주변 국가를 featureFills로 하나씩 칠하면 빠진 작은 나라가 흰 얼룩으로 남는다. 대륙 view의 기본 창은 대상 대륙 외곽에 거의 붙으므로, 의뢰가 주변 바다·이웃 지역(예: 지중해·아라비아반도 남부)을 포함하라고 하면 창 범위를 그만큼 넓혀 다시 잡고 JPEG에서 그 지역이 실제로 보이는지 확인한다.
+- 지도 틀 모서리에 붙는 범례 칸과 패널 기호 상자는 live schema가 지원하면 지도 소유 옵션으로 만든다: `legendBox:{corner:"bottom-right",entries:[{id,label,fill:{color}|{appearance}}]}`, `panelLabel:{text:"(다)",corner:"top-left"}`. 앱이 틀선 두 변을 공유하고 잉크 기준 여백(범례 상하좌우 같게, 패널 기호 좌우 넓고 상하 좁게)과 견본–글자 세로 중심을 맞춘다. 사각형·글상자를 손으로 조립하지 않으며, 견본 채움은 본도의 채움·무늬 appearance와 같게 준다. 여백을 바꿔야 할 때만 `paddingMm`을 명시한다.

@@ -37,4 +37,9 @@
 
 위 새 축·기준선 계약은 현재 라이브 graph schema에서 지원을 확인한 compact `column`, `stacked-column`, `percent-column`, `line`, `smooth-line`, `step-line`, `bar-scatter`에만 적용한다. 원점 정책에는 수치 X도 필요하다. 다른 compact 형식과 legacy에 옵션을 섞지 않는다(legacy line의 기존 xAxis는 별도 계약). 구형 연결본에 필드를 강제로 보내지 말고 실제 부족한 부분만 보충한다. 도구 버전 이름만으로 지원을 추정하지 않는다.
 
+그래프 의뢰의 "사각 틀"·"상자형 축"·"틀"은 자료 영역 네 변을 닫는 `frame:"box"`다. 그림 전체(제목·범례·출처 포함)를 감싸는 외곽 테두리로 바꾸지 않으며, 외곽 테두리는 의뢰가 그림 전체 테두리를 명시할 때만 그린다.
+
 축선 선택은 `chartOptions.frame:"none"|"box"`와 `axisArrows`로 분리한다. 상자 프레임은 `frame:"box",axisArrows:false`, 일반 축선은 `frame:"none",axisArrows:false`, 화살표 축은 `frame:"none",axisArrows:true`다. 지원 연결본에서는 `axisTicks.{x,y,secondaryY}`의 `direction:"in"|"out"|"cross"`, `lengthMm`으로 눈금 방향·길이를 선택한다. `showXTicks/showYTicks:false`가 표시 여부를 정하고 수치 라벨은 그대로 남길 수 있다. 라이브 계약이 없는 구형 연결본에는 새 필드를 보내지 않는다.
+- 원점 위아래(좌우)로 이어지는 양음 개념축은 지원 앱의 `chartOptions:{mode:"concept",xNumeric:true,showYLabels:false,showCategoryLabels:false,axisArrows:{x:true,y:"both"},axisSignLabels:{y:{positive:"(+)",negative:"(−)"}},originLabel:true}`로 만들고 이동은 `pointArrows`로 잇는다. 축·화살표를 독립 경로로 다시 그리지 않는다.
+- 기후 그래프처럼 봉우리가 있는 연속 선은 혼합 그래프 선 계열의 `interpolation`(지원되면 "smooth", 없으면 "monotone")과 `marker:"none"`으로 만든다. 곡선을 손으로 그리지 않는다.
+- 범주 일부에만 숫자를 적을 때(예: 월별 자료에서 1·6·12만)는 categories는 12개 그대로 두고 `chartOptions.labelIndices:[0,5,11]`로 표시할 위치만 고른다. 눈금 표시는 모든 범주에 남는다. 범주 숫자를 별도 글상자로 다시 만들지 않는다.
