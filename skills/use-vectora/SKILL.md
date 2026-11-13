@@ -5,16 +5,16 @@ description: "Vectora MCP로 벡터 그림을 만들고 SVG·AI/PDF·이미지�
 
 # Vectora로 벡터 편집
 
-Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DOM 조작, 실행 중인 앱에 스크립트 주입으로 작업하지 않는다. MCP는 설치된 Vectora 1.0.0+의 실제 편집 엔진을 별도 세션에서 실행한다. Codex와 Claude는 GitHub 마켓플레이스에서 MCP와 세 스킬을 함께 설치하는 경로를 사용한다. 수동 설치 ZIP·MCPB·개별 스킬 ZIP은 기본 배포하지 않는다. 플러그인 안의 실행기가 OS에 맞게 설치 앱을 연결하며, GitHub Release 게시만으로 설치본이 자동 갱신되지는 않는다. 일반 앱 창의 미저장 문서는 MCP에 자동으로 연결되지 않는다. 파일을 저장한 뒤 `vectora_open_document`로 열고 작업한다.
+Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DOM 조작, 실행 중인 앱에 스크립트 주입으로 작업하지 않는다. MCP는 설치된 Vectora 1.0.0+의 실제 편집 엔진을 별도 세션에서 실행한다. Codex와 Claude는 GitHub 마켓플레이스에서 MCP와 세 스킬을 함께 설치하는 경로를 사용한다. 수동 설치 ZIP·MCPB·개별 스킬 ZIP은 기본 배포하지 않는다. 플러그인 안의 Rust 실행기 `bin/vectora-mcp-launch`가 OS에 맞게 설치 앱을 연결하고 스킬 보조 계산은 `bin/vectora-skill`이 수행하므로 Node.js·Python·PowerShell이 필요하지 않으며, GitHub Release 게시만으로 설치본이 자동 갱신되지는 않는다. 일반 앱 창의 미저장 문서는 MCP에 자동으로 연결되지 않는다. 파일을 저장한 뒤 `vectora_open_document`로 열고 작업한다.
 
 새 그래프 검색·충돌 배치, 지도 지물 catalog·위치·파선·재열기 binding, 표 세로 정렬·108mm 맞춤, 혼합 문자 획 측정, 명시 굵기·예약 외곽, 두루마리 variant와 장시간 지도 작업의 자원 관리는 **앱 1.4.2 이상**에서 실제 capability와 schema가 제공될 때 사용한다. 기존 1.4.0·1.3.0·1.2.0 기능의 최소 버전은 유지한다. 앱·플러그인 버전 숫자만으로 필드를 추정하지 않는다.
 
 ## 연결과 단위
 
-- Gemini CLI에서는 현재 노출된 MCP 이름·스키마를 사용한다. 로컬 앱 연결은 CLI용이며 일반 Gemini 웹 채팅 연결을 뜻하지 않는다. 이 확장의 실행기에는 Node.js가 필요하다. 사용자 지정 앱 위치는 확장 루트의 `scripts/configure-app.sh`·`configure-app.ps1`로 저장한다. Gemini의 환경 변수 필터 때문에 셸의 `VECTORA_APP_PATH` 전달을 가정하지 않는다. 실제 이미지 확인은 `read_file` 등 이미지 입력을 지원하는 도구로 수행한다.
+- Gemini CLI에서는 현재 노출된 MCP 이름·스키마를 사용한다. 로컬 앱 연결은 CLI용이며 일반 Gemini 웹 채팅 연결을 뜻하지 않는다. 이 확장의 실행기는 확장 루트의 `bin/vectora-mcp-launch`이며 Node.js가 필요하지 않다. 사용자 지정 앱 위치는 아래 운영체제별 `mcp-app-path` 파일에 저장한다. Gemini의 환경 변수 필터 때문에 셸의 `VECTORA_APP_PATH` 전달을 가정하지 않는다. 실제 이미지 확인은 `read_file` 등 이미지 입력을 지원하는 도구로 수행한다.
 
 - `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 플러그인 루트 `README.md`와 앱 프로젝트의 `docs/MCP_INSTALLATION.md`를 참고한다.
-- Windows에서 MCP 실행기는 Windows PowerShell 기본 `powershell.exe`와 설치된 `Vectora.exe`를 사용한다. Node.js/Python 런타임은 필요하지 않다. 앱 경로 우선순위는 `VECTORA_APP_PATH`, `%APPDATA%\Vectora\mcp-app-path`, `%LOCALAPPDATA%\Programs\Vectora\Vectora.exe`, `%ProgramFiles%\Vectora\Vectora.exe`, `%ProgramFiles(x86)%\Vectora\Vectora.exe`다. 사용자 지정 경로는 `scripts/configure-app.ps1 -AppPath <Vectora.exe 절대 경로>`로 저장한다. macOS는 `scripts/configure-app.sh <Vectora.app 절대 경로>` 또는 Applications 기본 위치를 사용한다.
+- Windows에서 MCP 실행기는 플러그인의 `bin/vectora-mcp-launch.exe`와 설치된 `Vectora.exe`를 사용한다. Node.js/Python/PowerShell 런타임은 필요하지 않다. 앱 경로 우선순위는 `VECTORA_APP_PATH`, `%APPDATA%\Vectora\mcp-app-path`, `%LOCALAPPDATA%\Programs\Vectora\Vectora.exe`, `%ProgramFiles%\Vectora\Vectora.exe`, `%ProgramFiles(x86)%\Vectora\Vectora.exe`다. 사용자 지정 경로는 `%APPDATA%\Vectora\mcp-app-path`에 `Vectora.exe` 절대 경로 한 줄로 저장한다. macOS는 `~/Library/Application Support/Vectora/mcp-app-path`에 저장한 `Vectora.app` 절대 경로 또는 Applications 기본 위치를, Linux는 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 저장한 실행 가능한 AppImage 경로 또는 기본 위치를 사용한다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.
 - `vectora_apply`의 기본 `units: "mm-pt"`: 도형 위치·크기·경로 `d`·대지·가이드·오프셋은 **mm**, 문자 크기·선 굵기·기준선 이동·행간·점선 길이는 **pt**. 자간 `charSpacing`은 **1/1000em**이다. `units: "px"`는 모든 길이를 px로 받는다.
 - `add`의 `shape:"path"`에서 `d`에 문서 절대 좌표를 계산했다면 `left`/`top`과 `geometryOrigin`은 생략한다. 명시한 `left`/`top`은 경로의 기하 경계 시작점을 그 위치로 다시 배치한다. `geometryOrigin:true`만 보내면 빠진 위치가 0으로 처리되어 절대 좌표 경로가 원점으로 이동하므로 사용하지 않는다. 경로 일부를 보충할 때 먼저 실제 `pathNodes`가 계산한 좌표와 일치하는지 확인한다.

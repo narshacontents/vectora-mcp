@@ -4,4 +4,4 @@ Activate the relevant root `skills/` skill on demand: `use-vectora` for editing 
 
 Use the actual exposed MCP tool names and schemas (including any client prefix), such as `vectora_status`, `vectora_open_document`, `vectora_inspect` and `vectora_save`. Pass real local file paths accessible to Vectora. This connects the installed desktop app to Gemini CLI; it does not connect Gemini web chat or supply an image-generation model.
 
-Paths are relative to this extension's installed root. For a custom app location, use `scripts/configure-app.sh` on macOS or `scripts/configure-app.ps1` on Windows to persist it. Gemini filters extension environment variables, so do not assume shell `VECTORA_APP_PATH` is inherited.
+Paths are relative to this extension's installed root. For a custom app location, write its absolute path as one line to the `mcp-app-path` file that `bin/vectora-mcp-launch` reads: `~/Library/Application Support/Vectora/mcp-app-path` on macOS, `%APPDATA%\Vectora\mcp-app-path` on Windows, `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path` on Linux. Gemini filters extension environment variables, so do not assume shell `VECTORA_APP_PATH` is inherited.

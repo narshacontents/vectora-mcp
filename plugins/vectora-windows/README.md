@@ -1,12 +1,12 @@
-# Vectora MCP + 평가원 스타일 스킬 2.2.2
+# Vectora MCP + 평가원 스타일 스킬 (Rust 판)
 
 ## Linux x64 설치 (앱 2.2.2부터)
 
-Release의 `Vectora-버전-linux-x64.AppImage` 하나를 `~/Applications`에 저장하고 `chmod +x ~/Applications/Vectora-버전-linux-x64.AppImage`로 실행 권한을 줍니다. FUSE를 사용할 수 없는 배포판은 해당 배포판의 AppImage/FUSE 안내를 확인하세요. 자동 교체는 하지 않으며, 업데이트 안내의 릴리스 링크에서 새 AppImage를 받은 뒤 앱을 종료하고 직접 교체합니다.
+Linux용 Vectora 2.3.0(Rust)은 `Vectora-2.3.0-linux-x64.AppImage`(같은 내용의 `tar.gz`도 함께)로 배포합니다. 플러그인의 Rust 실행기는 공개판 실행기와 같은 위치와 이름(`~/Applications/Vectora.AppImage`, `~/Applications/Vectora-버전-linux-x64.AppImage` 등)에서 실행 권한이 있는 앱 파일을 찾으므로, 앱 파일에는 `chmod +x`로 실행 권한을 줍니다. 실행기는 권한을 바꾸거나 앱을 자동 교체하지 않습니다.
 
 UND v3.1 돋움·바탕 8개는 별도로 받아 `~/.local/share/fonts`(또는 `$XDG_DATA_HOME/fonts`)에 직접 설치한 뒤 `fc-cache -f`를 실행하고 앱을 다시 엽니다. 시스템 공용 경로는 `/usr/share/fonts`이며 `fc-list`로 인식 여부를 확인할 수 있습니다. 앱·저장소·Release·Actions artifact에는 글꼴 바이너리를 포함하지 않습니다.
 
-Linux Codex에서는 **Vectora (macOS / Linux)**를 선택합니다(호환성을 위해 플러그인 ID `vectora-macos` 유지). Claude Code와 Gemini CLI도 Linux 런처를 사용합니다. Claude Desktop의 Linux 지원을 의미하지 않습니다. `~/Applications`, `~/.local/bin`, `/opt/Vectora`의 실행 가능한 AppImage를 탐색하며, 여러 버전이 있으면 `VECTORA_APP_PATH=/절대/경로/Vectora.AppImage`로 사용할 버전을 지정하세요. 경로를 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 한 줄로 저장할 수도 있습니다. Linux의 QuickLook/Explorer 미리보기와 AppImage의 자동 데스크톱·파일 연결 등록은 제공하지 않습니다. 파일 연결 메타데이터는 `application/x-vectora`이며 필요하면 데스크톱 환경에서 수동 등록합니다.
+Linux Codex에서는 **Vectora (macOS / Linux)**를 선택합니다(호환성을 위해 플러그인 ID `vectora-macos` 유지). Claude Code와 Gemini CLI도 같은 Rust 실행기 `bin/vectora-mcp-launch`를 사용합니다. Claude Desktop의 Linux 지원을 의미하지 않습니다. `~/Applications`, `~/.local/bin`, `/opt/Vectora`의 실행 가능한 AppImage를 탐색하며, 여러 버전이 있으면 `VECTORA_APP_PATH=/절대/경로/Vectora.AppImage`로 사용할 버전을 지정하세요. 경로를 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 한 줄로 저장할 수도 있습니다. Linux의 QuickLook/Explorer 미리보기와 AppImage의 자동 데스크톱·파일 연결 등록은 제공하지 않습니다. 파일 연결 메타데이터는 `application/x-vectora`이며 필요하면 데스크톱 환경에서 수동 등록합니다.
 
 
 Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소의 **Git 확장**으로 설치합니다. Vectora 편집 도구와 다음 세 스킬이 함께 설치됩니다.
@@ -19,13 +19,13 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-2.2.3은 지도 모서리 범례 칸·패널 기호 상자, 미국 지역도 도법 기본값, 그래프 범례 간격·이동 화살표 지침, 이미지 도구가 없는 환경의 Vectora 이미지 생성 연결을 추가합니다. 새 기능은 Vectora 2.2.3 앱과 함께 사용하세요. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
+2.3.0은 Vectora 2.3.0(Rust) 앱과 함께 쓰는 판입니다. 스킬 지침은 2.2.3(지도 모서리 범례 칸·패널 기호 상자, 미국 지역도 도법 기본값, 그래프 범례 간격·이동 화살표 지침)과 같고, MCP 실행기와 보조 명령이 Rust 실행 파일입니다. Vectora 2.3.0 앱은 아직 이미지 생성 키를 쓰지 않으므로 Vectora 이미지 생성 연결은 사용할 수 없다고 답합니다. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
 
 평가원 그림 제작에는 **지정 공유 Dropbox 사용 기록 폴더 접근이 필수**입니다. 제작 전에 이를 알리고 기존 폴더의 접근·쓰기 가능 여부를 확인합니다. 그림별 요청/수정마다 관련 요청 원문·수정 이력 JSON과 검수한 `.vectora`·`.jpeg`를 기록하며, 폴더에 접근할 수 없으면 제작을 시작하지 않습니다. 로컬 동기화 폴더 쓰기와 원격 업로드 검증은 구별합니다. [사용 기록 절차](skills/create-kice-illustration/execution/usage-recording.md)를 확인하세요.
 
 [출제 에이전트용 의뢰 가이드](skills/create-kice-illustration/references/caller/exam-agent-guide.md)는 유형별로 필요한 내용·자료 대응·복합 구도와 제작자에게 맡길 시각적 선택을 구분합니다. 자연어 요청 예시는 별도의 [사람용 요청 안내](skills/create-kice-illustration/references/caller/human-prompt-guide.md)에서 확인할 수 있습니다.
 
-평가원 스킬은 자료형 분류 v3의 10유형·50세부유형을 검색·기록용으로 유지합니다. 제작할 배치와 구성요소를 선택하면 `prepare_task.mjs`가 설계·실행·검수 단계에 필요한 지침만 준비합니다. 공통 원칙, 제작 방식, 조건부 구성요소와 도구 계약은 각각 한 원본으로 관리하며, 인물·내부 표/차트·문단 박스 등의 실제 내용에 따라 연결됩니다. 고정된 파일 수나 분류 계층을 읽기 순서로 강제하지 않습니다. 원문자 뒤 밑줄 앞에는 Vectora Alt+Space의 고정 반칸(U+2002)을 사용합니다.
+평가원 스킬은 자료형 분류 v3의 10유형·50세부유형을 검색·기록용으로 유지합니다. 제작할 배치와 구성요소를 선택하면 `<plugin>/bin/vectora-skill prepare_task`가 설계·실행·검수 단계에 필요한 지침만 준비합니다. 공통 원칙, 제작 방식, 조건부 구성요소와 도구 계약은 각각 한 원본으로 관리하며, 인물·내부 표/차트·문단 박스 등의 실제 내용에 따라 연결됩니다. 고정된 파일 수나 분류 계층을 읽기 순서로 강제하지 않습니다. 원문자 뒤 밑줄 앞에는 Vectora Alt+Space의 고정 반칸(U+2002)을 사용합니다.
 
 실제 자료로 그래프·지도를 요청하면 공신력 있는 원자료를 확인하고, 출처와 가공 방법을 밝히면서 시험지에 적합한 단위·숫자 표기·시각화 형식을 선택합니다.
 
@@ -59,7 +59,7 @@ codex plugin add vectora-macos@vectora
 codex plugin add vectora-windows@vectora
 ```
 
-Codex 연결에는 별도 Node.js나 Python 설치가 필요하지 않습니다. Windows에서는 함께 설치된 PowerShell 실행기가 앱과 통신합니다.
+Codex·Claude·Gemini 연결과 스킬 보조 명령에는 Node.js·Python·PowerShell이 필요하지 않습니다. 플러그인에 함께 들어 있는 Rust 실행기 `bin/vectora-mcp-launch`가 앱을 시작해 통신하고, 스킬 보조 계산은 `bin/vectora-skill`이 수행합니다.
 
 ## Claude 설치
 
@@ -72,13 +72,13 @@ claude plugin marketplace add narshacontents/vectora-mcp
 claude plugin install vectora@vectora --scope user
 ```
 
-MCP와 세 스킬이 함께 설치되므로 별도 스킬 ZIP 업로드가 필요하지 않습니다. Claude용 실행기는 Node.js 18 이상을 사용하며, Claude Code에서는 `node`가 PATH에 있어야 합니다. 설치 후 새 로컬 세션에서 Vectora 도구와 `/vectora:use-vectora`, `/vectora:create-kice-illustration`, `/vectora:create-kice-science-illustration`을 확인합니다.
+MCP와 세 스킬이 함께 설치되므로 별도 스킬 ZIP 업로드가 필요하지 않습니다. Claude용 실행기는 플러그인의 `bin/vectora-mcp-launch`이며 Node.js가 필요하지 않습니다. 설치 후 새 로컬 세션에서 Vectora 도구와 `/vectora:use-vectora`, `/vectora:create-kice-illustration`, `/vectora:create-kice-science-illustration`을 확인합니다.
 
 **Vectora의 로컬 MCP는 Claude Code와 데스크톱 Cowork 로컬 세션에서 사용합니다. 일반 Claude 채팅·웹/클라우드 세션에서는 컴퓨터의 Vectora 앱에 연결되지 않습니다.** 계정에서 플러그인만 보인다고 로컬 도구가 연결된 것은 아닙니다. 설치 범위와 경로 문제는 [Claude 설치 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md)를 참고하세요.
 
 ## Gemini CLI 설치
 
-컴퓨터에 Vectora 앱, Gemini CLI와 Git을 설치합니다. 새 평가원 작업에는 앱에서 설치·등록하는 UND v3.1과 UND v3.1 Batang을 사용합니다. 연결 실행기는 Gemini CLI에서 사용하는 Node.js를 실행합니다. 배포 확인 환경은 Gemini CLI 0.50.0입니다. 다음 명령을 터미널에서 실행하고 확장이 요청하는 MCP·스킬 사용 권한을 확인합니다.
+컴퓨터에 Vectora 앱, Gemini CLI와 Git을 설치합니다. 새 평가원 작업에는 앱에서 설치·등록하는 UND v3.1과 UND v3.1 Batang을 사용합니다. 연결 실행기는 확장에 들어 있는 `bin/vectora-mcp-launch`이며 Node.js를 실행하지 않습니다. 배포 확인 환경은 Gemini CLI 0.50.0입니다. 다음 명령을 터미널에서 실행하고 확장이 요청하는 MCP·스킬 사용 권한을 확인합니다.
 
 ```sh
 gemini extensions install https://github.com/narshacontents/vectora-mcp
@@ -91,7 +91,7 @@ gemini mcp list
 
 **이 확장은 로컬 Gemini CLI용입니다. 일반 Gemini 웹 채팅에 업로드하는 패키지가 아닙니다.** 원화 이미지 생성 모델은 포함하지 않습니다. 새 인물·삽화 제작에는 현재 세션에 연결된 이미지 생성 도구 또는 사용자가 제공한 원화가 필요하며, 없는 경우 스킬은 미완료 조건을 알립니다.
 
-Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치는 설치된 확장 루트의 `scripts/configure-app.sh` 또는 `scripts/configure-app.ps1`로 등록하세요. 셸의 `VECTORA_APP_PATH`가 전달된다고 가정하지 않습니다. 선택적 조판·추적 보조 프로그램은 `scripts/gemini/run-helper.mjs`로 함께 설치된 휴대형 실행본을 사용합니다. Python 감사 스크립트를 실행할 때만 Python 3가 추가로 필요합니다. 통합과학은 준비 중이며 자동 제작에 사용하지 않습니다.
+Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치는 아래 [앱 경로와 연결](#앱-경로와-연결)의 `mcp-app-path` 파일에 저장하세요. 셸의 `VECTORA_APP_PATH`가 전달된다고 가정하지 않습니다. 선택적 조판·추적·감사 보조 명령은 확장 루트의 `bin/vectora-skill`로 실행합니다. 통합과학은 준비 중이며 자동 제작에 사용하지 않습니다.
 
 설정 구조와 배포 방식은 [Gemini 공식 확장 문서](https://geminicli.com/docs/extensions/reference/)와 [배포 안내](https://geminicli.com/docs/extensions/releasing/)를 따릅니다. GitHub topic을 통한 갤러리 수집과 저장소 URL로 직접 설치하는 것은 별개입니다.
 
@@ -102,18 +102,18 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.2.3`를 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.3.0`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 
 ## 앱 경로와 연결
 
-macOS의 `/Applications/Vectora.app` 또는 `~/Applications/Vectora.app`, Windows의 사용자 Programs 또는 Program Files 기본 위치에서 앱을 자동으로 찾습니다. 사용자 지정 경로는 `VECTORA_APP_PATH` 또는 다음 파일의 한 줄로 지정할 수 있습니다.
+플러그인의 Rust 실행기는 공개판 실행기와 같은 규칙으로 macOS의 `/Applications/Vectora.app` 또는 `~/Applications/Vectora.app`(`Contents/MacOS/Vectora`, 버전 1.0.0 이상), Windows의 사용자 Programs 또는 Program Files 기본 위치, Linux의 위 AppImage 위치에서 앱을 자동으로 찾습니다. 사용자 지정 경로는 `VECTORA_APP_PATH` 또는 다음 파일의 한 줄로 지정할 수 있습니다.
 
 - macOS: `~/Library/Application Support/Vectora/mcp-app-path` — `Vectora.app`의 절대 경로
 - Windows: `%APPDATA%\Vectora\mcp-app-path` — `Vectora.exe`의 절대 경로
 
-경로 등록용 `scripts/configure-app.sh`와 `scripts/configure-app.ps1`은 해당 플러그인 안에 포함합니다. 별도 설치 파일로 배포하지 않습니다. 클라이언트가 연결하지 못하면 실제 앱 경로, 런타임, MCP 오류를 확인합니다.
+Linux는 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 실행 가능한 AppImage 또는 Vectora 실행 파일의 절대 경로를 저장합니다. Vectora 2.3.0 앱은 실행할 때 자기 위치(macOS는 `Vectora.app`, Windows는 `Vectora.exe`, Linux는 AppImage)를 이 파일에 기록하고, Windows 설치 프로그램도 설치할 때 기록합니다. 다른 앱을 쓰려면 이 파일의 한 줄을 직접 바꿉니다. 클라이언트가 연결하지 못하면 실제 앱 경로, 실행기 오류와 MCP 오류를 확인합니다.
 
 MCP는 일반 편집 창의 미저장 문서를 자동 조작하지 않습니다. 작업 파일을 저장한 뒤 `vectora_open_document`로 열거나 새 문서를 만들어 작업합니다.
 
@@ -127,18 +127,18 @@ MCP는 일반 편집 창의 미저장 문서를 자동 조작하지 않습니다
 
 ## 유지보수와 릴리스
 
-루트의 매니페스트·실행기·`skills/`가 원본이고 `plugins/`는 마켓플레이스에서 설치하는 생성본입니다. Gemini CLI는 루트 확장과 같은 원본 스킬을 읽습니다. 클라이언트별 도구·파일 경로 안내만 조정하고 평가원 화풍 규칙은 유지합니다. 로컬 작업은 `vectora-source/vectora-mcp`의 독립 저장소에서 수행합니다. 생성·검사에는 Node.js와 Python 3가 필요합니다. 아래 명령은 저장소에 포함된 의존성을 사용하므로 네트워크 설치를 하지 않습니다.
+이 Rust 판 원본은 저장소의 `rust/mcp-plugin/`입니다. 스킬 문서는 공개 v2.2.3 고정 사본(`rust/mcp-package/vectora-*-v2.2.3`)에서 복사해 보조 명령 호출과 실행 환경 안내만 바꿨으며 평가원 화풍 규칙은 그대로입니다. 패키지는 Rust 패키지 빌더 `vectora-mcp-package`가 운영체제·AI 앱별로 만들며 Node.js와 Python이 필요하지 않습니다.
 
 ```sh
-node scripts/build-marketplace.mjs
-node scripts/build-marketplace.mjs --check
+vectora-mcp-package build --rust-plugin rust/mcp-plugin --platform macos-aarch64 --launcher <vectora-mcp-launch> --skill-tool <vectora-skill> --source-info <원본 정보.json> --out <새 폴더> --zip <패키지.zip>
+vectora-mcp-package verify <푼 폴더>
 ```
 
-의존성을 변경할 때만 `node scripts/build-claude-runtime.mjs`로 고정된 npm 잠금파일과 Python 해시에 맞춰 내부 의존성 묶음을 다시 만듭니다. 이 내부 묶음은 설치파일이나 릴리스 첨부가 아닙니다. 의존성 변경 뒤 마켓플레이스 생성 명령도 실행합니다.
+실행기와 보조 실행 파일은 대상 운영체제별로 `cargo build --release -p vectora-core --bin vectora-mcp-launch --bin vectora-skill`로 만듭니다. Claude·Gemini 패키지는 build에 `--host claude` 또는 `--host gemini`를 더하고, Windows 패키지(`--platform windows-x86_64`)는 `.exe` 실행 파일을 받습니다.
 
 시각 기본값을 바꾸는 유지보수의 근거와 일반 그림 제작의 경계는 [스킬 유지보수 근거 정책](https://github.com/narshacontents/vectora-mcp/blob/main/docs/skill-maintenance-evidence-policy.md)을 따릅니다.
 
-원본과 생성된 파일을 함께 커밋합니다. `--check`는 소스와 설치본의 불일치를 검사하며 네트워크 설치나 파일 수정을 하지 않습니다. 로컬에서 `node scripts/stage-release.mjs`까지 검증한 뒤, 이미 존재하는 버전 태그를 대상으로 `gh release create "$TAG" --verify-tag --title "Vectora MCP $TAG" --notes-file RELEASE_NOTES.md`를 실행해 변경 안내만 게시합니다. 태그를 자동 생성하거나 이동하지 않습니다. 두 Actions workflow는 `workflow_dispatch`에서만 실행됩니다. 수동 릴리스 workflow는 필수 태그를 체크아웃해 현재 버전과 대조한 뒤 노트만 게시합니다. 설치 아카이브를 만들거나 업로드하지 않습니다.
+build는 쓴 폴더를 다시 읽어 verify를 통과한 뒤, 같은 입력에서 항상 같은 바이트의 zip을 만듭니다. 플러그인 버전(2.3.0)은 패키지 빌더의 상수 한 곳에서 정해집니다. 릴리스용 패키지는 저장소의 릴리스 절차(`rust/mcp-package/`)가 운영체제·AI 앱별로 만들고 검사합니다. 마켓플레이스 게시 절차는 아직 정하지 않았으며 이 원본에서 자동으로 게시하지 않습니다.
 
 [Codex 플러그인 공식 안내](https://developers.openai.com/plugins/build/plugins) · [Claude 마켓플레이스 설치](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude Code 설치·업데이트](https://code.claude.com/docs/en/plugins/install)
 

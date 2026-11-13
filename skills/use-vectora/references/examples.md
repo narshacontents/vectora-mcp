@@ -109,4 +109,4 @@ Windows에서 MCP 경로 인자는 절대 경로를 JSON 문자열로 전달한�
 {"path":"C:\\Users\\사용자 이름\\Documents\\사회 도식.svg"}
 ```
 
-앱 안에서 경로를 자동 탐색하는 것은 Codex 플러그인의 Windows 실행기 기능이다. 다른 MCP 클라이언트는 앱 실행 파일을 직접 등록하고 `--mcp-stdio`를 인자로 전달해야 한다.
+앱 경로 자동 탐색은 플러그인에 들어 있는 Rust 실행기 `bin/vectora-mcp-launch`의 기능이며 Codex·Claude·Gemini 패키지가 같은 실행기를 쓴다. 이 패키지를 거치지 않는 MCP 클라이언트는 앱 실행 파일을 직접 등록하고 `--mcp-stdio`를 인자로 전달해야 한다.

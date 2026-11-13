@@ -2,10 +2,8 @@
   "mcpServers": {
     "vectora": {
       "type": "stdio",
-      "command": "node",
-      "args": [
-        "${CLAUDE_PLUGIN_ROOT}/scripts/claude/claude-mcp-launcher.mjs"
-      ]
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/vectora-mcp-launch",
+      "args": []
     }
   }
 }

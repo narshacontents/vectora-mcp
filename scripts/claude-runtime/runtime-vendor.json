@@ -1,8 +1,0 @@
-{
-  "formatVersion": 1,
-  "nodePackages": 16,
-  "python": "fonttools==4.63.0",
-  "files": 1102,
-  "bytes": 5923578,
-  "sha256": "b970ecd6a4909fc54666d0d9a06e4bfd85de7c185d18d9898f0923d13aecbfca"
-}

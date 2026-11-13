@@ -20,7 +20,7 @@
 
 동등한 가로 카드열이 필요한 경우 라이브 `noticeboard`로 본문부터 제작한다. 미지정 열 수·같은 카드 높이·제목 종이·압정·말림은 생성기 구현 기본값이며 평가원 필수 구도가 아니다. 실제 글의 역할과 수로 열·행을 설계하고, 다른 구도는 native 내용/복합 조판과 필요한 외피만 보충한다. 요청에 없는 빈 카드나 제목 종이를 기본 출력을 채우기 위해 만들지 않는다.
 
-네이티브 경로를 사용할 수 없고 설계가 동등한 가로 카드열에 맞을 때만 스킬 루트의 `node scripts/build_text_frame.mjs --spec <입력.json> --output <배경.svg>` 또는 `buildTextFrame(spec)`을 사용할 수 있다. 이 helper의 `variant:"noticeboard"`는 기본 3열과 고정 압정 부속을 만들므로 그대로 완성 디자인으로 간주하지 않는다. `widthMm` 기본 108/범위 30–108, 필수 `contentHeightMm`은 실제 측정/지정 내용 높이, `paddingMm`은 밖에 더하는 여백이다. 실제 설계에 맞는 `columns`와 필요한 슬롯 높이를 지정하고 남는 부속은 정리한다. 기존 출력은 명시적 `--force`일 때만 교체한다.
+네이티브 경로를 사용할 수 없고 설계가 동등한 가로 카드열에 맞을 때만 스킬 루트의 `<plugin>/bin/vectora-skill build_text_frame --spec <입력.json> --output <배경.svg>` 또는 `buildTextFrame(spec)`을 사용할 수 있다. 이 helper의 `variant:"noticeboard"`는 기본 3열과 고정 압정 부속을 만들므로 그대로 완성 디자인으로 간주하지 않는다. `widthMm` 기본 108/범위 30–108, 필수 `contentHeightMm`은 실제 측정/지정 내용 높이, `paddingMm`은 밖에 더하는 여백이다. 실제 설계에 맞는 `columns`와 필요한 슬롯 높이를 지정하고 남는 부속은 정리한다. 기존 출력은 명시적 `--force`일 때만 교체한다.
 
 반환 `{svg,layout}`의 `layout.slots`는 문서 px 좌표의 chrome/title/content/author 자리다. 실제 높이에 맞는 `textAlign`/`verticalAlign`을 적용하고 빈 `illustrationSlots`는 요청한 초상으로 채운다. 배경 도구는 본문과 줄 수를 측정/작성하지 않으며 미지원 `lineCount`/`contentWidthMm`을 입력하지 않는다. 실제 슬롯 폭과 연속 직사각형 높이를 확인하고 교사·말풍선은 별도 개체로 배치한다. 다른 학습 매체는 위 원리로 직접 구성한다.
 

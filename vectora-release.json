@@ -1,0 +1,3063 @@
+{
+  "kind": "vectora.mcp-release-tree",
+  "version": "2.3.0",
+  "source": {
+    "repository": "narshacontents/vectora-studio",
+    "commit": "78a01913f89c435b58cb198102324e4e5b074371",
+    "path": "rust/mcp-plugin",
+    "sourceTreeClean": true
+  },
+  "packages": {
+    "vectora-mcp-2.3.0-codex-macos-aarch64.zip": "5bc120b6522a5a280d2fa731a5f4cd7b4b89da1adc726740ebb2ce44264ff38c",
+    "vectora-mcp-2.3.0-codex-macos-x86_64.zip": "35739313bcc7fe7f57f07860d9a4e0113dd157ee66d63786b56e20cd2e279b9c",
+    "vectora-mcp-2.3.0-codex-windows-x86_64.zip": "9d49f93beff2f3240590ab34a16d3623bb1d458dfde882976105fa8367e25af9",
+    "vectora-mcp-2.3.0-claude-macos-aarch64.zip": "3d87ca4364fb6299ba9cf030b554385221902e40eda0834cae62a58085acfc18",
+    "vectora-mcp-2.3.0-claude-macos-x86_64.zip": "ec55f98e2b48d08d044fec8e99b3aa75927b9bef1c39ed34be6d530520dc6961",
+    "vectora-mcp-2.3.0-claude-windows-x86_64.zip": "72b1deffacdfcd491fbf75fd129660b698fff6272511c4f1a18ddf3cf424c7e2",
+    "vectora-mcp-2.3.0-gemini-macos-aarch64.zip": "038a5023ba4fd153f2ecb0ba5c0eaffcd642f1195684e3fe21e629af104c8845",
+    "vectora-mcp-2.3.0-gemini-macos-x86_64.zip": "78ee0d328694070761295d8ded32b9336e754291475fc88f6744ad6b18f58bdd",
+    "vectora-mcp-2.3.0-gemini-windows-x86_64.zip": "8165faaad7f0ac6fa8ab9694b9dc1be0f1732377f269589a39b8dc2c02f32db2"
+  },
+  "keep": [
+    ".gitattributes",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE_INSTALLATION.md",
+    "docs/",
+    ".agents/plugins/marketplace.json",
+    ".claude-plugin/marketplace.json",
+    ".github/",
+    "scripts/verify-plugins.mjs"
+  ],
+  "manifests": [
+    ".codex-plugin/plugin.json",
+    "gemini-extension.json",
+    "plugins/vectora-macos/.codex-plugin/plugin.json",
+    "plugins/vectora-windows/.codex-plugin/plugin.json",
+    "plugins/vectora/.claude-plugin/plugin.json"
+  ],
+  "launchers": {
+    "plugins/vectora-macos/bin": [
+      "macos-aarch64",
+      "macos-x86_64"
+    ],
+    "plugins/vectora-windows/bin": [
+      "windows-x86_64"
+    ],
+    "plugins/vectora/bin": [
+      "macos-aarch64",
+      "macos-x86_64",
+      "windows-x86_64"
+    ],
+    "bin": [
+      "macos-aarch64",
+      "macos-x86_64",
+      "windows-x86_64"
+    ]
+  },
+  "files": {
+    ".codex-plugin/plugin.json": {
+      "sha256": "0cf8fae1c36fe9c0971be7be35182f56583b03ddc5be65556f9cf560f8be1ee5"
+    },
+    ".mcp.json": {
+      "sha256": "354f1969f8a54105aad3bda8c8f70715b79cbcd1750d16f6067114abcfa80c7e"
+    },
+    "assets/vectora.png": {
+      "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
+    },
+    "bin/macos-aarch64/vectora-mcp-launch": {
+      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "executable": true
+    },
+    "bin/macos-aarch64/vectora-skill": {
+      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "executable": true
+    },
+    "bin/macos-x86_64/vectora-mcp-launch": {
+      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "executable": true
+    },
+    "bin/macos-x86_64/vectora-skill": {
+      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "executable": true
+    },
+    "bin/vectora-mcp-launch": {
+      "sha256": "b25a374efb19bbc2e21bae01f9da514c35e3e0c61e84442641e27d6b2c12e165",
+      "executable": true
+    },
+    "bin/vectora-mcp-launch.exe": {
+      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+    },
+    "bin/vectora-skill": {
+      "sha256": "4bf2461910918d7cde7ce563af8bb35d4b1233a37ea937d4934451c44437b4df",
+      "executable": true
+    },
+    "bin/vectora-skill.exe": {
+      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+    },
+    "gemini-extension.json": {
+      "sha256": "5e5eec528a74a04d73cd1584834b87bf61a243e1d35d1ee585cd344ceb02dc8e"
+    },
+    "GEMINI.md": {
+      "sha256": "ecdbc398bfb2455e93d2ffb67f06da7ba94a19541a27880004cc5276d4ae2ed3"
+    },
+    "plugins/vectora-macos/.codex-plugin/plugin.json": {
+      "sha256": "05e55c6bfa255fa156a2a03c2d933755ee3b8d5a0003b73d36393db0c5181685"
+    },
+    "plugins/vectora-macos/.mcp.json": {
+      "sha256": "354f1969f8a54105aad3bda8c8f70715b79cbcd1750d16f6067114abcfa80c7e"
+    },
+    "plugins/vectora-macos/assets/vectora.png": {
+      "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
+    },
+    "plugins/vectora-macos/bin/macos-aarch64/vectora-mcp-launch": {
+      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "executable": true
+    },
+    "plugins/vectora-macos/bin/macos-aarch64/vectora-skill": {
+      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "executable": true
+    },
+    "plugins/vectora-macos/bin/macos-x86_64/vectora-mcp-launch": {
+      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "executable": true
+    },
+    "plugins/vectora-macos/bin/macos-x86_64/vectora-skill": {
+      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "executable": true
+    },
+    "plugins/vectora-macos/bin/vectora-mcp-launch": {
+      "sha256": "f1093666e79fd4092894ab389c89528a8c458ab789f7ae154de769de0b512086",
+      "executable": true
+    },
+    "plugins/vectora-macos/bin/vectora-skill": {
+      "sha256": "a777f463c20b7610d77ecb804c05a4c76e72d841fafc9cda3614e5d5678584d9",
+      "executable": true
+    },
+    "plugins/vectora-macos/README.md": {
+      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/agents/openai.yaml": {
+      "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/chart-age-population-sexratio.v1.json": {
+      "sha256": "738512b2bf1ad93f0c085c6c02abe2fdb0ba9611fd5f209ce7ccf8544e5c6522"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/chart-city-rank.v1.json": {
+      "sha256": "9237907c97f7c69a5dc7828e112b585e5eb14b13e6b38c4d825aeb8ba2b9c18a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/chart-population-pyramid.v1.json": {
+      "sha256": "f4a666fff77edf0fa229b64a1658c29a6c600c407fd1bc270d4d890ad45fbfa6"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/chart-season-temperature.v1.json": {
+      "sha256": "dfae72a2def09af30a5cc50e7d7aada49fb921c32cfaa99174bea93f412a73d2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/chart-supply-demand-grid.v1.json": {
+      "sha256": "83b9734f509bcbccb6293fcb157a05ba88ceb81cfc38e5ec17daadadab7b6b5c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/component-caption.v1.json": {
+      "sha256": "44a0484352a94b65d83ba0a20b0f20ea72aff3106fb879330d1f5b2c267171d3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/component-example.v1.json": {
+      "sha256": "ab2f1812d2587cc92494545d7de43257e451e874e4154988c35195395f4cff50"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/component-legend.v1.json": {
+      "sha256": "f0bc973bf1cb07cdf52f32d50a9ed550533d7ee689371926ea139003248a51f8"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/criticism-2.v1.json": {
+      "sha256": "04ef3892ed0b04a8e9269667e0861e3145de0a087f2e38441ce170a4910754c3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/criticism-3.v1.json": {
+      "sha256": "0e39801202fb8432275fc9ed40fc3677e46967446589fa4d208a4e5fcbff0514"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-2.v1.json": {
+      "sha256": "ab673254b1ab7b2bbe547dc6ed1422ba4ead61f80ea006344858e6863dcf1183"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-3.v1.json": {
+      "sha256": "aaaaf146b1f89554df7725e6f80097a67d9bd94c283711d34fa8809aac57b471"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-2.v1.json": {
+      "sha256": "17ffed59355809f73e7ad775ae7d2cb2f5dbd7d4854e873f3370c24191ef4868"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-3.v1.json": {
+      "sha256": "30ad212e0f6f36e29a06fe7ed2538889a1a189351fc7aaecf406735436beaf95"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-ab-links.v1.json": {
+      "sha256": "310b3a5d36b71f7f646337b72af2bd5bcd7ed2386a37b02a0582d52172311424"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-argument-1line.v1.json": {
+      "sha256": "4804028ac150d0ec569dd13685c0b5726df130a848eac310eb559dd1520de917"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-argument-2line.v1.json": {
+      "sha256": "81880be26dec844d41890dc3ed4fd32de17adbb5d967187cf9139e5db9e09849"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-nested-rect.v1.json": {
+      "sha256": "439da7c5a8b03f8f3848b3b6d8ddf2ebe24ab79b1e1b2b4505cab8c9bb61f4db"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-phone-6line.v1.json": {
+      "sha256": "9682324a23502634642e6ed92a6595c848a2497b0c5dce4c0d1f2f1d3fbc89f0"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-question-2circle.v1.json": {
+      "sha256": "7d4ba14e2e5738da399c5de7bf47907bdde0d1ccf3584828414fc748dbe8457b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/form-timeline-5.v1.json": {
+      "sha256": "13baad2917b929246142220080d0490c6c04e66352e5e420028758bb545de583"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/judgment-2.v1.json": {
+      "sha256": "d29c7ca8f7a7b0b96986dca26f234ac7f69dbb209627df7e2b533b70ea4d0f35"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/judgment-3.v1.json": {
+      "sha256": "fa2484599c8d13e075aa2c565d88188bd843c8fa58cbeb6e52dcf2ef089b8339"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/theory-as-left-shift.v1.json": {
+      "sha256": "1d4b00319fe252f93ff4a9477441f5a8b3a2630a8bf26b90af7c81af3b12538b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn-2-hatch.v1.json": {
+      "sha256": "425ca20ec8a4cb4c2f76d1b4966dfd0b805ef591363577e8bb17ac07e146c825"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density2.v1.json": {
+      "sha256": "9822bb4753bc712004d143dce0f8401abde6c59de4205dd590f813cf3dabb7db"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density3.v1.json": {
+      "sha256": "07939baefb2a7ef6d6460a93dc134c36dd8404991ce8770eb82b993573c8ce36"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn3-chain-triple.v1.json": {
+      "sha256": "9389772439525de9ce6ade3ce5a2c24098088a85909f92b7cb811c6ca396b117"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-ac.v1.json": {
+      "sha256": "59b2bc95dde07351b8d4fa5f41154b62870edff41f5dd2004e16cdc376f6118e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-bc.v1.json": {
+      "sha256": "3bdd649496855f5f3231af5e355c806dc0974141e944d004568137ecdc1cd893"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/assets/fixed-styles/venn3-only-two-ab-ac.v1.json": {
+      "sha256": "10e37d4664195431fda604b30e7e9a9f0d3f9ab993127187f527356b9c85307b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/artwork-geometry.md": {
+      "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/artwork.md": {
+      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/bar-sizing.md": {
+      "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/bubble.md": {
+      "sha256": "a316d9e28e65b8d3955a98f770e245f6122aa9b59e743bd9881e6eddbc6f9c54"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/caption-frame.md": {
+      "sha256": "5f0eb45abeed854ae0064b8912c02b0d2892879fe89e9774ce0aa0852b9f1d42"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/chart-axes.md": {
+      "sha256": "005281cb18f8d7137b4b15e6ce0968b68668e50709021015de6aaba6e7c74db6"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/data-surface.md": {
+      "sha256": "673403d65c1104ea210e5b100fb5103dcee024cf6c731b9eb034671e22a8652c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/flat-table-layout.md": {
+      "sha256": "c7a0c0803ded39b755d1ef9a2c06ac2fa57d5d7a32ea8a94259cad64696cd8cc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/frame.md": {
+      "sha256": "622ef4193854b1f9f6ff5483a1a57559e09d01553a60f76a79cbd5ea129acc2b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/free-art.md": {
+      "sha256": "829770be3aa633eae100151fe737dbfd8b3b443db522202d9dfbe78f505814bc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/graph-style.md": {
+      "sha256": "689b701fd3dd35c638b33109d593f863b0f0a5b65405831aa1d8c0d23634ae8f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-area.md": {
+      "sha256": "97b5a4050b3de6a213532e3f2608b57bc1339665f3d32dcf2edaf3bff35e5a96"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-feature.md": {
+      "sha256": "adc0eca60ca292efb613e5050da6a32d687a39119bcd09644bebf13ae4bbf3c3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-historical.md": {
+      "sha256": "ac0925b44549c48cab504bc306361a0f3ce0077208e8ae889b35a75506812238"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-inset.md": {
+      "sha256": "d8459c5316e30f91d99ac223ee0fbf2c2f7ca2f7000f12e40887f1bbc10f3e4c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-area.md": {
+      "sha256": "e339f06d0882dc785a014518c49dd05b375d4758321771311893fbe45f28a0da"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-historical.md": {
+      "sha256": "1f4ed607742ed612fc3545d56da6cab3475614bb335a20d6e13827b26d1f5c70"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-natural.md": {
+      "sha256": "eee5d374b95d369825bcd63be31071c3304d67182e90f476254ac77d2c25c9a1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-points.md": {
+      "sha256": "7740d3c476a60935b14bc63515e469408b3843ead0b582b5ee1ef624c44775d2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-projection.md": {
+      "sha256": "ad4cb2d6dcfb1a7faae7de812c5ef3ce0895fc751fc2f3395b80f4f96cc191ea"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-route.md": {
+      "sha256": "290a0d61d5754a31228a049858fd6cf35de97471e4a6f109da8107426f13f5e0"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea-statistics.md": {
+      "sha256": "896aafdf4d2d37e95306afa15bff47c8b6f3f4df51986d8e7e5afe9b90aa9eba"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-korea.md": {
+      "sha256": "a118fd54f6c80873237ef1d43dc6c520b8969354fa4629461da22252d8afcbf1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-natural.md": {
+      "sha256": "a2ddcae87b9e42054ee87b37091657d5dc99c4d31903b1b927503bfa9f1d5a53"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-points.md": {
+      "sha256": "eab9c1332f89ff16287e9f84e47eb0d49df684451be4fb2b1f66204631787b55"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-projection.md": {
+      "sha256": "76e7feb5ab06812889e187e0a8747f4bee7a61109d23b5543792b6e754950f4d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-review.md": {
+      "sha256": "855bc842a94e6e8b7d11364f6e82a2299e25ebabde2d6742193d3a575724d2c5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-route.md": {
+      "sha256": "e826d4efe9fc70b78c9103eab09fe4d5d65c15a58af2028ff0e3a12bb4561404"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-statistics.md": {
+      "sha256": "7ce8a587489f4f6330f123de39ce743d3629dac141879a57465b6ae7bdd78e21"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/map-tectonic-ice.md": {
+      "sha256": "867aa170a5e816d10168158ded5f5af68e37c9707c8a1544830802f8b54c52da"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/node-diagram.md": {
+      "sha256": "47b9cf8f73570191b4a68e5e89e71540c481fcf87d70793505856053e66ecb7a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/organic-detail.md": {
+      "sha256": "d34a563f5c7e2ef8c318eec0eb6125f3c8da814655b12b4268e960f1d54e4a09"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/pattern-library.md": {
+      "sha256": "515d4c10d35cd06f76e4ba06473415c184e976f4ad238c2457716ac519798ff2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/people.md": {
+      "sha256": "c79923a6c9520b718f7a99e859a5b8ce766086effb41fd68d63b5df72de07f52"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/person-spacing.md": {
+      "sha256": "29ebbea9164fec102959fb975ed7b5a6265255e212ef03c32b7436117c265eb1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/person-speech.md": {
+      "sha256": "497a0f2d202722717a4a25444c9378617acbb4bd2dc78a65a4b90215489b22d3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/photo.md": {
+      "sha256": "9f988e4db32ec8ae03f3dfb1e38adec5675845f4a834076bbf333040d64cfe62"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/real-data-map.md": {
+      "sha256": "8997322a4dab6c07b7d87ddae7ee1a69a43e9e6d31ecde02842264100695bf83"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/real-data.md": {
+      "sha256": "f2a9a432593cc7ae71d2a5431c270314c7a81e3ccf91812770e26fb502fbb92f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/schematic-layout.md": {
+      "sha256": "5671bc5e8d4407c9588571e8948cfc425e1e86037c461701a1669c838b6d1cd1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/speech.md": {
+      "sha256": "874c7ab623d8fbf4f678023c8705a6c51a6537ebc5fb0aabd15d3469e02cd67f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/components/vectorization.md": {
+      "sha256": "ea26fb79fb5628b22127b1d9e765d44ac6de4cb277380cfb6c15f3658293e657"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/composition.md": {
+      "sha256": "8dfc0563ccad53ff563f590e0e9f58013306c99d3ead0d4c77f6f31103723dfa"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/content-layout.md": {
+      "sha256": "e3f78b942790e50e22e418373668272f2e5995de4728fa3a098c57e67a743c90"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/display-text.md": {
+      "sha256": "87281d2743555874631164d3795652973f26c08314c8d4f3696fb5fdd10b81be"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/footnotes.md": {
+      "sha256": "53d9a5cc5d960b499edf335602fd815eb8ca47101696deb3879b99fde8ff362a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/inline-box.md": {
+      "sha256": "f6b08e0ac7623f14b04fb5f4d24c5f55941ef516f661b9bf00ce7aba7e856a6e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/production-plan.md": {
+      "sha256": "1f0b4627f1932c32422bcf6d0ab4768deee04c222bfddab4747168e24199291e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/prose.md": {
+      "sha256": "fda9d57220f9241b005d3c98c995a6a5495ebe4ed57d684147cb0aa02edfcd70"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/readability.md": {
+      "sha256": "08eb61f949b4abd38d20c09aeda2f06721907456e9d267e1949dca4868db23a4"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/reference-review.md": {
+      "sha256": "d37fb5f5e90ad8d9d234b290c0df0e08eedd8bf0b73e4241d348649cdf318d9d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/reserve.md": {
+      "sha256": "45544f868e627ae421089f4d0c81694ce6cf60d103184bbe82f4dcbbc1734c11"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/review.md": {
+      "sha256": "7a9f3cc454751d6badbfb141620f4982a4de772182e5395c2748870b54cc3158"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/style.md": {
+      "sha256": "66baafcffcabf087643f0f6b92df5b2334b28afb3ef2592c16ba0a448c032489"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/symbols.md": {
+      "sha256": "9c9a12177a0c9a2ec59058c10bae2f338ba369004d315c0ff4e0eabdf80fa3a2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/typography.md": {
+      "sha256": "9dfcb5b0f839b75361098b56367c9abf0e8cf5072e97dae795404009099f4b6a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/core/underline.md": {
+      "sha256": "13f5467cfa2f84bca70664593617b01531b787884753f0aee69755d2ca7d5d06"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/assets.md": {
+      "sha256": "53856159ae70d24c1e04da65e56298ee355c7546d1e3893ec34545920d6d0911"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/base.md": {
+      "sha256": "bc0d8ce64e10e7980c478da9f0a69810d00c19ea9e6dd7a505698cdd4e41943f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/caller.md": {
+      "sha256": "20b8edd7d113da3fe35b40ea3246891bebdaeaba38c6d6a07bd2b79b86f6d673"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/delivery-manual.md": {
+      "sha256": "b85fecd325f46b6c63c1daf7a49d4bfdcd196054122a78a92a01c3e548594304"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/delivery.md": {
+      "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/gemini.md": {
+      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/inspection.md": {
+      "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/artwork-asset.md": {
+      "sha256": "acc33fcff403db76fbd9c6042e5d088a56c41b0c759a58c79aeadb7515aa70eb"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/asset-runtime.md": {
+      "sha256": "d8d5c825fa5f3b6ffa178f6e7fcdf1211f45aa5c71484fe1c2eba8ad5954d003"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/axis-options.md": {
+      "sha256": "8d3c51efdbd980b698ecf40d4d5b73f27cd46588786e4e6aab250b80d9b09350"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/bar-legacy.md": {
+      "sha256": "2c3f5804477fd3634f75a4a20a0ffea922273f6b57ac4dc3af4c4df4d0f67388"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/bar-mirror.md": {
+      "sha256": "1df1ec2bab1f8e7f0b49e48c1ce1df2e0620f30008008b3effb9a473c06ad7ac"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/browser-chrome-micro-ui.md": {
+      "sha256": "04a03a38b591ed379f2ff04175648f7029cc2cfb2f50a1614d6c8d10345d836e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/composition.md": {
+      "sha256": "039d0fbeada3429599e847a7b5444a4b7d6c336bba2e46c5346bede8bb2d55dd"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/continuous-graph-api.md": {
+      "sha256": "ed26bcff7d7dbeb2a3917faf13c2c8ef74c01a637f571db906fbf22a2a20d809"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/dialogue-native.md": {
+      "sha256": "f9f351784004a7ff6cc4d66f9b1c9ba3bac4341fc27a12969d5ad93d045bf37f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/formula-native.md": {
+      "sha256": "82cc084844c81dde45f426a8a8dd3f1443a7d258966f902d7a0aafafffeef13c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/frame-decoration-native.md": {
+      "sha256": "be70c55c415d00da4347911d43059763b122f3b76c2cd2a935fa24625e0f087e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/graph-api.md": {
+      "sha256": "b6fb2e8a9b7ad34f8296ad5629ec04cd8d662570d2692c1c1dc311f3ce23307b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/graph-helper.md": {
+      "sha256": "da4e3302246068ce70686b3e2a1d8535d7aa0aa9ea52f1334fbd76cdeb2ee4d5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/graph-schema.md": {
+      "sha256": "808c6116f9e486b3378439e83696fe6a34a26e47808600d0877c2199eb839980"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/long-operation.md": {
+      "sha256": "bce5b221ec72b8471bdb9182a3efac4d1b327dca71451c2b148286b8cc3dffed"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-dem.md": {
+      "sha256": "e3e2377fdb3d1a3be63a0e9ca9ef89c108c6951ea245730c4f26fb0ed2480b1c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-edit.md": {
+      "sha256": "0f3a07d7202b767b85ed5a493ab4574dcd731edb6970f5c59315b43452ed10fc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-feature-native.md": {
+      "sha256": "622a46dc297785056c00c5b1f1172ea0ce5b57295449fd9c1c485219f22b7ddc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-inset-native.md": {
+      "sha256": "01459aa6634695f831acf2f1d7a54407629957084f908bead227062134230e4c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-native.md": {
+      "sha256": "2c1b33c93b8dccb58375d7be86fc740312da1f543ccdabe86375ca113ead5b95"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-preset.md": {
+      "sha256": "195d8ba59fa129f6aba73399ff9d02ae13c9ed54ca6b155758985a823d83411e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-proportional-native.md": {
+      "sha256": "b0ef0a1f1b48027cfaf096b843b1cd2fc975f8e9a9b58a022b213f6b8200329b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-routes-native.md": {
+      "sha256": "fd04e23783ebc92283bf7e436475d8cc38c2d0e0202b2347fcc6e8cd162ae62c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-runtime.md": {
+      "sha256": "51faed80895a6c6ff4303473f499b6a8f564a163980180fe0b5b3f067f22872b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-scalar-native.md": {
+      "sha256": "13ef7bc1fc51b993b5648681079b9c9f2096fae4717ec47afdc3a8b41a4c2b81"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/map-thematic-native.md": {
+      "sha256": "c91c2eb40f744a54e95b0656f812b23807753b84de61cc57e1cf9f620c1c1814"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/mixed-options.md": {
+      "sha256": "e3baf86589b8d18ab54c0a24a8a9ec0b525face25bc0a1a874692334360214e3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/newspaper-frame-native.md": {
+      "sha256": "5b769e0e7abdf106bbe5ec71c4dba7e718cfe612bc462187c1662d3cf627f27b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/node-diagram-native.md": {
+      "sha256": "7a111c2d1f3d1b01b68da8828b6a4953781714b74f2cb53233eaed4cb017cf38"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/point-options.md": {
+      "sha256": "7d14d61e480e0ce70bae7cc678370b8a6969b62ce9cc8e31f323092847387f78"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/presentation-screen-native.md": {
+      "sha256": "995df0e2b691662cf5020488ecff7e8492231256a19fa23a2a561004f0f69cf7"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/reservation.md": {
+      "sha256": "a436fe8fbc7369ade7e0d324df0f01502e8a7626d14dc86b168c139a6a834a6a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/screen-frame-native.md": {
+      "sha256": "352d8b0cd5a03685acddc489bf785e977325e4217a92b3e728e6e8ace607569d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/surface-graph-api.md": {
+      "sha256": "bafbebc2a6a81e1e6af31dbc3398beeaa7c4e64a0db9a50f7c45b3cba94d81be"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/table-api.md": {
+      "sha256": "aaf6a0ff5b1f34eefccd6381a717db9d08228c837a6f0517df8e00332698b88e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/text-flow.md": {
+      "sha256": "a4997493f3f22a1aadba25363b10a37251463caaf796f1998600711a04558cf6"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/text-lines.md": {
+      "sha256": "ca83be89cfb096f6e909cd7b84affb0dbf90acd2b7c4451892682cd9c1900b74"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/modules/trace-helper.md": {
+      "sha256": "a02b7218181bb9ba99f0b1ef2374fd72fccdd6758256c84ef8157f6900a128aa"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/paragraphs.md": {
+      "sha256": "49a3bcdf53e55b0af317f8265cbbf08164c29aba9cc2681dffb47ba6d3549dc5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/recovery.md": {
+      "sha256": "75ad0580504b2afb8140a442959b2843a3ce202ab146579f55a425a9f1c7c56b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/text-effects.md": {
+      "sha256": "851c1ff8e9c37dfaa675126546a788b18664827753c5e6a1de19ac16a74d8355"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/text-ranges.md": {
+      "sha256": "aeb5ee78bd9dc3ecdfa0acae97c9dd5f0befc14272105ac3acb48bd84d7c97c7"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/text.md": {
+      "sha256": "0b5a005ef052a35773b5231a2c8ec18c4584cbd1531f6edc0185b8f6389b80bf"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/usage-recording.md": {
+      "sha256": "297f9d6824c235f642d81a7250d7bd621bc5e9cc727e6287d61227d0e40d6b2f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/execution/workarounds/underline-wrap.md": {
+      "sha256": "6d5bcc1d557150cb29661b2fb7e644979c3b91ac0aed485bc2718bcd78747feb"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-01_Flat.md": {
+      "sha256": "84338ca12623bb55d1cb96fc814cf85c0b3038fe5684254d4b306db3af4e0001"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-02_MultiFlat.md": {
+      "sha256": "e0238faccd200468b0a372d10c920ca6893a0408c62fa22776269ece10073ef7"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-03_Cross.md": {
+      "sha256": "0f41f743018cd10cfe456ea1706b2a0a7a53f07f749c25372d7d8430209fa9d1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-04_Nested.md": {
+      "sha256": "ecb18ad18392875543549379d5b255b6bcc513177fc972a7d41c267de1b6a803"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-05_Checklist.md": {
+      "sha256": "b1e330984635a564f47446999056e0c074dd583fb68c2fc18583e17893a7d074"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D1_Table/D1-06_Others.md": {
+      "sha256": "712bb33d346257b2f9f411b0840251f39fa6deca7dad13136ef7abc222aafdd2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-01_Bar.md": {
+      "sha256": "1fb3ce336ad3589452c687c1b8b96fc653ca7cfe8ddf582326c2521f6d16478e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-02_StackedBar.md": {
+      "sha256": "a8ce3ca0fd81ff4176c4054ec86646dbb3f5d641786dd8ffcdf74716f2c06418"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-03_Pie.md": {
+      "sha256": "1d27afffa7d4f43f7763d0da86de1835ef036caae10a1b248da584e5b48ac93b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-04_Line.md": {
+      "sha256": "37c5f55b76a0a54e75766eec519a9b45a8c2ee5611fa9ae230cc4186ed03a4b5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-05_Scatter.md": {
+      "sha256": "a5b3be06ccc937c263e428422620386f400b16382aaaa3785a06fe9ac0cc8ac0"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-06_Dot.md": {
+      "sha256": "0c0d894ff46f17f09eb2c4621ec33b868a51ad7265bf7b602f98d7bbec793e2d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-07_Radar.md": {
+      "sha256": "03ad6931bc47d5736d4037110a7348491c25a3396628dea34c22b3df939564d3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D2_Chart/D2-08_Others.md": {
+      "sha256": "f4456ccf7c51fc8af56639a5387f23d4203a7be28b9ac93f957f82d5b0cb8d0d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D3_Graph/D3-01_Curve.md": {
+      "sha256": "3147eb06a6be93df1ea5666fdd71cf13e885e874beda5c79f2e9ce66f195bf4f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D3_Graph/D3-02_Frontier.md": {
+      "sha256": "eac73edc2af8aee69ff30390c25ad4520a1bdb236191ad5450bc80b7c35eaeca"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D3_Graph/D3-03_Distribution.md": {
+      "sha256": "8f95cd3a441bcd1ec85be9f44726ab575a64bfc97258714cd13f79e5353501d7"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D3_Graph/D3-04_Others.md": {
+      "sha256": "ee02e30375bd5b999907244860f81622dfd4284cb77b689615e21b83e8fe97e3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-01_Tree.md": {
+      "sha256": "9cea6a70f788d85e8798a88c54ad652e669f117bcacc2a4e8c0882d4346612f0"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-02_Network.md": {
+      "sha256": "c6cd3adb0246a7bbc9b52fb1a521ec947394c7eb6ea750825875cde2a831bf2e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-03_Flowchart.md": {
+      "sha256": "546fcc0ac66617866e637b9a6d7543191d633826880e3a194ddf1ad37cffcf83"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-04_Venn.md": {
+      "sha256": "74e5afefef8ecdd3e724b27b2913b051991a186cbfad146e89dd716216d3488b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-05_Timeline.md": {
+      "sha256": "5e68490d07c9c479b430d1373aaebe919010deb3688bdff23783f69409fa6388"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-06_Schematic.md": {
+      "sha256": "e5fad3ade5dd88c2ad2d47efc62ec17c5e741b7d3b880cb1aa3c616bb32ee516"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/D4_Diagram/D4-07_Others.md": {
+      "sha256": "5458d540fda8f39bf7de992476b3eef971079f6ec8b4bdd2ad83dc2a8a84a74d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I1_Photo/photo-original.md": {
+      "sha256": "0ccdf58279accd9a1cbff503b93312cbdcc32265109adc9f5f5e720e9c45dd40"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I2_Illustration/illustration-object.md": {
+      "sha256": "d30b1e341aba776a98766ff54600ee64a7356171268b0996603264ded9001aea"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I2_Illustration/illustration-portrait.md": {
+      "sha256": "b22794b39d6ce83a044ada4129fc2f7e2a145f934e2fe29c068dbb94b2633b2a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I2_Illustration/illustration-scene.md": {
+      "sha256": "a4ee4d1925b2bf5c40659ee765a8e3687e78c6bb1826044de1395d0d13ba4a1e"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-11_Locator.md": {
+      "sha256": "c234f60b3a9d4aedd6e21d25fb7e4906d1c7a5afba90e7e8f31fe5bf7afa0c69"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-12_Topographic.md": {
+      "sha256": "0f005d68ee2df35fecaec5cda7c288f2c3f1249e5eccb0ef060a7c031620b721"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-13_OldMap.md": {
+      "sha256": "6921bdc8e68aab3c444e3ce2322c0602718a937dcdf5456b70bd72292ea5ed9c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-14_Others.md": {
+      "sha256": "598e7725a8acc542142041d00b78915764f2794841f240fdfe92e1a8041971df"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-21_Area.md": {
+      "sha256": "5b02e48a62be42d7d4827de065904262bb7e313274416bc70d36702b1790a2f2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-22_Route.md": {
+      "sha256": "f74affc39b8d5f97014117ba502c465e0dbfa40335ebf02eb274abfe5ea7f7bc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-23_Symbol.md": {
+      "sha256": "93644aecbd25d59a0d297ea8ef697cb63544ff04c7be9d3e7ae3f0e73ba6c80b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-31_Choropleth.md": {
+      "sha256": "ca94596366c0474e47c134a8740b54ca0ed1ae590fb6611e61425d00f3865da5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-32_Dot.md": {
+      "sha256": "57a2f5139701222c369c252e02417e6ba42b9ab37f9518201e6e386503ee35d1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-33_Proportional.md": {
+      "sha256": "fe01ca5fb746887a28c870488859d0b10e07c69fce6a315ccf33435631dcbd03"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-34_Isoline.md": {
+      "sha256": "2b5b8f2f9f30f0d6a6c4d787ef65c1a99d90e5020c778caff1a56d40ea3eca60"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/I3_Map/I3-35_Flow.md": {
+      "sha256": "c809be2e36337ade55e09a0758655b1dd2489f14c478e307f5e750b111888ac4"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-1_TypeBoard.md": {
+      "sha256": "476c908790d3a3810f2191dbc0b34f58730562418736230ea5e6ba87c321f05c"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-2_Solo.md": {
+      "sha256": "141f291651b4f200632c95569ebf76d6d89ff7c12085d934dd90924156e2e544"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-3_DialogueH.md": {
+      "sha256": "29d3e23e196a87374390f9af81fa9f45fcbda12659eac255d44aeb42980f99a8"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-4_DialogueV.md": {
+      "sha256": "c9568c3b1a606f598d7250f465b6775ba8796de148469cbdf3c46e460e00cde9"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-5_SoloBoard.md": {
+      "sha256": "ec2a36e9191fa3fd816e71296029884feb51ebc7776687b4f6df807f2233efdf"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-6_GroupBoard.md": {
+      "sha256": "dcd8475359bfc25c4922b9044160d04157e3dc406be854505575fea5c15f1e30"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-1_ImageBoard.md": {
+      "sha256": "8fa4197f5d8ace6790318738299dcb0a2d18473e360eb21bdfdcb26685d14968"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-2_SoloImageBoard.md": {
+      "sha256": "0cae9cbc648e759c12f0b02a83f994db66dfbb5b45509e76600cd1912f605d15"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-3_GroupImageBoard.md": {
+      "sha256": "383bc2679e735be44f3a993d74ac7f0e9103d758ab8aaf8caf1f82c1b8286bc3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-1_Figure.md": {
+      "sha256": "a695add19b24656e72ebe8a714c16d9bfe3c0189e3c35e231ad59744e1bb3184"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-2_RealPhoto.md": {
+      "sha256": "855c1d721e74a210379b8becf2356edc8c7c9c458d6b4c83dba7236d0d175f99"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-3_Place.md": {
+      "sha256": "db75a3553055cbd375135b8d446740770ae06aaea3eab54de5704c763901dc59"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-4_Costume.md": {
+      "sha256": "098ba44a7e812b3f0b71dce79ae2253fd952b8ab89b09dd668fbeaaee5214f68"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/activity.md": {
+      "sha256": "1af8930fb1fe02420858e57b40656827e7cd05fce07820119fab81b6a964b6d1"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/board.md": {
+      "sha256": "80cc06e4da618bacb4f986d7909f2a9f306c80716c6577a8351e111f41b28fc5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/bound-paper.md": {
+      "sha256": "ae6fc040898832f21ea7d350ae5508f4b5bfe5cdeb68d874e2fb29ff0130772f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/correspondence.md": {
+      "sha256": "43358e37f2303aa29cc46c2851c92493963eff14d3fa7cfafbc285ca821cfe53"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/device-medium.md": {
+      "sha256": "37add589d30731e8e2cbfc3a2d66e86468d3af154f057331e52c55638837e2ab"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/display-medium.md": {
+      "sha256": "155fb0d9b66dc15cac8729835543b3ae124575c428ec75f5fdb93311c6f91f4a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/document.md": {
+      "sha256": "e56ba737f188194e4a9cc5d00f89a63edd97dd54d71aa03401fe6763b6621ee8"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/horizontal.md": {
+      "sha256": "fddaa6dec3e4225407689cd18eebf32fad669a34bfe2d3e4a8cab25dfce6b438"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/map-composition.md": {
+      "sha256": "d04ffc583dd7cbfb0ec0b6cdca3b6b32a69e59796d3a413908971f8185498605"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/newspaper.md": {
+      "sha256": "c9a9d444a922e4356ddfaca6fcf3df113a33a72106fa583892b8da0aac312937"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/paper.md": {
+      "sha256": "b5599fcc4e60dfea01fdf1617877f57048832d6bae71926c250f0e87f7221d1d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/presentation-artwork.md": {
+      "sha256": "fce8ea229a7061375a4cdbbf3b34f5d8416f88f85c748bdfb0a0193ba2423fa4"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/presentation.md": {
+      "sha256": "fcf3922780c3c2115bf75dea689032045f3ab2e029856d0b765bd2f2ab2c4818"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/screen.md": {
+      "sha256": "0b7968eac70e58ffd602e1cb082bade37b1246a3c4f2339c726b764dfa2cd719"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/scroll.md": {
+      "sha256": "07b460675d591694e1d5511fb2e598e09f3e05d847c810c49f79f8630bc7d739"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/vertical-gap.md": {
+      "sha256": "735e5821060749ebe9de7cdc8f53a6eb30a64cf506bcfbb515cbbf23e8df38f3"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/vertical-messenger.md": {
+      "sha256": "1ae9af657424f3bcc92bb511555ce72f35e82fd4f74ade5e5241239f2eb6913d"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/vertical.md": {
+      "sha256": "8357ad37b5531911ba578f80636536da77f736ab26318c8f979a2e9b49e40c63"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/recipes/layouts/worksheet.md": {
+      "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
+      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
+      "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/D1_Table.md": {
+      "sha256": "5d6f3d46b5aabd8e39a73c39a17be75662c8e9923f6aa42e27738787df618ddf"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/D2_Chart.md": {
+      "sha256": "a24bd70eafd4f0b2d43f4ca677cbc53d1d5cd629e51c1e06b22d5615045d9889"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/D3_Graph.md": {
+      "sha256": "6dd9e23eb5ff7b47d7caee41a2c3ebc8eedee8bf2d947ef293c78bcd293350ae"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/D4_Diagram.md": {
+      "sha256": "72a398390a60522b9da80975a0b02d6e22b8fd141348f461449cb7e3917cde85"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/I1_Photo.md": {
+      "sha256": "799bdbbc5460c6088f145ff60ec4df65aa2cbc39f4740e82881c075f6e4a50ba"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/I2_Illustration.md": {
+      "sha256": "c0535ca26b5c54c90c2318c7cf26e922d60b22e28bccdabfffb8d696eeafbce2"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/I3_Map.md": {
+      "sha256": "66d71c392947322a83f7e4bd4337e923b9c343e92cddf7a74f85a0834cd61318"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/ITA_TypeSwap.md": {
+      "sha256": "aeed1d4bcfd7ce6a3814cef7fcff49bf3dd6b07191ab0c1d7f2d1bc9a55962f5"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/ITB_ImageSwap.md": {
+      "sha256": "512693551f9d7c1ea3846f0719aca1fd586ea1b68d3460b15ccda338fadd788a"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/families/ITC_Fixed.md": {
+      "sha256": "7c1e122e4e320c805b36d8303fedd7a183a31cddb1e730f9a62d96a63dd5911f"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/fixed-styles.md": {
+      "sha256": "bc4880a491ba231f5993cf96ac985d8342ccc0a450fe246b83bb4b5ae233005b"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/routing.md": {
+      "sha256": "6749fa1a88af491183e83a0df1899390fa9b8a139308ad6c6c162ce401928227"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/rule-index.json": {
+      "sha256": "8c6ca2c8ab922f0eca3816e7efa3737338e36e9ed76286c0b5fc368a9937f509"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/task-input.md": {
+      "sha256": "1844addc443a37dbaac7e73ca0af90cf7870d2664da4f558485dede9868351eb"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/references/taxonomy.md": {
+      "sha256": "8786ae6cdde4a982571150869bbf3173602bba7eefe1eb8f508e5fd8218db722"
+    },
+    "plugins/vectora-macos/skills/create-kice-illustration/SKILL.md": {
+      "sha256": "188d489076c6629f8cdd8f94904cc8f9c9e98f8b3dc14a793bbe0d76847131b8"
+    },
+    "plugins/vectora-macos/skills/create-kice-science-illustration/agents/openai.yaml": {
+      "sha256": "7e3edd0c96e0ba5665da8db8af5fa6807cad7c86dc719683f46862b17c00510b"
+    },
+    "plugins/vectora-macos/skills/create-kice-science-illustration/SKILL.md": {
+      "sha256": "b1d38eb5d2d9fde87c7fb5a0bf8fe40656a547bb9028f0be29477112153f47d5"
+    },
+    "plugins/vectora-macos/skills/use-vectora/agents/openai.yaml": {
+      "sha256": "674f5137a8cf5118927f7b661d9ef43c672d9302e39c84fb9ce73f2454e0a2ae"
+    },
+    "plugins/vectora-macos/skills/use-vectora/references/examples.md": {
+      "sha256": "0fc18429ffb419eefdd159de69db0b27f9c30fe644c42479787f6b558b16fb67"
+    },
+    "plugins/vectora-macos/skills/use-vectora/references/production.md": {
+      "sha256": "c6ee068a5a39a09ff88bbd9604e4f963328ba463b2e2dbb17dd9273bc6625178"
+    },
+    "plugins/vectora-macos/skills/use-vectora/SKILL.md": {
+      "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
+    },
+    "plugins/vectora-windows/.codex-plugin/plugin.json": {
+      "sha256": "00f6d32faa118cc04767b4ef03df43dacd4d4fdc595e89696f4a7d99cf596a65"
+    },
+    "plugins/vectora-windows/.mcp.json": {
+      "sha256": "519ee1d59df7c98335d0413dfbf14bd5c529e83729f89b1c2268c9027f746164"
+    },
+    "plugins/vectora-windows/assets/vectora.png": {
+      "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
+    },
+    "plugins/vectora-windows/bin/vectora-mcp-launch.exe": {
+      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+    },
+    "plugins/vectora-windows/bin/vectora-skill.exe": {
+      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+    },
+    "plugins/vectora-windows/README.md": {
+      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/agents/openai.yaml": {
+      "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/chart-age-population-sexratio.v1.json": {
+      "sha256": "738512b2bf1ad93f0c085c6c02abe2fdb0ba9611fd5f209ce7ccf8544e5c6522"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/chart-city-rank.v1.json": {
+      "sha256": "9237907c97f7c69a5dc7828e112b585e5eb14b13e6b38c4d825aeb8ba2b9c18a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/chart-population-pyramid.v1.json": {
+      "sha256": "f4a666fff77edf0fa229b64a1658c29a6c600c407fd1bc270d4d890ad45fbfa6"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/chart-season-temperature.v1.json": {
+      "sha256": "dfae72a2def09af30a5cc50e7d7aada49fb921c32cfaa99174bea93f412a73d2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/chart-supply-demand-grid.v1.json": {
+      "sha256": "83b9734f509bcbccb6293fcb157a05ba88ceb81cfc38e5ec17daadadab7b6b5c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/component-caption.v1.json": {
+      "sha256": "44a0484352a94b65d83ba0a20b0f20ea72aff3106fb879330d1f5b2c267171d3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/component-example.v1.json": {
+      "sha256": "ab2f1812d2587cc92494545d7de43257e451e874e4154988c35195395f4cff50"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/component-legend.v1.json": {
+      "sha256": "f0bc973bf1cb07cdf52f32d50a9ed550533d7ee689371926ea139003248a51f8"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/criticism-2.v1.json": {
+      "sha256": "04ef3892ed0b04a8e9269667e0861e3145de0a087f2e38441ce170a4910754c3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/criticism-3.v1.json": {
+      "sha256": "0e39801202fb8432275fc9ed40fc3677e46967446589fa4d208a4e5fcbff0514"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-2.v1.json": {
+      "sha256": "ab673254b1ab7b2bbe547dc6ed1422ba4ead61f80ea006344858e6863dcf1183"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-3.v1.json": {
+      "sha256": "aaaaf146b1f89554df7725e6f80097a67d9bd94c283711d34fa8809aac57b471"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-2.v1.json": {
+      "sha256": "17ffed59355809f73e7ad775ae7d2cb2f5dbd7d4854e873f3370c24191ef4868"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-3.v1.json": {
+      "sha256": "30ad212e0f6f36e29a06fe7ed2538889a1a189351fc7aaecf406735436beaf95"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-ab-links.v1.json": {
+      "sha256": "310b3a5d36b71f7f646337b72af2bd5bcd7ed2386a37b02a0582d52172311424"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-argument-1line.v1.json": {
+      "sha256": "4804028ac150d0ec569dd13685c0b5726df130a848eac310eb559dd1520de917"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-argument-2line.v1.json": {
+      "sha256": "81880be26dec844d41890dc3ed4fd32de17adbb5d967187cf9139e5db9e09849"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-nested-rect.v1.json": {
+      "sha256": "439da7c5a8b03f8f3848b3b6d8ddf2ebe24ab79b1e1b2b4505cab8c9bb61f4db"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-phone-6line.v1.json": {
+      "sha256": "9682324a23502634642e6ed92a6595c848a2497b0c5dce4c0d1f2f1d3fbc89f0"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-question-2circle.v1.json": {
+      "sha256": "7d4ba14e2e5738da399c5de7bf47907bdde0d1ccf3584828414fc748dbe8457b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/form-timeline-5.v1.json": {
+      "sha256": "13baad2917b929246142220080d0490c6c04e66352e5e420028758bb545de583"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/judgment-2.v1.json": {
+      "sha256": "d29c7ca8f7a7b0b96986dca26f234ac7f69dbb209627df7e2b533b70ea4d0f35"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/judgment-3.v1.json": {
+      "sha256": "fa2484599c8d13e075aa2c565d88188bd843c8fa58cbeb6e52dcf2ef089b8339"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/theory-as-left-shift.v1.json": {
+      "sha256": "1d4b00319fe252f93ff4a9477441f5a8b3a2630a8bf26b90af7c81af3b12538b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn-2-hatch.v1.json": {
+      "sha256": "425ca20ec8a4cb4c2f76d1b4966dfd0b805ef591363577e8bb17ac07e146c825"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density2.v1.json": {
+      "sha256": "9822bb4753bc712004d143dce0f8401abde6c59de4205dd590f813cf3dabb7db"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density3.v1.json": {
+      "sha256": "07939baefb2a7ef6d6460a93dc134c36dd8404991ce8770eb82b993573c8ce36"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn3-chain-triple.v1.json": {
+      "sha256": "9389772439525de9ce6ade3ce5a2c24098088a85909f92b7cb811c6ca396b117"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-ac.v1.json": {
+      "sha256": "59b2bc95dde07351b8d4fa5f41154b62870edff41f5dd2004e16cdc376f6118e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-bc.v1.json": {
+      "sha256": "3bdd649496855f5f3231af5e355c806dc0974141e944d004568137ecdc1cd893"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/assets/fixed-styles/venn3-only-two-ab-ac.v1.json": {
+      "sha256": "10e37d4664195431fda604b30e7e9a9f0d3f9ab993127187f527356b9c85307b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/artwork-geometry.md": {
+      "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/artwork.md": {
+      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/bar-sizing.md": {
+      "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/bubble.md": {
+      "sha256": "a316d9e28e65b8d3955a98f770e245f6122aa9b59e743bd9881e6eddbc6f9c54"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/caption-frame.md": {
+      "sha256": "5f0eb45abeed854ae0064b8912c02b0d2892879fe89e9774ce0aa0852b9f1d42"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/chart-axes.md": {
+      "sha256": "005281cb18f8d7137b4b15e6ce0968b68668e50709021015de6aaba6e7c74db6"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/data-surface.md": {
+      "sha256": "673403d65c1104ea210e5b100fb5103dcee024cf6c731b9eb034671e22a8652c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/flat-table-layout.md": {
+      "sha256": "c7a0c0803ded39b755d1ef9a2c06ac2fa57d5d7a32ea8a94259cad64696cd8cc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/frame.md": {
+      "sha256": "622ef4193854b1f9f6ff5483a1a57559e09d01553a60f76a79cbd5ea129acc2b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/free-art.md": {
+      "sha256": "829770be3aa633eae100151fe737dbfd8b3b443db522202d9dfbe78f505814bc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/graph-style.md": {
+      "sha256": "689b701fd3dd35c638b33109d593f863b0f0a5b65405831aa1d8c0d23634ae8f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-area.md": {
+      "sha256": "97b5a4050b3de6a213532e3f2608b57bc1339665f3d32dcf2edaf3bff35e5a96"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-feature.md": {
+      "sha256": "adc0eca60ca292efb613e5050da6a32d687a39119bcd09644bebf13ae4bbf3c3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-historical.md": {
+      "sha256": "ac0925b44549c48cab504bc306361a0f3ce0077208e8ae889b35a75506812238"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-inset.md": {
+      "sha256": "d8459c5316e30f91d99ac223ee0fbf2c2f7ca2f7000f12e40887f1bbc10f3e4c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-area.md": {
+      "sha256": "e339f06d0882dc785a014518c49dd05b375d4758321771311893fbe45f28a0da"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-historical.md": {
+      "sha256": "1f4ed607742ed612fc3545d56da6cab3475614bb335a20d6e13827b26d1f5c70"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-natural.md": {
+      "sha256": "eee5d374b95d369825bcd63be31071c3304d67182e90f476254ac77d2c25c9a1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-points.md": {
+      "sha256": "7740d3c476a60935b14bc63515e469408b3843ead0b582b5ee1ef624c44775d2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-projection.md": {
+      "sha256": "ad4cb2d6dcfb1a7faae7de812c5ef3ce0895fc751fc2f3395b80f4f96cc191ea"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-route.md": {
+      "sha256": "290a0d61d5754a31228a049858fd6cf35de97471e4a6f109da8107426f13f5e0"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea-statistics.md": {
+      "sha256": "896aafdf4d2d37e95306afa15bff47c8b6f3f4df51986d8e7e5afe9b90aa9eba"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-korea.md": {
+      "sha256": "a118fd54f6c80873237ef1d43dc6c520b8969354fa4629461da22252d8afcbf1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-natural.md": {
+      "sha256": "a2ddcae87b9e42054ee87b37091657d5dc99c4d31903b1b927503bfa9f1d5a53"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-points.md": {
+      "sha256": "eab9c1332f89ff16287e9f84e47eb0d49df684451be4fb2b1f66204631787b55"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-projection.md": {
+      "sha256": "76e7feb5ab06812889e187e0a8747f4bee7a61109d23b5543792b6e754950f4d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-review.md": {
+      "sha256": "855bc842a94e6e8b7d11364f6e82a2299e25ebabde2d6742193d3a575724d2c5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-route.md": {
+      "sha256": "e826d4efe9fc70b78c9103eab09fe4d5d65c15a58af2028ff0e3a12bb4561404"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-statistics.md": {
+      "sha256": "7ce8a587489f4f6330f123de39ce743d3629dac141879a57465b6ae7bdd78e21"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/map-tectonic-ice.md": {
+      "sha256": "867aa170a5e816d10168158ded5f5af68e37c9707c8a1544830802f8b54c52da"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/node-diagram.md": {
+      "sha256": "47b9cf8f73570191b4a68e5e89e71540c481fcf87d70793505856053e66ecb7a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/organic-detail.md": {
+      "sha256": "d34a563f5c7e2ef8c318eec0eb6125f3c8da814655b12b4268e960f1d54e4a09"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/pattern-library.md": {
+      "sha256": "515d4c10d35cd06f76e4ba06473415c184e976f4ad238c2457716ac519798ff2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/people.md": {
+      "sha256": "c79923a6c9520b718f7a99e859a5b8ce766086effb41fd68d63b5df72de07f52"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/person-spacing.md": {
+      "sha256": "29ebbea9164fec102959fb975ed7b5a6265255e212ef03c32b7436117c265eb1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/person-speech.md": {
+      "sha256": "497a0f2d202722717a4a25444c9378617acbb4bd2dc78a65a4b90215489b22d3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/photo.md": {
+      "sha256": "9f988e4db32ec8ae03f3dfb1e38adec5675845f4a834076bbf333040d64cfe62"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/real-data-map.md": {
+      "sha256": "8997322a4dab6c07b7d87ddae7ee1a69a43e9e6d31ecde02842264100695bf83"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/real-data.md": {
+      "sha256": "f2a9a432593cc7ae71d2a5431c270314c7a81e3ccf91812770e26fb502fbb92f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/schematic-layout.md": {
+      "sha256": "5671bc5e8d4407c9588571e8948cfc425e1e86037c461701a1669c838b6d1cd1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/speech.md": {
+      "sha256": "874c7ab623d8fbf4f678023c8705a6c51a6537ebc5fb0aabd15d3469e02cd67f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/components/vectorization.md": {
+      "sha256": "ea26fb79fb5628b22127b1d9e765d44ac6de4cb277380cfb6c15f3658293e657"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/composition.md": {
+      "sha256": "8dfc0563ccad53ff563f590e0e9f58013306c99d3ead0d4c77f6f31103723dfa"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/content-layout.md": {
+      "sha256": "e3f78b942790e50e22e418373668272f2e5995de4728fa3a098c57e67a743c90"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/display-text.md": {
+      "sha256": "87281d2743555874631164d3795652973f26c08314c8d4f3696fb5fdd10b81be"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/footnotes.md": {
+      "sha256": "53d9a5cc5d960b499edf335602fd815eb8ca47101696deb3879b99fde8ff362a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/inline-box.md": {
+      "sha256": "f6b08e0ac7623f14b04fb5f4d24c5f55941ef516f661b9bf00ce7aba7e856a6e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/production-plan.md": {
+      "sha256": "1f0b4627f1932c32422bcf6d0ab4768deee04c222bfddab4747168e24199291e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/prose.md": {
+      "sha256": "fda9d57220f9241b005d3c98c995a6a5495ebe4ed57d684147cb0aa02edfcd70"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/readability.md": {
+      "sha256": "08eb61f949b4abd38d20c09aeda2f06721907456e9d267e1949dca4868db23a4"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/reference-review.md": {
+      "sha256": "d37fb5f5e90ad8d9d234b290c0df0e08eedd8bf0b73e4241d348649cdf318d9d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/reserve.md": {
+      "sha256": "45544f868e627ae421089f4d0c81694ce6cf60d103184bbe82f4dcbbc1734c11"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/review.md": {
+      "sha256": "7a9f3cc454751d6badbfb141620f4982a4de772182e5395c2748870b54cc3158"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/style.md": {
+      "sha256": "66baafcffcabf087643f0f6b92df5b2334b28afb3ef2592c16ba0a448c032489"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/symbols.md": {
+      "sha256": "9c9a12177a0c9a2ec59058c10bae2f338ba369004d315c0ff4e0eabdf80fa3a2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/typography.md": {
+      "sha256": "9dfcb5b0f839b75361098b56367c9abf0e8cf5072e97dae795404009099f4b6a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/core/underline.md": {
+      "sha256": "13f5467cfa2f84bca70664593617b01531b787884753f0aee69755d2ca7d5d06"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/assets.md": {
+      "sha256": "53856159ae70d24c1e04da65e56298ee355c7546d1e3893ec34545920d6d0911"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/base.md": {
+      "sha256": "bc0d8ce64e10e7980c478da9f0a69810d00c19ea9e6dd7a505698cdd4e41943f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/caller.md": {
+      "sha256": "20b8edd7d113da3fe35b40ea3246891bebdaeaba38c6d6a07bd2b79b86f6d673"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/delivery-manual.md": {
+      "sha256": "b85fecd325f46b6c63c1daf7a49d4bfdcd196054122a78a92a01c3e548594304"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/delivery.md": {
+      "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/gemini.md": {
+      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/inspection.md": {
+      "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/artwork-asset.md": {
+      "sha256": "acc33fcff403db76fbd9c6042e5d088a56c41b0c759a58c79aeadb7515aa70eb"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/asset-runtime.md": {
+      "sha256": "d8d5c825fa5f3b6ffa178f6e7fcdf1211f45aa5c71484fe1c2eba8ad5954d003"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/axis-options.md": {
+      "sha256": "8d3c51efdbd980b698ecf40d4d5b73f27cd46588786e4e6aab250b80d9b09350"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/bar-legacy.md": {
+      "sha256": "2c3f5804477fd3634f75a4a20a0ffea922273f6b57ac4dc3af4c4df4d0f67388"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/bar-mirror.md": {
+      "sha256": "1df1ec2bab1f8e7f0b49e48c1ce1df2e0620f30008008b3effb9a473c06ad7ac"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/browser-chrome-micro-ui.md": {
+      "sha256": "04a03a38b591ed379f2ff04175648f7029cc2cfb2f50a1614d6c8d10345d836e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/composition.md": {
+      "sha256": "039d0fbeada3429599e847a7b5444a4b7d6c336bba2e46c5346bede8bb2d55dd"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/continuous-graph-api.md": {
+      "sha256": "ed26bcff7d7dbeb2a3917faf13c2c8ef74c01a637f571db906fbf22a2a20d809"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/dialogue-native.md": {
+      "sha256": "f9f351784004a7ff6cc4d66f9b1c9ba3bac4341fc27a12969d5ad93d045bf37f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/formula-native.md": {
+      "sha256": "82cc084844c81dde45f426a8a8dd3f1443a7d258966f902d7a0aafafffeef13c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/frame-decoration-native.md": {
+      "sha256": "be70c55c415d00da4347911d43059763b122f3b76c2cd2a935fa24625e0f087e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/graph-api.md": {
+      "sha256": "b6fb2e8a9b7ad34f8296ad5629ec04cd8d662570d2692c1c1dc311f3ce23307b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/graph-helper.md": {
+      "sha256": "da4e3302246068ce70686b3e2a1d8535d7aa0aa9ea52f1334fbd76cdeb2ee4d5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/graph-schema.md": {
+      "sha256": "808c6116f9e486b3378439e83696fe6a34a26e47808600d0877c2199eb839980"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/long-operation.md": {
+      "sha256": "bce5b221ec72b8471bdb9182a3efac4d1b327dca71451c2b148286b8cc3dffed"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-dem.md": {
+      "sha256": "e3e2377fdb3d1a3be63a0e9ca9ef89c108c6951ea245730c4f26fb0ed2480b1c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-edit.md": {
+      "sha256": "0f3a07d7202b767b85ed5a493ab4574dcd731edb6970f5c59315b43452ed10fc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-feature-native.md": {
+      "sha256": "622a46dc297785056c00c5b1f1172ea0ce5b57295449fd9c1c485219f22b7ddc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-inset-native.md": {
+      "sha256": "01459aa6634695f831acf2f1d7a54407629957084f908bead227062134230e4c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-native.md": {
+      "sha256": "2c1b33c93b8dccb58375d7be86fc740312da1f543ccdabe86375ca113ead5b95"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-preset.md": {
+      "sha256": "195d8ba59fa129f6aba73399ff9d02ae13c9ed54ca6b155758985a823d83411e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-proportional-native.md": {
+      "sha256": "b0ef0a1f1b48027cfaf096b843b1cd2fc975f8e9a9b58a022b213f6b8200329b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-routes-native.md": {
+      "sha256": "fd04e23783ebc92283bf7e436475d8cc38c2d0e0202b2347fcc6e8cd162ae62c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-runtime.md": {
+      "sha256": "51faed80895a6c6ff4303473f499b6a8f564a163980180fe0b5b3f067f22872b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-scalar-native.md": {
+      "sha256": "13ef7bc1fc51b993b5648681079b9c9f2096fae4717ec47afdc3a8b41a4c2b81"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/map-thematic-native.md": {
+      "sha256": "c91c2eb40f744a54e95b0656f812b23807753b84de61cc57e1cf9f620c1c1814"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/mixed-options.md": {
+      "sha256": "e3baf86589b8d18ab54c0a24a8a9ec0b525face25bc0a1a874692334360214e3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/newspaper-frame-native.md": {
+      "sha256": "5b769e0e7abdf106bbe5ec71c4dba7e718cfe612bc462187c1662d3cf627f27b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/node-diagram-native.md": {
+      "sha256": "7a111c2d1f3d1b01b68da8828b6a4953781714b74f2cb53233eaed4cb017cf38"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/point-options.md": {
+      "sha256": "7d14d61e480e0ce70bae7cc678370b8a6969b62ce9cc8e31f323092847387f78"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/presentation-screen-native.md": {
+      "sha256": "995df0e2b691662cf5020488ecff7e8492231256a19fa23a2a561004f0f69cf7"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/reservation.md": {
+      "sha256": "a436fe8fbc7369ade7e0d324df0f01502e8a7626d14dc86b168c139a6a834a6a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/screen-frame-native.md": {
+      "sha256": "352d8b0cd5a03685acddc489bf785e977325e4217a92b3e728e6e8ace607569d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/surface-graph-api.md": {
+      "sha256": "bafbebc2a6a81e1e6af31dbc3398beeaa7c4e64a0db9a50f7c45b3cba94d81be"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/table-api.md": {
+      "sha256": "aaf6a0ff5b1f34eefccd6381a717db9d08228c837a6f0517df8e00332698b88e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/text-flow.md": {
+      "sha256": "a4997493f3f22a1aadba25363b10a37251463caaf796f1998600711a04558cf6"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/text-lines.md": {
+      "sha256": "ca83be89cfb096f6e909cd7b84affb0dbf90acd2b7c4451892682cd9c1900b74"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/modules/trace-helper.md": {
+      "sha256": "a02b7218181bb9ba99f0b1ef2374fd72fccdd6758256c84ef8157f6900a128aa"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/paragraphs.md": {
+      "sha256": "49a3bcdf53e55b0af317f8265cbbf08164c29aba9cc2681dffb47ba6d3549dc5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/recovery.md": {
+      "sha256": "75ad0580504b2afb8140a442959b2843a3ce202ab146579f55a425a9f1c7c56b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/text-effects.md": {
+      "sha256": "851c1ff8e9c37dfaa675126546a788b18664827753c5e6a1de19ac16a74d8355"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/text-ranges.md": {
+      "sha256": "aeb5ee78bd9dc3ecdfa0acae97c9dd5f0befc14272105ac3acb48bd84d7c97c7"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/text.md": {
+      "sha256": "0b5a005ef052a35773b5231a2c8ec18c4584cbd1531f6edc0185b8f6389b80bf"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/usage-recording.md": {
+      "sha256": "297f9d6824c235f642d81a7250d7bd621bc5e9cc727e6287d61227d0e40d6b2f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/execution/workarounds/underline-wrap.md": {
+      "sha256": "6d5bcc1d557150cb29661b2fb7e644979c3b91ac0aed485bc2718bcd78747feb"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-01_Flat.md": {
+      "sha256": "84338ca12623bb55d1cb96fc814cf85c0b3038fe5684254d4b306db3af4e0001"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-02_MultiFlat.md": {
+      "sha256": "e0238faccd200468b0a372d10c920ca6893a0408c62fa22776269ece10073ef7"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-03_Cross.md": {
+      "sha256": "0f41f743018cd10cfe456ea1706b2a0a7a53f07f749c25372d7d8430209fa9d1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-04_Nested.md": {
+      "sha256": "ecb18ad18392875543549379d5b255b6bcc513177fc972a7d41c267de1b6a803"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-05_Checklist.md": {
+      "sha256": "b1e330984635a564f47446999056e0c074dd583fb68c2fc18583e17893a7d074"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D1_Table/D1-06_Others.md": {
+      "sha256": "712bb33d346257b2f9f411b0840251f39fa6deca7dad13136ef7abc222aafdd2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-01_Bar.md": {
+      "sha256": "1fb3ce336ad3589452c687c1b8b96fc653ca7cfe8ddf582326c2521f6d16478e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-02_StackedBar.md": {
+      "sha256": "a8ce3ca0fd81ff4176c4054ec86646dbb3f5d641786dd8ffcdf74716f2c06418"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-03_Pie.md": {
+      "sha256": "1d27afffa7d4f43f7763d0da86de1835ef036caae10a1b248da584e5b48ac93b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-04_Line.md": {
+      "sha256": "37c5f55b76a0a54e75766eec519a9b45a8c2ee5611fa9ae230cc4186ed03a4b5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-05_Scatter.md": {
+      "sha256": "a5b3be06ccc937c263e428422620386f400b16382aaaa3785a06fe9ac0cc8ac0"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-06_Dot.md": {
+      "sha256": "0c0d894ff46f17f09eb2c4621ec33b868a51ad7265bf7b602f98d7bbec793e2d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-07_Radar.md": {
+      "sha256": "03ad6931bc47d5736d4037110a7348491c25a3396628dea34c22b3df939564d3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D2_Chart/D2-08_Others.md": {
+      "sha256": "f4456ccf7c51fc8af56639a5387f23d4203a7be28b9ac93f957f82d5b0cb8d0d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D3_Graph/D3-01_Curve.md": {
+      "sha256": "3147eb06a6be93df1ea5666fdd71cf13e885e874beda5c79f2e9ce66f195bf4f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D3_Graph/D3-02_Frontier.md": {
+      "sha256": "eac73edc2af8aee69ff30390c25ad4520a1bdb236191ad5450bc80b7c35eaeca"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D3_Graph/D3-03_Distribution.md": {
+      "sha256": "8f95cd3a441bcd1ec85be9f44726ab575a64bfc97258714cd13f79e5353501d7"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D3_Graph/D3-04_Others.md": {
+      "sha256": "ee02e30375bd5b999907244860f81622dfd4284cb77b689615e21b83e8fe97e3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-01_Tree.md": {
+      "sha256": "9cea6a70f788d85e8798a88c54ad652e669f117bcacc2a4e8c0882d4346612f0"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-02_Network.md": {
+      "sha256": "c6cd3adb0246a7bbc9b52fb1a521ec947394c7eb6ea750825875cde2a831bf2e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-03_Flowchart.md": {
+      "sha256": "546fcc0ac66617866e637b9a6d7543191d633826880e3a194ddf1ad37cffcf83"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-04_Venn.md": {
+      "sha256": "74e5afefef8ecdd3e724b27b2913b051991a186cbfad146e89dd716216d3488b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-05_Timeline.md": {
+      "sha256": "5e68490d07c9c479b430d1373aaebe919010deb3688bdff23783f69409fa6388"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-06_Schematic.md": {
+      "sha256": "e5fad3ade5dd88c2ad2d47efc62ec17c5e741b7d3b880cb1aa3c616bb32ee516"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/D4_Diagram/D4-07_Others.md": {
+      "sha256": "5458d540fda8f39bf7de992476b3eef971079f6ec8b4bdd2ad83dc2a8a84a74d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I1_Photo/photo-original.md": {
+      "sha256": "0ccdf58279accd9a1cbff503b93312cbdcc32265109adc9f5f5e720e9c45dd40"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I2_Illustration/illustration-object.md": {
+      "sha256": "d30b1e341aba776a98766ff54600ee64a7356171268b0996603264ded9001aea"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I2_Illustration/illustration-portrait.md": {
+      "sha256": "b22794b39d6ce83a044ada4129fc2f7e2a145f934e2fe29c068dbb94b2633b2a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I2_Illustration/illustration-scene.md": {
+      "sha256": "a4ee4d1925b2bf5c40659ee765a8e3687e78c6bb1826044de1395d0d13ba4a1e"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-11_Locator.md": {
+      "sha256": "c234f60b3a9d4aedd6e21d25fb7e4906d1c7a5afba90e7e8f31fe5bf7afa0c69"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-12_Topographic.md": {
+      "sha256": "0f005d68ee2df35fecaec5cda7c288f2c3f1249e5eccb0ef060a7c031620b721"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-13_OldMap.md": {
+      "sha256": "6921bdc8e68aab3c444e3ce2322c0602718a937dcdf5456b70bd72292ea5ed9c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-14_Others.md": {
+      "sha256": "598e7725a8acc542142041d00b78915764f2794841f240fdfe92e1a8041971df"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-21_Area.md": {
+      "sha256": "5b02e48a62be42d7d4827de065904262bb7e313274416bc70d36702b1790a2f2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-22_Route.md": {
+      "sha256": "f74affc39b8d5f97014117ba502c465e0dbfa40335ebf02eb274abfe5ea7f7bc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-23_Symbol.md": {
+      "sha256": "93644aecbd25d59a0d297ea8ef697cb63544ff04c7be9d3e7ae3f0e73ba6c80b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-31_Choropleth.md": {
+      "sha256": "ca94596366c0474e47c134a8740b54ca0ed1ae590fb6611e61425d00f3865da5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-32_Dot.md": {
+      "sha256": "57a2f5139701222c369c252e02417e6ba42b9ab37f9518201e6e386503ee35d1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-33_Proportional.md": {
+      "sha256": "fe01ca5fb746887a28c870488859d0b10e07c69fce6a315ccf33435631dcbd03"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-34_Isoline.md": {
+      "sha256": "2b5b8f2f9f30f0d6a6c4d787ef65c1a99d90e5020c778caff1a56d40ea3eca60"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/I3_Map/I3-35_Flow.md": {
+      "sha256": "c809be2e36337ade55e09a0758655b1dd2489f14c478e307f5e750b111888ac4"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-1_TypeBoard.md": {
+      "sha256": "476c908790d3a3810f2191dbc0b34f58730562418736230ea5e6ba87c321f05c"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-2_Solo.md": {
+      "sha256": "141f291651b4f200632c95569ebf76d6d89ff7c12085d934dd90924156e2e544"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-3_DialogueH.md": {
+      "sha256": "29d3e23e196a87374390f9af81fa9f45fcbda12659eac255d44aeb42980f99a8"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-4_DialogueV.md": {
+      "sha256": "c9568c3b1a606f598d7250f465b6775ba8796de148469cbdf3c46e460e00cde9"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-5_SoloBoard.md": {
+      "sha256": "ec2a36e9191fa3fd816e71296029884feb51ebc7776687b4f6df807f2233efdf"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-6_GroupBoard.md": {
+      "sha256": "dcd8475359bfc25c4922b9044160d04157e3dc406be854505575fea5c15f1e30"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-1_ImageBoard.md": {
+      "sha256": "8fa4197f5d8ace6790318738299dcb0a2d18473e360eb21bdfdcb26685d14968"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-2_SoloImageBoard.md": {
+      "sha256": "0cae9cbc648e759c12f0b02a83f994db66dfbb5b45509e76600cd1912f605d15"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-3_GroupImageBoard.md": {
+      "sha256": "383bc2679e735be44f3a993d74ac7f0e9103d758ab8aaf8caf1f82c1b8286bc3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-1_Figure.md": {
+      "sha256": "a695add19b24656e72ebe8a714c16d9bfe3c0189e3c35e231ad59744e1bb3184"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-2_RealPhoto.md": {
+      "sha256": "855c1d721e74a210379b8becf2356edc8c7c9c458d6b4c83dba7236d0d175f99"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-3_Place.md": {
+      "sha256": "db75a3553055cbd375135b8d446740770ae06aaea3eab54de5704c763901dc59"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-4_Costume.md": {
+      "sha256": "098ba44a7e812b3f0b71dce79ae2253fd952b8ab89b09dd668fbeaaee5214f68"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/activity.md": {
+      "sha256": "1af8930fb1fe02420858e57b40656827e7cd05fce07820119fab81b6a964b6d1"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/board.md": {
+      "sha256": "80cc06e4da618bacb4f986d7909f2a9f306c80716c6577a8351e111f41b28fc5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/bound-paper.md": {
+      "sha256": "ae6fc040898832f21ea7d350ae5508f4b5bfe5cdeb68d874e2fb29ff0130772f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/correspondence.md": {
+      "sha256": "43358e37f2303aa29cc46c2851c92493963eff14d3fa7cfafbc285ca821cfe53"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/device-medium.md": {
+      "sha256": "37add589d30731e8e2cbfc3a2d66e86468d3af154f057331e52c55638837e2ab"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/display-medium.md": {
+      "sha256": "155fb0d9b66dc15cac8729835543b3ae124575c428ec75f5fdb93311c6f91f4a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/document.md": {
+      "sha256": "e56ba737f188194e4a9cc5d00f89a63edd97dd54d71aa03401fe6763b6621ee8"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/horizontal.md": {
+      "sha256": "fddaa6dec3e4225407689cd18eebf32fad669a34bfe2d3e4a8cab25dfce6b438"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/map-composition.md": {
+      "sha256": "d04ffc583dd7cbfb0ec0b6cdca3b6b32a69e59796d3a413908971f8185498605"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/newspaper.md": {
+      "sha256": "c9a9d444a922e4356ddfaca6fcf3df113a33a72106fa583892b8da0aac312937"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/paper.md": {
+      "sha256": "b5599fcc4e60dfea01fdf1617877f57048832d6bae71926c250f0e87f7221d1d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/presentation-artwork.md": {
+      "sha256": "fce8ea229a7061375a4cdbbf3b34f5d8416f88f85c748bdfb0a0193ba2423fa4"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/presentation.md": {
+      "sha256": "fcf3922780c3c2115bf75dea689032045f3ab2e029856d0b765bd2f2ab2c4818"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/screen.md": {
+      "sha256": "0b7968eac70e58ffd602e1cb082bade37b1246a3c4f2339c726b764dfa2cd719"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/scroll.md": {
+      "sha256": "07b460675d591694e1d5511fb2e598e09f3e05d847c810c49f79f8630bc7d739"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/vertical-gap.md": {
+      "sha256": "735e5821060749ebe9de7cdc8f53a6eb30a64cf506bcfbb515cbbf23e8df38f3"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/vertical-messenger.md": {
+      "sha256": "1ae9af657424f3bcc92bb511555ce72f35e82fd4f74ade5e5241239f2eb6913d"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/vertical.md": {
+      "sha256": "8357ad37b5531911ba578f80636536da77f736ab26318c8f979a2e9b49e40c63"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/recipes/layouts/worksheet.md": {
+      "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
+      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
+      "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/D1_Table.md": {
+      "sha256": "5d6f3d46b5aabd8e39a73c39a17be75662c8e9923f6aa42e27738787df618ddf"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/D2_Chart.md": {
+      "sha256": "a24bd70eafd4f0b2d43f4ca677cbc53d1d5cd629e51c1e06b22d5615045d9889"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/D3_Graph.md": {
+      "sha256": "6dd9e23eb5ff7b47d7caee41a2c3ebc8eedee8bf2d947ef293c78bcd293350ae"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/D4_Diagram.md": {
+      "sha256": "72a398390a60522b9da80975a0b02d6e22b8fd141348f461449cb7e3917cde85"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/I1_Photo.md": {
+      "sha256": "799bdbbc5460c6088f145ff60ec4df65aa2cbc39f4740e82881c075f6e4a50ba"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/I2_Illustration.md": {
+      "sha256": "c0535ca26b5c54c90c2318c7cf26e922d60b22e28bccdabfffb8d696eeafbce2"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/I3_Map.md": {
+      "sha256": "66d71c392947322a83f7e4bd4337e923b9c343e92cddf7a74f85a0834cd61318"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/ITA_TypeSwap.md": {
+      "sha256": "aeed1d4bcfd7ce6a3814cef7fcff49bf3dd6b07191ab0c1d7f2d1bc9a55962f5"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/ITB_ImageSwap.md": {
+      "sha256": "512693551f9d7c1ea3846f0719aca1fd586ea1b68d3460b15ccda338fadd788a"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/families/ITC_Fixed.md": {
+      "sha256": "7c1e122e4e320c805b36d8303fedd7a183a31cddb1e730f9a62d96a63dd5911f"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/fixed-styles.md": {
+      "sha256": "bc4880a491ba231f5993cf96ac985d8342ccc0a450fe246b83bb4b5ae233005b"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/routing.md": {
+      "sha256": "6749fa1a88af491183e83a0df1899390fa9b8a139308ad6c6c162ce401928227"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/rule-index.json": {
+      "sha256": "8c6ca2c8ab922f0eca3816e7efa3737338e36e9ed76286c0b5fc368a9937f509"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/task-input.md": {
+      "sha256": "1844addc443a37dbaac7e73ca0af90cf7870d2664da4f558485dede9868351eb"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/references/taxonomy.md": {
+      "sha256": "8786ae6cdde4a982571150869bbf3173602bba7eefe1eb8f508e5fd8218db722"
+    },
+    "plugins/vectora-windows/skills/create-kice-illustration/SKILL.md": {
+      "sha256": "188d489076c6629f8cdd8f94904cc8f9c9e98f8b3dc14a793bbe0d76847131b8"
+    },
+    "plugins/vectora-windows/skills/create-kice-science-illustration/agents/openai.yaml": {
+      "sha256": "7e3edd0c96e0ba5665da8db8af5fa6807cad7c86dc719683f46862b17c00510b"
+    },
+    "plugins/vectora-windows/skills/create-kice-science-illustration/SKILL.md": {
+      "sha256": "b1d38eb5d2d9fde87c7fb5a0bf8fe40656a547bb9028f0be29477112153f47d5"
+    },
+    "plugins/vectora-windows/skills/use-vectora/agents/openai.yaml": {
+      "sha256": "674f5137a8cf5118927f7b661d9ef43c672d9302e39c84fb9ce73f2454e0a2ae"
+    },
+    "plugins/vectora-windows/skills/use-vectora/references/examples.md": {
+      "sha256": "0fc18429ffb419eefdd159de69db0b27f9c30fe644c42479787f6b558b16fb67"
+    },
+    "plugins/vectora-windows/skills/use-vectora/references/production.md": {
+      "sha256": "c6ee068a5a39a09ff88bbd9604e4f963328ba463b2e2dbb17dd9273bc6625178"
+    },
+    "plugins/vectora-windows/skills/use-vectora/SKILL.md": {
+      "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
+    },
+    "plugins/vectora/.claude-plugin/plugin.json": {
+      "sha256": "bff6035d57cc65b04b2b111985d5e3e2c988ef9c50aa777eca5c3e231a4b5d76"
+    },
+    "plugins/vectora/.mcp.json": {
+      "sha256": "5f63d5603015217e475093447374f736e391f7266cb31947362d6d352c9c57c2"
+    },
+    "plugins/vectora/assets/vectora.png": {
+      "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
+    },
+    "plugins/vectora/bin/macos-aarch64/vectora-mcp-launch": {
+      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "executable": true
+    },
+    "plugins/vectora/bin/macos-aarch64/vectora-skill": {
+      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "executable": true
+    },
+    "plugins/vectora/bin/macos-x86_64/vectora-mcp-launch": {
+      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "executable": true
+    },
+    "plugins/vectora/bin/macos-x86_64/vectora-skill": {
+      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "executable": true
+    },
+    "plugins/vectora/bin/vectora-mcp-launch": {
+      "sha256": "b25a374efb19bbc2e21bae01f9da514c35e3e0c61e84442641e27d6b2c12e165",
+      "executable": true
+    },
+    "plugins/vectora/bin/vectora-mcp-launch.exe": {
+      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+    },
+    "plugins/vectora/bin/vectora-skill": {
+      "sha256": "4bf2461910918d7cde7ce563af8bb35d4b1233a37ea937d4934451c44437b4df",
+      "executable": true
+    },
+    "plugins/vectora/bin/vectora-skill.exe": {
+      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+    },
+    "plugins/vectora/README.md": {
+      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/agents/openai.yaml": {
+      "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/chart-age-population-sexratio.v1.json": {
+      "sha256": "738512b2bf1ad93f0c085c6c02abe2fdb0ba9611fd5f209ce7ccf8544e5c6522"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/chart-city-rank.v1.json": {
+      "sha256": "9237907c97f7c69a5dc7828e112b585e5eb14b13e6b38c4d825aeb8ba2b9c18a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/chart-population-pyramid.v1.json": {
+      "sha256": "f4a666fff77edf0fa229b64a1658c29a6c600c407fd1bc270d4d890ad45fbfa6"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/chart-season-temperature.v1.json": {
+      "sha256": "dfae72a2def09af30a5cc50e7d7aada49fb921c32cfaa99174bea93f412a73d2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/chart-supply-demand-grid.v1.json": {
+      "sha256": "83b9734f509bcbccb6293fcb157a05ba88ceb81cfc38e5ec17daadadab7b6b5c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/component-caption.v1.json": {
+      "sha256": "44a0484352a94b65d83ba0a20b0f20ea72aff3106fb879330d1f5b2c267171d3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/component-example.v1.json": {
+      "sha256": "ab2f1812d2587cc92494545d7de43257e451e874e4154988c35195395f4cff50"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/component-legend.v1.json": {
+      "sha256": "f0bc973bf1cb07cdf52f32d50a9ed550533d7ee689371926ea139003248a51f8"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/criticism-2.v1.json": {
+      "sha256": "04ef3892ed0b04a8e9269667e0861e3145de0a087f2e38441ce170a4910754c3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/criticism-3.v1.json": {
+      "sha256": "0e39801202fb8432275fc9ed40fc3677e46967446589fa4d208a4e5fcbff0514"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-2.v1.json": {
+      "sha256": "ab673254b1ab7b2bbe547dc6ed1422ba4ead61f80ea006344858e6863dcf1183"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-3.v1.json": {
+      "sha256": "aaaaf146b1f89554df7725e6f80097a67d9bd94c283711d34fa8809aac57b471"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-2.v1.json": {
+      "sha256": "17ffed59355809f73e7ad775ae7d2cb2f5dbd7d4854e873f3370c24191ef4868"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-3.v1.json": {
+      "sha256": "30ad212e0f6f36e29a06fe7ed2538889a1a189351fc7aaecf406735436beaf95"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-ab-links.v1.json": {
+      "sha256": "310b3a5d36b71f7f646337b72af2bd5bcd7ed2386a37b02a0582d52172311424"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-argument-1line.v1.json": {
+      "sha256": "4804028ac150d0ec569dd13685c0b5726df130a848eac310eb559dd1520de917"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-argument-2line.v1.json": {
+      "sha256": "81880be26dec844d41890dc3ed4fd32de17adbb5d967187cf9139e5db9e09849"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-nested-rect.v1.json": {
+      "sha256": "439da7c5a8b03f8f3848b3b6d8ddf2ebe24ab79b1e1b2b4505cab8c9bb61f4db"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-phone-6line.v1.json": {
+      "sha256": "9682324a23502634642e6ed92a6595c848a2497b0c5dce4c0d1f2f1d3fbc89f0"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-question-2circle.v1.json": {
+      "sha256": "7d4ba14e2e5738da399c5de7bf47907bdde0d1ccf3584828414fc748dbe8457b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/form-timeline-5.v1.json": {
+      "sha256": "13baad2917b929246142220080d0490c6c04e66352e5e420028758bb545de583"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/judgment-2.v1.json": {
+      "sha256": "d29c7ca8f7a7b0b96986dca26f234ac7f69dbb209627df7e2b533b70ea4d0f35"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/judgment-3.v1.json": {
+      "sha256": "fa2484599c8d13e075aa2c565d88188bd843c8fa58cbeb6e52dcf2ef089b8339"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/theory-as-left-shift.v1.json": {
+      "sha256": "1d4b00319fe252f93ff4a9477441f5a8b3a2630a8bf26b90af7c81af3b12538b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn-2-hatch.v1.json": {
+      "sha256": "425ca20ec8a4cb4c2f76d1b4966dfd0b805ef591363577e8bb17ac07e146c825"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density2.v1.json": {
+      "sha256": "9822bb4753bc712004d143dce0f8401abde6c59de4205dd590f813cf3dabb7db"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density3.v1.json": {
+      "sha256": "07939baefb2a7ef6d6460a93dc134c36dd8404991ce8770eb82b993573c8ce36"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn3-chain-triple.v1.json": {
+      "sha256": "9389772439525de9ce6ade3ce5a2c24098088a85909f92b7cb811c6ca396b117"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-ac.v1.json": {
+      "sha256": "59b2bc95dde07351b8d4fa5f41154b62870edff41f5dd2004e16cdc376f6118e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-bc.v1.json": {
+      "sha256": "3bdd649496855f5f3231af5e355c806dc0974141e944d004568137ecdc1cd893"
+    },
+    "plugins/vectora/skills/create-kice-illustration/assets/fixed-styles/venn3-only-two-ab-ac.v1.json": {
+      "sha256": "10e37d4664195431fda604b30e7e9a9f0d3f9ab993127187f527356b9c85307b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/artwork-geometry.md": {
+      "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/artwork.md": {
+      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/bar-sizing.md": {
+      "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/bubble.md": {
+      "sha256": "a316d9e28e65b8d3955a98f770e245f6122aa9b59e743bd9881e6eddbc6f9c54"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/caption-frame.md": {
+      "sha256": "5f0eb45abeed854ae0064b8912c02b0d2892879fe89e9774ce0aa0852b9f1d42"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/chart-axes.md": {
+      "sha256": "005281cb18f8d7137b4b15e6ce0968b68668e50709021015de6aaba6e7c74db6"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/data-surface.md": {
+      "sha256": "673403d65c1104ea210e5b100fb5103dcee024cf6c731b9eb034671e22a8652c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/flat-table-layout.md": {
+      "sha256": "c7a0c0803ded39b755d1ef9a2c06ac2fa57d5d7a32ea8a94259cad64696cd8cc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/frame.md": {
+      "sha256": "622ef4193854b1f9f6ff5483a1a57559e09d01553a60f76a79cbd5ea129acc2b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/free-art.md": {
+      "sha256": "829770be3aa633eae100151fe737dbfd8b3b443db522202d9dfbe78f505814bc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/graph-style.md": {
+      "sha256": "689b701fd3dd35c638b33109d593f863b0f0a5b65405831aa1d8c0d23634ae8f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-area.md": {
+      "sha256": "97b5a4050b3de6a213532e3f2608b57bc1339665f3d32dcf2edaf3bff35e5a96"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-feature.md": {
+      "sha256": "adc0eca60ca292efb613e5050da6a32d687a39119bcd09644bebf13ae4bbf3c3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-historical.md": {
+      "sha256": "ac0925b44549c48cab504bc306361a0f3ce0077208e8ae889b35a75506812238"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-inset.md": {
+      "sha256": "d8459c5316e30f91d99ac223ee0fbf2c2f7ca2f7000f12e40887f1bbc10f3e4c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-area.md": {
+      "sha256": "e339f06d0882dc785a014518c49dd05b375d4758321771311893fbe45f28a0da"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-historical.md": {
+      "sha256": "1f4ed607742ed612fc3545d56da6cab3475614bb335a20d6e13827b26d1f5c70"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-natural.md": {
+      "sha256": "eee5d374b95d369825bcd63be31071c3304d67182e90f476254ac77d2c25c9a1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-points.md": {
+      "sha256": "7740d3c476a60935b14bc63515e469408b3843ead0b582b5ee1ef624c44775d2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-projection.md": {
+      "sha256": "ad4cb2d6dcfb1a7faae7de812c5ef3ce0895fc751fc2f3395b80f4f96cc191ea"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-route.md": {
+      "sha256": "290a0d61d5754a31228a049858fd6cf35de97471e4a6f109da8107426f13f5e0"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea-statistics.md": {
+      "sha256": "896aafdf4d2d37e95306afa15bff47c8b6f3f4df51986d8e7e5afe9b90aa9eba"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-korea.md": {
+      "sha256": "a118fd54f6c80873237ef1d43dc6c520b8969354fa4629461da22252d8afcbf1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-natural.md": {
+      "sha256": "a2ddcae87b9e42054ee87b37091657d5dc99c4d31903b1b927503bfa9f1d5a53"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-points.md": {
+      "sha256": "eab9c1332f89ff16287e9f84e47eb0d49df684451be4fb2b1f66204631787b55"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-projection.md": {
+      "sha256": "76e7feb5ab06812889e187e0a8747f4bee7a61109d23b5543792b6e754950f4d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-review.md": {
+      "sha256": "855bc842a94e6e8b7d11364f6e82a2299e25ebabde2d6742193d3a575724d2c5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-route.md": {
+      "sha256": "e826d4efe9fc70b78c9103eab09fe4d5d65c15a58af2028ff0e3a12bb4561404"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-statistics.md": {
+      "sha256": "7ce8a587489f4f6330f123de39ce743d3629dac141879a57465b6ae7bdd78e21"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/map-tectonic-ice.md": {
+      "sha256": "867aa170a5e816d10168158ded5f5af68e37c9707c8a1544830802f8b54c52da"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/node-diagram.md": {
+      "sha256": "47b9cf8f73570191b4a68e5e89e71540c481fcf87d70793505856053e66ecb7a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/organic-detail.md": {
+      "sha256": "d34a563f5c7e2ef8c318eec0eb6125f3c8da814655b12b4268e960f1d54e4a09"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/pattern-library.md": {
+      "sha256": "515d4c10d35cd06f76e4ba06473415c184e976f4ad238c2457716ac519798ff2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/people.md": {
+      "sha256": "c79923a6c9520b718f7a99e859a5b8ce766086effb41fd68d63b5df72de07f52"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/person-spacing.md": {
+      "sha256": "29ebbea9164fec102959fb975ed7b5a6265255e212ef03c32b7436117c265eb1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/person-speech.md": {
+      "sha256": "497a0f2d202722717a4a25444c9378617acbb4bd2dc78a65a4b90215489b22d3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/photo.md": {
+      "sha256": "9f988e4db32ec8ae03f3dfb1e38adec5675845f4a834076bbf333040d64cfe62"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/real-data-map.md": {
+      "sha256": "8997322a4dab6c07b7d87ddae7ee1a69a43e9e6d31ecde02842264100695bf83"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/real-data.md": {
+      "sha256": "f2a9a432593cc7ae71d2a5431c270314c7a81e3ccf91812770e26fb502fbb92f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/schematic-layout.md": {
+      "sha256": "5671bc5e8d4407c9588571e8948cfc425e1e86037c461701a1669c838b6d1cd1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/speech.md": {
+      "sha256": "874c7ab623d8fbf4f678023c8705a6c51a6537ebc5fb0aabd15d3469e02cd67f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/components/vectorization.md": {
+      "sha256": "ea26fb79fb5628b22127b1d9e765d44ac6de4cb277380cfb6c15f3658293e657"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/composition.md": {
+      "sha256": "8dfc0563ccad53ff563f590e0e9f58013306c99d3ead0d4c77f6f31103723dfa"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/content-layout.md": {
+      "sha256": "e3f78b942790e50e22e418373668272f2e5995de4728fa3a098c57e67a743c90"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/display-text.md": {
+      "sha256": "87281d2743555874631164d3795652973f26c08314c8d4f3696fb5fdd10b81be"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/footnotes.md": {
+      "sha256": "53d9a5cc5d960b499edf335602fd815eb8ca47101696deb3879b99fde8ff362a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/inline-box.md": {
+      "sha256": "f6b08e0ac7623f14b04fb5f4d24c5f55941ef516f661b9bf00ce7aba7e856a6e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/production-plan.md": {
+      "sha256": "1f0b4627f1932c32422bcf6d0ab4768deee04c222bfddab4747168e24199291e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/prose.md": {
+      "sha256": "fda9d57220f9241b005d3c98c995a6a5495ebe4ed57d684147cb0aa02edfcd70"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/readability.md": {
+      "sha256": "08eb61f949b4abd38d20c09aeda2f06721907456e9d267e1949dca4868db23a4"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/reference-review.md": {
+      "sha256": "d37fb5f5e90ad8d9d234b290c0df0e08eedd8bf0b73e4241d348649cdf318d9d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/reserve.md": {
+      "sha256": "45544f868e627ae421089f4d0c81694ce6cf60d103184bbe82f4dcbbc1734c11"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/review.md": {
+      "sha256": "7a9f3cc454751d6badbfb141620f4982a4de772182e5395c2748870b54cc3158"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/style.md": {
+      "sha256": "66baafcffcabf087643f0f6b92df5b2334b28afb3ef2592c16ba0a448c032489"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/symbols.md": {
+      "sha256": "9c9a12177a0c9a2ec59058c10bae2f338ba369004d315c0ff4e0eabdf80fa3a2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/typography.md": {
+      "sha256": "9dfcb5b0f839b75361098b56367c9abf0e8cf5072e97dae795404009099f4b6a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/core/underline.md": {
+      "sha256": "13f5467cfa2f84bca70664593617b01531b787884753f0aee69755d2ca7d5d06"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/assets.md": {
+      "sha256": "53856159ae70d24c1e04da65e56298ee355c7546d1e3893ec34545920d6d0911"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/base.md": {
+      "sha256": "bc0d8ce64e10e7980c478da9f0a69810d00c19ea9e6dd7a505698cdd4e41943f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/caller.md": {
+      "sha256": "20b8edd7d113da3fe35b40ea3246891bebdaeaba38c6d6a07bd2b79b86f6d673"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/delivery-manual.md": {
+      "sha256": "b85fecd325f46b6c63c1daf7a49d4bfdcd196054122a78a92a01c3e548594304"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/delivery.md": {
+      "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/gemini.md": {
+      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/inspection.md": {
+      "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/artwork-asset.md": {
+      "sha256": "acc33fcff403db76fbd9c6042e5d088a56c41b0c759a58c79aeadb7515aa70eb"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/asset-runtime.md": {
+      "sha256": "d8d5c825fa5f3b6ffa178f6e7fcdf1211f45aa5c71484fe1c2eba8ad5954d003"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/axis-options.md": {
+      "sha256": "8d3c51efdbd980b698ecf40d4d5b73f27cd46588786e4e6aab250b80d9b09350"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/bar-legacy.md": {
+      "sha256": "2c3f5804477fd3634f75a4a20a0ffea922273f6b57ac4dc3af4c4df4d0f67388"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/bar-mirror.md": {
+      "sha256": "1df1ec2bab1f8e7f0b49e48c1ce1df2e0620f30008008b3effb9a473c06ad7ac"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/browser-chrome-micro-ui.md": {
+      "sha256": "04a03a38b591ed379f2ff04175648f7029cc2cfb2f50a1614d6c8d10345d836e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/composition.md": {
+      "sha256": "039d0fbeada3429599e847a7b5444a4b7d6c336bba2e46c5346bede8bb2d55dd"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/continuous-graph-api.md": {
+      "sha256": "ed26bcff7d7dbeb2a3917faf13c2c8ef74c01a637f571db906fbf22a2a20d809"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/dialogue-native.md": {
+      "sha256": "f9f351784004a7ff6cc4d66f9b1c9ba3bac4341fc27a12969d5ad93d045bf37f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/formula-native.md": {
+      "sha256": "82cc084844c81dde45f426a8a8dd3f1443a7d258966f902d7a0aafafffeef13c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/frame-decoration-native.md": {
+      "sha256": "be70c55c415d00da4347911d43059763b122f3b76c2cd2a935fa24625e0f087e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/graph-api.md": {
+      "sha256": "b6fb2e8a9b7ad34f8296ad5629ec04cd8d662570d2692c1c1dc311f3ce23307b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/graph-helper.md": {
+      "sha256": "da4e3302246068ce70686b3e2a1d8535d7aa0aa9ea52f1334fbd76cdeb2ee4d5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/graph-schema.md": {
+      "sha256": "808c6116f9e486b3378439e83696fe6a34a26e47808600d0877c2199eb839980"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/long-operation.md": {
+      "sha256": "bce5b221ec72b8471bdb9182a3efac4d1b327dca71451c2b148286b8cc3dffed"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-dem.md": {
+      "sha256": "e3e2377fdb3d1a3be63a0e9ca9ef89c108c6951ea245730c4f26fb0ed2480b1c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-edit.md": {
+      "sha256": "0f3a07d7202b767b85ed5a493ab4574dcd731edb6970f5c59315b43452ed10fc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-feature-native.md": {
+      "sha256": "622a46dc297785056c00c5b1f1172ea0ce5b57295449fd9c1c485219f22b7ddc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-inset-native.md": {
+      "sha256": "01459aa6634695f831acf2f1d7a54407629957084f908bead227062134230e4c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-native.md": {
+      "sha256": "2c1b33c93b8dccb58375d7be86fc740312da1f543ccdabe86375ca113ead5b95"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-preset.md": {
+      "sha256": "195d8ba59fa129f6aba73399ff9d02ae13c9ed54ca6b155758985a823d83411e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-proportional-native.md": {
+      "sha256": "b0ef0a1f1b48027cfaf096b843b1cd2fc975f8e9a9b58a022b213f6b8200329b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-routes-native.md": {
+      "sha256": "fd04e23783ebc92283bf7e436475d8cc38c2d0e0202b2347fcc6e8cd162ae62c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-runtime.md": {
+      "sha256": "51faed80895a6c6ff4303473f499b6a8f564a163980180fe0b5b3f067f22872b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-scalar-native.md": {
+      "sha256": "13ef7bc1fc51b993b5648681079b9c9f2096fae4717ec47afdc3a8b41a4c2b81"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/map-thematic-native.md": {
+      "sha256": "c91c2eb40f744a54e95b0656f812b23807753b84de61cc57e1cf9f620c1c1814"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/mixed-options.md": {
+      "sha256": "e3baf86589b8d18ab54c0a24a8a9ec0b525face25bc0a1a874692334360214e3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/newspaper-frame-native.md": {
+      "sha256": "5b769e0e7abdf106bbe5ec71c4dba7e718cfe612bc462187c1662d3cf627f27b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/node-diagram-native.md": {
+      "sha256": "7a111c2d1f3d1b01b68da8828b6a4953781714b74f2cb53233eaed4cb017cf38"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/point-options.md": {
+      "sha256": "7d14d61e480e0ce70bae7cc678370b8a6969b62ce9cc8e31f323092847387f78"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/presentation-screen-native.md": {
+      "sha256": "995df0e2b691662cf5020488ecff7e8492231256a19fa23a2a561004f0f69cf7"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/reservation.md": {
+      "sha256": "a436fe8fbc7369ade7e0d324df0f01502e8a7626d14dc86b168c139a6a834a6a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/screen-frame-native.md": {
+      "sha256": "352d8b0cd5a03685acddc489bf785e977325e4217a92b3e728e6e8ace607569d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/surface-graph-api.md": {
+      "sha256": "bafbebc2a6a81e1e6af31dbc3398beeaa7c4e64a0db9a50f7c45b3cba94d81be"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/table-api.md": {
+      "sha256": "aaf6a0ff5b1f34eefccd6381a717db9d08228c837a6f0517df8e00332698b88e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/text-flow.md": {
+      "sha256": "a4997493f3f22a1aadba25363b10a37251463caaf796f1998600711a04558cf6"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/text-lines.md": {
+      "sha256": "ca83be89cfb096f6e909cd7b84affb0dbf90acd2b7c4451892682cd9c1900b74"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/modules/trace-helper.md": {
+      "sha256": "a02b7218181bb9ba99f0b1ef2374fd72fccdd6758256c84ef8157f6900a128aa"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/paragraphs.md": {
+      "sha256": "49a3bcdf53e55b0af317f8265cbbf08164c29aba9cc2681dffb47ba6d3549dc5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/recovery.md": {
+      "sha256": "75ad0580504b2afb8140a442959b2843a3ce202ab146579f55a425a9f1c7c56b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/text-effects.md": {
+      "sha256": "851c1ff8e9c37dfaa675126546a788b18664827753c5e6a1de19ac16a74d8355"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/text-ranges.md": {
+      "sha256": "aeb5ee78bd9dc3ecdfa0acae97c9dd5f0befc14272105ac3acb48bd84d7c97c7"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/text.md": {
+      "sha256": "0b5a005ef052a35773b5231a2c8ec18c4584cbd1531f6edc0185b8f6389b80bf"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/usage-recording.md": {
+      "sha256": "297f9d6824c235f642d81a7250d7bd621bc5e9cc727e6287d61227d0e40d6b2f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/execution/workarounds/underline-wrap.md": {
+      "sha256": "6d5bcc1d557150cb29661b2fb7e644979c3b91ac0aed485bc2718bcd78747feb"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-01_Flat.md": {
+      "sha256": "84338ca12623bb55d1cb96fc814cf85c0b3038fe5684254d4b306db3af4e0001"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-02_MultiFlat.md": {
+      "sha256": "e0238faccd200468b0a372d10c920ca6893a0408c62fa22776269ece10073ef7"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-03_Cross.md": {
+      "sha256": "0f41f743018cd10cfe456ea1706b2a0a7a53f07f749c25372d7d8430209fa9d1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-04_Nested.md": {
+      "sha256": "ecb18ad18392875543549379d5b255b6bcc513177fc972a7d41c267de1b6a803"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-05_Checklist.md": {
+      "sha256": "b1e330984635a564f47446999056e0c074dd583fb68c2fc18583e17893a7d074"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D1_Table/D1-06_Others.md": {
+      "sha256": "712bb33d346257b2f9f411b0840251f39fa6deca7dad13136ef7abc222aafdd2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-01_Bar.md": {
+      "sha256": "1fb3ce336ad3589452c687c1b8b96fc653ca7cfe8ddf582326c2521f6d16478e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-02_StackedBar.md": {
+      "sha256": "a8ce3ca0fd81ff4176c4054ec86646dbb3f5d641786dd8ffcdf74716f2c06418"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-03_Pie.md": {
+      "sha256": "1d27afffa7d4f43f7763d0da86de1835ef036caae10a1b248da584e5b48ac93b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-04_Line.md": {
+      "sha256": "37c5f55b76a0a54e75766eec519a9b45a8c2ee5611fa9ae230cc4186ed03a4b5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-05_Scatter.md": {
+      "sha256": "a5b3be06ccc937c263e428422620386f400b16382aaaa3785a06fe9ac0cc8ac0"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-06_Dot.md": {
+      "sha256": "0c0d894ff46f17f09eb2c4621ec33b868a51ad7265bf7b602f98d7bbec793e2d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-07_Radar.md": {
+      "sha256": "03ad6931bc47d5736d4037110a7348491c25a3396628dea34c22b3df939564d3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D2_Chart/D2-08_Others.md": {
+      "sha256": "f4456ccf7c51fc8af56639a5387f23d4203a7be28b9ac93f957f82d5b0cb8d0d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D3_Graph/D3-01_Curve.md": {
+      "sha256": "3147eb06a6be93df1ea5666fdd71cf13e885e874beda5c79f2e9ce66f195bf4f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D3_Graph/D3-02_Frontier.md": {
+      "sha256": "eac73edc2af8aee69ff30390c25ad4520a1bdb236191ad5450bc80b7c35eaeca"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D3_Graph/D3-03_Distribution.md": {
+      "sha256": "8f95cd3a441bcd1ec85be9f44726ab575a64bfc97258714cd13f79e5353501d7"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D3_Graph/D3-04_Others.md": {
+      "sha256": "ee02e30375bd5b999907244860f81622dfd4284cb77b689615e21b83e8fe97e3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-01_Tree.md": {
+      "sha256": "9cea6a70f788d85e8798a88c54ad652e669f117bcacc2a4e8c0882d4346612f0"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-02_Network.md": {
+      "sha256": "c6cd3adb0246a7bbc9b52fb1a521ec947394c7eb6ea750825875cde2a831bf2e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-03_Flowchart.md": {
+      "sha256": "546fcc0ac66617866e637b9a6d7543191d633826880e3a194ddf1ad37cffcf83"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-04_Venn.md": {
+      "sha256": "74e5afefef8ecdd3e724b27b2913b051991a186cbfad146e89dd716216d3488b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-05_Timeline.md": {
+      "sha256": "5e68490d07c9c479b430d1373aaebe919010deb3688bdff23783f69409fa6388"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-06_Schematic.md": {
+      "sha256": "e5fad3ade5dd88c2ad2d47efc62ec17c5e741b7d3b880cb1aa3c616bb32ee516"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/D4_Diagram/D4-07_Others.md": {
+      "sha256": "5458d540fda8f39bf7de992476b3eef971079f6ec8b4bdd2ad83dc2a8a84a74d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I1_Photo/photo-original.md": {
+      "sha256": "0ccdf58279accd9a1cbff503b93312cbdcc32265109adc9f5f5e720e9c45dd40"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I2_Illustration/illustration-object.md": {
+      "sha256": "d30b1e341aba776a98766ff54600ee64a7356171268b0996603264ded9001aea"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I2_Illustration/illustration-portrait.md": {
+      "sha256": "b22794b39d6ce83a044ada4129fc2f7e2a145f934e2fe29c068dbb94b2633b2a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I2_Illustration/illustration-scene.md": {
+      "sha256": "a4ee4d1925b2bf5c40659ee765a8e3687e78c6bb1826044de1395d0d13ba4a1e"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-11_Locator.md": {
+      "sha256": "c234f60b3a9d4aedd6e21d25fb7e4906d1c7a5afba90e7e8f31fe5bf7afa0c69"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-12_Topographic.md": {
+      "sha256": "0f005d68ee2df35fecaec5cda7c288f2c3f1249e5eccb0ef060a7c031620b721"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-13_OldMap.md": {
+      "sha256": "6921bdc8e68aab3c444e3ce2322c0602718a937dcdf5456b70bd72292ea5ed9c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-14_Others.md": {
+      "sha256": "598e7725a8acc542142041d00b78915764f2794841f240fdfe92e1a8041971df"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-21_Area.md": {
+      "sha256": "5b02e48a62be42d7d4827de065904262bb7e313274416bc70d36702b1790a2f2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-22_Route.md": {
+      "sha256": "f74affc39b8d5f97014117ba502c465e0dbfa40335ebf02eb274abfe5ea7f7bc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-23_Symbol.md": {
+      "sha256": "93644aecbd25d59a0d297ea8ef697cb63544ff04c7be9d3e7ae3f0e73ba6c80b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-31_Choropleth.md": {
+      "sha256": "ca94596366c0474e47c134a8740b54ca0ed1ae590fb6611e61425d00f3865da5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-32_Dot.md": {
+      "sha256": "57a2f5139701222c369c252e02417e6ba42b9ab37f9518201e6e386503ee35d1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-33_Proportional.md": {
+      "sha256": "fe01ca5fb746887a28c870488859d0b10e07c69fce6a315ccf33435631dcbd03"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-34_Isoline.md": {
+      "sha256": "2b5b8f2f9f30f0d6a6c4d787ef65c1a99d90e5020c778caff1a56d40ea3eca60"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/I3_Map/I3-35_Flow.md": {
+      "sha256": "c809be2e36337ade55e09a0758655b1dd2489f14c478e307f5e750b111888ac4"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-1_TypeBoard.md": {
+      "sha256": "476c908790d3a3810f2191dbc0b34f58730562418736230ea5e6ba87c321f05c"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-2_Solo.md": {
+      "sha256": "141f291651b4f200632c95569ebf76d6d89ff7c12085d934dd90924156e2e544"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-3_DialogueH.md": {
+      "sha256": "29d3e23e196a87374390f9af81fa9f45fcbda12659eac255d44aeb42980f99a8"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-4_DialogueV.md": {
+      "sha256": "c9568c3b1a606f598d7250f465b6775ba8796de148469cbdf3c46e460e00cde9"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-5_SoloBoard.md": {
+      "sha256": "ec2a36e9191fa3fd816e71296029884feb51ebc7776687b4f6df807f2233efdf"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-6_GroupBoard.md": {
+      "sha256": "dcd8475359bfc25c4922b9044160d04157e3dc406be854505575fea5c15f1e30"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-1_ImageBoard.md": {
+      "sha256": "8fa4197f5d8ace6790318738299dcb0a2d18473e360eb21bdfdcb26685d14968"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-2_SoloImageBoard.md": {
+      "sha256": "0cae9cbc648e759c12f0b02a83f994db66dfbb5b45509e76600cd1912f605d15"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-3_GroupImageBoard.md": {
+      "sha256": "383bc2679e735be44f3a993d74ac7f0e9103d758ab8aaf8caf1f82c1b8286bc3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-1_Figure.md": {
+      "sha256": "a695add19b24656e72ebe8a714c16d9bfe3c0189e3c35e231ad59744e1bb3184"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-2_RealPhoto.md": {
+      "sha256": "855c1d721e74a210379b8becf2356edc8c7c9c458d6b4c83dba7236d0d175f99"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-3_Place.md": {
+      "sha256": "db75a3553055cbd375135b8d446740770ae06aaea3eab54de5704c763901dc59"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/ITC_Fixed/ITC-4_Costume.md": {
+      "sha256": "098ba44a7e812b3f0b71dce79ae2253fd952b8ab89b09dd668fbeaaee5214f68"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/activity.md": {
+      "sha256": "1af8930fb1fe02420858e57b40656827e7cd05fce07820119fab81b6a964b6d1"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/board.md": {
+      "sha256": "80cc06e4da618bacb4f986d7909f2a9f306c80716c6577a8351e111f41b28fc5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/bound-paper.md": {
+      "sha256": "ae6fc040898832f21ea7d350ae5508f4b5bfe5cdeb68d874e2fb29ff0130772f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/correspondence.md": {
+      "sha256": "43358e37f2303aa29cc46c2851c92493963eff14d3fa7cfafbc285ca821cfe53"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/device-medium.md": {
+      "sha256": "37add589d30731e8e2cbfc3a2d66e86468d3af154f057331e52c55638837e2ab"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/display-medium.md": {
+      "sha256": "155fb0d9b66dc15cac8729835543b3ae124575c428ec75f5fdb93311c6f91f4a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/document.md": {
+      "sha256": "e56ba737f188194e4a9cc5d00f89a63edd97dd54d71aa03401fe6763b6621ee8"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/horizontal.md": {
+      "sha256": "fddaa6dec3e4225407689cd18eebf32fad669a34bfe2d3e4a8cab25dfce6b438"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/map-composition.md": {
+      "sha256": "d04ffc583dd7cbfb0ec0b6cdca3b6b32a69e59796d3a413908971f8185498605"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/newspaper.md": {
+      "sha256": "c9a9d444a922e4356ddfaca6fcf3df113a33a72106fa583892b8da0aac312937"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/paper.md": {
+      "sha256": "b5599fcc4e60dfea01fdf1617877f57048832d6bae71926c250f0e87f7221d1d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/presentation-artwork.md": {
+      "sha256": "fce8ea229a7061375a4cdbbf3b34f5d8416f88f85c748bdfb0a0193ba2423fa4"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/presentation.md": {
+      "sha256": "fcf3922780c3c2115bf75dea689032045f3ab2e029856d0b765bd2f2ab2c4818"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/screen.md": {
+      "sha256": "0b7968eac70e58ffd602e1cb082bade37b1246a3c4f2339c726b764dfa2cd719"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/scroll.md": {
+      "sha256": "07b460675d591694e1d5511fb2e598e09f3e05d847c810c49f79f8630bc7d739"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/vertical-gap.md": {
+      "sha256": "735e5821060749ebe9de7cdc8f53a6eb30a64cf506bcfbb515cbbf23e8df38f3"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/vertical-messenger.md": {
+      "sha256": "1ae9af657424f3bcc92bb511555ce72f35e82fd4f74ade5e5241239f2eb6913d"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/vertical.md": {
+      "sha256": "8357ad37b5531911ba578f80636536da77f736ab26318c8f979a2e9b49e40c63"
+    },
+    "plugins/vectora/skills/create-kice-illustration/recipes/layouts/worksheet.md": {
+      "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
+      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
+      "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/D1_Table.md": {
+      "sha256": "5d6f3d46b5aabd8e39a73c39a17be75662c8e9923f6aa42e27738787df618ddf"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/D2_Chart.md": {
+      "sha256": "a24bd70eafd4f0b2d43f4ca677cbc53d1d5cd629e51c1e06b22d5615045d9889"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/D3_Graph.md": {
+      "sha256": "6dd9e23eb5ff7b47d7caee41a2c3ebc8eedee8bf2d947ef293c78bcd293350ae"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/D4_Diagram.md": {
+      "sha256": "72a398390a60522b9da80975a0b02d6e22b8fd141348f461449cb7e3917cde85"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/I1_Photo.md": {
+      "sha256": "799bdbbc5460c6088f145ff60ec4df65aa2cbc39f4740e82881c075f6e4a50ba"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/I2_Illustration.md": {
+      "sha256": "c0535ca26b5c54c90c2318c7cf26e922d60b22e28bccdabfffb8d696eeafbce2"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/I3_Map.md": {
+      "sha256": "66d71c392947322a83f7e4bd4337e923b9c343e92cddf7a74f85a0834cd61318"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/ITA_TypeSwap.md": {
+      "sha256": "aeed1d4bcfd7ce6a3814cef7fcff49bf3dd6b07191ab0c1d7f2d1bc9a55962f5"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/ITB_ImageSwap.md": {
+      "sha256": "512693551f9d7c1ea3846f0719aca1fd586ea1b68d3460b15ccda338fadd788a"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/families/ITC_Fixed.md": {
+      "sha256": "7c1e122e4e320c805b36d8303fedd7a183a31cddb1e730f9a62d96a63dd5911f"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/fixed-styles.md": {
+      "sha256": "bc4880a491ba231f5993cf96ac985d8342ccc0a450fe246b83bb4b5ae233005b"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/routing.md": {
+      "sha256": "6749fa1a88af491183e83a0df1899390fa9b8a139308ad6c6c162ce401928227"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/rule-index.json": {
+      "sha256": "8c6ca2c8ab922f0eca3816e7efa3737338e36e9ed76286c0b5fc368a9937f509"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/task-input.md": {
+      "sha256": "1844addc443a37dbaac7e73ca0af90cf7870d2664da4f558485dede9868351eb"
+    },
+    "plugins/vectora/skills/create-kice-illustration/references/taxonomy.md": {
+      "sha256": "8786ae6cdde4a982571150869bbf3173602bba7eefe1eb8f508e5fd8218db722"
+    },
+    "plugins/vectora/skills/create-kice-illustration/SKILL.md": {
+      "sha256": "188d489076c6629f8cdd8f94904cc8f9c9e98f8b3dc14a793bbe0d76847131b8"
+    },
+    "plugins/vectora/skills/create-kice-science-illustration/agents/openai.yaml": {
+      "sha256": "7e3edd0c96e0ba5665da8db8af5fa6807cad7c86dc719683f46862b17c00510b"
+    },
+    "plugins/vectora/skills/create-kice-science-illustration/SKILL.md": {
+      "sha256": "b1d38eb5d2d9fde87c7fb5a0bf8fe40656a547bb9028f0be29477112153f47d5"
+    },
+    "plugins/vectora/skills/use-vectora/agents/openai.yaml": {
+      "sha256": "674f5137a8cf5118927f7b661d9ef43c672d9302e39c84fb9ce73f2454e0a2ae"
+    },
+    "plugins/vectora/skills/use-vectora/references/examples.md": {
+      "sha256": "0fc18429ffb419eefdd159de69db0b27f9c30fe644c42479787f6b558b16fb67"
+    },
+    "plugins/vectora/skills/use-vectora/references/production.md": {
+      "sha256": "c6ee068a5a39a09ff88bbd9604e4f963328ba463b2e2dbb17dd9273bc6625178"
+    },
+    "plugins/vectora/skills/use-vectora/SKILL.md": {
+      "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
+    },
+    "README.md": {
+      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+    },
+    "RELEASE_NOTES.md": {
+      "sha256": "c7c2739cb9c55a942dec77031f2415653e64c15cb2f89e552fff054d6d6c8c75"
+    },
+    "skills/create-kice-illustration/agents/openai.yaml": {
+      "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/chart-age-population-sexratio.v1.json": {
+      "sha256": "738512b2bf1ad93f0c085c6c02abe2fdb0ba9611fd5f209ce7ccf8544e5c6522"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/chart-city-rank.v1.json": {
+      "sha256": "9237907c97f7c69a5dc7828e112b585e5eb14b13e6b38c4d825aeb8ba2b9c18a"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/chart-population-pyramid.v1.json": {
+      "sha256": "f4a666fff77edf0fa229b64a1658c29a6c600c407fd1bc270d4d890ad45fbfa6"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/chart-season-temperature.v1.json": {
+      "sha256": "dfae72a2def09af30a5cc50e7d7aada49fb921c32cfaa99174bea93f412a73d2"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/chart-supply-demand-grid.v1.json": {
+      "sha256": "83b9734f509bcbccb6293fcb157a05ba88ceb81cfc38e5ec17daadadab7b6b5c"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/component-caption.v1.json": {
+      "sha256": "44a0484352a94b65d83ba0a20b0f20ea72aff3106fb879330d1f5b2c267171d3"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/component-example.v1.json": {
+      "sha256": "ab2f1812d2587cc92494545d7de43257e451e874e4154988c35195395f4cff50"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/component-legend.v1.json": {
+      "sha256": "f0bc973bf1cb07cdf52f32d50a9ed550533d7ee689371926ea139003248a51f8"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/criticism-2.v1.json": {
+      "sha256": "04ef3892ed0b04a8e9269667e0861e3145de0a087f2e38441ce170a4910754c3"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/criticism-3.v1.json": {
+      "sha256": "0e39801202fb8432275fc9ed40fc3677e46967446589fa4d208a4e5fcbff0514"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-2.v1.json": {
+      "sha256": "ab673254b1ab7b2bbe547dc6ed1422ba4ead61f80ea006344858e6863dcf1183"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/dialogue-horizontal-3.v1.json": {
+      "sha256": "aaaaf146b1f89554df7725e6f80097a67d9bd94c283711d34fa8809aac57b471"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-2.v1.json": {
+      "sha256": "17ffed59355809f73e7ad775ae7d2cb2f5dbd7d4854e873f3370c24191ef4868"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/dialogue-vertical-3.v1.json": {
+      "sha256": "30ad212e0f6f36e29a06fe7ed2538889a1a189351fc7aaecf406735436beaf95"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-ab-links.v1.json": {
+      "sha256": "310b3a5d36b71f7f646337b72af2bd5bcd7ed2386a37b02a0582d52172311424"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-argument-1line.v1.json": {
+      "sha256": "4804028ac150d0ec569dd13685c0b5726df130a848eac310eb559dd1520de917"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-argument-2line.v1.json": {
+      "sha256": "81880be26dec844d41890dc3ed4fd32de17adbb5d967187cf9139e5db9e09849"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-nested-rect.v1.json": {
+      "sha256": "439da7c5a8b03f8f3848b3b6d8ddf2ebe24ab79b1e1b2b4505cab8c9bb61f4db"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-phone-6line.v1.json": {
+      "sha256": "9682324a23502634642e6ed92a6595c848a2497b0c5dce4c0d1f2f1d3fbc89f0"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-question-2circle.v1.json": {
+      "sha256": "7d4ba14e2e5738da399c5de7bf47907bdde0d1ccf3584828414fc748dbe8457b"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/form-timeline-5.v1.json": {
+      "sha256": "13baad2917b929246142220080d0490c6c04e66352e5e420028758bb545de583"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/judgment-2.v1.json": {
+      "sha256": "d29c7ca8f7a7b0b96986dca26f234ac7f69dbb209627df7e2b533b70ea4d0f35"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/judgment-3.v1.json": {
+      "sha256": "fa2484599c8d13e075aa2c565d88188bd843c8fa58cbeb6e52dcf2ef089b8339"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/theory-as-left-shift.v1.json": {
+      "sha256": "1d4b00319fe252f93ff4a9477441f5a8b3a2630a8bf26b90af7c81af3b12538b"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn-2-hatch.v1.json": {
+      "sha256": "425ca20ec8a4cb4c2f76d1b4966dfd0b805ef591363577e8bb17ac07e146c825"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density2.v1.json": {
+      "sha256": "9822bb4753bc712004d143dce0f8401abde6c59de4205dd590f813cf3dabb7db"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn2-hatch-density3.v1.json": {
+      "sha256": "07939baefb2a7ef6d6460a93dc134c36dd8404991ce8770eb82b993573c8ce36"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn3-chain-triple.v1.json": {
+      "sha256": "9389772439525de9ce6ade3ce5a2c24098088a85909f92b7cb811c6ca396b117"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-ac.v1.json": {
+      "sha256": "59b2bc95dde07351b8d4fa5f41154b62870edff41f5dd2004e16cdc376f6118e"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn3-only-three-bc.v1.json": {
+      "sha256": "3bdd649496855f5f3231af5e355c806dc0974141e944d004568137ecdc1cd893"
+    },
+    "skills/create-kice-illustration/assets/fixed-styles/venn3-only-two-ab-ac.v1.json": {
+      "sha256": "10e37d4664195431fda604b30e7e9a9f0d3f9ab993127187f527356b9c85307b"
+    },
+    "skills/create-kice-illustration/components/artwork-geometry.md": {
+      "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
+    },
+    "skills/create-kice-illustration/components/artwork.md": {
+      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+    },
+    "skills/create-kice-illustration/components/bar-sizing.md": {
+      "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
+    },
+    "skills/create-kice-illustration/components/bubble.md": {
+      "sha256": "a316d9e28e65b8d3955a98f770e245f6122aa9b59e743bd9881e6eddbc6f9c54"
+    },
+    "skills/create-kice-illustration/components/caption-frame.md": {
+      "sha256": "5f0eb45abeed854ae0064b8912c02b0d2892879fe89e9774ce0aa0852b9f1d42"
+    },
+    "skills/create-kice-illustration/components/chart-axes.md": {
+      "sha256": "005281cb18f8d7137b4b15e6ce0968b68668e50709021015de6aaba6e7c74db6"
+    },
+    "skills/create-kice-illustration/components/data-surface.md": {
+      "sha256": "673403d65c1104ea210e5b100fb5103dcee024cf6c731b9eb034671e22a8652c"
+    },
+    "skills/create-kice-illustration/components/flat-table-layout.md": {
+      "sha256": "c7a0c0803ded39b755d1ef9a2c06ac2fa57d5d7a32ea8a94259cad64696cd8cc"
+    },
+    "skills/create-kice-illustration/components/frame.md": {
+      "sha256": "622ef4193854b1f9f6ff5483a1a57559e09d01553a60f76a79cbd5ea129acc2b"
+    },
+    "skills/create-kice-illustration/components/free-art.md": {
+      "sha256": "829770be3aa633eae100151fe737dbfd8b3b443db522202d9dfbe78f505814bc"
+    },
+    "skills/create-kice-illustration/components/graph-style.md": {
+      "sha256": "689b701fd3dd35c638b33109d593f863b0f0a5b65405831aa1d8c0d23634ae8f"
+    },
+    "skills/create-kice-illustration/components/map-area.md": {
+      "sha256": "97b5a4050b3de6a213532e3f2608b57bc1339665f3d32dcf2edaf3bff35e5a96"
+    },
+    "skills/create-kice-illustration/components/map-feature.md": {
+      "sha256": "adc0eca60ca292efb613e5050da6a32d687a39119bcd09644bebf13ae4bbf3c3"
+    },
+    "skills/create-kice-illustration/components/map-historical.md": {
+      "sha256": "ac0925b44549c48cab504bc306361a0f3ce0077208e8ae889b35a75506812238"
+    },
+    "skills/create-kice-illustration/components/map-inset.md": {
+      "sha256": "d8459c5316e30f91d99ac223ee0fbf2c2f7ca2f7000f12e40887f1bbc10f3e4c"
+    },
+    "skills/create-kice-illustration/components/map-korea-area.md": {
+      "sha256": "e339f06d0882dc785a014518c49dd05b375d4758321771311893fbe45f28a0da"
+    },
+    "skills/create-kice-illustration/components/map-korea-historical.md": {
+      "sha256": "1f4ed607742ed612fc3545d56da6cab3475614bb335a20d6e13827b26d1f5c70"
+    },
+    "skills/create-kice-illustration/components/map-korea-natural.md": {
+      "sha256": "eee5d374b95d369825bcd63be31071c3304d67182e90f476254ac77d2c25c9a1"
+    },
+    "skills/create-kice-illustration/components/map-korea-points.md": {
+      "sha256": "7740d3c476a60935b14bc63515e469408b3843ead0b582b5ee1ef624c44775d2"
+    },
+    "skills/create-kice-illustration/components/map-korea-projection.md": {
+      "sha256": "ad4cb2d6dcfb1a7faae7de812c5ef3ce0895fc751fc2f3395b80f4f96cc191ea"
+    },
+    "skills/create-kice-illustration/components/map-korea-route.md": {
+      "sha256": "290a0d61d5754a31228a049858fd6cf35de97471e4a6f109da8107426f13f5e0"
+    },
+    "skills/create-kice-illustration/components/map-korea-statistics.md": {
+      "sha256": "896aafdf4d2d37e95306afa15bff47c8b6f3f4df51986d8e7e5afe9b90aa9eba"
+    },
+    "skills/create-kice-illustration/components/map-korea.md": {
+      "sha256": "a118fd54f6c80873237ef1d43dc6c520b8969354fa4629461da22252d8afcbf1"
+    },
+    "skills/create-kice-illustration/components/map-natural.md": {
+      "sha256": "a2ddcae87b9e42054ee87b37091657d5dc99c4d31903b1b927503bfa9f1d5a53"
+    },
+    "skills/create-kice-illustration/components/map-points.md": {
+      "sha256": "eab9c1332f89ff16287e9f84e47eb0d49df684451be4fb2b1f66204631787b55"
+    },
+    "skills/create-kice-illustration/components/map-projection.md": {
+      "sha256": "76e7feb5ab06812889e187e0a8747f4bee7a61109d23b5543792b6e754950f4d"
+    },
+    "skills/create-kice-illustration/components/map-review.md": {
+      "sha256": "855bc842a94e6e8b7d11364f6e82a2299e25ebabde2d6742193d3a575724d2c5"
+    },
+    "skills/create-kice-illustration/components/map-route.md": {
+      "sha256": "e826d4efe9fc70b78c9103eab09fe4d5d65c15a58af2028ff0e3a12bb4561404"
+    },
+    "skills/create-kice-illustration/components/map-statistics.md": {
+      "sha256": "7ce8a587489f4f6330f123de39ce743d3629dac141879a57465b6ae7bdd78e21"
+    },
+    "skills/create-kice-illustration/components/map-tectonic-ice.md": {
+      "sha256": "867aa170a5e816d10168158ded5f5af68e37c9707c8a1544830802f8b54c52da"
+    },
+    "skills/create-kice-illustration/components/node-diagram.md": {
+      "sha256": "47b9cf8f73570191b4a68e5e89e71540c481fcf87d70793505856053e66ecb7a"
+    },
+    "skills/create-kice-illustration/components/organic-detail.md": {
+      "sha256": "d34a563f5c7e2ef8c318eec0eb6125f3c8da814655b12b4268e960f1d54e4a09"
+    },
+    "skills/create-kice-illustration/components/pattern-library.md": {
+      "sha256": "515d4c10d35cd06f76e4ba06473415c184e976f4ad238c2457716ac519798ff2"
+    },
+    "skills/create-kice-illustration/components/people.md": {
+      "sha256": "c79923a6c9520b718f7a99e859a5b8ce766086effb41fd68d63b5df72de07f52"
+    },
+    "skills/create-kice-illustration/components/person-spacing.md": {
+      "sha256": "29ebbea9164fec102959fb975ed7b5a6265255e212ef03c32b7436117c265eb1"
+    },
+    "skills/create-kice-illustration/components/person-speech.md": {
+      "sha256": "497a0f2d202722717a4a25444c9378617acbb4bd2dc78a65a4b90215489b22d3"
+    },
+    "skills/create-kice-illustration/components/photo.md": {
+      "sha256": "9f988e4db32ec8ae03f3dfb1e38adec5675845f4a834076bbf333040d64cfe62"
+    },
+    "skills/create-kice-illustration/components/real-data-map.md": {
+      "sha256": "8997322a4dab6c07b7d87ddae7ee1a69a43e9e6d31ecde02842264100695bf83"
+    },
+    "skills/create-kice-illustration/components/real-data.md": {
+      "sha256": "f2a9a432593cc7ae71d2a5431c270314c7a81e3ccf91812770e26fb502fbb92f"
+    },
+    "skills/create-kice-illustration/components/schematic-layout.md": {
+      "sha256": "5671bc5e8d4407c9588571e8948cfc425e1e86037c461701a1669c838b6d1cd1"
+    },
+    "skills/create-kice-illustration/components/speech.md": {
+      "sha256": "874c7ab623d8fbf4f678023c8705a6c51a6537ebc5fb0aabd15d3469e02cd67f"
+    },
+    "skills/create-kice-illustration/components/vectorization.md": {
+      "sha256": "ea26fb79fb5628b22127b1d9e765d44ac6de4cb277380cfb6c15f3658293e657"
+    },
+    "skills/create-kice-illustration/core/composition.md": {
+      "sha256": "8dfc0563ccad53ff563f590e0e9f58013306c99d3ead0d4c77f6f31103723dfa"
+    },
+    "skills/create-kice-illustration/core/content-layout.md": {
+      "sha256": "e3f78b942790e50e22e418373668272f2e5995de4728fa3a098c57e67a743c90"
+    },
+    "skills/create-kice-illustration/core/display-text.md": {
+      "sha256": "87281d2743555874631164d3795652973f26c08314c8d4f3696fb5fdd10b81be"
+    },
+    "skills/create-kice-illustration/core/footnotes.md": {
+      "sha256": "53d9a5cc5d960b499edf335602fd815eb8ca47101696deb3879b99fde8ff362a"
+    },
+    "skills/create-kice-illustration/core/inline-box.md": {
+      "sha256": "f6b08e0ac7623f14b04fb5f4d24c5f55941ef516f661b9bf00ce7aba7e856a6e"
+    },
+    "skills/create-kice-illustration/core/production-plan.md": {
+      "sha256": "1f0b4627f1932c32422bcf6d0ab4768deee04c222bfddab4747168e24199291e"
+    },
+    "skills/create-kice-illustration/core/prose.md": {
+      "sha256": "fda9d57220f9241b005d3c98c995a6a5495ebe4ed57d684147cb0aa02edfcd70"
+    },
+    "skills/create-kice-illustration/core/readability.md": {
+      "sha256": "08eb61f949b4abd38d20c09aeda2f06721907456e9d267e1949dca4868db23a4"
+    },
+    "skills/create-kice-illustration/core/reference-review.md": {
+      "sha256": "d37fb5f5e90ad8d9d234b290c0df0e08eedd8bf0b73e4241d348649cdf318d9d"
+    },
+    "skills/create-kice-illustration/core/reserve.md": {
+      "sha256": "45544f868e627ae421089f4d0c81694ce6cf60d103184bbe82f4dcbbc1734c11"
+    },
+    "skills/create-kice-illustration/core/review.md": {
+      "sha256": "7a9f3cc454751d6badbfb141620f4982a4de772182e5395c2748870b54cc3158"
+    },
+    "skills/create-kice-illustration/core/style.md": {
+      "sha256": "66baafcffcabf087643f0f6b92df5b2334b28afb3ef2592c16ba0a448c032489"
+    },
+    "skills/create-kice-illustration/core/symbols.md": {
+      "sha256": "9c9a12177a0c9a2ec59058c10bae2f338ba369004d315c0ff4e0eabdf80fa3a2"
+    },
+    "skills/create-kice-illustration/core/typography.md": {
+      "sha256": "9dfcb5b0f839b75361098b56367c9abf0e8cf5072e97dae795404009099f4b6a"
+    },
+    "skills/create-kice-illustration/core/underline.md": {
+      "sha256": "13f5467cfa2f84bca70664593617b01531b787884753f0aee69755d2ca7d5d06"
+    },
+    "skills/create-kice-illustration/execution/assets.md": {
+      "sha256": "53856159ae70d24c1e04da65e56298ee355c7546d1e3893ec34545920d6d0911"
+    },
+    "skills/create-kice-illustration/execution/base.md": {
+      "sha256": "bc0d8ce64e10e7980c478da9f0a69810d00c19ea9e6dd7a505698cdd4e41943f"
+    },
+    "skills/create-kice-illustration/execution/caller.md": {
+      "sha256": "20b8edd7d113da3fe35b40ea3246891bebdaeaba38c6d6a07bd2b79b86f6d673"
+    },
+    "skills/create-kice-illustration/execution/delivery-manual.md": {
+      "sha256": "b85fecd325f46b6c63c1daf7a49d4bfdcd196054122a78a92a01c3e548594304"
+    },
+    "skills/create-kice-illustration/execution/delivery.md": {
+      "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
+    },
+    "skills/create-kice-illustration/execution/gemini.md": {
+      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+    },
+    "skills/create-kice-illustration/execution/inspection.md": {
+      "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
+    },
+    "skills/create-kice-illustration/execution/modules/artwork-asset.md": {
+      "sha256": "acc33fcff403db76fbd9c6042e5d088a56c41b0c759a58c79aeadb7515aa70eb"
+    },
+    "skills/create-kice-illustration/execution/modules/asset-runtime.md": {
+      "sha256": "d8d5c825fa5f3b6ffa178f6e7fcdf1211f45aa5c71484fe1c2eba8ad5954d003"
+    },
+    "skills/create-kice-illustration/execution/modules/axis-options.md": {
+      "sha256": "8d3c51efdbd980b698ecf40d4d5b73f27cd46588786e4e6aab250b80d9b09350"
+    },
+    "skills/create-kice-illustration/execution/modules/bar-legacy.md": {
+      "sha256": "2c3f5804477fd3634f75a4a20a0ffea922273f6b57ac4dc3af4c4df4d0f67388"
+    },
+    "skills/create-kice-illustration/execution/modules/bar-mirror.md": {
+      "sha256": "1df1ec2bab1f8e7f0b49e48c1ce1df2e0620f30008008b3effb9a473c06ad7ac"
+    },
+    "skills/create-kice-illustration/execution/modules/browser-chrome-micro-ui.md": {
+      "sha256": "04a03a38b591ed379f2ff04175648f7029cc2cfb2f50a1614d6c8d10345d836e"
+    },
+    "skills/create-kice-illustration/execution/modules/composition.md": {
+      "sha256": "039d0fbeada3429599e847a7b5444a4b7d6c336bba2e46c5346bede8bb2d55dd"
+    },
+    "skills/create-kice-illustration/execution/modules/continuous-graph-api.md": {
+      "sha256": "ed26bcff7d7dbeb2a3917faf13c2c8ef74c01a637f571db906fbf22a2a20d809"
+    },
+    "skills/create-kice-illustration/execution/modules/dialogue-native.md": {
+      "sha256": "f9f351784004a7ff6cc4d66f9b1c9ba3bac4341fc27a12969d5ad93d045bf37f"
+    },
+    "skills/create-kice-illustration/execution/modules/formula-native.md": {
+      "sha256": "82cc084844c81dde45f426a8a8dd3f1443a7d258966f902d7a0aafafffeef13c"
+    },
+    "skills/create-kice-illustration/execution/modules/frame-decoration-native.md": {
+      "sha256": "be70c55c415d00da4347911d43059763b122f3b76c2cd2a935fa24625e0f087e"
+    },
+    "skills/create-kice-illustration/execution/modules/graph-api.md": {
+      "sha256": "b6fb2e8a9b7ad34f8296ad5629ec04cd8d662570d2692c1c1dc311f3ce23307b"
+    },
+    "skills/create-kice-illustration/execution/modules/graph-helper.md": {
+      "sha256": "da4e3302246068ce70686b3e2a1d8535d7aa0aa9ea52f1334fbd76cdeb2ee4d5"
+    },
+    "skills/create-kice-illustration/execution/modules/graph-schema.md": {
+      "sha256": "808c6116f9e486b3378439e83696fe6a34a26e47808600d0877c2199eb839980"
+    },
+    "skills/create-kice-illustration/execution/modules/long-operation.md": {
+      "sha256": "bce5b221ec72b8471bdb9182a3efac4d1b327dca71451c2b148286b8cc3dffed"
+    },
+    "skills/create-kice-illustration/execution/modules/map-dem.md": {
+      "sha256": "e3e2377fdb3d1a3be63a0e9ca9ef89c108c6951ea245730c4f26fb0ed2480b1c"
+    },
+    "skills/create-kice-illustration/execution/modules/map-edit.md": {
+      "sha256": "0f3a07d7202b767b85ed5a493ab4574dcd731edb6970f5c59315b43452ed10fc"
+    },
+    "skills/create-kice-illustration/execution/modules/map-feature-native.md": {
+      "sha256": "622a46dc297785056c00c5b1f1172ea0ce5b57295449fd9c1c485219f22b7ddc"
+    },
+    "skills/create-kice-illustration/execution/modules/map-inset-native.md": {
+      "sha256": "01459aa6634695f831acf2f1d7a54407629957084f908bead227062134230e4c"
+    },
+    "skills/create-kice-illustration/execution/modules/map-native.md": {
+      "sha256": "2c1b33c93b8dccb58375d7be86fc740312da1f543ccdabe86375ca113ead5b95"
+    },
+    "skills/create-kice-illustration/execution/modules/map-preset.md": {
+      "sha256": "195d8ba59fa129f6aba73399ff9d02ae13c9ed54ca6b155758985a823d83411e"
+    },
+    "skills/create-kice-illustration/execution/modules/map-proportional-native.md": {
+      "sha256": "b0ef0a1f1b48027cfaf096b843b1cd2fc975f8e9a9b58a022b213f6b8200329b"
+    },
+    "skills/create-kice-illustration/execution/modules/map-routes-native.md": {
+      "sha256": "fd04e23783ebc92283bf7e436475d8cc38c2d0e0202b2347fcc6e8cd162ae62c"
+    },
+    "skills/create-kice-illustration/execution/modules/map-runtime.md": {
+      "sha256": "51faed80895a6c6ff4303473f499b6a8f564a163980180fe0b5b3f067f22872b"
+    },
+    "skills/create-kice-illustration/execution/modules/map-scalar-native.md": {
+      "sha256": "13ef7bc1fc51b993b5648681079b9c9f2096fae4717ec47afdc3a8b41a4c2b81"
+    },
+    "skills/create-kice-illustration/execution/modules/map-thematic-native.md": {
+      "sha256": "c91c2eb40f744a54e95b0656f812b23807753b84de61cc57e1cf9f620c1c1814"
+    },
+    "skills/create-kice-illustration/execution/modules/mixed-options.md": {
+      "sha256": "e3baf86589b8d18ab54c0a24a8a9ec0b525face25bc0a1a874692334360214e3"
+    },
+    "skills/create-kice-illustration/execution/modules/newspaper-frame-native.md": {
+      "sha256": "5b769e0e7abdf106bbe5ec71c4dba7e718cfe612bc462187c1662d3cf627f27b"
+    },
+    "skills/create-kice-illustration/execution/modules/node-diagram-native.md": {
+      "sha256": "7a111c2d1f3d1b01b68da8828b6a4953781714b74f2cb53233eaed4cb017cf38"
+    },
+    "skills/create-kice-illustration/execution/modules/point-options.md": {
+      "sha256": "7d14d61e480e0ce70bae7cc678370b8a6969b62ce9cc8e31f323092847387f78"
+    },
+    "skills/create-kice-illustration/execution/modules/presentation-screen-native.md": {
+      "sha256": "995df0e2b691662cf5020488ecff7e8492231256a19fa23a2a561004f0f69cf7"
+    },
+    "skills/create-kice-illustration/execution/modules/reservation.md": {
+      "sha256": "a436fe8fbc7369ade7e0d324df0f01502e8a7626d14dc86b168c139a6a834a6a"
+    },
+    "skills/create-kice-illustration/execution/modules/screen-frame-native.md": {
+      "sha256": "352d8b0cd5a03685acddc489bf785e977325e4217a92b3e728e6e8ace607569d"
+    },
+    "skills/create-kice-illustration/execution/modules/surface-graph-api.md": {
+      "sha256": "bafbebc2a6a81e1e6af31dbc3398beeaa7c4e64a0db9a50f7c45b3cba94d81be"
+    },
+    "skills/create-kice-illustration/execution/modules/table-api.md": {
+      "sha256": "aaf6a0ff5b1f34eefccd6381a717db9d08228c837a6f0517df8e00332698b88e"
+    },
+    "skills/create-kice-illustration/execution/modules/text-flow.md": {
+      "sha256": "a4997493f3f22a1aadba25363b10a37251463caaf796f1998600711a04558cf6"
+    },
+    "skills/create-kice-illustration/execution/modules/text-lines.md": {
+      "sha256": "ca83be89cfb096f6e909cd7b84affb0dbf90acd2b7c4451892682cd9c1900b74"
+    },
+    "skills/create-kice-illustration/execution/modules/trace-helper.md": {
+      "sha256": "a02b7218181bb9ba99f0b1ef2374fd72fccdd6758256c84ef8157f6900a128aa"
+    },
+    "skills/create-kice-illustration/execution/paragraphs.md": {
+      "sha256": "49a3bcdf53e55b0af317f8265cbbf08164c29aba9cc2681dffb47ba6d3549dc5"
+    },
+    "skills/create-kice-illustration/execution/recovery.md": {
+      "sha256": "75ad0580504b2afb8140a442959b2843a3ce202ab146579f55a425a9f1c7c56b"
+    },
+    "skills/create-kice-illustration/execution/text-effects.md": {
+      "sha256": "851c1ff8e9c37dfaa675126546a788b18664827753c5e6a1de19ac16a74d8355"
+    },
+    "skills/create-kice-illustration/execution/text-ranges.md": {
+      "sha256": "aeb5ee78bd9dc3ecdfa0acae97c9dd5f0befc14272105ac3acb48bd84d7c97c7"
+    },
+    "skills/create-kice-illustration/execution/text.md": {
+      "sha256": "0b5a005ef052a35773b5231a2c8ec18c4584cbd1531f6edc0185b8f6389b80bf"
+    },
+    "skills/create-kice-illustration/execution/usage-recording.md": {
+      "sha256": "297f9d6824c235f642d81a7250d7bd621bc5e9cc727e6287d61227d0e40d6b2f"
+    },
+    "skills/create-kice-illustration/execution/workarounds/underline-wrap.md": {
+      "sha256": "6d5bcc1d557150cb29661b2fb7e644979c3b91ac0aed485bc2718bcd78747feb"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-01_Flat.md": {
+      "sha256": "84338ca12623bb55d1cb96fc814cf85c0b3038fe5684254d4b306db3af4e0001"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-02_MultiFlat.md": {
+      "sha256": "e0238faccd200468b0a372d10c920ca6893a0408c62fa22776269ece10073ef7"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-03_Cross.md": {
+      "sha256": "0f41f743018cd10cfe456ea1706b2a0a7a53f07f749c25372d7d8430209fa9d1"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-04_Nested.md": {
+      "sha256": "ecb18ad18392875543549379d5b255b6bcc513177fc972a7d41c267de1b6a803"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-05_Checklist.md": {
+      "sha256": "b1e330984635a564f47446999056e0c074dd583fb68c2fc18583e17893a7d074"
+    },
+    "skills/create-kice-illustration/recipes/D1_Table/D1-06_Others.md": {
+      "sha256": "712bb33d346257b2f9f411b0840251f39fa6deca7dad13136ef7abc222aafdd2"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-01_Bar.md": {
+      "sha256": "1fb3ce336ad3589452c687c1b8b96fc653ca7cfe8ddf582326c2521f6d16478e"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-02_StackedBar.md": {
+      "sha256": "a8ce3ca0fd81ff4176c4054ec86646dbb3f5d641786dd8ffcdf74716f2c06418"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-03_Pie.md": {
+      "sha256": "1d27afffa7d4f43f7763d0da86de1835ef036caae10a1b248da584e5b48ac93b"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-04_Line.md": {
+      "sha256": "37c5f55b76a0a54e75766eec519a9b45a8c2ee5611fa9ae230cc4186ed03a4b5"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-05_Scatter.md": {
+      "sha256": "a5b3be06ccc937c263e428422620386f400b16382aaaa3785a06fe9ac0cc8ac0"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-06_Dot.md": {
+      "sha256": "0c0d894ff46f17f09eb2c4621ec33b868a51ad7265bf7b602f98d7bbec793e2d"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-07_Radar.md": {
+      "sha256": "03ad6931bc47d5736d4037110a7348491c25a3396628dea34c22b3df939564d3"
+    },
+    "skills/create-kice-illustration/recipes/D2_Chart/D2-08_Others.md": {
+      "sha256": "f4456ccf7c51fc8af56639a5387f23d4203a7be28b9ac93f957f82d5b0cb8d0d"
+    },
+    "skills/create-kice-illustration/recipes/D3_Graph/D3-01_Curve.md": {
+      "sha256": "3147eb06a6be93df1ea5666fdd71cf13e885e874beda5c79f2e9ce66f195bf4f"
+    },
+    "skills/create-kice-illustration/recipes/D3_Graph/D3-02_Frontier.md": {
+      "sha256": "eac73edc2af8aee69ff30390c25ad4520a1bdb236191ad5450bc80b7c35eaeca"
+    },
+    "skills/create-kice-illustration/recipes/D3_Graph/D3-03_Distribution.md": {
+      "sha256": "8f95cd3a441bcd1ec85be9f44726ab575a64bfc97258714cd13f79e5353501d7"
+    },
+    "skills/create-kice-illustration/recipes/D3_Graph/D3-04_Others.md": {
+      "sha256": "ee02e30375bd5b999907244860f81622dfd4284cb77b689615e21b83e8fe97e3"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-01_Tree.md": {
+      "sha256": "9cea6a70f788d85e8798a88c54ad652e669f117bcacc2a4e8c0882d4346612f0"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-02_Network.md": {
+      "sha256": "c6cd3adb0246a7bbc9b52fb1a521ec947394c7eb6ea750825875cde2a831bf2e"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-03_Flowchart.md": {
+      "sha256": "546fcc0ac66617866e637b9a6d7543191d633826880e3a194ddf1ad37cffcf83"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-04_Venn.md": {
+      "sha256": "74e5afefef8ecdd3e724b27b2913b051991a186cbfad146e89dd716216d3488b"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-05_Timeline.md": {
+      "sha256": "5e68490d07c9c479b430d1373aaebe919010deb3688bdff23783f69409fa6388"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-06_Schematic.md": {
+      "sha256": "e5fad3ade5dd88c2ad2d47efc62ec17c5e741b7d3b880cb1aa3c616bb32ee516"
+    },
+    "skills/create-kice-illustration/recipes/D4_Diagram/D4-07_Others.md": {
+      "sha256": "5458d540fda8f39bf7de992476b3eef971079f6ec8b4bdd2ad83dc2a8a84a74d"
+    },
+    "skills/create-kice-illustration/recipes/I1_Photo/photo-original.md": {
+      "sha256": "0ccdf58279accd9a1cbff503b93312cbdcc32265109adc9f5f5e720e9c45dd40"
+    },
+    "skills/create-kice-illustration/recipes/I2_Illustration/illustration-object.md": {
+      "sha256": "d30b1e341aba776a98766ff54600ee64a7356171268b0996603264ded9001aea"
+    },
+    "skills/create-kice-illustration/recipes/I2_Illustration/illustration-portrait.md": {
+      "sha256": "b22794b39d6ce83a044ada4129fc2f7e2a145f934e2fe29c068dbb94b2633b2a"
+    },
+    "skills/create-kice-illustration/recipes/I2_Illustration/illustration-scene.md": {
+      "sha256": "a4ee4d1925b2bf5c40659ee765a8e3687e78c6bb1826044de1395d0d13ba4a1e"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-11_Locator.md": {
+      "sha256": "c234f60b3a9d4aedd6e21d25fb7e4906d1c7a5afba90e7e8f31fe5bf7afa0c69"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-12_Topographic.md": {
+      "sha256": "0f005d68ee2df35fecaec5cda7c288f2c3f1249e5eccb0ef060a7c031620b721"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-13_OldMap.md": {
+      "sha256": "6921bdc8e68aab3c444e3ce2322c0602718a937dcdf5456b70bd72292ea5ed9c"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-14_Others.md": {
+      "sha256": "598e7725a8acc542142041d00b78915764f2794841f240fdfe92e1a8041971df"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-21_Area.md": {
+      "sha256": "5b02e48a62be42d7d4827de065904262bb7e313274416bc70d36702b1790a2f2"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-22_Route.md": {
+      "sha256": "f74affc39b8d5f97014117ba502c465e0dbfa40335ebf02eb274abfe5ea7f7bc"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-23_Symbol.md": {
+      "sha256": "93644aecbd25d59a0d297ea8ef697cb63544ff04c7be9d3e7ae3f0e73ba6c80b"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-31_Choropleth.md": {
+      "sha256": "ca94596366c0474e47c134a8740b54ca0ed1ae590fb6611e61425d00f3865da5"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-32_Dot.md": {
+      "sha256": "57a2f5139701222c369c252e02417e6ba42b9ab37f9518201e6e386503ee35d1"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-33_Proportional.md": {
+      "sha256": "fe01ca5fb746887a28c870488859d0b10e07c69fce6a315ccf33435631dcbd03"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-34_Isoline.md": {
+      "sha256": "2b5b8f2f9f30f0d6a6c4d787ef65c1a99d90e5020c778caff1a56d40ea3eca60"
+    },
+    "skills/create-kice-illustration/recipes/I3_Map/I3-35_Flow.md": {
+      "sha256": "c809be2e36337ade55e09a0758655b1dd2489f14c478e307f5e750b111888ac4"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-1_TypeBoard.md": {
+      "sha256": "476c908790d3a3810f2191dbc0b34f58730562418736230ea5e6ba87c321f05c"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-2_Solo.md": {
+      "sha256": "141f291651b4f200632c95569ebf76d6d89ff7c12085d934dd90924156e2e544"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-3_DialogueH.md": {
+      "sha256": "29d3e23e196a87374390f9af81fa9f45fcbda12659eac255d44aeb42980f99a8"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-4_DialogueV.md": {
+      "sha256": "c9568c3b1a606f598d7250f465b6775ba8796de148469cbdf3c46e460e00cde9"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-5_SoloBoard.md": {
+      "sha256": "ec2a36e9191fa3fd816e71296029884feb51ebc7776687b4f6df807f2233efdf"
+    },
+    "skills/create-kice-illustration/recipes/ITA_TypeSwap/ITA-6_GroupBoard.md": {
+      "sha256": "dcd8475359bfc25c4922b9044160d04157e3dc406be854505575fea5c15f1e30"
+    },
+    "skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-1_ImageBoard.md": {
+      "sha256": "8fa4197f5d8ace6790318738299dcb0a2d18473e360eb21bdfdcb26685d14968"
+    },
+    "skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-2_SoloImageBoard.md": {
+      "sha256": "0cae9cbc648e759c12f0b02a83f994db66dfbb5b45509e76600cd1912f605d15"
+    },
+    "skills/create-kice-illustration/recipes/ITB_ImageSwap/ITB-3_GroupImageBoard.md": {
+      "sha256": "383bc2679e735be44f3a993d74ac7f0e9103d758ab8aaf8caf1f82c1b8286bc3"
+    },
+    "skills/create-kice-illustration/recipes/ITC_Fixed/ITC-1_Figure.md": {
+      "sha256": "a695add19b24656e72ebe8a714c16d9bfe3c0189e3c35e231ad59744e1bb3184"
+    },
+    "skills/create-kice-illustration/recipes/ITC_Fixed/ITC-2_RealPhoto.md": {
+      "sha256": "855c1d721e74a210379b8becf2356edc8c7c9c458d6b4c83dba7236d0d175f99"
+    },
+    "skills/create-kice-illustration/recipes/ITC_Fixed/ITC-3_Place.md": {
+      "sha256": "db75a3553055cbd375135b8d446740770ae06aaea3eab54de5704c763901dc59"
+    },
+    "skills/create-kice-illustration/recipes/ITC_Fixed/ITC-4_Costume.md": {
+      "sha256": "098ba44a7e812b3f0b71dce79ae2253fd952b8ab89b09dd668fbeaaee5214f68"
+    },
+    "skills/create-kice-illustration/recipes/layouts/activity.md": {
+      "sha256": "1af8930fb1fe02420858e57b40656827e7cd05fce07820119fab81b6a964b6d1"
+    },
+    "skills/create-kice-illustration/recipes/layouts/board.md": {
+      "sha256": "80cc06e4da618bacb4f986d7909f2a9f306c80716c6577a8351e111f41b28fc5"
+    },
+    "skills/create-kice-illustration/recipes/layouts/bound-paper.md": {
+      "sha256": "ae6fc040898832f21ea7d350ae5508f4b5bfe5cdeb68d874e2fb29ff0130772f"
+    },
+    "skills/create-kice-illustration/recipes/layouts/correspondence.md": {
+      "sha256": "43358e37f2303aa29cc46c2851c92493963eff14d3fa7cfafbc285ca821cfe53"
+    },
+    "skills/create-kice-illustration/recipes/layouts/device-medium.md": {
+      "sha256": "37add589d30731e8e2cbfc3a2d66e86468d3af154f057331e52c55638837e2ab"
+    },
+    "skills/create-kice-illustration/recipes/layouts/display-medium.md": {
+      "sha256": "155fb0d9b66dc15cac8729835543b3ae124575c428ec75f5fdb93311c6f91f4a"
+    },
+    "skills/create-kice-illustration/recipes/layouts/document.md": {
+      "sha256": "e56ba737f188194e4a9cc5d00f89a63edd97dd54d71aa03401fe6763b6621ee8"
+    },
+    "skills/create-kice-illustration/recipes/layouts/horizontal.md": {
+      "sha256": "fddaa6dec3e4225407689cd18eebf32fad669a34bfe2d3e4a8cab25dfce6b438"
+    },
+    "skills/create-kice-illustration/recipes/layouts/map-composition.md": {
+      "sha256": "d04ffc583dd7cbfb0ec0b6cdca3b6b32a69e59796d3a413908971f8185498605"
+    },
+    "skills/create-kice-illustration/recipes/layouts/newspaper.md": {
+      "sha256": "c9a9d444a922e4356ddfaca6fcf3df113a33a72106fa583892b8da0aac312937"
+    },
+    "skills/create-kice-illustration/recipes/layouts/paper.md": {
+      "sha256": "b5599fcc4e60dfea01fdf1617877f57048832d6bae71926c250f0e87f7221d1d"
+    },
+    "skills/create-kice-illustration/recipes/layouts/presentation-artwork.md": {
+      "sha256": "fce8ea229a7061375a4cdbbf3b34f5d8416f88f85c748bdfb0a0193ba2423fa4"
+    },
+    "skills/create-kice-illustration/recipes/layouts/presentation.md": {
+      "sha256": "fcf3922780c3c2115bf75dea689032045f3ab2e029856d0b765bd2f2ab2c4818"
+    },
+    "skills/create-kice-illustration/recipes/layouts/screen.md": {
+      "sha256": "0b7968eac70e58ffd602e1cb082bade37b1246a3c4f2339c726b764dfa2cd719"
+    },
+    "skills/create-kice-illustration/recipes/layouts/scroll.md": {
+      "sha256": "07b460675d591694e1d5511fb2e598e09f3e05d847c810c49f79f8630bc7d739"
+    },
+    "skills/create-kice-illustration/recipes/layouts/vertical-gap.md": {
+      "sha256": "735e5821060749ebe9de7cdc8f53a6eb30a64cf506bcfbb515cbbf23e8df38f3"
+    },
+    "skills/create-kice-illustration/recipes/layouts/vertical-messenger.md": {
+      "sha256": "1ae9af657424f3bcc92bb511555ce72f35e82fd4f74ade5e5241239f2eb6913d"
+    },
+    "skills/create-kice-illustration/recipes/layouts/vertical.md": {
+      "sha256": "8357ad37b5531911ba578f80636536da77f736ab26318c8f979a2e9b49e40c63"
+    },
+    "skills/create-kice-illustration/recipes/layouts/worksheet.md": {
+      "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
+    },
+    "skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
+      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+    },
+    "skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
+      "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
+    },
+    "skills/create-kice-illustration/references/families/D1_Table.md": {
+      "sha256": "5d6f3d46b5aabd8e39a73c39a17be75662c8e9923f6aa42e27738787df618ddf"
+    },
+    "skills/create-kice-illustration/references/families/D2_Chart.md": {
+      "sha256": "a24bd70eafd4f0b2d43f4ca677cbc53d1d5cd629e51c1e06b22d5615045d9889"
+    },
+    "skills/create-kice-illustration/references/families/D3_Graph.md": {
+      "sha256": "6dd9e23eb5ff7b47d7caee41a2c3ebc8eedee8bf2d947ef293c78bcd293350ae"
+    },
+    "skills/create-kice-illustration/references/families/D4_Diagram.md": {
+      "sha256": "72a398390a60522b9da80975a0b02d6e22b8fd141348f461449cb7e3917cde85"
+    },
+    "skills/create-kice-illustration/references/families/I1_Photo.md": {
+      "sha256": "799bdbbc5460c6088f145ff60ec4df65aa2cbc39f4740e82881c075f6e4a50ba"
+    },
+    "skills/create-kice-illustration/references/families/I2_Illustration.md": {
+      "sha256": "c0535ca26b5c54c90c2318c7cf26e922d60b22e28bccdabfffb8d696eeafbce2"
+    },
+    "skills/create-kice-illustration/references/families/I3_Map.md": {
+      "sha256": "66d71c392947322a83f7e4bd4337e923b9c343e92cddf7a74f85a0834cd61318"
+    },
+    "skills/create-kice-illustration/references/families/ITA_TypeSwap.md": {
+      "sha256": "aeed1d4bcfd7ce6a3814cef7fcff49bf3dd6b07191ab0c1d7f2d1bc9a55962f5"
+    },
+    "skills/create-kice-illustration/references/families/ITB_ImageSwap.md": {
+      "sha256": "512693551f9d7c1ea3846f0719aca1fd586ea1b68d3460b15ccda338fadd788a"
+    },
+    "skills/create-kice-illustration/references/families/ITC_Fixed.md": {
+      "sha256": "7c1e122e4e320c805b36d8303fedd7a183a31cddb1e730f9a62d96a63dd5911f"
+    },
+    "skills/create-kice-illustration/references/fixed-styles.md": {
+      "sha256": "bc4880a491ba231f5993cf96ac985d8342ccc0a450fe246b83bb4b5ae233005b"
+    },
+    "skills/create-kice-illustration/references/routing.md": {
+      "sha256": "6749fa1a88af491183e83a0df1899390fa9b8a139308ad6c6c162ce401928227"
+    },
+    "skills/create-kice-illustration/references/rule-index.json": {
+      "sha256": "8c6ca2c8ab922f0eca3816e7efa3737338e36e9ed76286c0b5fc368a9937f509"
+    },
+    "skills/create-kice-illustration/references/task-input.md": {
+      "sha256": "1844addc443a37dbaac7e73ca0af90cf7870d2664da4f558485dede9868351eb"
+    },
+    "skills/create-kice-illustration/references/taxonomy.md": {
+      "sha256": "8786ae6cdde4a982571150869bbf3173602bba7eefe1eb8f508e5fd8218db722"
+    },
+    "skills/create-kice-illustration/SKILL.md": {
+      "sha256": "188d489076c6629f8cdd8f94904cc8f9c9e98f8b3dc14a793bbe0d76847131b8"
+    },
+    "skills/create-kice-science-illustration/agents/openai.yaml": {
+      "sha256": "7e3edd0c96e0ba5665da8db8af5fa6807cad7c86dc719683f46862b17c00510b"
+    },
+    "skills/create-kice-science-illustration/SKILL.md": {
+      "sha256": "b1d38eb5d2d9fde87c7fb5a0bf8fe40656a547bb9028f0be29477112153f47d5"
+    },
+    "skills/use-vectora/agents/openai.yaml": {
+      "sha256": "674f5137a8cf5118927f7b661d9ef43c672d9302e39c84fb9ce73f2454e0a2ae"
+    },
+    "skills/use-vectora/references/examples.md": {
+      "sha256": "0fc18429ffb419eefdd159de69db0b27f9c30fe644c42479787f6b558b16fb67"
+    },
+    "skills/use-vectora/references/production.md": {
+      "sha256": "c6ee068a5a39a09ff88bbd9604e4f963328ba463b2e2dbb17dd9273bc6625178"
+    },
+    "skills/use-vectora/SKILL.md": {
+      "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
+    }
+  }
+}

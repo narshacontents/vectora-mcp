@@ -15,18 +15,18 @@ description: "통합사회 평가원 스타일 그림을 Vectora로 제작·수�
 
 표시할 원문·값·단위·기호·강조·대응 관계와 표시하지 않을 출제 맥락을 구별한다. 신규/수정 범위, 실제 자료/가상 자료, 전체 외곽 폭·내용 예약 크기·저장 위치를 확인한다. 의미를 바꾸는 누락만 질문하고 배치·여백은 제작자가 결정한다. 복잡한 의뢰는 자세한 문장/자료표를 받아도 된다. 호출자에게 분류 ID·좌표·도구 필드를 요구하지 않는다.
 
-스킬 루트에서 `node scripts/prepare_task.mjs --list`로 recipe/조건을 확인하고 내부 임시 JSON을 만든다. **원 요청**에서 필요한 요소를 먼저 고르며, 아직 만들지 않은 spec에 없다는 이유로 빼지 않는다.
+스킬 루트에서 `<plugin>/bin/vectora-skill prepare_task --list`로 recipe/조건을 확인하고 내부 임시 JSON을 만든다. **원 요청**에서 필요한 요소를 먼저 고르며, 아직 만들지 않은 spec에 없다는 이유로 빼지 않는다. `<plugin>`은 이 스킬이 들어 있는 플러그인(Gemini는 확장) 루트, 즉 스킬 루트의 `../..`이고, Windows에서는 같은 위치의 `vectora-skill.exe`를 같은 인자로 실행한다. 스킬 문서의 `<plugin>/bin/vectora-skill <명령>` 호출은 모두 이 규칙을 따른다.
 
 ```json
 {"units":[{"id":"talk","recipe":"vertical-dialogue","contains":["prose","underline","inline-box"]}]}
 ```
 
 ```sh
-node scripts/prepare_task.mjs --request <내부 작업조건.json> --out <내부 임시 폴더>
+<plugin>/bin/vectora-skill prepare_task --request <내부 작업조건.json> --out <내부 임시 폴더>
 ```
 
 - 기본 입력은 `recipe`, 실제 추가 요소 `contains`, 필요한 `variant`다. 독립 표·그래프·지도는 각각 unit으로 준비해 결합하고 공유 장면의 외피·인물·발언을 독립 완성 그림으로 쪼개지 않는다.
-- 표·그래프·관계도·벤 도식·2/3인 대화 구도·작은 제목 상자 등의 반복 양식에 해당하면 `node scripts/fixed_styles.mjs --list`로 등록 구조를 확인한다. 일치할 때만 unit의 `fixedStyle:{styleID,content,widthMm?}`로 선택한다. 준비 결과의 `fixedStyles[].spec`과 native preflight를 사용한다. 폭은 같은 ID의 허용 범위에서 바꿀 수 있고, 말풍선과 작은 상자는 내용에 맞춰 크기가 변한다. 대화 프리셋은 인물 없는 실측 계획부터 만들고, 서로 구분되는 원화를 화자 ID로 연결한다. 핵심 도형·연결은 보존하며 다른 요소 수·연결이 필요하면 일반 제작으로 명시적으로 전환한다.
+- 표·그래프·관계도·벤 도식·2/3인 대화 구도·작은 제목 상자 등의 반복 양식에 해당하면 `<plugin>/bin/vectora-skill fixed_styles --list`로 등록 구조를 확인한다. 일치할 때만 unit의 `fixedStyle:{styleID,content,widthMm?}`로 선택한다. 준비 결과의 `fixedStyles[].spec`과 native preflight를 사용한다. 폭은 같은 ID의 허용 범위에서 바꿀 수 있고, 말풍선과 작은 상자는 내용에 맞춰 크기가 변한다. 대화 프리셋은 인물 없는 실측 계획부터 만들고, 서로 구분되는 원화를 화자 ID로 연결한다. 핵심 도형·연결은 보존하며 다른 요소 수·연결이 필요하면 일반 제작으로 명시적으로 전환한다.
 - 실자료 검색 요청은 `dataSource:"research"`, 제공/가상/정성 자료는 각각 provided/hypothetical/qualitative로 구분한다. 인물·사진·새 원화·산문·밑줄·문단 박스·예약 등 요청 조건을 포함한다. 한국 시도·시군구·한반도 바탕 지도는 contains에 `korea`를 넣는다. 작은 평면 조작 아이콘만으로 artwork를 선택하지 않는다.
 - 분류가 애매할 때만 [경로 판별](references/routing.md)의 해당 항목을 읽는다. 공유 칠판/독립 대화, 비교판/절차 분기, 관측선/이론곡선, 질적 기호/비례 지도는 이름보다 자료 의미로 나눈다. 한 장면의 발언도 실제 방향의 speech-horizontal/vertical/solo를 포함한다.
 - 실제 native spec을 마련했으면 같은 unit의 `spec`으로 다시 준비해 추론된 자식·서식·미검사 경고를 대조한다. 세부 입력/충돌 해결은 [작업조건](references/task-input.md)을 필요한 경우만 읽는다. spec은 자동 변경되지 않는다.

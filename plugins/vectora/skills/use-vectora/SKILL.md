@@ -1,21 +1,20 @@
 ---
 name: use-vectora
-description: "Claude의 Vectora MCP로 벡터 그림을 편집하고 저장한다. SVG·AI/PDF·이미지 가져오기, 문자·도형·그래프·레이어 편집과 통합사회 평가원 스타일 제작에 사용한다. 통합과학 스킬은 본문이 비어 있는 준비 중 항목이다."
+description: "Vectora MCP로 벡터 그림을 만들고 SVG·AI/PDF·이미지를 열어 편집·추적·저장한다. 도형·경로·문자·부분 서식·양끝 화살표·그룹·레이어·대지를 다루거나 기존 그림을 변환할 때 사용한다. Computer Use 없이 작동한다. 통합사회 평가원 스타일 요청에는 함께 제공된 create-kice-illustration 규칙도 적용한다. 통합과학 스킬은 본문이 비어 있는 준비 중 항목이다."
 ---
 
 # Vectora로 벡터 편집
 
-Claude에서 현재 세션에 노출된 MCP 도구 목록을 확인하고 Vectora 도구를 사용한다. Claude Code 플러그인에서는 도구 이름에 플러그인 접두사가 붙을 수 있으므로 실제 목록의 이름을 그대로 호출한다. 화면 클릭이나 앱에 스크립트를 주입해 대체하지 않는다. MCP는 설치된 Vectora 1.0.0+의 실제 편집 엔진을 별도 세션에서 실행한다. 일반 앱 창의 미저장 문서는 MCP에 자동 연결되지 않는다. 파일을 저장한 뒤 `vectora_open_document` 도구를 찾아 열고 작업한다.
+Vectora MCP 도구를 사용한다. 화면 클릭, Computer Use, 브라우저 DOM 조작, 실행 중인 앱에 스크립트 주입으로 작업하지 않는다. MCP는 설치된 Vectora 1.0.0+의 실제 편집 엔진을 별도 세션에서 실행한다. Codex와 Claude는 GitHub 마켓플레이스에서 MCP와 세 스킬을 함께 설치하는 경로를 사용한다. 수동 설치 ZIP·MCPB·개별 스킬 ZIP은 기본 배포하지 않는다. 플러그인 안의 Rust 실행기 `bin/vectora-mcp-launch`가 OS에 맞게 설치 앱을 연결하고 스킬 보조 계산은 `bin/vectora-skill`이 수행하므로 Node.js·Python·PowerShell이 필요하지 않으며, GitHub Release 게시만으로 설치본이 자동 갱신되지는 않는다. 일반 앱 창의 미저장 문서는 MCP에 자동으로 연결되지 않는다. 파일을 저장한 뒤 `vectora_open_document`로 열고 작업한다.
 
-Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 수 있으므로 로컬 Vectora 앱이나 글꼴 파일을 읽을 수 있다고 가정하지 않는다. 현재 도구 목록에서 `vectora_fonts`, 노출된 경우 `vectora_check_font`·`vectora_measure_text`, 그리고 실제 스키마에 맞는 `vectora_apply`·`vectora_import_svg`를 우선 사용한다. SVG 문자열이나 data URL은 가져오기 스키마가 허용하는 형식일 때 전달한다. 코드 실행 첨부 경로를 Vectora 저장 경로로 재사용하지 말고 사용자가 지정한 실제 로컬 경로를 쓴다. Claude Code 로컬 플러그인에서는 번들된 보조 스크립트를 사용할 수 있다.
+새 그래프 검색·충돌 배치, 지도 지물 catalog·위치·파선·재열기 binding, 표 세로 정렬·108mm 맞춤, 혼합 문자 획 측정, 명시 굵기·예약 외곽, 두루마리 variant와 장시간 지도 작업의 자원 관리는 **앱 1.4.2 이상**에서 실제 capability와 schema가 제공될 때 사용한다. 기존 1.4.0·1.3.0·1.2.0 기능의 최소 버전은 유지한다. 앱·플러그인 버전 숫자만으로 필드를 추정하지 않는다.
 
-현재 세션에 Vectora MCP가 보이지 않으면 연결된 것으로 간주하지 않는다. Claude 웹 채팅/클라우드 세션에는 이 로컬 실행기가 연결되지 않으므로 최종 Vectora 저장·재열기를 주장하지 말고, 사용자가 로컬 MCP를 쓸 수 있는 Claude Desktop 또는 Claude Code에서 이어가도록 안내한다.
 ## 연결과 단위
 
-- Gemini CLI에서는 현재 노출된 MCP 이름·스키마를 사용한다. 로컬 앱 연결은 CLI용이며 일반 Gemini 웹 채팅 연결을 뜻하지 않는다. 이 확장의 실행기에는 Node.js가 필요하다. 사용자 지정 앱 위치는 확장 루트의 `scripts/configure-app.sh`·`configure-app.ps1`로 저장한다. Gemini의 환경 변수 필터 때문에 셸의 `VECTORA_APP_PATH` 전달을 가정하지 않는다. 실제 이미지 확인은 `read_file` 등 이미지 입력을 지원하는 도구로 수행한다.
+- Gemini CLI에서는 현재 노출된 MCP 이름·스키마를 사용한다. 로컬 앱 연결은 CLI용이며 일반 Gemini 웹 채팅 연결을 뜻하지 않는다. 이 확장의 실행기는 확장 루트의 `bin/vectora-mcp-launch`이며 Node.js가 필요하지 않다. 사용자 지정 앱 위치는 아래 운영체제별 `mcp-app-path` 파일에 저장한다. Gemini의 환경 변수 필터 때문에 셸의 `VECTORA_APP_PATH` 전달을 가정하지 않는다. 실제 이미지 확인은 `read_file` 등 이미지 입력을 지원하는 도구로 수행한다.
 
-- `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 배포 패키지의 `CLAUDE_INSTALLATION.md`를 참고한다.
-- Claude Desktop Cowork 로컬 세션과 Claude Code의 Vectora MCP는 이 컴퓨터에 설치된 앱을 실행한다. 기본 설치 위치에서 앱을 찾지 못하면 플러그인 안의 `configure-app.sh` 또는 `configure-app.ps1`을 사용한다. 마켓플레이스에 플러그인을 추가해도 Claude 일반 웹 채팅에는 로컬 MCP 실행기가 연결되지 않는다.
+- `vectora_status`로 연결·기능을 확인한다. 응답에 `runtimeResources`가 있으면 열린 문서·canvas·heap 항목을 장시간 작업의 진단 정보로 읽는다. 이 정보는 완료·시각 품질의 증거가 아니다. 저장·재열기 검증을 마친 문서는 닫고, 저장한 파일 경로와 실제 반환 `documentId`를 재사용해 중복 문서를 열지 않는다. 도구가 지연 로드되어 있으면 Vectora MCP를 검색한다. 연결 실패 시 오류와 앱 경로 설정을 확인하며 Computer Use로 대체하지 않는다. 설치 방법은 플러그인 루트 `README.md`와 앱 프로젝트의 `docs/MCP_INSTALLATION.md`를 참고한다.
+- Windows에서 MCP 실행기는 플러그인의 `bin/vectora-mcp-launch.exe`와 설치된 `Vectora.exe`를 사용한다. Node.js/Python/PowerShell 런타임은 필요하지 않다. 앱 경로 우선순위는 `VECTORA_APP_PATH`, `%APPDATA%\Vectora\mcp-app-path`, `%LOCALAPPDATA%\Programs\Vectora\Vectora.exe`, `%ProgramFiles%\Vectora\Vectora.exe`, `%ProgramFiles(x86)%\Vectora\Vectora.exe`다. 사용자 지정 경로는 `%APPDATA%\Vectora\mcp-app-path`에 `Vectora.exe` 절대 경로 한 줄로 저장한다. macOS는 `~/Library/Application Support/Vectora/mcp-app-path`에 저장한 `Vectora.app` 절대 경로 또는 Applications 기본 위치를, Linux는 `${XDG_CONFIG_HOME:-~/.config}/Vectora/mcp-app-path`에 저장한 실행 가능한 AppImage 경로 또는 기본 위치를 사용한다.
 - `vectora_new_document`는 너비·높이를 기본 **mm**로 받는다. `unit`을 명시하면 `mm/pt/px/in`도 가능하다. 현재 도구 입력 스키마에 `colorMode`가 있을 때만 사용하고, 사용자가 RGB를 요청하지 않으면 `cmyk`를 기본으로 보낸다. 스키마에 없으면 필드를 보내지 않는다.
 - `vectora_apply`의 기본 `units: "mm-pt"`: 도형 위치·크기·경로 `d`·대지·가이드·오프셋은 **mm**, 문자 크기·선 굵기·기준선 이동·행간·점선 길이는 **pt**. 자간 `charSpacing`은 **1/1000em**이다. `units: "px"`는 모든 길이를 px로 받는다.
 - `add`의 `shape:"path"`에서 `d`에 문서 절대 좌표를 계산했다면 `left`/`top`과 `geometryOrigin`은 생략한다. 명시한 `left`/`top`은 경로의 기하 경계 시작점을 그 위치로 다시 배치한다. `geometryOrigin:true`만 보내면 빠진 위치가 0으로 처리되어 절대 좌표 경로가 원점으로 이동하므로 사용하지 않는다. 경로 일부를 보충할 때 먼저 실제 `pathNodes`가 계산한 좌표와 일치하는지 확인한다.
@@ -48,7 +47,7 @@ Claude Desktop 스킬의 코드 실행 첨부 경로는 별도 작업공간일 �
 
 ## 편집과 검수
 
-1. 지정한 파일은 `vectora_open_document`, 새 그림은 `vectora_new_document`로 연다. 모든 경로는 현재 컴퓨터의 절대 경로다. 반환된 `documentId`만 사용한다.
+1. 지정한 파일은 `vectora_open_document`, 새 그림은 `vectora_new_document`로 연다. 모든 경로는 이 Mac의 절대 경로다. 반환된 `documentId`만 사용한다.
 2. `vectora_inspect(includeObjects:true)`로 개체 ID와 현재 `revision`을 읽는다. 새 문서/직전 편집의 반환값도 최신 revision으로 사용할 수 있다. live schema에 `view:"delivery"`가 있으면 저장·재열기 비교에서 이를 사용할 수 있지만, path/points fingerprint는 편집 핸들이 아니므로 점 편집에는 실제 개체를 확인한다.
 3. `vectora_apply`에 `documentId`, `expectedRevision`, 고유 `requestId`, `commands`를 보낸다. 한 배치는 한 실행 취소 단위이며 실패하면 문서가 되돌아간다. 대상에 `select`한 뒤 `style/transform` 등을 적용한다. `add`는 생성한 개체를 선택한다. 개체 ID를 추측하지 않는다.
 4. 같은 요청의 재전송에는 동일한 전체 인자와 requestId를 사용한다. 응답 유실이나 `REQUEST_RESULT_EXPIRED`는 편집 미실행을 뜻하지 않는다. 먼저 inspect로 실제 객체·revision·저장 상태를 대조하고 새 ID로 무작정 중복 실행하지 않는다. 다른 편집에는 새 ID를 사용한다. 버전 충돌이면 다시 inspect하고 내용을 확인한다. 실행 중인 작업의 취소는 이미 적용된 편집을 되돌린다는 뜻이 아니므로 취소·응답 유실 후에도 inspect로 상태를 확인한다. `vectora_history`로 실행 취소/다시 실행한다.

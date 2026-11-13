@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vectora 벡터 편집"
+  short_description: "화면 조작 없이 MCP로 벡터를 만들고 편집·저장"
+  default_prompt: "Vectora MCP로 편집 가능한 벡터 그림을 만들어 주세요."

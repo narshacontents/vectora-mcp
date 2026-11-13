@@ -4,7 +4,7 @@
 
 ## 선택
 
-`node scripts/fixed_styles.mjs --list`에서 등록 구조·recipe를 찾고, `--example <styleID>`로 필요한 내용 슬롯을 확인한다. 의뢰자가 ID를 알 필요는 없다. 구조가 일치할 때만 `fixedStyle:{styleID,content,widthMm?}`를 선택한다.
+`<plugin>/bin/vectora-skill fixed_styles --list`에서 등록 구조·recipe를 찾고, `--example <styleID>`로 필요한 내용 슬롯을 확인한다. 의뢰자가 ID를 알 필요는 없다. 구조가 일치할 때만 `fixedStyle:{styleID,content,widthMm?}`를 선택한다.
 
 | 계열 | 등록 형식 | 바꿀 내용 |
 | --- | --- | --- |
@@ -22,21 +22,21 @@
 
 ## 호출
 
-```js
-import {buildFixedStyle, preflightFixedStyle, planFixedStyleAdjustments} from './scripts/fixed_styles.mjs';
-const bundle = buildFixedStyle({styleID, content, widthMm});
-const ready = await preflightFixedStyle(bundle, spec => nativePlan({spec}));
-await nativeProduction({action:'create', spec:ready.spec ?? bundle.spec});
-const inspected = await nativeInspect();
-const finishing = planFixedStyleAdjustments(bundle, inspected, {componentId});
-if (finishing.commands.length) await nativeApply(finishing.commands);
+```text
+# 각 명령의 결과 JSON은 괄호 속 fixed_styles 함수의 반환값과 같다. 입력은 JSON 파일 경로 또는 -(stdin), 결과는 stdout, 오류는 stderr와 종료 코드 1이다.
+bundle    = <plugin>/bin/vectora-skill fixed_styles --request 요청.json            (buildFixedStyle; 요청 {styleID, content, widthMm?})
+true      = <plugin>/bin/vectora-skill fixed_styles --assert-geometry bundle.json  (assertFixedGeometry)
+ready     = <plugin>/bin/vectora-skill fixed_styles --preflight 입력.json          (preflightFixedStyle; 입력 {bundle, plans:[{spec, plan}, …]}, 종료 코드 3은 다음 plan 요청)
+vectora_production({action:'create', spec: ready.spec ?? bundle.spec}) → vectora_inspect → inspected
+finishing = <plugin>/bin/vectora-skill fixed_styles --plan-adjustments 입력.json   (planFixedStyleAdjustments; 입력 {bundle, inspect: inspected, options?:{componentId}}) → commands가 있으면 vectora_apply
+그 밖: --bind-speaker-assets {bundle, bindings} (bindFixedStyleSpeakerAssets), --compare-geometry {before, after} (compareNativeFixedStyleGeometry)
 ```
 
-`nativePlan`은 `vectora_production_plan`의 decoded structuredContent를 반환하는 호출자 함수다. 실제 도구 호출에는 연결의 documentId·최신 expectedRevision·새 requestId를 붙인다. helper는 도구 실행·파일 저장을 하지 않는다. 인구 피라미드는 native 가로 막대 그래프 두 개로 구성되므로, 생성된 두 graph componentId 각각에 새 inspect → 보정 → apply를 수행한다.
+`--preflight`는 `{bundle, plans:[]}`로 시작한다. 종료 코드 3이면 stdout `{status:"needs-native-plan", call, spec}`의 spec으로 `vectora_production_plan`을 호출하고, decoded structuredContent를 `{spec, plan}`으로 `plans` 끝에 더해 같은 명령을 다시 실행한다. 종료 코드 0의 출력이 preflight 결과다. bundle이 바뀌면 `plans:[]`부터 다시 시작한다. 실제 도구 호출에는 연결의 documentId·최신 expectedRevision·새 requestId를 붙인다. helper는 도구 실행·파일 저장을 하지 않는다. 인구 피라미드는 native 가로 막대 그래프 두 개로 구성되므로, 생성된 두 graph componentId 각각에 새 inspect → 보정 → apply를 수행한다.
 
 인구 피라미드의 `male`·`female`은 같은 길이의 18~21개 양수 원자료(0 포함)를 **높은 연령부터** 받는다. 18개는 85세 이상→0~4세, 21개는 100세 이상→0~4세다. `content.ageTickInterval:20`이면 80·60·40·20·0 등 지정 간격의 연령 숫자와 `(세)`만 표시하고 모든 계급의 막대는 유지한다. 생략하면 기존 계급명 표시를 유지한다. 좁은 막대와 독립적으로 8pt 눈금 간격을 확보하며, 남 왼쪽·여 오른쪽의 양수 대칭 축·0 기준·`(%)`는 보존한다. 앱의 단일 native 피라미드도 `mirrorOptions:{version:1,ageTickInterval:20}`과 최대 21개 계급을 받는다. 누적 막대나 별도 수동 눈금으로 우회하지 않는다. 연령 숫자가 왼쪽 세로축에 있고 남·여 막대가 0선에서 맞붙은 형태는 `content.ageLabelPosition:"left"`, `content.barGap:0`으로 같은 양식에서 만든다(남/여는 눈금 숫자 아래 약 1mm). 기본값은 가운데 연령형이다. 수동 벡터로 다시 그리지 않는다.
 
-`prepare_task.mjs`는 unit의 recipe 호환성을 검사해 `fixedStyles[].spec`과 검증 요구를 돌려준다. **실행은 spec 한 개만** 사용한다. 검사용 `parts`를 추가 생성하지 않는다. 생성 전에 `assertFixedGeometry()`와 native preflight를 통과해야 한다. preflight가 `spec`을 돌려주면 반드시 그 spec으로 생성한다. 이는 글리프의 잉크 높이 차이를 투명 예약 공간으로 상쇄해 고정 도형 위치를 보존하는 측정 결과다. 생성·내용 갱신 후 `requiresNativeFinalization`인 형식은 실제 inspect를 받아 `planFixedStyleAdjustments()`의 등록 보정을 적용하고 다시 inspect한다. 보정은 현재 native 역할 ID에 붙이며 UUID를 저장해 재사용하지 않는다. 이 단계의 획·단위 간격까지 고정 형식의 일부다. 여러 그래프가 있는 문서는 해당 생성본의 실제 graph componentId를 지정한다. 형식 내부 정렬 보정까지 끝낸 후 복합 그림의 최종 위치에 배치한다.
+`<plugin>/bin/vectora-skill prepare_task`는 unit의 recipe 호환성을 검사해 `fixedStyles[].spec`과 검증 요구를 돌려준다. **실행은 spec 한 개만** 사용한다. 검사용 `parts`를 추가 생성하지 않는다. 생성 전에 `assertFixedGeometry()`와 native preflight를 통과해야 한다. preflight가 `spec`을 돌려주면 반드시 그 spec으로 생성한다. 이는 글리프의 잉크 높이 차이를 투명 예약 공간으로 상쇄해 고정 도형 위치를 보존하는 측정 결과다. 생성·내용 갱신 후 `requiresNativeFinalization`인 형식은 실제 inspect를 받아 `planFixedStyleAdjustments()`의 등록 보정을 적용하고 다시 inspect한다. 보정은 현재 native 역할 ID에 붙이며 UUID를 저장해 재사용하지 않는다. 이 단계의 획·단위 간격까지 고정 형식의 일부다. 여러 그래프가 있는 문서는 해당 생성본의 실제 graph componentId를 지정한다. 형식 내부 정렬 보정까지 끝낸 후 복합 그림의 최종 위치에 배치한다.
 
 ## 대화 구도와 작은 구성요소
 

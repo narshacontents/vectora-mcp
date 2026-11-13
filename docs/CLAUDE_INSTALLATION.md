@@ -24,7 +24,7 @@ Claude용 MCP와 세 스킬은 **GitHub 마켓플레이스의 Vectora 플러그�
 
 ## Claude Code
 
-Node.js 18 이상이 PATH에 있는 로컬 macOS/Windows/Linux에서 실행합니다.
+Vectora 2.3.0 이상이 설치된 로컬 macOS/Windows에서 실행합니다. 실행기는 플랫폼별 실행 파일이라 Node.js가 필요하지 않습니다. Linux용 실행기는 Linux 앱과 함께 추가됩니다.
 
 ```sh
 claude plugin marketplace add narshacontents/vectora-mcp

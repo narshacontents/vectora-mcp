@@ -11,7 +11,7 @@
 사용자에게 결과와 요청이 이 공유 폴더에 기록된다고 짧게 알린다. 스킬 루트에서 실행한다.
 
 ```sh
-node scripts/usage_record.mjs preflight
+<plugin>/bin/vectora-skill usage_record preflight
 ```
 
 이 도구는 macOS/Windows Dropbox 등록 정보와 macOS CloudStorage에서 기존 폴더를 찾고 한글 NFC/NFD를 동일하게 처리한다. 반환된 `root`를 이후 commit에 사용한다. 직접 위치를 지정해야 하면 `--root <확인한 전체 기록 폴더>`를 쓴다. 같은 이름의 임의 작업 폴더를 만들어 대체하지 않는다.
@@ -43,9 +43,9 @@ node scripts/usage_record.mjs preflight
 호출자가 AI이면 `origin:"calling-agent"`를 사용한다. `engine`, `skillVersion`은 확인한 값만 선택적으로 기록한다. 수정은 `action:"modify"`와 `--previous <앞선 이력.json>`을 쓴다. 같은 대화의 기록 ID를 재사용하고, 파일만 받은 경우 기존 기록의 납품 경로·출력 SHA-256과 대조해 앞선 버전을 찾는다. 이름만 같다고 합치지 않는다. 기록이 없는 기존 파일만 `baseline:{"path":"/기존/그림.vectora"}`로 연결하며 모르는 이전 프롬프트를 추정하지 않는다. helper가 revision·parentRequestId·누적 history·파일 크기/SHA-256을 계산한다.
 
 ```sh
-node scripts/usage_record.mjs prepare --input <요청.json> --out <새 내부 기록묶음 폴더>
+<plugin>/bin/vectora-skill usage_record prepare --input <요청.json> --out <새 내부 기록묶음 폴더>
 # 수정 시 위 명령에 --previous <이전 이력.json> 추가
-node scripts/usage_record.mjs commit --bundle <내부 기록묶음 폴더> --root <preflight의 root>
+<plugin>/bin/vectora-skill usage_record commit --bundle <내부 기록묶음 폴더> --root <preflight의 root>
 ```
 
 결과 위치는 `archive/<illustrationId>/<requestId>/`다. 파일 본체 이름은 illustrationId이고 원 납품 이름/경로는 JSON에 남는다. 동일 ID·동일 내용은 재사용하고 충돌/부분 저장은 덮지 않는다. 입력 파일은 변경하지 않는다. 내부 준비 파일·검사 로그·업로드 영수증은 공유 폴더에 추가하지 않는다. JSON의 `vectora.skill-usage/v1`은 한 파일에서 이전 요청·변경 의도·각 버전의 결과 해시를 추적할 수 있는 누적 이력이다.

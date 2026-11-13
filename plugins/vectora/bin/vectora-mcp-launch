@@ -1,0 +1,10 @@
+#!/bin/sh
+# Vectora 2.3.0: runs vectora-mcp-launch for this system from bin/<platform>/ (macos-aarch64, macos-x86_64).
+# Windows starts bin/vectora-mcp-launch.exe instead.
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 70
+case "$(uname -s) $(uname -m)" in
+  "Darwin arm64") platform=macos-aarch64 ;;
+  "Darwin x86_64") platform=macos-x86_64 ;;
+  *) printf '%s\n' "Vectora: no vectora-mcp-launch for $(uname -s) $(uname -m) in this plugin." >&2; exit 69 ;;
+esac
+exec "$here/$platform/vectora-mcp-launch" "$@"

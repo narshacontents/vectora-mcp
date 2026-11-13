@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "vectora": {
-      "command": "/bin/sh",
-      "args": [
-        "-c",
-        "#!/bin/sh\n# The packaged MCP config embeds this script. Keep stdout exclusively for MCP JSON-RPC.\nset -eu\n\nvectora_config=\"$HOME/Library/Application Support/Vectora/mcp-app-path\"\nvectora_app=${VECTORA_APP_PATH:-}\nvectora_override=${vectora_app:+yes}\n\nif [ -z \"$vectora_app\" ] && [ -f \"$vectora_config\" ]; then\n  IFS= read -r vectora_app < \"$vectora_config\" || true\nfi\n\nif [ -n \"$vectora_app\" ] && [ -x \"$vectora_app/Contents/MacOS/Vectora\" ]; then\n  :\nelif [ -n \"$vectora_override\" ]; then\n  printf '%s\\n' 'Vectora MCP: VECTORA_APP_PATH does not point to a Vectora.app bundle.' >&2\n  exit 69\nelse\n  vectora_app=\n  for vectora_candidate in /Applications/Vectora.app \"$HOME/Applications/Vectora.app\"; do\n    if [ -x \"$vectora_candidate/Contents/MacOS/Vectora\" ]; then\n      vectora_app=$vectora_candidate\n      break\n    fi\n  done\nfi\n\nif [ -z \"$vectora_app\" ]; then\n  printf '%s\\n' 'Vectora MCP: Vectora.app was not found. Install Vectora 1.0.0 or later, or set its path in ~/Library/Application Support/Vectora/mcp-app-path.' >&2\n  exit 69\nfi\n\nvectora_binary=\"$vectora_app/Contents/MacOS/Vectora\"\nif [ ! -x \"$vectora_binary\" ]; then\n  printf '%s\\n' 'Vectora MCP: the selected Vectora.app has no executable. Update the configured app path.' >&2\n  exit 69\nfi\n\nvectora_version=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \"$vectora_app/Contents/Info.plist\" 2>/dev/null || true)\nif ! awk -v version=\"$vectora_version\" 'BEGIN {\n  if (version == \"\") exit 1\n  sub(/^v/, \"\", version)\n  sub(/\\+.*/, \"\", version)\n  prerelease = 0\n  if (version ~ /-/) {\n    sub(/-.*/, \"\", version)\n    prerelease = 1\n  }\n  if (version !~ /^[0-9]+\\.[0-9]+\\.[0-9]+$/) exit 1\n  split(version, part, \"[.]\")\n  major = part[1] + 0\n  minor = part[2] + 0\n  patch = part[3] + 0\n  if (major > 1 || (major == 1 && minor > 0) || (major == 1 && minor == 0 && patch > 0)) exit 0\n  if (major == 1 && minor == 0 && patch == 0 && !prerelease) exit 0\n  exit 1\n}'; then\n  printf '%s\\n' 'Vectora MCP: version 1.0.0 or later is required. Update Vectora or choose another app.' >&2\n  exit 69\nfi\n\nunset ELECTRON_RUN_AS_NODE\nexec \"$vectora_binary\" --mcp-stdio"
-      ]
+      "command": "./bin/vectora-mcp-launch",
+      "args": [],
+      "cwd": "."
     }
   }
 }

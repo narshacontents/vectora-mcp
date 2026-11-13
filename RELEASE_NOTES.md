@@ -1,10 +1,9 @@
-# Vectora MCP 2.2.3
+# Vectora MCP 2.3.0
 
-- 지도: 틀 모서리 범례 칸(`legendBox`)과 (가)·(나) 패널 기호 상자(`panelLabel`)를 쓰도록 안내합니다. 미국 본토·북미 지역도는 북위 49° 국경이 수평인 원통 계열을 기본으로 하고, 원추도법은 요청이나 근거가 있을 때만 씁니다. 울릉도·독도 확대 상자 위치 지정, 노선 범례, 영역 오버레이, 유역 경계, 가상 지형도 생성 사용법을 보강했습니다.
-- 그래프: 플롯 아래 범례의 간격 상한과 자동 견본 모양, 이동 화살표의 `label`과 선 간격, 축 생략·세로 축 제목·각주 배치 지침을 정리했습니다.
-- 삽화·인물 원화: 작업 환경에 이미지 도구가 없으면(Claude 등) Vectora 앱에 등록한 이미지 생성 서비스 키로 `vectora_generate_image`를 사용합니다. 키는 앱의 AI 탭 설정에서 등록합니다.
-- 출제 에이전트용 의뢰 가이드를 보강했습니다.
+- Vectora 2.3.0(Rust) 앱과 함께 쓰는 판입니다. 스킬 지침은 2.2.3과 같습니다.
+- MCP 실행기와 스킬 보조 명령이 Rust 실행 파일(`bin/vectora-mcp-launch`, `bin/vectora-skill`)입니다. Codex·Claude Code·Gemini CLI 모두 Node.js·Python·PowerShell 없이 연결합니다.
+- 한 플러그인이 여러 운영체제를 맡는 경우(`vectora-macos`는 macOS·Linux, Claude 플러그인과 Gemini 확장은 macOS·Linux·Windows) `bin/`의 실행기가 운영체제와 CPU에 맞는 실행 파일(`bin/<플랫폼>/`, Windows는 `bin/*.exe`)을 고릅니다.
+- 앱 위치는 이전과 같은 규칙으로 찾습니다: `VECTORA_APP_PATH`, 사용자 데이터 폴더의 `mcp-app-path`, 그다음 기본 설치 위치. Vectora 2.3.0 앱은 실행할 때 자기 위치를 `mcp-app-path`에 기록합니다.
+- Vectora 2.3.0 앱은 아직 이미지 생성 키를 쓰지 않으므로 Vectora 이미지 생성 연결은 사용할 수 없다고 답합니다.
 
-새 기능은 **Vectora 2.2.3**과 함께 사용하고 실행 시 live schema를 확인하세요. Codex와 Claude는 GitHub 마켓플레이스, Gemini CLI는 같은 저장소 루트의 Git 확장으로 설치합니다. 별도 ZIP/MCPB 설치본이나 개별 스킬 압축파일은 배포하지 않습니다.
-
-변경 범위의 지침 선택·마켓플레이스 동기화·배포 경계 검사와 macOS 설치 앱의 실제 제작 검수를 수행했습니다. 실제 이미지 생성 서비스 호출과 Windows·Linux 실행은 검증하지 않았습니다. 원본 기출·사용자 결과물·테스트 그림·지도 원본·글꼴 바이너리는 이번 배포에 추가하지 않습니다. GitHub Release 게시와 사용자의 설치본 업데이트는 별개입니다.
+Codex와 Claude는 GitHub 마켓플레이스, Gemini CLI는 같은 저장소 루트의 Git 확장으로 설치합니다. 별도 ZIP/MCPB 설치본이나 개별 스킬 압축파일은 배포하지 않습니다. 플러그인 원본은 narshacontents/vectora-studio의 `rust/mcp-plugin`이며, 게시된 파일과 해시는 `vectora-release.json`에 있습니다. 원본 기출·사용자 결과물·테스트 그림·지도 원본·글꼴 바이너리는 배포하지 않습니다. GitHub Release 게시와 사용자의 설치본 업데이트는 별개입니다.

@@ -14,9 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Check generated plugins match their canonical sources
-        run: node scripts/build-marketplace.mjs --check
-      - name: Test client launchers and Gemini extension
-        run: node --test tests/claude-launcher.test.mjs tests/gemini-extension.test.mjs
-      - name: Test marketplace release staging safeguards
-        run: node --test tests/stage-release.test.mjs
+      # The plugins are built in narshacontents/vectora-studio (rust/mcp-plugin, rust/packaging/vectora-mcp-layout.mjs);
+      # this checks the published files against vectora-release.json.
+      - name: Check the published plugins
+        run: node scripts/verify-plugins.mjs
