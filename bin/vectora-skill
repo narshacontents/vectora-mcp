@@ -1,5 +1,5 @@
 #!/bin/sh
-# Vectora 2.3.0: runs vectora-skill for this system from bin/<platform>/ (macos-aarch64, macos-x86_64).
+# Vectora 2.3.1: runs vectora-skill for this system from bin/<platform>/ (macos-aarch64, macos-x86_64).
 # Windows starts bin/vectora-skill.exe instead.
 here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 70
 case "$(uname -s) $(uname -m)" in

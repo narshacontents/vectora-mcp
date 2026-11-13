@@ -19,7 +19,7 @@ Codex·Claude는 **GitHub 마켓플레이스**, Gemini CLI는 같은 저장소�
 
 기존 `create-kice-illustration` 호출 이름과 경로는 호환성을 위해 유지합니다. 통합과학 스킬은 자동 호출하지 않으며 제작 지침은 아직 제공하지 않습니다.
 
-2.3.0은 Vectora 2.3.0(Rust) 앱과 함께 쓰는 판입니다. 스킬 지침은 2.2.3(지도 모서리 범례 칸·패널 기호 상자, 미국 지역도 도법 기본값, 그래프 범례 간격·이동 화살표 지침)과 같고, MCP 실행기와 보조 명령이 Rust 실행 파일입니다. Vectora 2.3.0 앱은 아직 이미지 생성 키를 쓰지 않으므로 Vectora 이미지 생성 연결은 사용할 수 없다고 답합니다. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
+2.3.1 MCP 패키지는 Vectora 2.3.1 이상 앱과 함께 쓰는 판입니다. 스킬 지침은 2.2.3(지도 모서리 범례 칸·패널 기호 상자, 미국 지역도 도법 기본값, 그래프 범례 간격·이동 화살표 지침)과 같고, MCP 실행기와 보조 명령이 Rust 실행 파일입니다. 2.3.1에서는 모든 호스트의 MCP 도구 목록에 이미지 생성기를 노출하지 않습니다. Codex는 자체 imagegen을, Claude와 Antigravity를 포함한 다른 호스트는 현재 세션의 이미지 도구가 있으면 그것을, 없으면 사용자 제공 원화를 사용합니다. Claude 전용 평가원 원화 생성은 후속 버전에서 제공됩니다. Linux 실제 실행은 미검증입니다. 지도 제작은 설치된 앱의 실제 프리셋과 등록 정보를 사용하며 지도 원본과 글꼴 파일을 플러그인에 중복 배포하지 않습니다.
 
 평가원 그림 제작에는 **지정 공유 Dropbox 사용 기록 폴더 접근이 필수**입니다. 제작 전에 이를 알리고 기존 폴더의 접근·쓰기 가능 여부를 확인합니다. 그림별 요청/수정마다 관련 요청 원문·수정 이력 JSON과 검수한 `.vectora`·`.jpeg`를 기록하며, 폴더에 접근할 수 없으면 제작을 시작하지 않습니다. 로컬 동기화 폴더 쓰기와 원격 업로드 검증은 구별합니다. [사용 기록 절차](skills/create-kice-illustration/execution/usage-recording.md)를 확인하세요.
 
@@ -89,7 +89,7 @@ gemini mcp list
 
 새 CLI 세션에서 “평가원 스타일로 막대그래프를 만들어줘”처럼 요청하면 해당 스킬을 활성화합니다. `vectora` MCP의 실제 연결과 스킬의 설치 경로를 확인하세요. 같은 이름의 사용자·작업공간 스킬이나 수동 MCP 설정이 있으면 확장보다 우선할 수 있습니다.
 
-**이 확장은 로컬 Gemini CLI용입니다. 일반 Gemini 웹 채팅에 업로드하는 패키지가 아닙니다.** 원화 이미지 생성 모델은 포함하지 않습니다. 새 인물·삽화 제작에는 현재 세션에 연결된 이미지 생성 도구 또는 사용자가 제공한 원화가 필요하며, 없는 경우 스킬은 미완료 조건을 알립니다.
+**이 확장은 로컬 Gemini CLI용입니다. 일반 Gemini 웹 채팅에 업로드하는 패키지가 아닙니다.** 원화 이미지 생성 모델이나 Vectora Hub 이미지 도구를 제공하지 않습니다. 새 인물·삽화 제작에는 현재 세션에 실제 연결된 이미지 생성 도구 또는 사용자가 제공한 원화가 필요하며, 없는 경우 스킬은 미완료 조건을 알립니다.
 
 Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치는 아래 [앱 경로와 연결](#앱-경로와-연결)의 `mcp-app-path` 파일에 저장하세요. 셸의 `VECTORA_APP_PATH`가 전달된다고 가정하지 않습니다. 선택적 조판·추적·감사 보조 명령은 확장 루트의 `bin/vectora-skill`로 실행합니다. 통합과학은 준비 중이며 자동 제작에 사용하지 않습니다.
 
@@ -102,7 +102,7 @@ Gemini는 일부 환경 변수를 필터링하므로 사용자 지정 앱 위치
 - Codex: `codex plugin marketplace upgrade vectora`로 목록을 갱신하고 사용하는 항목을 다시 설치한 뒤 새 대화를 시작합니다.
 - Claude Code: `claude plugin marketplace update vectora`와 `claude plugin update vectora@vectora`를 실행합니다. 현재 세션은 `/reload-plugins` 또는 새 세션으로 반영합니다.
 - Claude Code의 자동 업데이트는 `/plugin`의 Marketplaces에서 Vectora의 **Enable auto-update**로 켤 수 있습니다. 사용자 추가 마켓플레이스는 기본적으로 꺼져 있습니다.
-- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.3.0`를 추가합니다.
+- Gemini CLI: `gemini extensions update vectora`를 실행하고 새 세션을 시작합니다. 설치 시 `--auto-update`를 지정해 자동 업데이트를 선택할 수 있습니다. 특정 버전 고정은 설치 명령에 `--ref v2.3.1`를 추가합니다.
 
 v1.0.4부터 GitHub Releases는 버전과 변경 안내를 기록합니다. 수동 설치 ZIP, MCPB, 개별 스킬 ZIP, 별도 설정 도구와 관리용 JSON을 릴리스 첨부 파일로 배포하지 않습니다. GitHub가 자동으로 표시하는 Source code 압축파일을 사용자가 직접 내려받아 설치할 필요는 없습니다. Gemini CLI가 설치 과정에서 저장소나 GitHub 소스 아카이브를 가져오는 것은 공식 확장 설치 절차입니다.
 
@@ -123,7 +123,7 @@ MCP는 일반 편집 창의 미저장 문서를 자동 조작하지 않습니다
 
 지도 원본은 Vectora 앱의 리소스로 제공하며 MCP·스킬에 중복 포함하지 않습니다. `vectora_list_presets({})`에서 요청 범위·경계·도법·상세도에 맞는 실제 UND 프리셋을 선택하고, `vectora_map_plan`의 같은 presetId에 연결된 등록·출처·해시·지원 범위를 확인합니다. 등록 제작이 지원되면 앱의 지도 제작 기능을 사용하고, 그렇지 않으면 `vectora_create_preset`으로 일반 편집 문서를 엽니다. 현재 목록에 없는 지원을 가정하지 않으며, 최종 결과는 저장본 JPEG의 실제 크기와 확대 화면에서 검수합니다.
 
-도형 위치·크기는 mm, 문자·선은 pt, 자간은 1/1000em, 행간은 %입니다. 새 평가원 제작에는 UND v3.1과 UND v3.1 Batang의 등록 문자 스타일을 본문·발언·표·라벨 역할에 맞게 적용하고, 같은 이름의 `.vectora` 원본과 기본 4배 `.jpeg`를 전달합니다. 한 단을 쓰는 자료는 약108mm를 기준으로 조판하며 글자를 모두8pt로 줄여 맞추지 않습니다. 사진은 흑백을 우선하되 적합한 컬러 원본도 사용하며, 편집 원본의 색은 유지하고 최종 JPEG/PNG에서 회색조로 내보냅니다. 이미지 생성 모델과 글꼴 파일은 플러그인에 포함하지 않습니다. Claude의 새 인물·삽화 제작 대안은 [Claude 원화 준비 안내](https://github.com/narshacontents/vectora-mcp/blob/main/CLAUDE_INSTALLATION.md#인물삽화-원화-준비)를 참고하세요.
+도형 위치·크기는 mm, 문자·선은 pt, 자간은 1/1000em, 행간은 %입니다. 새 평가원 제작에는 UND v3.1과 UND v3.1 Batang의 등록 문자 스타일을 본문·발언·표·라벨 역할에 맞게 적용하고, 같은 이름의 `.vectora` 원본과 기본 4배 `.jpeg`를 전달합니다. 한 단을 쓰는 자료는 약108mm를 기준으로 조판하며 글자를 모두8pt로 줄여 맞추지 않습니다. 사진은 흑백을 우선하되 적합한 컬러 원본도 사용하며, 편집 원본의 색은 유지하고 최종 JPEG/PNG에서 회색조로 내보냅니다. 이미지 생성 모델과 글꼴 파일은 플러그인에 포함하지 않습니다. Codex는 자체 imagegen을, Claude와 Antigravity를 포함한 다른 호스트는 현재 세션의 이미지 도구나 사용자 제공 원화를 사용합니다.
 
 ## 유지보수와 릴리스
 
@@ -138,7 +138,7 @@ vectora-mcp-package verify <푼 폴더>
 
 시각 기본값을 바꾸는 유지보수의 근거와 일반 그림 제작의 경계는 [스킬 유지보수 근거 정책](https://github.com/narshacontents/vectora-mcp/blob/main/docs/skill-maintenance-evidence-policy.md)을 따릅니다.
 
-build는 쓴 폴더를 다시 읽어 verify를 통과한 뒤, 같은 입력에서 항상 같은 바이트의 zip을 만듭니다. 플러그인 버전(2.3.0)은 패키지 빌더의 상수 한 곳에서 정해집니다. 릴리스용 패키지는 저장소의 릴리스 절차(`rust/mcp-package/`)가 운영체제·AI 앱별로 만들고 검사합니다. 마켓플레이스 게시 절차는 아직 정하지 않았으며 이 원본에서 자동으로 게시하지 않습니다.
+build는 쓴 폴더를 다시 읽어 verify를 통과한 뒤, 같은 입력에서 항상 같은 바이트의 zip을 만듭니다. 플러그인 버전(2.3.1)은 패키지 빌더의 상수 한 곳에서 정해집니다. 릴리스용 패키지는 저장소의 릴리스 절차(`rust/mcp-package/`)가 운영체제·AI 앱별로 만들고 검사합니다. 마켓플레이스 게시 절차는 아직 정하지 않았으며 이 원본에서 자동으로 게시하지 않습니다.
 
 [Codex 플러그인 공식 안내](https://developers.openai.com/plugins/build/plugins) · [Claude 마켓플레이스 설치](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude Code 설치·업데이트](https://code.claude.com/docs/en/plugins/install)
 

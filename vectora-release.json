@@ -1,22 +1,22 @@
 {
   "kind": "vectora.mcp-release-tree",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "source": {
     "repository": "narshacontents/vectora-studio",
-    "commit": "78a01913f89c435b58cb198102324e4e5b074371",
+    "commit": "8a2912b1792750932c68a8769f9fa7dd849c1178",
     "path": "rust/mcp-plugin",
     "sourceTreeClean": true
   },
   "packages": {
-    "vectora-mcp-2.3.0-codex-macos-aarch64.zip": "5bc120b6522a5a280d2fa731a5f4cd7b4b89da1adc726740ebb2ce44264ff38c",
-    "vectora-mcp-2.3.0-codex-macos-x86_64.zip": "35739313bcc7fe7f57f07860d9a4e0113dd157ee66d63786b56e20cd2e279b9c",
-    "vectora-mcp-2.3.0-codex-windows-x86_64.zip": "9d49f93beff2f3240590ab34a16d3623bb1d458dfde882976105fa8367e25af9",
-    "vectora-mcp-2.3.0-claude-macos-aarch64.zip": "3d87ca4364fb6299ba9cf030b554385221902e40eda0834cae62a58085acfc18",
-    "vectora-mcp-2.3.0-claude-macos-x86_64.zip": "ec55f98e2b48d08d044fec8e99b3aa75927b9bef1c39ed34be6d530520dc6961",
-    "vectora-mcp-2.3.0-claude-windows-x86_64.zip": "72b1deffacdfcd491fbf75fd129660b698fff6272511c4f1a18ddf3cf424c7e2",
-    "vectora-mcp-2.3.0-gemini-macos-aarch64.zip": "038a5023ba4fd153f2ecb0ba5c0eaffcd642f1195684e3fe21e629af104c8845",
-    "vectora-mcp-2.3.0-gemini-macos-x86_64.zip": "78ee0d328694070761295d8ded32b9336e754291475fc88f6744ad6b18f58bdd",
-    "vectora-mcp-2.3.0-gemini-windows-x86_64.zip": "8165faaad7f0ac6fa8ab9694b9dc1be0f1732377f269589a39b8dc2c02f32db2"
+    "vectora-mcp-2.3.1-codex-macos-aarch64.zip": "c4a8684e30213caf1a725df3e989f646d10a15ca714b6e31d882b95e7e167b93",
+    "vectora-mcp-2.3.1-codex-macos-x86_64.zip": "976ed9c27a0e520bef38c289337971264c6a16470f43b6933b68323694d14a12",
+    "vectora-mcp-2.3.1-codex-windows-x86_64.zip": "ab9029a59e47c0721c1372cff25beeb21e4ab2bc6018ddc0525e28031c3d09b6",
+    "vectora-mcp-2.3.1-claude-macos-aarch64.zip": "358f8cde2b82383c547c41b406cbc19203115aee267b088a78478b3b4b3cf7eb",
+    "vectora-mcp-2.3.1-claude-macos-x86_64.zip": "5773156fc19ad390dac3ad19e8a98f46fa809cef24d5d6767d2456730687caab",
+    "vectora-mcp-2.3.1-claude-windows-x86_64.zip": "b2991b2a67ef767fd4ebfa9d53303e12bcc759c6abd88bfbb709983b0a4618b8",
+    "vectora-mcp-2.3.1-gemini-macos-aarch64.zip": "c908894843edb0fed7ca52105403f0c0721fb124f644a8ff15f1aff502758078",
+    "vectora-mcp-2.3.1-gemini-macos-x86_64.zip": "4f3407a86e4c6197cade1ac3832bcc00d59e77596603ffae8432169ace9f2aba",
+    "vectora-mcp-2.3.1-gemini-windows-x86_64.zip": "4a18387143f660198387456301a492621da26288228fe4c3f31c1cfc2714070d"
   },
   "keep": [
     ".gitattributes",
@@ -57,7 +57,7 @@
   },
   "files": {
     ".codex-plugin/plugin.json": {
-      "sha256": "0cf8fae1c36fe9c0971be7be35182f56583b03ddc5be65556f9cf560f8be1ee5"
+      "sha256": "af658ec518d7c34728377d1b4a871646c1811029692d853ad9d85ed1deed7607"
     },
     ".mcp.json": {
       "sha256": "354f1969f8a54105aad3bda8c8f70715b79cbcd1750d16f6067114abcfa80c7e"
@@ -66,43 +66,43 @@
       "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
     },
     "bin/macos-aarch64/vectora-mcp-launch": {
-      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "sha256": "5df5b252add6a3ee79b1b2e6036673480d91101c8101698b8ffff1ccd082c929",
       "executable": true
     },
     "bin/macos-aarch64/vectora-skill": {
-      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "sha256": "8b110cf6fc5ba374aaafebd60bd71bd6d5d434793c1eb861100db7f130fe21ec",
       "executable": true
     },
     "bin/macos-x86_64/vectora-mcp-launch": {
-      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "sha256": "34bf8737bedec894872d953a11440e7018134754ebf2465cf65718854f658b99",
       "executable": true
     },
     "bin/macos-x86_64/vectora-skill": {
-      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "sha256": "b3f7ebbde132065218fa5b47f986e1c3eaf82cd0e12b343313ca29221482cf77",
       "executable": true
     },
     "bin/vectora-mcp-launch": {
-      "sha256": "b25a374efb19bbc2e21bae01f9da514c35e3e0c61e84442641e27d6b2c12e165",
+      "sha256": "6379a8d440626ac090b6c354a1722d4876de13fada09bf8a6892b354dc5085b7",
       "executable": true
     },
     "bin/vectora-mcp-launch.exe": {
-      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+      "sha256": "c676cdd0d1ce0abe4863cc69e0ecd7fc1d47b2141016c7f23ee0429bcc57b9b0"
     },
     "bin/vectora-skill": {
-      "sha256": "4bf2461910918d7cde7ce563af8bb35d4b1233a37ea937d4934451c44437b4df",
+      "sha256": "d07ceefe94f5aa50b000bdee76904cc571735fc4c6c57620e8556d9f2ff26a06",
       "executable": true
     },
     "bin/vectora-skill.exe": {
-      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+      "sha256": "56af7376fbc827970d71b54a499b01b252611bbccea34d0e728bd49f4ed6a32d"
     },
     "gemini-extension.json": {
-      "sha256": "5e5eec528a74a04d73cd1584834b87bf61a243e1d35d1ee585cd344ceb02dc8e"
+      "sha256": "e34cf90a4957ec32cfd662cc88d0c4464b58b211a68186e01c0594d48156d110"
     },
     "GEMINI.md": {
-      "sha256": "ecdbc398bfb2455e93d2ffb67f06da7ba94a19541a27880004cc5276d4ae2ed3"
+      "sha256": "fb57edbb24e3bd0c14904ab34b96fe505ce0c6c64818e1f04c61dfcb3e89a837"
     },
     "plugins/vectora-macos/.codex-plugin/plugin.json": {
-      "sha256": "05e55c6bfa255fa156a2a03c2d933755ee3b8d5a0003b73d36393db0c5181685"
+      "sha256": "1270fc5163ae9ea064f9868effaedf0e9b4566d0eaff49b8aa462b08ee5560e5"
     },
     "plugins/vectora-macos/.mcp.json": {
       "sha256": "354f1969f8a54105aad3bda8c8f70715b79cbcd1750d16f6067114abcfa80c7e"
@@ -111,31 +111,31 @@
       "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
     },
     "plugins/vectora-macos/bin/macos-aarch64/vectora-mcp-launch": {
-      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "sha256": "5df5b252add6a3ee79b1b2e6036673480d91101c8101698b8ffff1ccd082c929",
       "executable": true
     },
     "plugins/vectora-macos/bin/macos-aarch64/vectora-skill": {
-      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "sha256": "8b110cf6fc5ba374aaafebd60bd71bd6d5d434793c1eb861100db7f130fe21ec",
       "executable": true
     },
     "plugins/vectora-macos/bin/macos-x86_64/vectora-mcp-launch": {
-      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "sha256": "34bf8737bedec894872d953a11440e7018134754ebf2465cf65718854f658b99",
       "executable": true
     },
     "plugins/vectora-macos/bin/macos-x86_64/vectora-skill": {
-      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "sha256": "b3f7ebbde132065218fa5b47f986e1c3eaf82cd0e12b343313ca29221482cf77",
       "executable": true
     },
     "plugins/vectora-macos/bin/vectora-mcp-launch": {
-      "sha256": "f1093666e79fd4092894ab389c89528a8c458ab789f7ae154de769de0b512086",
+      "sha256": "1b57cb3ef5b5827bc1722ab22c8c7983c231a76e4c4f1df98a6a19ea4d9fe95c",
       "executable": true
     },
     "plugins/vectora-macos/bin/vectora-skill": {
-      "sha256": "a777f463c20b7610d77ecb804c05a4c76e72d841fafc9cda3614e5d5678584d9",
+      "sha256": "829962af4515f4d37ef88d6fce59c0a7ba8aeeefbb92b326b8025e69ccd6dd3d",
       "executable": true
     },
     "plugins/vectora-macos/README.md": {
-      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+      "sha256": "289fee28a3bbe63c5cb45ca59c7a808b078b082175eb3fe780fe77e00493961d"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/agents/openai.yaml": {
       "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
@@ -237,7 +237,7 @@
       "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/components/artwork.md": {
-      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+      "sha256": "670f886dd03e9ae64448ced6cc64f1e6088f1ebac5ae0619163a59577ea6df01"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/components/bar-sizing.md": {
       "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
@@ -420,7 +420,7 @@
       "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/execution/gemini.md": {
-      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+      "sha256": "7446002eccf6beac8ace65b56180e326b065b0755c0bee51938183592eb4be8b"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/execution/inspection.md": {
       "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
@@ -780,7 +780,7 @@
       "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
-      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+      "sha256": "7cdd957accf2d1f84db4bdc50723f26070e7b64c322a70d88db3a0e9d66424ff"
     },
     "plugins/vectora-macos/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
       "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
@@ -852,7 +852,7 @@
       "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
     },
     "plugins/vectora-windows/.codex-plugin/plugin.json": {
-      "sha256": "00f6d32faa118cc04767b4ef03df43dacd4d4fdc595e89696f4a7d99cf596a65"
+      "sha256": "eec3df2c636c6a702cebca2092dc28bc23b8ec0e697d5fd32698ad4bfb9860c9"
     },
     "plugins/vectora-windows/.mcp.json": {
       "sha256": "519ee1d59df7c98335d0413dfbf14bd5c529e83729f89b1c2268c9027f746164"
@@ -861,13 +861,13 @@
       "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
     },
     "plugins/vectora-windows/bin/vectora-mcp-launch.exe": {
-      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+      "sha256": "c676cdd0d1ce0abe4863cc69e0ecd7fc1d47b2141016c7f23ee0429bcc57b9b0"
     },
     "plugins/vectora-windows/bin/vectora-skill.exe": {
-      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+      "sha256": "56af7376fbc827970d71b54a499b01b252611bbccea34d0e728bd49f4ed6a32d"
     },
     "plugins/vectora-windows/README.md": {
-      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+      "sha256": "289fee28a3bbe63c5cb45ca59c7a808b078b082175eb3fe780fe77e00493961d"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/agents/openai.yaml": {
       "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
@@ -969,7 +969,7 @@
       "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/components/artwork.md": {
-      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+      "sha256": "670f886dd03e9ae64448ced6cc64f1e6088f1ebac5ae0619163a59577ea6df01"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/components/bar-sizing.md": {
       "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
@@ -1152,7 +1152,7 @@
       "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/execution/gemini.md": {
-      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+      "sha256": "7446002eccf6beac8ace65b56180e326b065b0755c0bee51938183592eb4be8b"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/execution/inspection.md": {
       "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
@@ -1512,7 +1512,7 @@
       "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
-      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+      "sha256": "7cdd957accf2d1f84db4bdc50723f26070e7b64c322a70d88db3a0e9d66424ff"
     },
     "plugins/vectora-windows/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
       "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
@@ -1584,7 +1584,7 @@
       "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
     },
     "plugins/vectora/.claude-plugin/plugin.json": {
-      "sha256": "bff6035d57cc65b04b2b111985d5e3e2c988ef9c50aa777eca5c3e231a4b5d76"
+      "sha256": "8f17d181738a139b46eae3a78423b382c7613df38ebfa70533367f93362cbf95"
     },
     "plugins/vectora/.mcp.json": {
       "sha256": "5f63d5603015217e475093447374f736e391f7266cb31947362d6d352c9c57c2"
@@ -1593,37 +1593,37 @@
       "sha256": "234f01c9edbc3714df69cb1306e7a92cb8d96c0d7204dbe4dc580e16a68e1b7a"
     },
     "plugins/vectora/bin/macos-aarch64/vectora-mcp-launch": {
-      "sha256": "13071c9a872be5f646482b1bad454fa1c92b2d3d9333b6ebb6ec4707ad67dec8",
+      "sha256": "5df5b252add6a3ee79b1b2e6036673480d91101c8101698b8ffff1ccd082c929",
       "executable": true
     },
     "plugins/vectora/bin/macos-aarch64/vectora-skill": {
-      "sha256": "4aacb58052d074735ecd376e7433c0a30c967227a254b21a3f2768ee41d7e665",
+      "sha256": "8b110cf6fc5ba374aaafebd60bd71bd6d5d434793c1eb861100db7f130fe21ec",
       "executable": true
     },
     "plugins/vectora/bin/macos-x86_64/vectora-mcp-launch": {
-      "sha256": "04b511bd29ce83f859c6c83f1dc5be86a64c1fcfd63eb7becd8a58b6d0737c0c",
+      "sha256": "34bf8737bedec894872d953a11440e7018134754ebf2465cf65718854f658b99",
       "executable": true
     },
     "plugins/vectora/bin/macos-x86_64/vectora-skill": {
-      "sha256": "20a1924723d8989f73b4f06e906db28b67e6cae21ce0e73508b461be61e1fdb1",
+      "sha256": "b3f7ebbde132065218fa5b47f986e1c3eaf82cd0e12b343313ca29221482cf77",
       "executable": true
     },
     "plugins/vectora/bin/vectora-mcp-launch": {
-      "sha256": "b25a374efb19bbc2e21bae01f9da514c35e3e0c61e84442641e27d6b2c12e165",
+      "sha256": "6379a8d440626ac090b6c354a1722d4876de13fada09bf8a6892b354dc5085b7",
       "executable": true
     },
     "plugins/vectora/bin/vectora-mcp-launch.exe": {
-      "sha256": "9c1706414c5fe99ceda8e1103c43309202d668274ca025c0a51a33d269ecb388"
+      "sha256": "c676cdd0d1ce0abe4863cc69e0ecd7fc1d47b2141016c7f23ee0429bcc57b9b0"
     },
     "plugins/vectora/bin/vectora-skill": {
-      "sha256": "4bf2461910918d7cde7ce563af8bb35d4b1233a37ea937d4934451c44437b4df",
+      "sha256": "d07ceefe94f5aa50b000bdee76904cc571735fc4c6c57620e8556d9f2ff26a06",
       "executable": true
     },
     "plugins/vectora/bin/vectora-skill.exe": {
-      "sha256": "59ed27ed68258a9fd09eeb3409824cca15a7927b24d429f2a9534d5ba22c9e55"
+      "sha256": "56af7376fbc827970d71b54a499b01b252611bbccea34d0e728bd49f4ed6a32d"
     },
     "plugins/vectora/README.md": {
-      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+      "sha256": "289fee28a3bbe63c5cb45ca59c7a808b078b082175eb3fe780fe77e00493961d"
     },
     "plugins/vectora/skills/create-kice-illustration/agents/openai.yaml": {
       "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
@@ -1725,7 +1725,7 @@
       "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
     },
     "plugins/vectora/skills/create-kice-illustration/components/artwork.md": {
-      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+      "sha256": "fa07c59f52dc1ea7c250183c0bac55f101c60231c84d891677458f09f608342b"
     },
     "plugins/vectora/skills/create-kice-illustration/components/bar-sizing.md": {
       "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
@@ -1908,7 +1908,7 @@
       "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
     },
     "plugins/vectora/skills/create-kice-illustration/execution/gemini.md": {
-      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+      "sha256": "7446002eccf6beac8ace65b56180e326b065b0755c0bee51938183592eb4be8b"
     },
     "plugins/vectora/skills/create-kice-illustration/execution/inspection.md": {
       "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
@@ -2268,7 +2268,7 @@
       "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
     },
     "plugins/vectora/skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
-      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+      "sha256": "ef25b5634c817ee9b12723c533c8267dba607a83d64118da62bcd0901a4fba5f"
     },
     "plugins/vectora/skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
       "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
@@ -2340,10 +2340,10 @@
       "sha256": "62dfcf3e9caa0015ac641c830ad4f225585dcb1bdb37e760aa54465b77debc87"
     },
     "README.md": {
-      "sha256": "54bf3c8f9a638f235aa8d399fb924750844acf0fb86cdfd6e2d2a32517ba435a"
+      "sha256": "289fee28a3bbe63c5cb45ca59c7a808b078b082175eb3fe780fe77e00493961d"
     },
     "RELEASE_NOTES.md": {
-      "sha256": "c7c2739cb9c55a942dec77031f2415653e64c15cb2f89e552fff054d6d6c8c75"
+      "sha256": "65b18040b02e7c2333fa0c95796477ac4010361e0bde113dce4634591ee86f72"
     },
     "skills/create-kice-illustration/agents/openai.yaml": {
       "sha256": "97212387140a598329e0350cb972ec85fb439407f81f60eff38f00ad3f37b6bf"
@@ -2445,7 +2445,7 @@
       "sha256": "e7016bffbd9a9719a08a3cb0e057f15aab78a98f738276cd9f491508f2244bee"
     },
     "skills/create-kice-illustration/components/artwork.md": {
-      "sha256": "d75dd4e7ed4da7df9637ffbab43936b0fc090954e30b733e14b5b65c5a4cc20d"
+      "sha256": "670f886dd03e9ae64448ced6cc64f1e6088f1ebac5ae0619163a59577ea6df01"
     },
     "skills/create-kice-illustration/components/bar-sizing.md": {
       "sha256": "93def04c153c59bd70b9c02c348635de0037b152ac4d9700401cbb1ebae3c3a7"
@@ -2628,7 +2628,7 @@
       "sha256": "c626efd909975d902c64ede54fe203c4de7e5c0654fdad4d492fc5441ea9218d"
     },
     "skills/create-kice-illustration/execution/gemini.md": {
-      "sha256": "be8fd8508c660387642e594aa4d0e7c20cf599f54dd7e1d6cb206b40b3ca5110"
+      "sha256": "7446002eccf6beac8ace65b56180e326b065b0755c0bee51938183592eb4be8b"
     },
     "skills/create-kice-illustration/execution/inspection.md": {
       "sha256": "c1feac4762e2c60a0cd63e1b2e396920017af7f0d87490bb8ef3da6ed9a424a1"
@@ -2988,7 +2988,7 @@
       "sha256": "670ef89cfdddfd61c8bd0c7de01dc2afb60c0d66aa668ce4f8f1613dd4b23bdc"
     },
     "skills/create-kice-illustration/references/caller/exam-agent-guide.md": {
-      "sha256": "d20189ac1936061e094b140a5b4ecf76803fc701aa8e10da993417aa1290c5c6"
+      "sha256": "7cdd957accf2d1f84db4bdc50723f26070e7b64c322a70d88db3a0e9d66424ff"
     },
     "skills/create-kice-illustration/references/caller/human-prompt-guide.md": {
       "sha256": "6c85057aa21097d1701a8059fb0bcb818d6abae03dd3cc2b5f9562e7cd4f3879"
