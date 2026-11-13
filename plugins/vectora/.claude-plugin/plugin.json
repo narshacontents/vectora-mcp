@@ -1,6 +1,6 @@
 {
   "name": "vectora",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Vectora MCP and three illustration skills for Vectora 2.3.0 and later. A Rust launcher for macOS, Linux and Windows starts the installed app; Node.js is not needed. Check the live schema before using new fields.",
   "author": {
     "name": "Vectora"

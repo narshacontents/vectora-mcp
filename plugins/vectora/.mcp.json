@@ -3,7 +3,10 @@
     "vectora": {
       "type": "stdio",
       "command": "${CLAUDE_PLUGIN_ROOT}/bin/vectora-mcp-launch",
-      "args": []
+      "args": [],
+      "env": {
+        "VECTORA_MCP_EVAL_IMAGE": "claude"
+      }
     }
   }
 }
